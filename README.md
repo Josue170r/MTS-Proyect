@@ -14,3 +14,12 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+# Verisón de flutter
+
+    3.12.0-7.0.pre.4
+
+#Instalar directamente la versión 3.12.0-7.0.pre.4
+
+#O instalar la última versiónd e flutter y ejecutar el comando
+flutter downgrade 3.12.0-7.0.pre.4
