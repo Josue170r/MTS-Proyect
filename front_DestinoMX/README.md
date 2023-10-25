@@ -1,4 +1,4 @@
-# Front Destino-MX
+# Front DestinoMX
 
 ## 📋 Documentation
 
