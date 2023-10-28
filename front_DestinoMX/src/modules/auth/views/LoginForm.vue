@@ -37,7 +37,7 @@
               </svg>
               <input
                 id="username"
-                v-model="user.username"
+                v-model="username"
                 class="w-full pl-2 outline-none border-none bg-white"
                 type="text"
                 name="email"
@@ -61,11 +61,11 @@
               </svg>
               <input
                 id="password"
-                v-model="user.password"
+                v-model="password"
                 class="w-full pl-2 outline-none border-none"
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Contraseña"
               />
             </div>
             <div class="text-start">
@@ -80,8 +80,14 @@
               </router-link>
             </div>
             <button
+              :disabled="isFormEmpty"
               type="submit"
-              class="block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300 hover:outline hover:outline-1 hover:outline-orange-400"
+              class="block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+              :class="[
+                isFormEmpty
+                  ? 'opacity-60 cursor-not-allowed'
+                  : 'hover:outline hover:outline-1 hover:outline-orange-400',
+              ]"
             >
               Iniciar Sesión
             </button>
@@ -121,16 +127,18 @@ export default {
   components: {},
   data() {
     return {
-      user: {
-        username: "",
-        password: "",
-      },
-      error: null,
+      username: "",
+      password: "",
     };
+  },
+  computed: {
+    isFormEmpty() {
+      return !this.username || !this.password;
+    },
   },
   methods: {
     async loginJWT() {
-      console.log("Aquí se enviará el formulario");
+      console.log(this.username, this.password);
     },
   },
 };
