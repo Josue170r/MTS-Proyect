@@ -1,9 +1,15 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import LoginForm from "@/modules/auth/views/LoginForm.vue";
+import StartupScreen from "@/modules/auth/views/StartupScreen.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/", // Cambia la ruta principal a "/startup" o cualquier otra que desees
+    name: "startup",
+    component: StartupScreen, // Asocia la ruta principal al componente StartupScreen
+  },
+  {
+    path: "/login",
     name: "login",
     component: LoginForm,
   },
