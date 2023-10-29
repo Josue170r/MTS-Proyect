@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 body {
   background-image: url("@/assets/images/fondoPantallaInicio.jpg");
   background-size: cover;
