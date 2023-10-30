@@ -47,38 +47,154 @@
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
-              <!-- <ValidationProvider
-                v-slot="{ errors }"
-                name="Contraseña"
-                rules="required|min:8|max:32"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-gray-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+              <ValidationObserver v-slot="{ invalid }">
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Email"
+                  rules="required|email"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <div class="flex border-2 py-2 w-full rounded-lg mb-4">
-                  <input
-                    id="password"
-                    v-model="password"
-                    autocomplete="off"
-                    class="pl-2 outline-none border-none w-full"
-                    type="password"
-                    name="password"
-                    placeholder="Contraseña *"
-                  />
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="email"
+                      v-model="email"
+                      class="pl-2 outline-none border-none w-full"
+                      type="email"
+                      name="email"
+                      placeholder="Email"
+                      disabled
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mt-1 ml-1 h-1">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Nombre"
+                  rules="required|min:2"
+                >
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="nombre"
+                      v-model="name"
+                      class="pl-2 outline-none border-none w-full"
+                      type="text"
+                      name="nombre"
+                      placeholder="Nombre(s) *"
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mb-2">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Apellido paterno"
+                  rules="required|min:2"
+                >
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="Apellidopaterno"
+                      v-model="lastName"
+                      class="pl-2 outline-none border-none w-full"
+                      type="text"
+                      name="Apellidopaterno"
+                      placeholder="Apellido paterno *"
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mb-2">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Apellido materno"
+                  rules="min:2"
+                >
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="Apellidomaterno"
+                      v-model="secondLastName"
+                      class="pl-2 outline-none border-none w-full"
+                      type="text"
+                      name="Apellidomaterno"
+                      placeholder="Apellido materno"
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mb-2">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Número de teléfono"
+                  rules="required|min:10|max:10|numeric"
+                >
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="phoneNumber"
+                      v-model="phoneNumber"
+                      class="pl-2 outline-none border-none w-full"
+                      type="tel"
+                      name="phoneNumber"
+                      placeholder="Número celular *"
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mb-2">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Contraseña"
+                  rules="required|min:8|max:32"
+                >
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="password"
+                      v-model="password"
+                      autocomplete="off"
+                      class="pl-2 outline-none border-none w-full"
+                      type="password"
+                      name="password"
+                      placeholder="Contraseña *"
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mb-2">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Confirmar contraseña"
+                  rules="required"
+                >
+                  <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                    <input
+                      id="passwordn"
+                      v-model="passwordConfirmation"
+                      autocomplete="off"
+                      class="pl-2 outline-none border-none w-full"
+                      type="password"
+                      name="passwordn"
+                      placeholder="Confirmar contraseña *"
+                    />
+                  </div>
+                  <span class="block text-red-700 text-sm mb-2">{{
+                    errors[0]
+                  }}</span>
+                </ValidationProvider>
+                <div class="space-x-8">
+                  <button
+                    class="block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-dark-accent hover:outline hover:outline-1 hover:outline-gray-700"
+                    :disabled="invalid"
+                    :class="{ 'opacity-25 cursor-not-allowed': invalid }"
+                    @click="registerUserJWt"
+                  >
+                    Registrarme
+                  </button>
                 </div>
-                <span class="block text-red-700 text-sm mb-2">{{
-                  errors[0]
-                }}</span>
-              </ValidationProvider> -->
+              </ValidationObserver>
             </div>
             <div class="text-start">
               <router-link
