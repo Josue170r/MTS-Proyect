@@ -2,7 +2,7 @@
   <div
     class="startup-screen min-h-screen w-full flex flex-col md:flex-row justify-center"
   >
-    <div class="min-h-screen flex flex-col items-center mx-auto">
+    <div class="flex flex-col items-center mx-auto">
       <div class="justify-center items-center">
         <img
           src="@/assets/images/DestinoMX.png"
