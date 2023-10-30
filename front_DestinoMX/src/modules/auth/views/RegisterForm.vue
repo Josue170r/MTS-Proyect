@@ -16,13 +16,14 @@
           <p class="text-sm text-center font-normal text-gray-800 mb-7">
             Porfavor llena los siguientes campos para la creación de tu cuenta
           </p>
+          <VueDatePicker v-model="date" />
           <form @submit.prevent="loginJWT">
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400 bg-white"
+                class="h-5 w-5 text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

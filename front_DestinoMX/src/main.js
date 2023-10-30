@@ -5,6 +5,6 @@ import store from "./store";
 import "./assets/css/tailwind.css";
 import "./assets/css/styles.css";
 // import "./plugins/vuesax";
-import vuetify from "./plugins/vuetify";
+import "./plugins/vuetify";
 
-createApp(App).use(store).use(vuetify).use(router).mount("#app");
+createApp(App).use(store).use(router).mount("#app");
