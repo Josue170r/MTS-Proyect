@@ -13,9 +13,8 @@
           class="mx-auto w-64 -mt-64 sm:-mt-32 p-2 pl-8"
         />
         <div class="bg-accent w-full px-5">
-          <h1 class="text-gray-800 font-bold text-2xl mb-1">¡Hola!</h1>
-          <p class="text-sm text-gray-800 mb-7">
-            Coloca tus credenciales para iniciar sesión
+          <p class="text-sm text-center font-normal text-gray-800 mb-7">
+            Porfavor llena los siguientes campos para la creación de tu cuenta
           </p>
           <form @submit.prevent="loginJWT">
             <div
@@ -23,7 +22,7 @@
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
+                class="h-5 w-5 text-gray-400 bg-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -47,31 +46,43 @@
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
+              <!-- <ValidationProvider
+                v-slot="{ errors }"
+                name="Contraseña"
+                rules="required|min:8|max:32"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              <input
-                id="password"
-                v-model="password"
-                class="w-full pl-2 outline-none border-none"
-                type="password"
-                name="password"
-                placeholder="Contraseña"
-              />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                  <input
+                    id="password"
+                    v-model="password"
+                    autocomplete="off"
+                    class="pl-2 outline-none border-none w-full"
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña *"
+                  />
+                </div>
+                <span class="block text-red-700 text-sm mb-2">{{
+                  errors[0]
+                }}</span>
+              </ValidationProvider> -->
             </div>
             <div class="text-start">
               <router-link
                 :to="{ name: 'about' }"
-                class="font-baskerville mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
+                class="font-normal mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
                   >¿Necesitas ayuda?
@@ -82,7 +93,7 @@
             <button
               :disabled="isFormEmpty"
               type="submit"
-              class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+              class="block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
               :class="[
                 isFormEmpty
                   ? 'opacity-60 cursor-not-allowed'
@@ -91,10 +102,10 @@
             >
               Iniciar Sesión
             </button>
-            <div class="font-baskerville sm:text-start text-center mb-4 mt-4">
+            <div class="sm:text-start text-center mb-4 mt-4">
               <router-link
                 :to="{ name: 'about' }"
-                class="mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
+                class="font-normal mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
                   >No tengo una cuenta
@@ -105,7 +116,7 @@
             <div class="sm:text-start text-center">
               <router-link
                 :to="{ name: 'about' }"
-                class="font-baskerville mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
+                class="font-normal mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
                   ><span class="text-orange-300"
@@ -124,7 +135,6 @@
 <script>
 export default {
   name: "LoginForm",
-  components: {},
   data() {
     return {
       username: "",
