@@ -5,12 +5,12 @@
     </div>
     <div class="sm:flex flex-1 bg-white mx-8 my-8 sm:-my-0">
       <div
-        class="h-[600px] sm:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100 mt-32 sm:h-[700px]"
+        class="h-[700px] sm:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100 mt-32"
       >
         <img
           src="@/assets/images/DestinoMX.png"
           alt="logo"
-          class="mx-auto w-64 -mt-64 sm:-mt-32 p-2 pl-8"
+          class="mx-auto w-64 -mt-64 sm:-mt-16 p-2 pl-8"
         />
         <div class="bg-accent w-full px-5">
           <p class="text-sm text-center font-normal text-gray-800 mb-7">
@@ -20,44 +20,57 @@
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                />
-              </svg>
+              <UserIcon />
               <input
                 id="username"
                 v-model="username"
-                class="w-full pl-2 outline-none border-none bg-white"
+                class="w-full pl-2 outline-none border-none"
                 type="text"
                 name="email"
-                placeholder="Usuario o Email"
+                placeholder="Nombre de usuario"
               />
             </div>
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                  clip-rule="evenodd"
-                />
-              </svg>
+              <AtIcon />
+              <input
+                id="email"
+                v-model="email"
+                class="w-full pl-2 outline-none border-none"
+                type="text"
+                name="email"
+                placeholder="Correo electrónico"
+              />
+            </div>
+            <div
+              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+            >
+              <input
+                id="name"
+                v-model="name"
+                class="w-full pl-2 outline-none border-none"
+                type="text"
+                name="email"
+                placeholder="Nombre"
+              />
+            </div>
+            <div
+              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+            >
+              <input
+                id="lastname"
+                v-model="lastname"
+                class="w-full pl-2 outline-none border-none"
+                type="text"
+                name="email"
+                placeholder="Apellidos"
+              />
+            </div>
+            <div
+              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+            >
+              <PasswordIcon />
               <input
                 id="password"
                 v-model="password"
@@ -67,52 +80,31 @@
                 placeholder="Contraseña"
               />
             </div>
-            <div class="text-start">
-              <router-link
-                :to="{ name: 'about' }"
-                class="font-normal mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
-              >
-                <u
-                  >¿Necesitas ayuda?
-                  <span class="text-orange-300">Olvidé mi contraseña</span></u
-                >
-              </router-link>
+            <div
+              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+            >
+              <PasswordIcon />
+              <input
+                id="confirmedPassword"
+                v-model="confirmedPassword"
+                class="w-full pl-2 outline-none border-none"
+                type="password"
+                name="password"
+                placeholder="Confirmar contraseña"
+              />
             </div>
             <button
               :disabled="isFormEmpty"
               type="submit"
-              class="block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+              class="font-quicksand block w-full mt-8 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
               :class="[
                 isFormEmpty
                   ? 'opacity-60 cursor-not-allowed'
                   : 'hover:outline hover:outline-1 hover:outline-orange-400',
               ]"
             >
-              Iniciar Sesión
+              Crear Cuenta
             </button>
-            <div class="sm:text-start text-center mb-4 mt-4">
-              <router-link
-                :to="{ name: 'about' }"
-                class="font-normal mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
-              >
-                <u
-                  >No tengo una cuenta
-                  <span class="text-orange-300">Registrarse</span></u
-                >
-              </router-link>
-            </div>
-            <div class="sm:text-start text-center">
-              <router-link
-                :to="{ name: 'about' }"
-                class="font-normal mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
-              >
-                <u
-                  ><span class="text-orange-300"
-                    >Términos y condiciones</span
-                  ></u
-                >
-              </router-link>
-            </div>
           </form>
         </div>
       </div>
@@ -121,11 +113,24 @@
 </template>
 
 <script>
+import AtIcon from "@/components/icons/atIcon.vue";
+import PasswordIcon from "@/components/icons/PasswordIcon";
+import UserIcon from "@/components/icons/UserIcon";
+
 export default {
   name: "LoginForm",
+  components: {
+    AtIcon,
+    PasswordIcon,
+    UserIcon,
+  },
   data() {
     return {
+      email: "",
       username: "",
+      name: "",
+      lastname: "",
+      confirmedPassword: "",
       password: "",
     };
   },

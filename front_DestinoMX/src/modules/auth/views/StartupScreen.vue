@@ -18,6 +18,7 @@
           Iniciar Sesión
         </button>
         <button
+          @click="goToRegisterForm"
           type="button"
           class="block w-64 py-4 rounded-lg text-black font-semibold bg-white"
         >
@@ -47,6 +48,11 @@ export default {
     goToLoginView() {
       this.$router.push({
         name: "login",
+      });
+    },
+    goToRegisterForm() {
+      this.$router.push({
+        name: "register-form",
       });
     },
   },
