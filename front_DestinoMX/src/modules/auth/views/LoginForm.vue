@@ -108,7 +108,12 @@ export default {
   },
   methods: {
     async loginJWT() {
-      console.log(this.username, this.password);
+      // this.$vs.notification({
+      //   color: "success",
+      //   title: "Éxito",
+      //   text: "Login exitoso",
+      //   position: "top-right",
+      // });
     },
   },
 };

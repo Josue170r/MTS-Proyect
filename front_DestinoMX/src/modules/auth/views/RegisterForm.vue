@@ -102,12 +102,14 @@
               rules="required|min:8|max:32"
             >
               <PasswordIcon />
-              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+              <div
+                class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+              >
                 <input
                   id="password"
                   v-model="password"
                   autocomplete="off"
-                  class="pl-2 outline-none border-none w-full"
+                  class="w-full pl-2 outline-none border-non"
                   type="password"
                   name="password"
                   placeholder="Contraseña *"

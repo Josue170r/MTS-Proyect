@@ -4,8 +4,14 @@ import router from "./router";
 import store from "./store";
 import "./assets/css/tailwind.css";
 import "./assets/css/styles.css";
-// import "./plugins/vuesax";
-import "./plugins/vuetify";
-import "./plugins/vee-validate";
+import "vuesax/dist/vuesax.css"; // Estilos de Vuesax
+// import { ValidationProvider, ValidationObserver } from "vee-validate";
 
-createApp(App).use(store).use(router).mount("#app");
+const app = createApp(App);
+
+app
+  .use(store)
+  .use(router)
+  // .component("ValidationObserver", ValidationObserver)
+  // .component("ValidationProvider", ValidationProvider)
+  .mount("#app");
