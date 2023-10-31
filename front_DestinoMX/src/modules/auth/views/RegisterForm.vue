@@ -16,96 +16,138 @@
           <p class="text-sm text-center font-normal text-gray-800 mb-7">
             Porfavor llena los siguientes campos para la creación de tu cuenta
           </p>
-          <form @submit.prevent="loginJWT">
-            <div
-              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
-            >
-              <UserIcon />
-              <input
-                id="username"
-                v-model="username"
-                class="w-full pl-2 outline-none border-none"
-                type="text"
-                name="email"
-                placeholder="Nombre de usuario"
-              />
-            </div>
-            <div
-              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          <ValidationObserver v-slot="{ invalid }">
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Email"
+              rules="required|email"
             >
               <AtIcon />
-              <input
-                id="email"
-                v-model="email"
-                class="w-full pl-2 outline-none border-none"
-                type="text"
-                name="email"
-                placeholder="Correo electrónico"
-              />
-            </div>
-            <div
-              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                <input
+                  id="email"
+                  v-model="email"
+                  class="pl-2 outline-none border-none w-full"
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  disabled
+                />
+              </div>
+              <span class="block text-red-700 text-sm mt-1 ml-1 h-1">{{
+                errors[0]
+              }}</span>
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Nombre"
+              rules="required|min:2"
             >
-              <input
-                id="name"
-                v-model="name"
-                class="w-full pl-2 outline-none border-none"
-                type="text"
-                name="email"
-                placeholder="Nombre"
-              />
-            </div>
-            <div
-              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+              <UserIcon />
+              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                <input
+                  id="nombre"
+                  v-model="name"
+                  class="pl-2 outline-none border-none w-full"
+                  type="text"
+                  name="nombre"
+                  placeholder="Nombre(s) *"
+                />
+              </div>
+              <span class="block text-red-700 text-sm mb-2">{{
+                errors[0]
+              }}</span>
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Apellido paterno"
+              rules="required|min:2"
             >
-              <input
-                id="lastname"
-                v-model="lastname"
-                class="w-full pl-2 outline-none border-none"
-                type="text"
-                name="email"
-                placeholder="Apellidos"
-              />
-            </div>
-            <div
-              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                <input
+                  id="Apellidopaterno"
+                  v-model="lastName"
+                  class="pl-2 outline-none border-none w-full"
+                  type="text"
+                  name="Apellidopaterno"
+                  placeholder="Apellido paterno *"
+                />
+              </div>
+              <span class="block text-red-700 text-sm mb-2">{{
+                errors[0]
+              }}</span>
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Apellido materno"
+              rules="min:2"
+            >
+              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                <input
+                  id="Apellidomaterno"
+                  v-model="secondLastName"
+                  class="pl-2 outline-none border-none w-full"
+                  type="text"
+                  name="Apellidomaterno"
+                  placeholder="Apellido materno"
+                />
+              </div>
+              <span class="block text-red-700 text-sm mb-2">{{
+                errors[0]
+              }}</span>
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Contraseña"
+              rules="required|min:8|max:32"
             >
               <PasswordIcon />
-              <input
-                id="password"
-                v-model="password"
-                class="w-full pl-2 outline-none border-none"
-                type="password"
-                name="password"
-                placeholder="Contraseña"
-              />
-            </div>
-            <div
-              class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                <input
+                  id="password"
+                  v-model="password"
+                  autocomplete="off"
+                  class="pl-2 outline-none border-none w-full"
+                  type="password"
+                  name="password"
+                  placeholder="Contraseña *"
+                />
+              </div>
+              <span class="block text-red-700 text-sm mb-2">{{
+                errors[0]
+              }}</span>
+            </ValidationProvider>
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="Confirmar contraseña"
+              rules="required"
             >
-              <PasswordIcon />
-              <input
-                id="confirmedPassword"
-                v-model="confirmedPassword"
-                class="w-full pl-2 outline-none border-none"
-                type="password"
-                name="password"
-                placeholder="Confirmar contraseña"
-              />
+              <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+                <input
+                  id="password"
+                  v-model="passwordConfirmation"
+                  autocomplete="off"
+                  class="pl-2 outline-none border-none w-full"
+                  type="password"
+                  name="passwordn"
+                  placeholder="Confirmar contraseña *"
+                />
+              </div>
+              <span class="block text-red-700 text-sm mb-2">{{
+                errors[0]
+              }}</span>
+            </ValidationProvider>
+            <div class="space-x-8">
+              <button
+                class="block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-dark-accent hover:outline hover:outline-1 hover:outline-gray-700"
+                :disabled="invalid"
+                :class="{ 'opacity-25 cursor-not-allowed': invalid }"
+                @click="registerUserJWt"
+              >
+                Crear Cuenta
+              </button>
             </div>
-            <button
-              :disabled="isFormEmpty"
-              type="submit"
-              class="font-quicksand block w-full mt-8 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
-              :class="[
-                isFormEmpty
-                  ? 'opacity-60 cursor-not-allowed'
-                  : 'hover:outline hover:outline-1 hover:outline-orange-400',
-              ]"
-            >
-              Crear Cuenta
-            </button>
-          </form>
+          </ValidationObserver>
         </div>
       </div>
     </div>
@@ -130,8 +172,9 @@ export default {
       username: "",
       name: "",
       lastname: "",
-      confirmedPassword: "",
+      secondLastName: "",
       password: "",
+      passwordConfirmation: "",
     };
   },
   computed: {
