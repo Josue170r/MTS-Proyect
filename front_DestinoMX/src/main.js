@@ -4,7 +4,6 @@ import router from "./router";
 import store from "./store";
 import "./assets/css/tailwind.css";
 import "./assets/css/styles.css";
-import "vuesax/dist/vuesax.css"; // Estilos de Vuesax
 // import { ValidationProvider, ValidationObserver } from "vee-validate";
 import Vue3Geolocation from "vue3-geolocation";
 

@@ -122,8 +122,8 @@
 </template>
 
 <script>
-import AtIcon from "@/components/icons/atIcon";
-import PasswordIcon from "@/components/icons/PasswordIcon.vue";
+// import AtIcon from "@/components/icons/atIcon";
+// import PasswordIcon from "@/components/icons/PasswordIcon.vue";
 
 export default {
   name: "LoginForm",
