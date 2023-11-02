@@ -2,11 +2,25 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import LoginForm from "@/modules/auth/views/LoginForm.vue";
 import AddToTrip from "@/modules/auth/views/AddToTrip.vue";
 import PlaceDescription from "@/modules/auth/views/PlaceDescription.vue";
+import StartupScreen from "@/modules/auth/views/StartupScreen.vue";
+import RegisterForm from "@/modules/auth/views/RegisterForm.vue";
+import GoogleMaps from "@/components/Viajes/GoogleMaps.vue";
+
 const routes = [
   {
-    path: "/",
+    path: "/", // Cambia la ruta principal a "/startup" o cualquier otra que desees
+    name: "startup",
+    component: StartupScreen, // Asocia la ruta principal al componente StartupScreen
+  },
+  {
+    path: "/login",
     name: "login",
     component: LoginForm,
+  },
+  {
+    path: "/register",
+    name: "register-form",
+    component: RegisterForm,
   },
   {
     path: "/addtotrip",
@@ -26,6 +40,11 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/map",
+    name: "mapa-interactivo",
+    component: GoogleMaps,
   },
 ];
 
