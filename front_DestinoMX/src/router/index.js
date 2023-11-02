@@ -5,9 +5,9 @@ import RegisterForm from "@/modules/auth/views/RegisterForm.vue";
 
 const routes = [
   {
-    path: "/", // Cambia la ruta principal a "/startup" o cualquier otra que desees
+    path: "/",
     name: "startup",
-    component: StartupScreen, // Asocia la ruta principal al componente StartupScreen
+    component: StartupScreen,
   },
   {
     path: "/login",
