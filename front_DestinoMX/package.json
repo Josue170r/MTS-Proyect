@@ -11,7 +11,7 @@
   "engines": {
     "npm": "please-use-yarn",
     "yarn": ">= 1.19.1",
-    "node": ">=16.0.0",
+    "node": ">=16.0.0 <17",
     "pnpm": "please-use-yarn"
   },
   "dependencies": {
@@ -20,7 +20,6 @@
     "vee-validate": "^4.11.8",
     "vue": "^3.3.7",
     "vue-router": "^4.0.3",
-    "vuesax": "^4.0.1-alpha.25",
     "vuetify": "^3.3.23",
     "vuex": "^4.0.0"
   },
