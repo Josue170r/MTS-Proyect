@@ -122,9 +122,6 @@
 </template>
 
 <script>
-// import AtIcon from "@/components/icons/atIcon";
-// import PasswordIcon from "@/components/icons/PasswordIcon.vue";
-
 export default {
   name: "LoginForm",
   components: {},
@@ -141,12 +138,6 @@ export default {
   },
   methods: {
     async loginJWT() {
-      // this.$vs.notification({
-      //   color: "success",
-      //   title: "Éxito",
-      //   text: "Login exitoso",
-      //   position: "top-right",
-      // });
       console.log(this.username, this.password);
     },
   },
