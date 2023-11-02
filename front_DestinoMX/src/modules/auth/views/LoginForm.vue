@@ -86,24 +86,24 @@
 </template>
 
 <script>
-import AtIcon from "@/components/icons/atIcon";
-import PasswordIcon from "@/components/icons/PasswordIcon.vue";
+import AtIcon from '@/components/icons/atIcon'
+import PasswordIcon from '@/components/icons/PasswordIcon.vue'
 
 export default {
-  name: "LoginForm",
+  name: 'LoginForm',
   components: {
     AtIcon,
     PasswordIcon,
   },
   data() {
     return {
-      username: "",
-      password: "",
-    };
+      username: '',
+      password: '',
+    }
   },
   computed: {
     isFormEmpty() {
-      return !this.username || !this.password;
+      return !this.username || !this.password
     },
   },
   methods: {
@@ -114,8 +114,8 @@ export default {
       //   text: "Login exitoso",
       //   position: "top-right",
       // });
-      console.log(this.username, this.password);
+      console.log(this.username, this.password)
     },
   },
-};
+}
 </script>
