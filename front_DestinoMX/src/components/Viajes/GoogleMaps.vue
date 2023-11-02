@@ -20,12 +20,8 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import { GoogleMap, Marker } from "vue3-google-map";
-import BackButton from "@/components/buttons/BackButton";
-=======
 import { GoogleMap, Marker } from 'vue3-google-map'
->>>>>>> 242e0d185c827a47c5ff575ad232a0d3e7ce8524
+import BackButton from '@/components/buttons/BackButton'
 
 export default {
   name: 'GoogleMaps',
