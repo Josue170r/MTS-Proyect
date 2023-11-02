@@ -1,8 +1,16 @@
 <template>
-  <div>
+  <div class="h-screen w-full">
+    <div
+      class="flex rounded-lg items-center justify-center bg-orange-300 w-full"
+    >
+      <BackButton class="mx-2" />
+      <h1 class="text-white py-8 text-center text-xl">
+        ¡Explora lugares cerca de ti!
+      </h1>
+    </div>
     <GoogleMap
       :api-key="apiKey"
-      class="w-full, h-screen"
+      style="width: 100%; height: 90%"
       :center="initialPosition"
       :zoom="15"
     >
@@ -13,12 +21,14 @@
 
 <script>
 import { GoogleMap, Marker } from "vue3-google-map";
+import BackButton from "@/components/buttons/BackButton";
 
 export default {
   name: "GoogleMaps",
   components: {
     GoogleMap,
     Marker,
+    BackButton,
   },
   data() {
     return {
