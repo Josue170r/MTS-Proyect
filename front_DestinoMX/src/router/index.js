@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import LoginForm from "@/modules/auth/views/LoginForm.vue";
 import StartupScreen from "@/modules/auth/views/StartupScreen.vue";
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue";
+import GoogleMaps from "@/components/Viajes/GoogleMaps.vue";
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/map",
+    name: "mapa-interactivo",
+    component: GoogleMaps,
   },
 ];
 

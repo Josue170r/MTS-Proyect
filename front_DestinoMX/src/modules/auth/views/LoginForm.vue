@@ -21,20 +21,7 @@
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                />
-              </svg>
+              <AtIcon />
               <input
                 id="username"
                 v-model="username"
@@ -47,18 +34,7 @@
             <div
               class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                  clip-rule="evenodd"
-                />
-              </svg>
+              <PasswordIcon />
               <input
                 id="password"
                 v-model="password"
@@ -93,24 +69,12 @@
             </button>
             <div class="font-baskerville sm:text-start text-center mb-4 mt-4">
               <router-link
-                :to="{ name: 'about' }"
+                :to="{ name: 'register-form' }"
                 class="mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
                   >No tengo una cuenta
                   <span class="text-orange-300">Registrarse</span></u
-                >
-              </router-link>
-            </div>
-            <div class="sm:text-start text-center">
-              <router-link
-                :to="{ name: 'about' }"
-                class="font-baskerville mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
-              >
-                <u
-                  ><span class="text-orange-300"
-                    >Términos y condiciones</span
-                  ></u
                 >
               </router-link>
             </div>
@@ -122,9 +86,15 @@
 </template>
 
 <script>
+import AtIcon from "@/components/icons/atIcon";
+import PasswordIcon from "@/components/icons/PasswordIcon.vue";
+
 export default {
   name: "LoginForm",
-  components: {},
+  components: {
+    AtIcon,
+    PasswordIcon,
+  },
   data() {
     return {
       username: "",
@@ -138,6 +108,12 @@ export default {
   },
   methods: {
     async loginJWT() {
+      // this.$vs.notification({
+      //   color: "success",
+      //   title: "Éxito",
+      //   text: "Login exitoso",
+      //   position: "top-right",
+      // });
       console.log(this.username, this.password);
     },
   },
