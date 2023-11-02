@@ -20,11 +20,15 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import { GoogleMap, Marker } from "vue3-google-map";
 import BackButton from "@/components/buttons/BackButton";
+=======
+import { GoogleMap, Marker } from 'vue3-google-map'
+>>>>>>> 242e0d185c827a47c5ff575ad232a0d3e7ce8524
 
 export default {
-  name: "GoogleMaps",
+  name: 'GoogleMaps',
   components: {
     GoogleMap,
     Marker,
@@ -32,24 +36,24 @@ export default {
   },
   data() {
     return {
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
-      initialPosition: "",
-      localitation: "",
-    };
+      apiKey: 'AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70',
+      initialPosition: '',
+      localitation: '',
+    }
   },
   methods: {},
   created() {
     this.$getLocation()
       .then((coordinates) => {
-        this.initialPosition = { lat: coordinates.lat, lng: coordinates.lng };
-        console.log(this.initialPosition);
-        console.log(coordinates);
+        this.initialPosition = { lat: coordinates.lat, lng: coordinates.lng }
+        console.log(this.initialPosition)
+        console.log(coordinates)
       })
       .catch((error) => {
-        console.log(`El error es este: ${error}`);
-      });
+        console.log(`El error es este: ${error}`)
+      })
   },
-};
+}
 </script>
 
 <style></style>

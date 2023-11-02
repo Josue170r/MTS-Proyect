@@ -17,8 +17,8 @@
 
 <script>
 export default {
-  name: "UserIcon",
-};
+  name: 'UserIcon',
+}
 </script>
 
 <style></style>

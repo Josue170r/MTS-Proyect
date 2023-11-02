@@ -6,10 +6,10 @@
 
 <script>
 export default {
-  name: "ItinerarioViajes",
+  name: 'ItinerarioViajes',
   data() {},
   methods: {},
-};
+}
 </script>
 
 <style></style>
