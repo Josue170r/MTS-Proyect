@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import LoginForm from "@/modules/auth/views/LoginForm.vue";
 import StartupScreen from "@/modules/auth/views/StartupScreen.vue";
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue";
+import VisualizarRuta from "@/modules/auth/views/VisualizarRuta.vue";
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginForm,
+  },
+  {
+    path: "/Ruta",
+    name: "VisualizarRuta",
+    component: VisualizarRuta,
   },
   {
     path: "/register",
