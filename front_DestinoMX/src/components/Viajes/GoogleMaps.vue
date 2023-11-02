@@ -4,12 +4,12 @@
   </div>
   <div>
     <GoogleMap
-      api-key="YOUR_GOOGLE_MAPS_API_KEY"
+      :api-key="apiKey"
       style="width: 100%; height: 500px"
-      :center="center"
+      :center="initialPosition"
       :zoom="15"
     >
-      <Marker :options="{ position: center }" />
+      <Marker :options="{ position: initialPosition }" />
     </GoogleMap>
   </div>
 </template>
@@ -25,6 +25,7 @@ export default {
   },
   data() {
     return {
+      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       initialPosition: "",
       localitation: "",
     };
@@ -33,9 +34,7 @@ export default {
   created() {
     this.$getLocation()
       .then((coordinates) => {
-        const center = { lat: 40.689247, lng: -74.044502 };
-        this.initialPosition = center;
-
+        this.initialPosition = { lat: coordinates.lat, lng: coordinates.lng };
         console.log(this.initialPosition);
         console.log(coordinates);
       })
