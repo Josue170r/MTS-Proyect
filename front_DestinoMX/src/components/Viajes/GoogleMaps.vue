@@ -1,11 +1,8 @@
 <template>
   <div>
-    <p>Google Mpas Component</p>
-  </div>
-  <div>
     <GoogleMap
       :api-key="apiKey"
-      style="width: 100%; height: 500px"
+      class="w-full, h-screen"
       :center="initialPosition"
       :zoom="15"
     >
