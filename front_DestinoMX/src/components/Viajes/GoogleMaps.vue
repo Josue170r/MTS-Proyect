@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map";
-import BackButton from "@/components/buttons/BackButton";
-import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName";
+import { GoogleMap, Marker } from "vue3-google-map"
+import BackButton from "@/components/buttons/BackButton"
+import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
 
 export default {
   name: "GoogleMaps",
@@ -45,11 +45,11 @@ export default {
       relativePosition: "",
       localitation: "",
       currentPlace: "",
-    };
+    }
   },
   methods: {
     SelectedPlace(event) {
-      this.getNamePlace(event.placeId);
+      this.getNamePlace(event.placeId)
     },
     async getNamePlace(placeId) {
       try {
@@ -58,23 +58,23 @@ export default {
             place_id: placeId,
             key: this.apiKey,
           },
-        });
+        })
         this.CurrentNamePlace = data.result.name
       } catch (e) {
-        console.log(e.message);
+        console.log(e.message)
       }
     },
   },
   created() {
     this.$getLocation()
       .then((coordinates) => {
-        this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng };
+        this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
       })
       .catch((error) => {
-        console.log(`El error es este: ${error}`);
-      });
+        console.log(`El error es este: ${error}`)
+      })
   },
-};
+}
 </script>
 
 <style></style>
