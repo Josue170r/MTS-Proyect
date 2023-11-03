@@ -16,9 +16,10 @@
           <p class="text-sm text-center font-normal text-gray-800 mb-7">
             Porfavor llena los siguientes campos para la creación de tu cuenta
           </p>
-
-          <AtIcon />
-          <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
+            <AtIcon />
             <input
               id="email"
               v-model="email"
@@ -28,12 +29,12 @@
               placeholder="Email"
             />
           </div>
-          <span class="block text-red-700 text-sm mt-1 ml-1 h-1">{{
-            emailError
-          }}</span>
+          <span class="block text-red-700 text-sm mt-1 ml-1 h-1"></span>
 
-          <UserIcon />
-          <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
+            <UserIcon />
             <input
               id="nombre"
               v-model="name"
@@ -43,9 +44,11 @@
               placeholder="Nombre(s) *"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2">{{ nameError }}</span>
+          <span class="block text-red-700 text-sm mb-2"></span>
 
-          <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
             <input
               id="Apellidopaterno"
               v-model="lastName"
@@ -55,9 +58,11 @@
               placeholder="Apellido paterno *"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2">ERROR:</span>
+          <span class="block text-red-700 text-sm mb-2"></span>
 
-          <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
             <input
               id="Apellidomaterno"
               v-model="secondLastName"
@@ -67,12 +72,12 @@
               placeholder="Apellido materno"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2">ERROR:</span>
+          <span class="block text-red-700 text-sm mb-2"></span>
 
-          <PasswordIcon />
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
+            <PasswordIcon />
             <input
               id="password"
               v-model="password"
@@ -83,9 +88,11 @@
               placeholder="Contraseña *"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2">ERROR:</span>
+          <span class="block text-red-700 text-sm mb-2"></span>
 
-          <div class="flex border-2 py-2 w-full rounded-lg mb-4">
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
             <input
               id="password"
               v-model="passwordConfirmation"
@@ -96,13 +103,19 @@
               placeholder="Confirmar contraseña *"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2">ERROR:</span>
-
-          <div
-            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          <span class="block text-red-700 text-sm mb-2"></span>
+          <button
+            :disabled="isFormEmpty"
+            type="submit"
+            class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+            :class="[
+              isFormEmpty
+                ? 'opacity-60 cursor-not-allowed'
+                : 'hover:outline hover:outline-1 hover:outline-orange-400',
+            ]"
           >
-            <button type="submit">Crear Cuenta</button>
-          </div>
+            Iniciar Sesión
+          </button>
         </form>
       </div>
     </div>
@@ -128,6 +141,11 @@ export default {
     AtIcon,
     PasswordIcon,
     UserIcon,
+  },
+  computed: {
+    isFormEmpty() {
+      return !this.username || !this.password
+    },
   },
   data() {
     return {

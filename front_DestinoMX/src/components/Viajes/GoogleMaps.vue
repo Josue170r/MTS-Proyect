@@ -9,13 +9,20 @@
       </h1>
     </div>
     <GoogleMap
+      @click="SelectedPlace"
       :api-key="apiKey"
+      mapTypeId="terrain"
       style="width: 100%; height: 90%"
-      :center="initialPosition"
-      :zoom="15"
+      :center="relativePosition"
+      :zoom="17"
     >
-      <Marker :options="{ position: initialPosition }" />
+      <Marker :options="{ position: relativePosition }" />
     </GoogleMap>
+    <div class="flex rounded-lg items-center justify-center bg-white w-full">
+      <h1 class="text-gray-800 py-8 text-center text-xl">
+        {{ CurrentNamePlace }}
+      </h1>
+    </div>
   </div>
 </template>
 
@@ -33,17 +40,33 @@ export default {
   data() {
     return {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
-      initialPosition: "",
+      CurrentNamePlace: "",
+      relativePosition: "",
       localitation: "",
+      currentPlace: "",
     }
   },
-  methods: {},
+  methods: {
+    SelectedPlace(event) {
+      this.getNamePlace(event.placeId)
+    },
+    getNamePlace(place_id) {
+      const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${this.apiKey}`
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          // Accede al nombre del lugar desde la respuesta JSON
+          this.CurrentNamePlace = data.result.name
+        })
+        .catch((error) =>
+          console.error("Error al obtener detalles del lugar:", error),
+        )
+    },
+  },
   created() {
     this.$getLocation()
       .then((coordinates) => {
-        this.initialPosition = { lat: coordinates.lat, lng: coordinates.lng }
-        console.log(this.initialPosition)
-        console.log(coordinates)
+        this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
       })
       .catch((error) => {
         console.log(`El error es este: ${error}`)

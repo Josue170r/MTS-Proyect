@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Contenido de tu vista -->
-    <place-image placeName="Villa de Guadalupe" />
+    <place-image placeName="Basilica" />
   </div>
 </template>
 
