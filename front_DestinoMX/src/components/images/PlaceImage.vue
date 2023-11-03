@@ -15,34 +15,34 @@ export default {
     return {
       placeImage: "",
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
-    }
+    };
   },
   mounted() {
     if (this.placeName) {
-      this.getPlaceDetails()
+      this.getPlaceDetails();
       // this.getPlacePhoto()
     }
   },
   methods: {
     getPlaceDetails() {
       // Codifica el nombre del lugar para incluirlo en la URL de la solicitud
-      const encodedPlaceName = encodeURIComponent(this.placeName)
-      console.log(encodedPlaceName)
-      console.log(this.apiKey)
+      const encodedPlaceName = encodeURIComponent(this.placeName);
+      console.log(encodedPlaceName);
+      console.log(this.apiKey);
       // Realiza una solicitud a la API de Google Places para buscar el lugar por nombre
       fetch(
         `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedPlaceName}&inputtype=textquery&fields=photos&key=${this.apiKey}`,
       )
         .then((response) => console.log(response))
         .then((data) => {
-          console.log(data)
+          console.log(data);
           // if (data.candidates && data.candidates.length > 0) {
           //   this.getPlacePhoto(data.candidates[0].place_id)
           // }
         })
         .catch((error) => {
-          console.error("Error al buscar el lugar:", error)
-        })
+          console.error("Error al buscar el lugar:", error);
+        });
     },
     // getPlacePhoto(placeId) {
     //   console.log(placeId)
@@ -73,5 +73,5 @@ export default {
     //   return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${this.apiKey}`
     // },
   },
-}
+};
 </script>

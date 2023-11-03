@@ -27,8 +27,9 @@
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map"
-import BackButton from "@/components/buttons/BackButton"
+import { GoogleMap, Marker } from "vue3-google-map";
+import BackButton from "@/components/buttons/BackButton";
+import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName";
 
 export default {
   name: "GoogleMaps",
@@ -44,35 +45,33 @@ export default {
       relativePosition: "",
       localitation: "",
       currentPlace: "",
-    }
+    };
   },
   methods: {
     SelectedPlace(event) {
-      this.getNamePlace(event.placeId)
+      this.getNamePlace(event.placeId);
     },
-    getNamePlace(place_id) {
-      const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place_id}&key=${this.apiKey}`
-      fetch(apiUrl)
-        .then((response) => response.json())
-        .then((data) => {
-          // Accede al nombre del lugar desde la respuesta JSON
-          this.CurrentNamePlace = data.result.name
-        })
-        .catch((error) =>
-          console.error("Error al obtener detalles del lugar:", error),
-        )
+    async getNamePlace(placeId) {
+      try {
+        const response = await getNameApi.get(
+          `place_id=${placeId}&key=${this.apiKey}`,
+        );
+        console.log(response.data);
+      } catch (e) {
+        console.log(e.message);
+      }
     },
   },
   created() {
     this.$getLocation()
       .then((coordinates) => {
-        this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
+        this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng };
       })
       .catch((error) => {
-        console.log(`El error es este: ${error}`)
-      })
+        console.log(`El error es este: ${error}`);
+      });
   },
-}
+};
 </script>
 
 <style></style>

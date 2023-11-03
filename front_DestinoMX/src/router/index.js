@@ -1,10 +1,10 @@
-import { createRouter, createWebHashHistory } from "vue-router"
-import LoginForm from "@/modules/auth/views/LoginForm.vue"
-import AddToTrip from "@/components/Viajes/AddToTrip.vue"
-import PlaceDescription from "@/components/Viajes/PlaceDescription.vue"
-import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
-import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
-import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
+import { createRouter, createWebHashHistory } from "vue-router";
+import LoginForm from "@/modules/auth/views/LoginForm.vue";
+import AddToTrip from "@/components/Viajes/AddToTrip.vue";
+import PlaceDescription from "@/components/Viajes/PlaceDescription.vue";
+import StartupScreen from "@/modules/auth/views/StartupScreen.vue";
+import RegisterForm from "@/modules/auth/views/RegisterForm.vue";
+import GoogleMaps from "@/components/Viajes/GoogleMaps.vue";
 
 const routes = [
   {
@@ -46,11 +46,11 @@ const routes = [
     name: "mapa-interactivo",
     component: GoogleMaps,
   },
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-})
+});
 
-export default router
+export default router;

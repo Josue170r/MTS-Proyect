@@ -123,18 +123,18 @@
 </template>
 
 <script>
-import AtIcon from "@/components/icons/atIcon.vue"
-import PasswordIcon from "@/components/icons/PasswordIcon"
-import UserIcon from "@/components/icons/UserIcon"
-import { useForm, useField } from "vee-validate"
-import * as yup from "yup"
-import { configure } from "vee-validate"
-import { localize } from "@vee-validate/i18n"
-import es from "@vee-validate/i18n/dist/locale/es.json"
+import AtIcon from "@/components/icons/atIcon.vue";
+import PasswordIcon from "@/components/icons/PasswordIcon";
+import UserIcon from "@/components/icons/UserIcon";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
+import { configure } from "vee-validate";
+import { localize } from "@vee-validate/i18n";
+import es from "@vee-validate/i18n/dist/locale/es.json";
 
 configure({
   generateMessage: localize({ es }),
-})
+});
 export default {
   name: "LoginForm",
   components: {
@@ -144,7 +144,7 @@ export default {
   },
   computed: {
     isFormEmpty() {
-      return !this.username || !this.password
+      return !this.username || !this.password;
     },
   },
   data() {
@@ -154,25 +154,25 @@ export default {
       secondLastName: "",
       password: "",
       passwordConfirmation: "",
-    }
+    };
   },
   setup() {
     const schema = yup.object({
       email: yup.string().required().email(),
       name: yup.string().required(),
-    })
+    });
     const { handleSubmit, isSubmitting, errors } = useForm({
       validationSchema: schema,
-    })
+    });
 
-    console.log(errors)
+    console.log(errors);
 
-    const { value: email, errorMessage: emailError } = useField("email")
-    const { value: name, errorMessage: nameError } = useField("name")
+    const { value: email, errorMessage: emailError } = useField("email");
+    const { value: name, errorMessage: nameError } = useField("name");
 
     const onSubmit = handleSubmit((values) => {
-      console.log(values)
-    })
+      console.log(values);
+    });
 
     return {
       email,
@@ -181,7 +181,7 @@ export default {
       nameError,
       isSubmitting,
       onSubmit,
-    }
+    };
   },
-}
+};
 </script>

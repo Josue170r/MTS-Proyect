@@ -9,7 +9,7 @@ export default {
   name: "ItinerarioViajes",
   data() {},
   methods: {},
-}
+};
 </script>
 
 <style></style>
