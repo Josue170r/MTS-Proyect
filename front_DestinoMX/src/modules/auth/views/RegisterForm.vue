@@ -5,14 +5,18 @@
     </div>
     <div class="sm:flex flex-1 bg-white mx-8 my-8 sm:-my-0">
       <div
-        class="h-[700px] sm:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100 mt-32"
+        class="h-[800px] sm:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100 mt-32"
       >
         <img
           src="@/assets/images/DestinoMX.png"
           alt="logo"
           class="mx-auto w-64 -mt-64 sm:-mt-16 p-2 pl-8"
         />
-        <form @submit="onSubmit" class="bg-accent w-full px-5">
+        <Form
+          @submit="onSubmit"
+          class="bg-accent w-full px-5"
+          :validation-schema="schema"
+        >
           <p class="text-sm text-center font-normal text-gray-800 mb-7">
             Porfavor llena los siguientes campos para la creación de tu cuenta
           </p>
@@ -20,90 +24,125 @@
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
             <AtIcon />
-            <input
-              id="email"
-              v-model="email"
+            <Field
+              id="username"
+              v-model="user.username"
               class="pl-2 outline-none border-none w-full"
-              type="email"
-              name="email"
-              placeholder="Email"
+              type="username"
+              name="username"
+              placeholder="Correo electrónico"
             />
           </div>
-          <span class="block text-red-700 text-sm mt-1 ml-1 h-1"></span>
-
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="username"
+            ></ErrorMessage>
+          </div>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
             <UserIcon />
-            <input
-              id="nombre"
-              v-model="name"
+            <Field
+              id="name"
+              v-model="user.name"
               class="pl-2 outline-none border-none w-full"
               type="text"
-              name="nombre"
+              name="name"
               placeholder="Nombre(s) *"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2"></span>
-
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="name"
+            ></ErrorMessage>
+          </div>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
-            <input
-              id="Apellidopaterno"
-              v-model="lastName"
+            <Field
+              id="lastName"
+              v-model="user.lastName"
               class="pl-2 outline-none border-none w-full"
               type="text"
-              name="Apellidopaterno"
+              name="lastName"
               placeholder="Apellido paterno *"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2"></span>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="lastName"
+            ></ErrorMessage>
+          </div>
 
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
-            <input
-              id="Apellidomaterno"
-              v-model="secondLastName"
+            <Field
+              id="secondLastName"
+              v-model="user.secondLastName"
               class="pl-2 outline-none border-none w-full"
               type="text"
-              name="Apellidomaterno"
+              name="secondLastName"
               placeholder="Apellido materno"
             />
           </div>
-          <span class="block text-red-700 text-sm mb-2"></span>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="secondLastName"
+            ></ErrorMessage>
+          </div>
 
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
             <PasswordIcon />
-            <input
+            <Field
               id="password"
-              v-model="password"
+              v-model="user.password"
               autocomplete="off"
               class="w-full pl-2 outline-none border-non"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               name="password"
               placeholder="Contraseña *"
             />
+            <button @click="toggleShowPassword" class="ml-2">
+              <EyeIcon />
+            </button>
           </div>
-          <span class="block text-red-700 text-sm mb-2"></span>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="password"
+            ></ErrorMessage>
+          </div>
 
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
-            <input
-              id="password"
-              v-model="passwordConfirmation"
+            <PasswordIcon />
+            <Field
+              id="passwordConfirmation"
+              v-model="user.passwordConfirmation"
               autocomplete="off"
               class="pl-2 outline-none border-none w-full"
-              type="password"
-              name="passwordn"
+              :type="showPassword2 ? 'text' : 'password'"
+              name="passwordConfirmation"
               placeholder="Confirmar contraseña *"
             />
+            <button @click="toggleShowPassword2" class="ml-2">
+              <EyeIcon />
+            </button>
           </div>
-          <span class="block text-red-700 text-sm mb-2"></span>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="passwordConfirmation"
+            ></ErrorMessage>
+          </div>
           <button
             :disabled="isFormEmpty"
             type="submit"
@@ -114,9 +153,9 @@
                 : 'hover:outline hover:outline-1 hover:outline-orange-400',
             ]"
           >
-            Iniciar Sesión
+            Crear Cuenta
           </button>
-        </form>
+        </Form>
       </div>
     </div>
   </div>
@@ -126,62 +165,79 @@
 import AtIcon from "@/components/icons/atIcon.vue"
 import PasswordIcon from "@/components/icons/PasswordIcon"
 import UserIcon from "@/components/icons/UserIcon"
-import { useForm, useField } from "vee-validate"
-import * as yup from "yup"
-import { configure } from "vee-validate"
-import { localize } from "@vee-validate/i18n"
-import es from "@vee-validate/i18n/dist/locale/es.json"
+import EyeIcon from "@/components/icons/EyeIcon.vue"
 
-configure({
-  generateMessage: localize({ es }),
-})
 export default {
   name: "LoginForm",
   components: {
     AtIcon,
     PasswordIcon,
     UserIcon,
-  },
-  computed: {
-    isFormEmpty() {
-      return !this.username || !this.password
-    },
+    Field,
+    Form,
+    ErrorMessage,
+    EyeIcon,
   },
   data() {
     return {
-      username: "",
-      lastname: "",
-      secondLastName: "",
-      password: "",
-      passwordConfirmation: "",
+      showPassword: false,
+      showPassword2: false,
     }
   },
-  setup() {
-    const schema = yup.object({
-      email: yup.string().required().email(),
-      name: yup.string().required(),
-    })
-    const { handleSubmit, isSubmitting, errors } = useForm({
-      validationSchema: schema,
-    })
-
-    console.log(errors)
-
-    const { value: email, errorMessage: emailError } = useField("email")
-    const { value: name, errorMessage: nameError } = useField("name")
-
-    const onSubmit = handleSubmit((values) => {
-      console.log(values)
-    })
-
-    return {
-      email,
-      emailError,
-      name,
-      nameError,
-      isSubmitting,
-      onSubmit,
-    }
+  methods: {
+    toggleShowPassword() {
+      this.showPassword = !this.showPassword
+    },
+    toggleShowPassword2() {
+      this.showPassword2 = !this.showPassword2
+    },
   },
+}
+</script>
+
+<script setup>
+import { toRaw } from "vue"
+import { reactive, computed } from "vue"
+import * as yup from "yup"
+import { Field, Form, ErrorMessage } from "vee-validate"
+
+const user = reactive({
+  username: "",
+  name: "",
+  lastName: "",
+  secondLastName: "",
+  password: "",
+  passwordConfirmation: "",
+})
+
+const schema = yup.object({
+  username: yup
+    .string()
+    .required("El correo electrónico es obligatorio")
+    .email("Ingrese un correo electrónico válido"),
+  name: yup.string().required("Este campo es obligatorio"),
+  lastName: yup.string().required("Este campo es obligatorio"),
+  secondLastName: yup.string().required("Este campo es obligatorio"),
+  password: yup
+    .string()
+    .required("La contraseña es obliatoria")
+    .min(8, "La contraseña debe tener al menos 8 caracteres"),
+  passwordConfirmation: yup
+    .string()
+    .required("La confirmación de contraseña es obligatoria")
+    .oneOf([yup.ref("password"), null], "Las contraseñas deben coincidir")
+    .min(8, "La contraseña debe tener al menos 8 caracteres"),
+})
+
+const isFormEmpty = computed(() => {
+  return !user
+})
+
+const onSubmit = async () => {
+  try {
+    console.log(toRaw(user))
+  } catch (error) {
+    console.log(error.message)
+  }
 }
 </script>
