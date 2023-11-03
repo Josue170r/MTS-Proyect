@@ -33,10 +33,10 @@ export default {
       fetch(
         `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedPlaceName}&inputtype=textquery&fields=photos&key=${this.apiKey}`,
       )
+        .then((response) => console.log(response))
         .then((data) => {
           console.log(data)
           // if (data.candidates && data.candidates.length > 0) {
-          //   // Si se encontraron resultados, obtén detalles del primer resultado
           //   this.getPlacePhoto(data.candidates[0].place_id)
           // }
         })
