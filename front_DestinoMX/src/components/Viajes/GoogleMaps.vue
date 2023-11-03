@@ -40,6 +40,7 @@
       </div>
       <div class="flex justify-around w-full">
         <button
+          @click="goToDescriptionPlace"
           class="font-quicksand w-40 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
         >
           Ver descripción
@@ -58,6 +59,7 @@
 import { GoogleMap, Marker } from "vue3-google-map"
 import BackButton from "@/components/buttons/BackButton"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
+// import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
 
 export default {
@@ -76,6 +78,7 @@ export default {
       relativePosition: "",
       localitation: "",
       currentPlace: "",
+      placePhothos: "",
     }
   },
   methods: {
@@ -90,14 +93,26 @@ export default {
             key: this.apiKey,
           },
         })
-        console.log(data)
-        this.CurrentNamePlace = data.result.name
         this.isEmpyCurrenName = false
+        this.CurrentNamePlace = data.result.name
+        this.placePhothos = data.result.photos[0].photo_reference
       } catch (e) {
         console.log(e.message)
       }
     },
+    goToDescriptionPlace() {
+      console.log(this.placePhothos)
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          photos: this.placePhothos,
+        },
+      })
+    },
   },
+  // async getRoute(placeName, placeId) {
+  //   //TODO AQUÍ TRAER LA RUTA
+  // },
   created() {
     this.$getLocation()
       .then((coordinates) => {
