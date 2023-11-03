@@ -48,13 +48,13 @@ export default {
     goToLoginView() {
       this.$router.push({
         name: "login",
-      });
+      })
     },
     goToRegisterForm() {
       this.$router.push({
         name: "register-form",
-      });
+      })
     },
   },
-};
+}
 </script>

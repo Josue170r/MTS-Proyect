@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import BackButtonIcon from "@/components/icons/BackButtonIcon.vue";
+import BackButtonIcon from "@/components/icons/BackButtonIcon.vue"
 export default {
   name: "BackButton",
   components: {
@@ -15,10 +15,10 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.go(-1); // Utiliza $router para acceder al router de Vue.js
+      this.$router.go(-1) // Utiliza $router para acceder al router de Vue.js
     },
   },
-};
+}
 </script>
 
 <style>
