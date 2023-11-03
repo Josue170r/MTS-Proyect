@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import PlaceImage from "@/components/images/PlaceImage"; // Asegúrate de ajustar la ruta al archivo del componente
+import PlaceImage from "@/components/images/PlaceImage" // Asegúrate de ajustar la ruta al archivo del componente
 
 export default {
   name: "PlaceDescription",
@@ -14,5 +14,5 @@ export default {
     PlaceImage,
   },
   // Resto de la configuración de tu vista
-};
+}
 </script>
