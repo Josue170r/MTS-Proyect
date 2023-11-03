@@ -36,12 +36,12 @@
 </template>
 
 <script>
-import RegresarIcon from "@/components/icons/RegresarIcon";
+import RegresarIcon from '@/components/icons/RegresarIcon'
 
 export default {
-  name: "VisualizarRuta",
+  name: 'VisualizarRuta',
   components: {
     RegresarIcon,
   },
-};
+}
 </script>

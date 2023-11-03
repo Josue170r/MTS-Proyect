@@ -15,8 +15,8 @@
 
 <script>
 export default {
-  name: "RegresarIcon",
-};
+  name: 'RegresarIcon',
+}
 </script>
 
 <style></style>
