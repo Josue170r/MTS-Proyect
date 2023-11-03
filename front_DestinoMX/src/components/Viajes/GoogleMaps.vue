@@ -14,7 +14,7 @@
       mapTypeId="terrain"
       :style="{ width: '100%', height: isEmpyCurrenName ? '90%' : '73%' }"
       :center="relativePosition"
-      :zoom="17"
+      :zoom="18"
     >
       <Marker :options="{ position: relativePosition }" />
     </GoogleMap>
@@ -80,7 +80,6 @@ export default {
   },
   methods: {
     SelectedPlace(event) {
-      console.log(event.placeId)
       this.getNamePlace(event.placeId)
     },
     async getNamePlace(placeId) {
@@ -91,6 +90,7 @@ export default {
             key: this.apiKey,
           },
         })
+        console.log(data)
         this.CurrentNamePlace = data.result.name
         this.isEmpyCurrenName = false
       } catch (e) {
