@@ -53,10 +53,13 @@ export default {
     },
     async getNamePlace(placeId) {
       try {
-        const response = await getNameApi.get(
-          `place_id=${placeId}&key=${this.apiKey}`,
-        );
-        console.log(response.data);
+        const { data } = await getNameApi.get("/json", {
+          params: {
+            place_id: placeId,
+            key: this.apiKey,
+          },
+        });
+        this.CurrentNamePlace = data.result.name
       } catch (e) {
         console.log(e.message);
       }
