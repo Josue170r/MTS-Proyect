@@ -12,19 +12,19 @@
 </template>
 
 <script>
-import { GoogleMap, Marker } from 'vue3-google-map'
+import { GoogleMap, Marker } from "vue3-google-map"
 
 export default {
-  name: 'GoogleMaps',
+  name: "GoogleMaps",
   components: {
     GoogleMap,
     Marker,
   },
   data() {
     return {
-      apiKey: 'AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70',
-      initialPosition: '',
-      localitation: '',
+      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+      initialPosition: "",
+      localitation: "",
     }
   },
   methods: {},

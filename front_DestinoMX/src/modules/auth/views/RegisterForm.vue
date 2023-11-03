@@ -110,20 +110,20 @@
 </template>
 
 <script>
-import AtIcon from '@/components/icons/atIcon.vue'
-import PasswordIcon from '@/components/icons/PasswordIcon'
-import UserIcon from '@/components/icons/UserIcon'
-import { useForm, useField } from 'vee-validate'
-import * as yup from 'yup'
-import { configure } from 'vee-validate'
-import { localize } from '@vee-validate/i18n'
-import es from '@vee-validate/i18n/dist/locale/es.json'
+import AtIcon from "@/components/icons/atIcon.vue"
+import PasswordIcon from "@/components/icons/PasswordIcon"
+import UserIcon from "@/components/icons/UserIcon"
+import { useForm, useField } from "vee-validate"
+import * as yup from "yup"
+import { configure } from "vee-validate"
+import { localize } from "@vee-validate/i18n"
+import es from "@vee-validate/i18n/dist/locale/es.json"
 
 configure({
   generateMessage: localize({ es }),
 })
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   components: {
     AtIcon,
     PasswordIcon,
@@ -131,11 +131,11 @@ export default {
   },
   data() {
     return {
-      username: '',
-      lastname: '',
-      secondLastName: '',
-      password: '',
-      passwordConfirmation: '',
+      username: "",
+      lastname: "",
+      secondLastName: "",
+      password: "",
+      passwordConfirmation: "",
     }
   },
   setup() {
@@ -149,8 +149,8 @@ export default {
 
     console.log(errors)
 
-    const { value: email, errorMessage: emailError } = useField('email')
-    const { value: name, errorMessage: nameError } = useField('name')
+    const { value: email, errorMessage: emailError } = useField("email")
+    const { value: name, errorMessage: nameError } = useField("name")
 
     const onSubmit = handleSubmit((values) => {
       console.log(values)

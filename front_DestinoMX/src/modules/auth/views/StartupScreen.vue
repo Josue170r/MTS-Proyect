@@ -31,7 +31,7 @@
 
 <style scoped>
 .startup-screen {
-  background-image: url('@/assets/images/fondoPantallaInicio.jpg');
+  background-image: url("@/assets/images/fondoPantallaInicio.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -42,17 +42,17 @@
 
 <script>
 export default {
-  name: 'StartupScreen',
+  name: "StartupScreen",
   components: {},
   methods: {
     goToLoginView() {
       this.$router.push({
-        name: 'login',
+        name: "login",
       })
     },
     goToRegisterForm() {
       this.$router.push({
-        name: 'register-form',
+        name: "register-form",
       })
     },
   },
