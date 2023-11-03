@@ -15,8 +15,8 @@
 
 <script>
 export default {
-  name: 'PasswordIcon',
-}
+  name: "PasswordIcon",
+};
 </script>
 
 <style></style>

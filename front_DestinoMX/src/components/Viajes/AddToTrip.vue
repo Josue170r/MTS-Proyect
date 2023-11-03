@@ -36,11 +36,11 @@
 
 <script>
 export default {
-  name: 'AddToTrip',
+  name: "AddToTrip",
   data() {
     return {
-      message: 'Hello World with Vue!',
-    }
+      message: "Hello World with Vue!",
+    };
   },
-}
+};
 </script>
