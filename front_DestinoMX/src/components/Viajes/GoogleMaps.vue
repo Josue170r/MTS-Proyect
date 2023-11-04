@@ -61,6 +61,7 @@ import BackButton from "@/components/buttons/BackButton"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
 // import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
+import { toast } from "vue3-toastify"
 
 export default {
   name: "GoogleMaps",
@@ -131,7 +132,12 @@ export default {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
       })
       .catch((error) => {
-        console.log(`El error es este: ${error}`)
+        toast(error, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
       })
   },
 }
