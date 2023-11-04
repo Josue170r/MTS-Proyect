@@ -79,6 +79,8 @@ export default {
       localitation: "",
       currentPlace: "",
       placePhothos: "",
+      placeRatings: "",
+      placeAbouts: "",
     }
   },
   methods: {
@@ -96,6 +98,12 @@ export default {
         this.isEmpyCurrenName = false
         this.CurrentNamePlace = data.result.name
         this.placePhothos = data.result.photos[0].photo_reference
+        this.localitation = data.result.vicinity
+        this.placeRatings = data.result.rating
+        this.placeAbouts = data.result.editorial_summary.overview
+
+        console.log(data)
+        console.log(this.placeRatings)
       } catch (e) {
         console.log(e.message)
       }
@@ -106,6 +114,10 @@ export default {
         name: "placedescription",
         query: {
           photos: this.placePhothos,
+          names: this.CurrentNamePlace,
+          locations: this.localitation,
+          ratings: this.placeRatings,
+          abouts: this.placeAbouts,
         },
       })
     },
