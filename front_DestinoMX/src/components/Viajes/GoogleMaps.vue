@@ -4,7 +4,7 @@
       class="flex rounded-2xl items-center justify-center bg-orange-300 w-full"
     >
       <BackButton class="mx-2 mt-2" />
-      <h1 class="text-white py-8 text-center text-xl">
+      <h1 class="text-white py-8 text-center text-xl font-bold">
         ¡Explora lugares cerca de ti!
       </h1>
     </div>
@@ -79,6 +79,8 @@ export default {
       localitation: "",
       currentPlace: "",
       placePhothos: "",
+      placeRatings: "",
+      placeAbouts: "",
     }
   },
   methods: {
@@ -96,6 +98,12 @@ export default {
         this.isEmpyCurrenName = false
         this.CurrentNamePlace = data.result.name
         this.placePhothos = data.result.photos[0].photo_reference
+        this.localitation = data.result.vicinity
+        this.placeRatings = data.result.rating
+        this.placeAbouts = data.result.editorial_summary.overview
+
+        console.log(data)
+        console.log(this.placeRatings)
       } catch (e) {
         console.log(e.message)
       }
@@ -106,6 +114,10 @@ export default {
         name: "placedescription",
         query: {
           photos: this.placePhothos,
+          names: this.CurrentNamePlace,
+          locations: this.localitation,
+          ratings: this.placeRatings,
+          abouts: this.placeAbouts,
         },
       })
     },

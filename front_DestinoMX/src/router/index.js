@@ -6,6 +6,7 @@ import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
 import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
+import NewTrip from "@/components/Viajes/NewTrip.vue"
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
     path: "/addtotrip",
     name: "addtotrip",
     component: AddToTrip,
+  },
+  {
+    path: "/newtrip",
+    name: "newtrip",
+    component: NewTrip,
   },
   {
     path: "/placedescription",
