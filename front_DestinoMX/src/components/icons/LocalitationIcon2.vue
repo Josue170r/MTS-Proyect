@@ -4,8 +4,8 @@
     fill="none"
     viewBox="0 0 24 24"
     stroke-width="1"
-    stroke="currentColor"
-    class="w-8 h-8 text-red-700"
+    stroke="red"
+    class="w-4 h-4 text-red-700"
   >
     <path
       stroke-linecap="round"
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "LocalitationIcon",
+  name: "LocalitationIcon2",
 }
 </script>
 
