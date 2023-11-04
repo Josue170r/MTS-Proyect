@@ -5,6 +5,7 @@ import PlaceDescription from "@/components/images/PlaceDescription.vue"
 import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
 import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
+import homeScreen from "@/modules/auth/views/homeScreen.vue"
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
     path: "/map",
     name: "mapa-interactivo",
     component: GoogleMaps,
+  },
+  {
+    path: "/home",
+    name: "home",
+    component: homeScreen,
   },
 ]
 

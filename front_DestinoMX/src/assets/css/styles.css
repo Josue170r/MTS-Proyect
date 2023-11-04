@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Quicksand:wght@400;700&display=swap');
 
-<<<<<<< HEAD
 font-baskerville {
     font-family: 'Baskerville';
 }
@@ -11,12 +10,13 @@ font-baskerville {
 }
 
 h1, h2, h3, h4, h5, h6{
-=======
+
 h1, h2, h3, h4, h5, h6, ErrorMessage, :placeholder-shown{
->>>>>>> 00f4c36ececf7a7862147629a38848cb7bfe272e
+
     font-family: 'Quicksand'
 }
 
 p, :placeholder-shown{
     font-family: 'Baskerville';
+}
 }
