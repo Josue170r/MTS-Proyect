@@ -16,4 +16,21 @@ p, :placeholder-shown, ErrorMessage{
 .font-quicksand {
     font-family: 'Quicksand';
 }
+.bm-overlay {
+    background: white
+  }
+.bm-menu {
+    background-color: white;
+}
 
+.bm-burger-button {
+    position: fixed;
+    width: 26px;
+    height: 20px;
+    left: 36px;
+    top: 36px;
+    cursor: pointer;;
+}
+.bm-burger-bars {
+    background-color: #A5A1A4
+}

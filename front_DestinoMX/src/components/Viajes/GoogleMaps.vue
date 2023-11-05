@@ -4,6 +4,9 @@
       class="flex rounded-2xl items-center justify-center bg-orange-300 w-full"
     >
       <BackButton class="mx-2 mt-2" />
+      <div>
+        <BurgerMenu />
+      </div>
       <h1 class="text-white py-8 text-center text-xl font-bold">
         ¡Explora lugares cerca de ti!
       </h1>
@@ -62,6 +65,7 @@ import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
 // import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
 import { toast } from "vue3-toastify"
+import BurgerMenu from "../buttons/BurgerMenu.vue"
 
 export default {
   name: "GoogleMaps",
@@ -70,6 +74,7 @@ export default {
     Marker,
     BackButton,
     LocalitationIcon,
+    BurgerMenu,
   },
   data() {
     return {
@@ -96,8 +101,10 @@ export default {
             key: this.apiKey,
           },
         })
-        this.isEmpyCurrenName = false
         this.CurrentNamePlace = data.result.name
+        this.CurrentNamePlace
+          ? (this.isEmpyCurrenName = false)
+          : (this.isEmpyCurrenName = true)
         this.placePhothos = data.result.photos[0].photo_reference
         this.localitation = data.result.vicinity
         this.placeRatings = data.result.rating
@@ -143,5 +150,3 @@ export default {
   },
 }
 </script>
-
-<style></style>
