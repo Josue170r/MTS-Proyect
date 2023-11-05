@@ -116,6 +116,11 @@ export default {
       currentPlace: "",
       placePhothos: "",
       placeRatings: "",
+      placeAbouts: "",
+      placeLats: "",
+      placeLongs: "",
+      imageReferences: [],
+      selectedReferences: [],
       // para el boton de la ruta
       isEmptyVerRuta: true,
       EmptyVerRuta: "",
@@ -123,6 +128,8 @@ export default {
   },
   methods: {
     SelectedPlace(event) {
+      this.placeLats = event.latLng.lat()
+      this.placeLongs = event.latLng.lng()
       this.getNamePlace(event.placeId)
     },
     async getNamePlace(placeId) {
@@ -141,15 +148,17 @@ export default {
         this.localitation = data.result.vicinity
         this.placeRatings = data.result.rating
         this.placeAbouts = data.result.editorial_summary.overview
-
+        this.imageReferences = data.result.photos.map(
+          (photo) => photo.photo_reference,
+        )
+        const startingIndex = 1 // Índice de la segunda imagen
+        this.selectedReferences = this.imageReferences.slice(startingIndex)
         console.log(data)
-        console.log(this.placeRatings)
       } catch (e) {
         console.log("e.message")
       }
     },
     goToDescriptionPlace() {
-      console.log(this.placePhothos)
       this.$router.push({
         name: "placedescription",
         query: {
@@ -158,6 +167,9 @@ export default {
           locations: this.localitation,
           ratings: this.placeRatings,
           abouts: this.placeAbouts,
+          lats: this.placeLats,
+          longs: this.placeLongs,
+          photosrefs: this.selectedReferences,
         },
       })
     },
