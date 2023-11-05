@@ -2,7 +2,9 @@
   <div id="app">
     <!-- Contenedor de la imagen de fondo -->
     <div class="relative">
-      <AvatarButton />
+      <div class="absolute top-6 right-2 transform -translate-x-1">
+        <AvatarButton />
+      </div>
       <img
         src="@/assets/images/imagen003.png"
         alt="imagen003"
