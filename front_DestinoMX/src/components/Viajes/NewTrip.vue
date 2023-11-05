@@ -6,14 +6,9 @@
       <router-link to="/login" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
       </router-link>
-
-      <img
-        src="@/assets/images/user_image.png"
-        alt="imagenUser"
-        class="absolute top-5 right-1 transform -translate-x-1"
-        style="width: 13%; height: auto"
-      />
-
+      <div class="absolute top-6 right-2 transform -translate-x-1">
+        <AvatarButton />
+      </div>
       <img
         src="@/assets/images/imagen002.png"
         alt="imagen002"
@@ -92,6 +87,7 @@
 
 <script>
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
+import AvatarButton from "@/components/buttons/AvatarButton"
 import { useForm, useField } from "vee-validate"
 import * as yup from "yup"
 import { configure } from "vee-validate"
@@ -105,6 +101,7 @@ export default {
   name: "NewTrip",
   components: {
     BackButtonIcon,
+    AvatarButton,
   },
   computed: {
     isFormEmpty() {
