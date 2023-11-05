@@ -3,9 +3,9 @@
     <div class="flex md:w-1/2 justify-center items-center bg-orange-300">
       <img src="@/assets/images/imagen001.jpg" alt="imagen001" />
     </div>
-    <div class="sm:flex flex-1 bg-white mx-8 my-8 sm:-my-0">
+    <div class="md:flex flex-1 bg-white mx-8 my-8 sm:-my-0">
       <div
-        class="h-[800px] sm:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100 mt-32"
+        class="h-flex sm:h-flex md:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100 mt-32"
       >
         <img
           src="@/assets/images/DestinoMX.png"
@@ -14,7 +14,7 @@
         />
         <Form
           @submit="onSubmit"
-          class="bg-accent w-full px-5"
+          class="bg-accent w-full px-5 py-5"
           :validation-schema="schema"
         >
           <p class="text-sm text-center font-normal text-gray-800 mb-7">
@@ -109,9 +109,6 @@
               name="password"
               placeholder="Contraseña *"
             />
-            <button @click="toggleShowPassword" class="ml-2">
-              <EyeIcon />
-            </button>
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
@@ -133,9 +130,6 @@
               name="passwordConfirmation"
               placeholder="Confirmar contraseña *"
             />
-            <button @click="toggleShowPassword2" class="ml-2">
-              <EyeIcon />
-            </button>
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
@@ -165,7 +159,6 @@
 import AtIcon from "@/components/icons/atIcon.vue"
 import PasswordIcon from "@/components/icons/PasswordIcon"
 import UserIcon from "@/components/icons/UserIcon"
-import EyeIcon from "@/components/icons/EyeIcon.vue"
 
 export default {
   name: "LoginForm",
@@ -176,21 +169,12 @@ export default {
     Field,
     Form,
     ErrorMessage,
-    EyeIcon,
   },
   data() {
     return {
       showPassword: false,
       showPassword2: false,
     }
-  },
-  methods: {
-    toggleShowPassword() {
-      this.showPassword = !this.showPassword
-    },
-    toggleShowPassword2() {
-      this.showPassword2 = !this.showPassword2
-    },
   },
 }
 </script>
