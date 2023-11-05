@@ -4,6 +4,9 @@
       class="flex rounded-2xl items-center justify-center bg-orange-300 w-full"
     >
       <BackButton class="mx-2 mt-2" />
+      <div>
+        <BurgerMenu />
+      </div>
       <h1 class="text-white py-8 text-center text-xl font-bold">
         ¡Explora lugares cerca de ti!
       </h1>
@@ -94,6 +97,8 @@
 import { GoogleMap, Marker } from "vue3-google-map"
 import BackButton from "@/components/buttons/BackButton"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
+import { toast } from "vue3-toastify"
+import BurgerMenu from "../buttons/BurgerMenu.vue"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
 import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
 
@@ -104,6 +109,7 @@ export default {
     Marker,
     BackButton,
     LocalitationIcon,
+    BurgerMenu,
   },
   data() {
     return {
@@ -132,8 +138,10 @@ export default {
             key: this.apiKey,
           },
         })
-        this.isEmpyCurrenName = false
         this.CurrentNamePlace = data.result.name
+        this.CurrentNamePlace
+          ? (this.isEmpyCurrenName = false)
+          : (this.isEmpyCurrenName = true)
         this.placePhothos = data.result.photos[0].photo_reference
         this.localitation = data.result.vicinity
         this.placeRatings = data.result.rating
@@ -142,7 +150,7 @@ export default {
         console.log(data)
         console.log(this.placeRatings)
       } catch (e) {
-        console.log(e.message)
+        console.log("e.message")
       }
     },
     goToDescriptionPlace() {
@@ -185,12 +193,16 @@ export default {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
+        console.log(coordinates)
       })
       .catch((error) => {
-        console.log(`El error es este: ${error}`)
+        toast(error, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
       })
   },
 }
 </script>
-
-<style></style>
