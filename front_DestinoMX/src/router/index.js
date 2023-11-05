@@ -8,6 +8,8 @@ import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
+import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
+import SearchTrip from "@/components/Viajes/SearchTrip.vue"
 
 const routes = [
   {
@@ -63,6 +65,16 @@ const routes = [
     path: "/home",
     name: "home",
     component: homeScreen,
+  },
+  {
+    path: "/preferences",
+    name: "Preferences-Screen",
+    component: PreferencesScreen,
+  },
+  {
+    path: "/searchTrip",
+    name: "Search-Trip",
+    component: SearchTrip,
   },
 ]
 
