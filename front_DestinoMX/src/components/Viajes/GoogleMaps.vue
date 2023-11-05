@@ -165,10 +165,10 @@ export default {
           names: this.CurrentNamePlace,
           locations: this.localitation,
           ratings: this.placeRatings,
-          abouts: this.placeAbouts,
           lats: this.placeLats,
           longs: this.placeLongs,
           photosrefs: this.selectedReferences,
+          abouts: this.placeAbouts,
         },
       })
     },
