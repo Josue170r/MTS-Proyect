@@ -1,45 +1,21 @@
 <template>
-  <div>
+  <div id="app">
+    <!-- Contenedor de la imagen de fondo -->
     <div class="relative">
       <img
-        src="@/assets/images/imagen001.jpg"
-        alt="Imagen Normal"
-        class="w-full h-auto"
+        src="@/assets/images/imagen003.png"
+        alt="imagen003"
+        class="w-full h-full object-cover"
       />
-      <img
-        src="@/assets/images/DestinoMX.png"
-        alt="Imagen Superpuesta"
-        class="absolute top-0 left-0 w-full h-auto"
-        style="z-index: 1"
-      />
+      <div class="w-full h-full object-cover">
+        <input type="text" class="w-full rounded p-2" placeholder="Buscar..." />
+      </div>
     </div>
-    <!-- Agrega aquí el contenido del menú desplegable -->
-    <div v-if="showMenu" class="md:hidden bg-gray-800 text-white p-4">
-      <ul>
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Acerca de</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
+    <div>
+      <a>Primera parte</a>
+    </div>
+    <div>
+      <a>Segunda parte</a>
     </div>
   </div>
 </template>
-
-<script>
-/*import BurgerButton from "@/components/buttons/BurgerButton"
-
-export default {
-  components: {
-    BurgerButton,
-  },
-  data() {
-    return {
-      showMenu: false,
-    }
-  },
-  methods: {
-    toggleMenu() {
-      this.showMenu = !this.showMenu
-    },
-  },
-}*/
-</script>
