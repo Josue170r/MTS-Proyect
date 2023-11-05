@@ -2,6 +2,7 @@
   <div id="app">
     <!-- Contenedor de la imagen de fondo -->
     <div class="relative">
+      <AvatarButton />
       <img
         src="@/assets/images/imagen003.png"
         alt="imagen003"
@@ -21,3 +22,13 @@
     </div>
   </div>
 </template>
+
+<script>
+import AvatarButton from "@/components/buttons/AvatarButton"
+export default {
+  name: "homeScreen",
+  components: {
+    AvatarButton,
+  },
+}
+</script>
