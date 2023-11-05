@@ -5,7 +5,8 @@ import PlaceDescription from "@/components/images/PlaceDescription.vue"
 import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
 import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
-
+import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
+//import Pree from "@/components/Viajes/Preferences.vue"
 const routes = [
   {
     path: "/", // Cambia la ruta principal a "/startup" o cualquier otra que desees
@@ -46,6 +47,17 @@ const routes = [
     name: "mapa-interactivo",
     component: GoogleMaps,
   },
+  {
+    path: "/preferencesscreen",
+    name: "preferences-screen",
+    component: PreferencesScreen,
+  },
+  /*  
+  {
+    path: "/Preferences",
+    name: "Pre-ferences",
+    component: Pree,
+  },*/
 ]
 
 const router = createRouter({
