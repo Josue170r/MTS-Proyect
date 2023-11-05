@@ -6,25 +6,32 @@
       <router-link to="/login" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
       </router-link>
-
+      <div class="absolute top-6 right-2 transform -translate-x-1">
+        <!-- componente para el avatar del usuario -->
+        <AvatarButton />
+      </div>
       <img
         src="@/assets/images/imagen002.png"
         alt="imagen002"
         class="md:my-auto rounded-b-xl"
       />
     </div>
-
-    <!-- componente para el avatar del usuario -->
-    <div class="absolute top-6 right-2 transform -translate-x-1">
-      <AvatarButton />
-    </div>
-
     <!-- Calendario -->
-    <h1 class="text-3xl text-center p-2">Calendario de viajes</h1>
-    <div class="w-150">
+    <div
+      class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col"
+    >
+      <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
+        Calendario de Viajes
+      </h1>
+
       <v-container>
         <v-row justify="space-around">
-          <v-date-picker elevation="0" width="100" show-adjacent-months>
+          <v-date-picker
+            elevation="0"
+            width="0"
+            color="#fdba74"
+            show-adjacent-months
+          >
           </v-date-picker>
         </v-row>
       </v-container>
