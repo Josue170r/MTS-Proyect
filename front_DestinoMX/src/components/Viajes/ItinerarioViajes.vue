@@ -16,7 +16,7 @@
 
     <!-- componente para el avatar del usuario -->
     <div class="absolute top-7 right-10">
-      <v-avatar icon="$vuetify"></v-avatar>
+      <AvatarButton />
     </div>
 
     <!-- Calendario -->
@@ -34,10 +34,12 @@
 
 <script>
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
+import AvatarButton from "@/components/buttons/AvatarButton"
 export default {
   name: "ItinerarioViajes",
   components: {
     BackButtonIcon,
+    AvatarButton,
   },
 
   data() {},
