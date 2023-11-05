@@ -5,6 +5,12 @@
     >
       <!-- imagen -->
       <div v-if="placeImage">
+        <!-- botón para regresar -->
+        <router-link
+          :to="{ name: 'mapa-interactivo' }"
+          class="button absolute top-7 left-1 transform"
+          ><BackButton
+        /></router-link>
         <img
           :src="placeImage"
           alt="Imagen del lugar"
@@ -44,20 +50,30 @@
       </div>
 
       <!-- Acerca de -->
-      <div class="flex flex-col">
-        <h1 class="ml-3 text-black py-1 text-left text-sm font-bold">
-          {{ "Acerca de" }}
-        </h1>
-        <div class="flex flex-row items-center text-sm py-0 px-0 ml-auto">
-          <WeatherIcon class="mr-2" />
-          {{ placeWeather }}
-          <p class="mr-4">{{ "°C" }}</p>
+
+      <div v-if="about">
+        <div class="flex flex-col">
+          <h1 class="ml-3 text-black py-1 text-left text-sm font-bold">
+            {{ "Acerca de" }}
+          </h1>
+          <div class="flex flex-row items-center text-sm py-0 px-0 ml-auto">
+            <WeatherIcon class="mr-2" />
+            {{ placeWeather }}
+            <p class="mr-4">{{ "°C" }}</p>
+          </div>
+        </div>
+
+        <div
+          class="ml-3 mr-1 text-black font-Baskerville py-0 text-left text-sm"
+        >
+          <p>
+            {{ about }}
+          </p>
         </div>
       </div>
-
-      <div class="ml-3 mr-1 text-black font-Baskerville py-0 text-left text-sm">
-        <p>
-          {{ about }}
+      <div v-else>
+        <p class="mt-4">
+          {{ "Más información sobre el clima o datos del lugar (por definir)" }}
         </p>
       </div>
 
@@ -79,9 +95,9 @@
         <!-- Agrega el componente GalleryImages aquí -->
         <GalleryImages class="mb-4" />
       </div>
-      <div class="flex flex-row align-middle mt-4">
+      <div class="flex justify-center mt-4">
         <button
-          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-2 ml-auto mb-2 bg-pink-300"
+          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 bg-pink-300"
         >
           <div class="flex items-center">
             <span>Favoritos</span>
@@ -90,7 +106,7 @@
         </button>
 
         <button
-          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-2 ml-auto mb-2 bg-green-300"
+          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 bg-green-300"
         >
           <div class="flex items-center">
             <span>Añadir a viaje</span>
@@ -110,6 +126,7 @@ import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
 import RatingIcon from "@/components/icons/RatingIcon.vue"
 import ShareIcon from "@/components/icons/ShareIcon.vue"
 import ForwardIcon from "@/components/icons/ForwardButtonIcon.vue"
+import BackButton from "@/components/buttons/BackButton"
 import FavoriteIcon from "@/components/icons/FavoriteIcon.vue"
 import AddIcon from "@/components/icons/AddIcon.vue"
 import WeatherIcon from "@/components/icons/WeatherIcon.vue"
@@ -128,6 +145,7 @@ export default {
     AddIcon,
     WeatherIcon,
     GalleryImages,
+    BackButton,
   },
   data() {
     return {
@@ -171,10 +189,13 @@ export default {
         })
         this.placeImage = toRaw(img.request.responseURL)
         // console.log(this.placeName)
-      } catch (e) {
-        toast.error("Ha ocurrido algún error")
-        ;("colored")
-        toast.POSITION.TOP_RIGHT
+      } catch (error) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
     async getImgsPlaces() {
@@ -201,9 +222,12 @@ export default {
         this.placeImages = imageUrls
         console.log(this.placeImages)
       } catch (e) {
-        toast.error("Ha ocurrido algún error")
-        ;("colored")
-        toast.POSITION.TOP_RIGHT
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
 
@@ -219,9 +243,12 @@ export default {
         this.placeWeather = parseInt(data.main.temp - 273.15)
         //console.log(data)
       } catch (e) {
-        toast.error("Ha ocurrido algún error")
-        ;("colored")
-        toast.POSITION.TOP_RIGHT
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
   },
