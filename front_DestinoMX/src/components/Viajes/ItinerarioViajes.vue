@@ -15,7 +15,7 @@
     </div>
 
     <!-- componente para el avatar del usuario -->
-    <div class="absolute top-7 right-10">
+    <div class="absolute top-6 right-2 transform -translate-x-1">
       <AvatarButton />
     </div>
 
