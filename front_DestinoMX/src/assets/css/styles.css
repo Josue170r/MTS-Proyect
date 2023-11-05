@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Quicksand:wght@400;700&display=swap');
 
-h1, h2, h3, h4, h5, h6, ErrorMessage, :placeholder-shown{
+h1, h2, h3, h4, h5, h6{
     font-family: 'Quicksand'
 }
 
-p, :placeholder-shown{
+p, :placeholder-shown, ErrorMessage{
     font-family: 'Baskerville';
 }
 
@@ -16,4 +16,21 @@ p, :placeholder-shown{
 .font-quicksand {
     font-family: 'Quicksand';
 }
+.bm-overlay {
+    background: white
+  }
+.bm-menu {
+    background-color: white;
+}
 
+.bm-burger-button {
+    position: fixed;
+    width: 26px;
+    height: 20px;
+    left: 36px;
+    top: 36px;
+    cursor: pointer;;
+}
+.bm-burger-bars {
+    background-color: #A5A1A4
+}
