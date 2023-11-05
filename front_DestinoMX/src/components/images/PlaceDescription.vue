@@ -189,7 +189,7 @@ export default {
         })
         this.placeImage = toRaw(img.request.responseURL)
       } catch (error) {
-        toast.error("Ha ocurrido algún error", {
+        toast.error("No hay imágenes disponibles", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
