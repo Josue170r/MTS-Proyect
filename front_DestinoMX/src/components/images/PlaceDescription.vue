@@ -51,7 +51,7 @@
 
       <!-- Acerca de -->
 
-      <div v-if="about">
+      <div>
         <div class="flex flex-col">
           <h1 class="ml-3 text-black py-1 text-left text-sm font-bold">
             {{ "Acerca de" }}
@@ -64,17 +64,20 @@
         </div>
 
         <div
+          v-if="about"
           class="ml-3 mr-1 text-black font-Baskerville py-0 text-left text-sm"
         >
           <p>
             {{ about }}
           </p>
         </div>
-      </div>
-      <div v-else>
-        <p class="mt-4">
-          {{ "Más información sobre el clima o datos del lugar (por definir)" }}
-        </p>
+        <div v-else>
+          <p class="mt-4">
+            {{
+              "Más información sobre el clima o datos del lugar (por definir)"
+            }}
+          </p>
+        </div>
       </div>
 
       <!-- Botón de reseñas -->
