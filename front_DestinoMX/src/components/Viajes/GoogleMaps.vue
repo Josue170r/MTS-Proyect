@@ -106,7 +106,7 @@ export default {
         console.log(data)
         console.log(this.placeRatings)
       } catch (e) {
-        console.log(e.message)
+        console.log("e.message")
       }
     },
     goToDescriptionPlace() {
@@ -130,6 +130,7 @@ export default {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
+        console.log(coordinates)
       })
       .catch((error) => {
         toast(error, {
