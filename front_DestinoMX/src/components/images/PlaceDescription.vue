@@ -18,7 +18,7 @@
         />
       </div>
       <div v-else>
-        <img src="./noimages.jpg" alt="Imagen por defecto" />
+        <img src="@/assets/images/noimages.jpg" alt="Imagen por defecto" />
       </div>
     </div>
     <div
@@ -93,7 +93,7 @@
           {{ "Galería de imágenes" }}
         </h1>
         <!-- Agrega el componente GalleryImages aquí -->
-        <GalleryImages class="mb-4" />
+        <GalleryImages class="mb-4" :photosArray="placeImages" />
       </div>
       <div class="flex justify-center mt-4">
         <button
@@ -167,15 +167,15 @@ export default {
   created() {
     this.placePhotoReference = this.$route.query.photos
     this.placePhotosReferences = this.$route.query.photosrefs
-    this.getImgPlace()
-    this.getImgsPlaces()
     this.placeName = this.$route.query.names
     this.location = this.$route.query.locations
     this.rating = this.$route.query.ratings
     this.about = this.$route.query.abouts
     this.lat = this.$route.query.lats
     this.long = this.$route.query.longs
+    this.getImgPlace()
     this.getWeather()
+    this.getImgsPlaces()
   },
   methods: {
     async getImgPlace() {
@@ -188,7 +188,6 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
-        // console.log(this.placeName)
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
@@ -219,10 +218,10 @@ export default {
         }
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
-        this.placeImages = imageUrls
-        console.log(this.placeImages)
+        this.placeImages = toRaw(imageUrls)
+        console.log("Desde place description:", this.placeImages)
       } catch (e) {
-        toast.error("Ha ocurrido algún error", {
+        toast.error(e, {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
@@ -241,7 +240,6 @@ export default {
           },
         })
         this.placeWeather = parseInt(data.main.temp - 273.15)
-        //console.log(data)
       } catch (e) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",

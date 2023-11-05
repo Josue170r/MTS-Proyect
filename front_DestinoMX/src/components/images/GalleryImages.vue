@@ -10,72 +10,46 @@
       :modules="modules"
       class="swiper-slide"
     >
-      <swiper-slide>
-        <img
-          src="./arena.jpg"
-          alt="Imagen 1"
-          @click="zoomImage('./arena.jpg')"
-        />
-      </swiper-slide>
-      <swiper-slide>
-        <img
-          src="./colores.jpg"
-          alt="Imagen 2"
-          @click="zoomImage('./colores.jpg')"
-        />
-      </swiper-slide>
-      <swiper-slide>
-        <img
-          src="./espacio.jpg"
-          alt="Imagen 3"
-          @click="zoomImage('./espacio.jpg')"
-        />
-      </swiper-slide>
-      <swiper-slide>
-        <img src="./mesa.jpg" alt="Imagen 1" @click="zoomImage('./mesa.jpg')" />
-      </swiper-slide>
-      <swiper-slide>
-        <img
-          src="./playa.jpg"
-          alt="Imagen 2"
-          @click="zoomImage('./playa.jpg')"
-        />
-      </swiper-slide>
-      <swiper-slide>
-        <img src="./rayo.jpg" alt="Imagen 3" @click="zoomImage('./rayo.jpg')" />
+      <swiper-slide v-for="image in photosSwiper" :key="image">
+        <img :src="image" alt="Imagen" />
       </swiper-slide>
     </swiper>
-    <div class="modal" v-if="showImage">
+    <!-- <div class="modal" v-if="showImage">
       <div class="modal-content">
         <img @click="closeZoomImage" :src="zoomedImage" :alt="zoomedImage" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-// Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from "swiper/vue"
-
-// Import Swiper styles
 import "swiper/css"
-
 import "swiper/css/pagination"
-
-// import required modules
 import { Pagination } from "swiper/modules"
-
+// import { toRaw } from "vue"
 export default {
   name: "GalleryImages",
-  components: {
-    Swiper,
-    SwiperSlide,
-  },
   data() {
     return {
       showImage: false,
       zoomedImage: "",
+      photosSwiper: [],
     }
+  },
+  props: {
+    photosArray: {
+      type: Array,
+      required: false,
+    },
+  },
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  updated() {
+    this.photosSwiper = this.photosArray
+    console.log("Desde galería de imágenes:", this.photosArray)
   },
   methods: {
     zoomImage(image) {
