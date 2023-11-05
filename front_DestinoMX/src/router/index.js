@@ -7,6 +7,7 @@ import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
 import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
+import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: "/map",
     name: "mapa-interactivo",
     component: GoogleMaps,
+  },
+  {
+    path: "/calendartrip",
+    name: "Itinerario",
+    component: ItinerarioViajes,
   },
   {
     path: "/home",
