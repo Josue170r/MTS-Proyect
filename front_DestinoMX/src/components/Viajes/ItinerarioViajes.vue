@@ -6,6 +6,20 @@
       <router-link to="/login" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
       </router-link>
+      <div
+        class="mt-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-1 pt-1 bg-white border border-gray-300 rounded-md flex items-center"
+      >
+        <!-- Barra de búsqueda -->
+        <input
+          type="text"
+          class="w-48 p-2 rounded-l-md p-1"
+          placeholder="Buscar..."
+        />
+        <!-- Botón de búsqueda -->
+        <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
+        <SearchButton class="bg-black" />
+      </div>
+
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <!-- componente para el avatar del usuario -->
         <AvatarButton />
@@ -28,13 +42,19 @@
         <v-row justify="space-around">
           <v-date-picker
             elevation="0"
-            width="0"
+            style="width: 360px"
             color="#fdba74"
             show-adjacent-months
           >
           </v-date-picker>
         </v-row>
       </v-container>
+
+      <div v-if="isemptytrip">
+        <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
+          Vaya... Aun no tienes Viajes en tu itinerario
+        </h1>
+      </div>
     </div>
   </div>
 </template>
@@ -49,7 +69,13 @@ export default {
     AvatarButton,
   },
 
-  data() {},
+  data() {
+    return {
+      isemptytrip: true,
+      tripdate: true,
+    }
+  },
+
   methods: {},
 }
 </script>
