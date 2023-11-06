@@ -18,6 +18,11 @@
         />
       </div>
       <div v-else>
+        <router-link
+          :to="{ name: 'mapa-interactivo' }"
+          class="button absolute top-7 left-1 transform"
+          ><BackButton
+        /></router-link>
         <img src="@/assets/images/noimages.jpg" alt="Imagen por defecto" />
       </div>
     </div>
