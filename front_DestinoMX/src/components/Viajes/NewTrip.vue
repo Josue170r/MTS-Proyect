@@ -56,9 +56,91 @@
         <span class="block text-red-700 text-sm mb-2"></span>
 
         <!-- +++++++++aqui empieza el calendario++++++++++ -->
+        <h2 class="mb-3">
+          Selecciona la fecha de inicio de tu viaje y la fecha en que finalizará
+          tu viaje.
+        </h2>
+        <div class="container min-w-screen">
+          <!-- fecha de inicio -->
+          <v-dialog v-model="dialog" persistent>
+            <template v-slot:activator="{ props }">
+              <div
+                class="bg-white flex flex-row md:flex-row space-x-4 flex md:h-1/3 rounded-lg"
+              >
+                <v-btn v-bind="props" class="text-center mt-4 my-5">
+                  Fecha de inicio
+                </v-btn>
+                <h2 class="mb-3 my-5">
+                  Fecha de inicio: <br />{{ startDate }}
+                </h2>
+              </div>
+            </template>
+            <v-card>
+              <v-card-text>
+                <v-container class="custom-container">
+                  <v-row justify="space-around">
+                    <v-date-picker
+                      width="0"
+                      elevation="0"
+                      color="#fdba74"
+                      show-adjacent-months
+                      v-model="startDate"
+                      :allowed-dates="allowedDates"
+                      min="2023-05-12"
+                      max="2070-03-20"
+                      @input="validateDateRange"
+                    ></v-date-picker>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="cancelDateSelection">Cancelar</v-btn>
+                <v-btn text @click="saveDateSelection">OK</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+        <!-- fecha de FIN -->
+        <div class="container mt-10px">
+          <v-dialog v-model="dialog2" persistent>
+            <template v-slot:activator="{ props }">
+              <div
+                class="bg-white flex flex-row md:flex-row space-x-4 min-w-screen flex md:h-1/3 rounded-lg"
+              >
+                <v-btn v-bind="props" class="text-center mt-4 my-5">
+                  Fecha de fin
+                </v-btn>
+                <h2 class="mb-3 my-5">Fecha de Fin: <br />{{ endDate }}</h2>
+              </div>
+            </template>
 
-        <div class="container mt-30px"></div>
-
+            <v-card>
+              <v-card-text>
+                <v-container class="custom-container">
+                  <v-row justify="space-around">
+                    <v-date-picker
+                      elevation="0"
+                      width="0"
+                      color="#fdba74"
+                      show-adjacent-months
+                      v-model="endDate"
+                      :allowed-dates="allowedDates"
+                      min="2023-05-12"
+                      max="2070-03-20"
+                      @input="validateDateRange2"
+                    ></v-date-picker>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="cancelDateSelection2">Cancelar</v-btn>
+                <v-btn text @click="saveDateSelection2">OK</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
         <div class="flex-row flex w-full items-center space-x-4">
           <button
             type="button"
@@ -97,6 +179,7 @@ import es from "@vee-validate/i18n/dist/locale/es.json"
 configure({
   generateMessage: localize({ es }),
 })
+
 export default {
   name: "NewTrip",
   components: {
@@ -137,5 +220,56 @@ export default {
       onSubmit,
     }
   },
+  data() {
+    return {
+      startDate: null,
+      endDate: null,
+      dialog: false,
+      dialog2: false,
+    }
+  },
+  methods: {
+    validateDateRange() {
+      // Agrega lógica para validar el rango de fechas aquí.
+      // if (this.startDate && this.endDate && this.startDate > this.endDate) {
+      //   // Si la fecha de inicio es posterior a la fecha de fin, ajusta las fechas.
+      //   const temp = this.startDate
+      //   this.startDate = this.endDate
+      //   this.endDate = temp
+      // }
+    },
+    validateDateRange2() {
+      // Agrega lógica para validar el rango de fechas aquí.
+      // if (this.startDate && this.endDate && this.startDate > this.endDate) {
+      //   // Si la fecha de inicio es posterior a la fecha de fin, ajusta las fechas.
+      //   const temp = this.startDate
+      //   this.startDate = this.endDate
+      //   this.endDate = temp
+      // }
+    },
+    cancelDateSelection() {
+      this.dialog = false
+    },
+    cancelDateSelection2() {
+      this.dialog2 = false
+    },
+    saveDateSelection() {
+      // Realiza cualquier acción que necesites con las fechas seleccionadas
+      console.log("Fecha de inicio:", this.startDate)
+      this.dialog = false
+    },
+    saveDateSelection2() {
+      // Realiza cualquier acción que necesites con las fechas seleccionadas
+      console.log("Fecha de fin:", this.endDate)
+      this.dialog2 = false
+    },
+  },
 }
 </script>
+
+<style>
+.custom-container {
+  width: 100%; /* Ajusta el ancho según tus necesidades */
+  padding: 5px 0; /* Ajusta el padding horizontal según tus necesidades */
+}
+</style>
