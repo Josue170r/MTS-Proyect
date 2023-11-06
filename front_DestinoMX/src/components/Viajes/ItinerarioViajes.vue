@@ -52,7 +52,7 @@
 
       <div v-if="isemptytrip">
         <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-          Vaya... Aun no tienes Viajes en tu itinerario 
+          Vaya... Aun no tienes Viajes en tu itinerario
         </h1>
       </div>
     </div>
