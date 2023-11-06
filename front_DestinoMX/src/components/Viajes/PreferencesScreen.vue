@@ -34,148 +34,153 @@
 -->
 
     <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <!-- Columna izquierda -->
-          <div class="row">
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/fairIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Parque de Atracciones</span>
-              </button>
-            </div>
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/barIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><sppan>Bares y Pubs</sppan>
-              </button>
-            </div>
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/churchIcon.jpg"
-                  alt="Icono"
-                  class="button-image"
-                /><spann>Lugares Religiosos</spann>
-              </button>
-            </div>
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/nature.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Parques y Areas Naturales</span>
-              </button>
-            </div>
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/museumIcon.jpg"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Museos</span>
-              </button>
-            </div>
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/barIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Clubes Nocturnos</span>
-              </button>
-            </div>
+      <div class="column">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Columna izquierda -->
+            <div class="row">
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/fairIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Parque de Atracciones</span>
+                </button>
+              </div>
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/barIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><sppan>Bares y Pubs</sppan>
+                </button>
+              </div>
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/churchIcon.jpg"
+                    alt="Icono"
+                    class="button-image"
+                  /><spann>Lugares Religiosos</spann>
+                </button>
+              </div>
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/nature.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Parques y Areas Naturales</span>
+                </button>
+              </div>
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/museumIcon.jpg"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Museos</span>
+                </button>
+              </div>
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/barIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Clubes Nocturnos</span>
+                </button>
+              </div>
 
-            <div class="col-md-12">
-              <button class="caseB">
-                <img
-                  src="@/assets/images/cinemaIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Centros de Entretenimiento</span>
-              </button>
+              <div class="col-md-12">
+                <button class="caseB">
+                  <img
+                    src="@/assets/images/nightIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Centros de Entretenimiento</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="col-md-6">
           <!-- Columna derecha -->
-          <div class="row">
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/resIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Restaurantes</span>
-              </button>
-            </div>
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/coffeeIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>cafeterias</span>
-              </button>
-            </div>
 
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/gymIcon.jpg"
-                  alt="Icono"
-                  class="button-image"
-                /><span>GYM</span>
-              </button>
-            </div>
+          <div class="column">
+            <div class="row">
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/resIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Restaurantes</span>
+                </button>
+              </div>
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/coffeeIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>cafeterias</span>
+                </button>
+              </div>
 
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/mallicon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Plazas</span>
-              </button>
-            </div>
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/gymIcon.jpg"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>GYM</span>
+                </button>
+              </div>
 
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/hoteIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Hoteles</span>
-              </button>
-            </div>
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/mallicon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Plazas</span>
+                </button>
+              </div>
 
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/libraryIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                />
-                <span>Bibliotecas</span>
-              </button>
-            </div>
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/hoteIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Hoteles</span>
+                </button>
+              </div>
 
-            <div class="col-md-12">
-              <button class="caseB1">
-                <img
-                  src="@/assets/images/monumentIcon.png"
-                  alt="Icono"
-                  class="button-image"
-                /><span>Monumentos</span>
-              </button>
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/libraryIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  />
+                  <span>Bibliotecas</span>
+                </button>
+              </div>
+
+              <div class="col-md-12">
+                <button class="caseB1">
+                  <img
+                    src="@/assets/images/monumentIcon.png"
+                    alt="Icono"
+                    class="button-image"
+                  /><span>Monumentos</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -183,8 +188,8 @@
     </div>
   </div>
   <!--Boton guardar-->
-  <div>
-    <button class="caseB">
+  <div class="container">
+    <button class="caseB1G">
       <img
         src="@/assets/images/saveIcon.png"
         alt="Icono"
@@ -254,6 +259,17 @@ export default {
   background-color: #ffa500; /* bg-orange-300 */
   margin-bottom: 2px;
 }
+
+.caseB1G {
+  width: 165px;
+  margin-top: 4px;
+  padding: 4px;
+  border-radius: 10px; /* rounded-lg */
+  color: black;
+  font-weight: bold; /* font-semibold */
+  background-color: #5ba85b; /* bg-orange-300 */
+  margin-bottom: 2px;
+}
 .button-with-image {
   display: flex;
   align-items: center;
@@ -262,6 +278,18 @@ export default {
   color: white;
   border: none;
   cursor: pointer;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20px; /* Agrega un margen entre las columnas si lo deseas */
 }
 
 .button-image {

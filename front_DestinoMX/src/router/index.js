@@ -8,7 +8,7 @@ import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
-import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
+import PreferencesScreen from "@/components/Viajes/PreferencesScreenO.vue"
 import SearchTrip from "@/components/Viajes/SearchTrip.vue"
 
 const routes = [
