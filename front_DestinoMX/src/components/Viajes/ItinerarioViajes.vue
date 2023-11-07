@@ -3,9 +3,9 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/login" class="absolute top-7 left-1 transform">
+      <button @click="$router.go(-1)" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
-      </router-link>
+      </button>
       <div
         class="mt-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-1 pt-1 bg-white border border-gray-300 rounded-md flex items-center"
       >
@@ -32,7 +32,7 @@
     </div>
     <!-- Calendario -->
     <div
-      class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col"
+      class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
     >
       <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
         Calendario de Viajes
@@ -50,10 +50,17 @@
         </v-row>
       </v-container>
 
-      <div v-if="isemptytrip">
-        <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-          Vaya... Aun no tienes Viajes en tu itinerario
+      <div class="flex flex-col items-center justify-center" v-if="isemptytrip">
+        <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
+          Vaya... Aún no tienes Viajes en tu itinerario
         </h1>
+        <button
+          type="button"
+          @click="goToNewTripForm"
+          class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+        >
+          Crear Nuevo Viaje
+        </button>
       </div>
     </div>
   </div>
@@ -76,7 +83,13 @@ export default {
     }
   },
 
-  methods: {},
+  methods: {
+    goToNewTripForm() {
+      this.$router.push({
+        name: "newtrip",
+      })
+    },
+  },
 }
 </script>
 
