@@ -51,8 +51,15 @@
       </v-container>
 
       <div v-if="isemptytrip">
-        <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
+        <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
           Vaya... Aun no tienes Viajes en tu itinerario
+          <button
+            type="button"
+            @click="goToNewTripForm"
+            class="block w-64 mt-5 -translate-x-1 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+          >
+            Crear Nuevo Viaje
+          </button>
         </h1>
       </div>
     </div>
@@ -76,7 +83,13 @@ export default {
     }
   },
 
-  methods: {},
+  methods: {
+    goToNewTripForm() {
+      this.$router.push({
+        name: "newtrip",
+      })
+    },
+  },
 }
 </script>
 
