@@ -5,7 +5,7 @@
     viewBox="0 0 24 24"
     stroke-width="1.5"
     stroke="currentColor"
-    class="w-4 h-4"
+    class="w-6 h-6 text-gray-400 color-stroke"
   >
     <path
       stroke-linecap="round"
@@ -14,3 +14,15 @@
     />
   </svg>
 </template>
+
+<script>
+export default {
+  name: "FavoriteIcon",
+}
+</script>
+
+<style scoped>
+.color-stroke path {
+  stroke: red;
+}
+</style>
