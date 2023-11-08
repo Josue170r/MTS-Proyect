@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`Viajes` (
   `diaInicio` DATE NOT NULL,
   `diaFinal` DATE NOT NULL,
   `colorPlantilla` VARCHAR(10) NOT NULL,
-  `idUsuario` VARCHAR(10) NOT NULL,
+  `idUsuario` INT NOT NULL,
   PRIMARY KEY (`idViajes`, `idUsuario`),
   INDEX `fk_Viajes_Usuario1_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Viajes_Usuario1`
