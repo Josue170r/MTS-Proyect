@@ -5,7 +5,7 @@ const app = express();
 
 // Settings
 // Utilizar el puerto definido por el servidor (al subirlo a la web), si no existe utiliza por defecto el puerto 3000 (local)
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 4000);
 
 // Middlewares. Procesa datos antes de que los reciba el servidor.
 // Permite ver las peticiones en consola, no tiene ninguna función en la app.
