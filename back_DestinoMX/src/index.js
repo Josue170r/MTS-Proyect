@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
-import { router } from "./routes/routes.js";
+
+import { router } from "./routes/crearCuenta.js";
 const app = express();
 
 // Settings
