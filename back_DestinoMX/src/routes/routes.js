@@ -3,8 +3,8 @@ import { Router, json } from "express";
 export const router = Router();
 
 // Routes
-router.get("/api/login", (req, res) => {
-  mySqlConnection.query("select nombre from usuario",(err,results,otro)=>{
+router.get("/api/ConsultarCalendario", (req, res) => {
+  mySqlConnection.query("select idUsuario from usuario",(err,results,otro)=>{
     if(!err){
       console.log(results);
       res.json(results)
@@ -15,4 +15,7 @@ router.get("/api/login", (req, res) => {
     }
   })
   
+  
 });
+
+
