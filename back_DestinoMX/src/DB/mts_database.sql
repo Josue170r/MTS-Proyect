@@ -10,7 +10,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mts_database
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `mts_database` ;
 
 -- -----------------------------------------------------
 -- Schema mts_database
@@ -22,12 +21,14 @@ USE `mts_database` ;
 -- Table `mts_database`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`Usuario` (
-  `idUsuario` VARCHAR(10) NOT NULL,
-  `Nombre` VARCHAR(20) NULL,
-  `Apellidos` TEXT NULL,
-  `CorreoElectronico` TEXT NULL,
-  `Usuario` TEXT NULL,
-  `contrasena` TEXT NULL,
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(20) NOT NULL,
+  `Apellidos` TEXT NOT NULL,
+  `CorreoElectronico` TEXT NOT NULL,
+  `Usuario` TEXT NOT NULL,
+  `contrasena` VARCHAR(32) NOT NULL,
+  `codigoValidacion` INT(6) NULL,
+  `codigoVencimiento` TIME NULL,
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB;
 
@@ -36,28 +37,11 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`Favoritos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`Favoritos` (
-  `idFavoritos` INT NOT NULL AUTO_INCREMENT,
-  `idUsuario` VARCHAR(10) NOT NULL,
-  `idLugar` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`idFavoritos`, `idUsuario`),
+  `idPlaceLugar` TEXT NOT NULL,
+  `idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Favoritos_Usuario_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Favoritos_Usuario`
-    FOREIGN KEY (`idUsuario`)
-    REFERENCES `mts_database`.`Usuario` (`idUsuario`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mts_database`.`Planeacion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`Planeacion` (
-  `idPlaneacion` INT NOT NULL AUTO_INCREMENT,
-  `idUsuario` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`idPlaneacion`, `idUsuario`),
-  INDEX `fk_Itinerario_Usuario1_idx` (`idUsuario` ASC) VISIBLE,
-  CONSTRAINT `fk_Itinerario_Usuario1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `mts_database`.`Usuario` (`idUsuario`)
     ON DELETE CASCADE
@@ -69,20 +53,20 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`Viajes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`Viajes` (
-  `idViajes` VARCHAR(100) NOT NULL,
+  `idViajes` INT NOT NULL AUTO_INCREMENT,
   `nombreMiViaje` TEXT NOT NULL,
   `descripcionViaje` TEXT NULL,
   `diaInicio` DATE NOT NULL,
   `diaFinal` DATE NOT NULL,
-  `colorPlantilla` TEXT NULL,
-  `idPlaneacion` INT NOT NULL,
-  PRIMARY KEY (`idViajes`, `idPlaneacion`),
-  INDEX `fk_Viajes_Planeacion1_idx` (`idPlaneacion` ASC) VISIBLE,
-  CONSTRAINT `fk_Viajes_Planeacion1`
-    FOREIGN KEY (`idPlaneacion`)
-    REFERENCES `mts_database`.`Planeacion` (`idPlaneacion`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+  `colorPlantilla` VARCHAR(10) NOT NULL,
+  `idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idViajes`, `idUsuario`),
+  INDEX `fk_Viajes_Usuario1_idx` (`idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Viajes_Usuario1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `mts_database`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -90,10 +74,9 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`Historial`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`Historial` (
-  `idHistorial` INT NOT NULL AUTO_INCREMENT,
-  `idUsuario` VARCHAR(10) NOT NULL,
-  `idLugar` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`idHistorial`, `idUsuario`),
+  `idPlaceLugar` TEXT NOT NULL,
+  `idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Historial_Usuario_idx` (`idUsuario` ASC) INVISIBLE,
   CONSTRAINT `fk_Historial_Usuario0`
     FOREIGN KEY (`idUsuario`)
@@ -107,14 +90,13 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`LugaresDeViajes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`LugaresDeViajes` (
-  `idViajesLugar` INT NOT NULL,
-  `Viajes_idViajes` VARCHAR(100) NOT NULL,
-  `idLugares` VARCHAR(45) NOT NULL,
-  `OrdenPriorizacion` INT NOT NULL,
-  PRIMARY KEY (`idViajesLugar`, `Viajes_idViajes`),
-  INDEX `fk_LugaresDeViajes_Viajes1_idx` (`Viajes_idViajes` ASC) VISIBLE,
+  `idPlacesLugar` TEXT NOT NULL,
+  `idViajes` INT NOT NULL,
+  `fechaEspecifica` DATE NOT NULL,
+  PRIMARY KEY (`idPlacesLugar`, `idViajes`),
+  INDEX `fk_LugaresDeViajes_Viajes1_idx` (`idViajes` ASC) VISIBLE,
   CONSTRAINT `fk_LugaresDeViajes_Viajes1`
-    FOREIGN KEY (`Viajes_idViajes`)
+    FOREIGN KEY (`idViajes`)
     REFERENCES `mts_database`.`Viajes` (`idViajes`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)

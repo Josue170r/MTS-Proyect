@@ -1,10 +1,11 @@
-import mysql from 'mysql';
+import mysql from "mysql";
 
 export const mySqlConnection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "diego234Zarate@1223",
   database: "mts_database",
+  port: "3306",
 });
 
 mySqlConnection.connect((err) => {
