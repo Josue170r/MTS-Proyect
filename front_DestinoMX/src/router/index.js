@@ -9,6 +9,7 @@ import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
+import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 
 const routes = [
   {
@@ -68,6 +69,11 @@ const routes = [
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
+  },
+  {
+    path: "/editTrip",
+    name: "EditTrip",
+    component: EditTripScreen,
   },
 ]
 
