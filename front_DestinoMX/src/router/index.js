@@ -8,12 +8,9 @@ import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
-<<<<<<< HEAD
 import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
 import SearchTrip from "@/components/Viajes/SearchTrip.vue"
-=======
 import NotFoundPage from "@/screens/NotFoundPage"
->>>>>>> f203dd00baf039f1b33eea76fa57d6f8c232ec95
 
 const routes = [
   {
@@ -71,7 +68,6 @@ const routes = [
     component: homeScreen,
   },
   {
-<<<<<<< HEAD
     path: "/preferences",
     name: "Preferences-Screen",
     component: PreferencesScreen,
@@ -80,10 +76,8 @@ const routes = [
     path: "/searchTrip",
     name: "Search-Trip",
     component: SearchTrip,
-=======
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
->>>>>>> f203dd00baf039f1b33eea76fa57d6f8c232ec95
   },
 ]
 
