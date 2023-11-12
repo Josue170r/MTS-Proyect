@@ -16,9 +16,11 @@
     "pnpm": "please-use-yarn"
   },
   "dependencies": {
+    "@mdi/font": "^7.3.67",
     "@vee-validate/i18n": "^4.11.8",
     "axios": "^1.6.0",
     "core-js": "^3.8.3",
+    "swiper": "^11.0.3",
     "tailwindcss": "^3.3.5",
     "vee-validate": "4.11.8",
     "vue": "^3.3.7",

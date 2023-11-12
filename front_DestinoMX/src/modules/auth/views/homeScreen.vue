@@ -12,7 +12,7 @@
 
       <!-- Contenedor de la barra de búsqueda y botón -->
       <div
-        class="mt-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white border border-gray-300 rounded-md flex items-center"
+        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white border border-gray-500 rounded-md flex items-center"
       >
         <!-- Barra de búsqueda -->
         <input
@@ -21,8 +21,7 @@
           placeholder="Buscar..."
         />
         <!-- Botón de búsqueda -->
-        <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
-        <SearchButton class="bg-black" />
+        <SearchButton class="bg-black text-gray-700 p-2 rounded-r-md" />
       </div>
 
       <img
@@ -34,6 +33,7 @@
     <div class="flex items-center justify-center w-full flex-col">
       <h1 class="text-xl text-center">Usted está aqui</h1>
       <GoogleMap
+        @click="goToMapScreen"
         :api-key="apiKey"
         mapTypeId="terrain"
         style="width: 88%; height: 210px; border-radius: 20px; overflow: hidden"
@@ -43,9 +43,7 @@
         <Marker :options="{ position: relativePosition }" />
       </GoogleMap>
     </div>
-    <div>
-      <a>Segunda parte</a>
-    </div>
+    <div></div>
   </div>
 </template>
 
@@ -84,6 +82,13 @@ export default {
           theme: "colored",
         })
       })
+  },
+  methods: {
+    goToMapScreen() {
+      this.$router.push({
+        name: "mapa-interactivo",
+      })
+    },
   },
 }
 </script>
