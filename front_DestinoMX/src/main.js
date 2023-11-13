@@ -8,6 +8,8 @@ import "./assets/css/vuetify.css"
 import Vue3Geolocation from "vue3-geolocation"
 import { vuetify } from "./plugins/vuetify"
 import { toast } from "./plugins/toastifyNotification"
+// para el divider
+import "vuetify/dist/vuetify.min.css"
 
 const app = createApp(App)
 app
