@@ -20,5 +20,3 @@ export default {
   name: "BurgerMenuIcon",
 }
 </script>
-
-<style></style>
