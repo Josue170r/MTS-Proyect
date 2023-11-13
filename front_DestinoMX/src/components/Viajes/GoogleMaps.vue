@@ -97,6 +97,7 @@ import LocalitationIcon from "@/components/icons/LocalitationIcon"
 import { toast } from "vue3-toastify"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
 import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
+import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 
 export default {
   name: "GoogleMaps",
@@ -123,6 +124,7 @@ export default {
       selectedReferences: [],
       isEmptyVerRuta: true,
       EmptyVerRuta: "",
+      preferences: [],
     }
   },
   methods: {
@@ -153,47 +155,66 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.selectedReferences = this.imageReferences.slice(startingIndex)
         this.placeAbouts = data.result.editorial_summary.overview
+        console.log(data)
       } catch (e) {
         console.log("e.message")
       }
     },
-    goToDescriptionPlace() {
-      this.$router.push({
-        name: "placedescription",
-        query: {
-          photos: this.placePhothos,
-          names: this.CurrentNamePlace,
-          locations: this.localitation,
-          ratings: this.placeRatings,
-          lats: this.placeLats,
-          longs: this.placeLongs,
-          photosrefs: this.selectedReferences,
-          abouts: this.placeAbouts,
-        },
-      })
-    },
-    async getRoute(event) {
-      this.isEmptyVerRuta = false
-      this.EmptyVerRuta = "prueb"
-      this.getNamePlace(event.placeId)
-      const origin = this.localitation
-      const destination = this.relativePosition
+
+    async getApiPreferences() {
       try {
-        const response = await getRouteApi.get("/json", {
+        const { data } = await getApiPreferences.get("/json", {
           params: {
-            origin: origin,
-            destination: destination,
-            key: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+            lattitude: this.placeLats,
+            longitude: this.placeLongs,
+            radius: 10000,
+            type: "restaurant",
+            apikey: this.apiKey,
           },
         })
-        // Maneja la respuesta de la API aquí, por ejemplo, puedes imprimir la respuesta en la consola.
-        console.log(response.data)
-        // A continuación, puedes utilizar los datos de la respuesta para mostrar la ruta en tu mapa.
-      } catch (error) {
-        // Maneja errores aquí, por ejemplo, muestra un mensaje de error al usuario.
-        console.error("Error al obtener la ruta:", error)
+        console.log(data)
+      } catch (e) {
+        console.log(e.message)
       }
     },
+  },
+
+  goToDescriptionPlace() {
+    this.$router.push({
+      name: "placedescription",
+      query: {
+        photos: this.placePhothos,
+        names: this.CurrentNamePlace,
+        locations: this.localitation,
+        ratings: this.placeRatings,
+        lats: this.placeLats,
+        longs: this.placeLongs,
+        photosrefs: this.selectedReferences,
+        abouts: this.placeAbouts,
+      },
+    })
+  },
+  async getRoute(event) {
+    this.isEmptyVerRuta = false
+    this.EmptyVerRuta = "prueb"
+    this.getNamePlace(event.placeId)
+    const origin = this.localitation
+    const destination = this.relativePosition
+    try {
+      const response = await getRouteApi.get("/json", {
+        params: {
+          origin: origin,
+          destination: destination,
+          key: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+        },
+      })
+      // Maneja la respuesta de la API aquí, por ejemplo, puedes imprimir la respuesta en la consola.
+      console.log(response.data)
+      // A continuación, puedes utilizar los datos de la respuesta para mostrar la ruta en tu mapa.
+    } catch (error) {
+      // Maneja errores aquí, por ejemplo, muestra un mensaje de error al usuario.
+      console.error("Error al obtener la ruta:", error)
+    }
   },
   created() {
     this.$getLocation()
