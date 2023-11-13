@@ -11,7 +11,8 @@ import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
 //import SearchTrip from "@/components/Viajes/SearchTrip.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
-import mytrip from "@/components/Viajes/MyTrip.vue"
+import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
+import MyTrip from "@/components/Viajes/MyTrip.vue"
 
 const routes = [
   {
@@ -79,9 +80,14 @@ const routes = [
     component: NotFoundPage,
   },
   {
+    path: "/editTrip",
+    name: "EditTrip",
+    component: EditTripScreen,
+  },
+  {
     path: "/mytrip",
     name: "mytrip",
-    component: mytrip,
+    component: MyTrip,
   },
 ]
 
