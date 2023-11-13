@@ -175,7 +175,6 @@ export default {
             imageURLs.push(imgUrl)
           } catch (error) {
             // Si hay un error, asumimos que photoReference es una ruta relativa
-            // Puedes ajustar la ruta base según la estructura de tu proyecto
             const relativeImagePath = `./../images/noimages.jpg`
             const imgUrl = URL.createObjectURL(
               await fetch(relativeImagePath).then((r) => r.blob()),
