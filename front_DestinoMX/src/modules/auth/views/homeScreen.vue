@@ -43,16 +43,48 @@
         <Marker :options="{ position: relativePosition }" />
       </GoogleMap>
     </div>
-    <div></div>
+
+    <div class="flex items-center justify-center w-full flex-col">
+      <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
+      <swiper
+        :slides-per-view="3"
+        :space-between="5"
+        :pagination="{
+          clickable: true,
+          el: '.swiper-pagination-custom',
+        }"
+        :modules="modules"
+        class="swiper-slide"
+      >
+        <swiper-slide v-for="place in nearPlaces" :key="place">
+          <p class="font-calibri mt-8">{{ place.name }}</p>
+          <!-- <img
+            v-for="image in nearPlaces"
+            :key="image"
+            :src="image.photos.photo_reference"
+            alt="PlaceImage"
+            class="mb-2"
+          /> -->
+          <!-- <p class="font-quicksand">Rating: {{ place.rating }}</p> -->
+        </swiper-slide>
+      </swiper>
+    </div>
   </div>
 </template>
 
 <script>
+import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import SearchButton from "@/components/buttons/SearchButton"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu.vue"
 import { toast } from "vue3-toastify"
+import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
+import { Swiper, SwiperSlide } from "swiper/vue"
+import { Pagination } from "swiper/modules"
+import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
+import "swiper/css"
+import "swiper/css/pagination"
 export default {
   name: "homeScreen",
   components: {
@@ -61,18 +93,26 @@ export default {
     GoogleMap,
     Marker,
     BurgerMenu,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
+      preference: "restaurant",
+      radio: 300,
+      nearPlaces: [],
+      imgReference: [],
+      photosReferences: [],
+      placeImage: [],
     }
   },
   created() {
+    this.getArrayPlaces()
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
-        console.log(coordinates)
       })
       .catch((error) => {
         toast(error, {
@@ -82,13 +122,106 @@ export default {
           theme: "colored",
         })
       })
+    setTimeout(() => {
+      this.getArrayPlaces()
+    }, 500)
   },
   methods: {
-    goToMapScreen() {
-      this.$router.push({
-        name: "mapa-interactivo",
-      })
+    async getArrayPlaces() {
+      let { lat, lng } = this.relativePosition
+      try {
+        const { data } = await getApiPreferences.get("/json", {
+          params: {
+            location: `${lat}, ${lng}`,
+            radius: this.radio,
+            type: this.preference,
+            key: this.apiKey,
+          },
+        })
+        this.nearPlaces = toRaw(data.results)
+        this.nearPlaces.forEach((place) => {
+          if (place.photos && place.photos.length > 0) {
+            this.photosReferences.push(place.photos[0].photo_reference)
+          } else {
+            // Si no hay referencia de foto, se agrega la referencia de la imagen por defecto
+            this.photosReferences.push("./../images/noimages.jpg")
+          }
+        })
+        console.log("Desde homeScreen:", toRaw(this.nearPlaces))
+        console.log("Arreglo de referencias:", this.photosReferences)
+      } catch (error) {
+        toast.error("No se obtuvo el arreglo de lugares", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
     },
+    async getNearImages() {
+      try {
+        const imageURLs = []
+        for (const photoReference of this.photosReferences) {
+          try {
+            const response = await getImgPlaceApi.get("/photo", {
+              params: {
+                maxwidth: "400",
+                photoreference: photoReference,
+                key: this.apiKey,
+              },
+              responseType: "blob",
+            })
+            const imgUrl = URL.createObjectURL(response.data)
+            imageURLs.push(imgUrl)
+          } catch (error) {
+            // Si hay un error, asumimos que photoReference es una ruta relativa
+            // Puedes ajustar la ruta base según la estructura de tu proyecto
+            const relativeImagePath = `./../images/noimages.jpg`
+            const imgUrl = URL.createObjectURL(
+              await fetch(relativeImagePath).then((r) => r.blob()),
+            )
+            imageURLs.push(imgUrl)
+          }
+        }
+        this.placeImage = toRaw(imageURLs)
+        console.log("Desde getNearImages:", this.placeImage)
+      } catch (error) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+  },
+  setup() {
+    return {
+      modules: [Pagination],
+    }
   },
 }
 </script>
+
+<style scoped>
+/* Personaliza la paginación para posicionarla debajo de las imágenes y hacerla más grande */
+.swiper-slide {
+  /* Elimina el fondo de cada slide */
+  background: transparent;
+  text-align: center;
+  font-size: 18px;
+
+  /* Center slide content vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: transparent;
+}
+</style>

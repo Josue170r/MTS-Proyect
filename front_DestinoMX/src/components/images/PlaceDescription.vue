@@ -205,6 +205,7 @@ export default {
         })
       }
     },
+
     async getImgsPlaces() {
       try {
         //arreglo para almacenar las URLs
