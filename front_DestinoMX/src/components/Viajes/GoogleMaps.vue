@@ -12,15 +12,20 @@
       @click="SelectedPlace"
       :api-key="apiKey"
       mapTypeId="terrain"
-      :style="{ width: '100%', height: isEmpyCurrenName ? '90%' : '73%' }"
+      :style="{ width: '100%', height: isEmpyCurrenName ? '90%' : '74%' }"
       :center="relativePosition"
       :zoom="18"
     >
+      <Polyline v-if="showRoute" :options="flightPath" />
       <Marker :options="{ position: relativePosition }" />
+      <Marker
+        v-if="showRoute"
+        :options="{ position: steps[steps.length - 1] }"
+      />
     </GoogleMap>
     <div
       v-if="CurrentNamePlace"
-      class="flex rounded-2xl items-center justify-center bg-white w-full flex-col"
+      class="flex items-center justify-center bg-neutral-50 flex-col"
     >
       <div class="flex flex-col items-center w-full">
         <div class="flex items-center">
@@ -31,57 +36,23 @@
         </div>
         <div class="flex justify-around">
           <h2 class="mx-10 mb-3">
-            Distancia: <span class="font-bold">60m</span>
+            Distancia: <span class="font-bold">{{ distance }}</span>
           </h2>
           <h2 class="mx-10 mb-3">
-            Tiempo: <span class="font-bold">60min</span>
+            Tiempo: <span class="font-bold">{{ duration }}</span>
           </h2>
         </div>
       </div>
-      <div class="flex justify-around w-full">
+      <div class="flex justify-around w-full mb-3">
         <button
           @click="goToDescriptionPlace"
-          class="font-quicksand w-40 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+          class="font-quicksand w-40 text-white border bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
         >
           Ver descripción
         </button>
         <button
-          @click="getRoute"
-          class="font-quicksand w-40 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
-        >
-          Visualizar ruta
-        </button>
-      </div>
-    </div>
-    <!-- aqui empieza la visulizacion de la ruta -->
-    <div
-      v-if="EmptyVerRuta"
-      class="flex rounded-2xl items-center justify-center bg-white w-full flex-col"
-    >
-      <div class="flex flex-col items-center w-full">
-        <div class="flex items-center">
-          <LocalitationIcon />
-          <h1 class="ml-3 text-gray-800 py-3 text-center text-xl">
-            {{ CurrentNamePlace }}
-          </h1>
-        </div>
-        <div class="flex justify-around">
-          <h2 class="mx-10 mb-3">prueba: <span class="font-bold">60m</span></h2>
-          <h2 class="mx-10 mb-3">
-            Tiempo: <span class="font-bold">60min</span>
-          </h2>
-        </div>
-      </div>
-      <div class="flex justify-around w-full">
-        <button
-          @click="goToDescriptionPlace"
-          class="font-quicksand w-40 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
-        >
-          Ver descripción
-        </button>
-        <button
-          @click="getRoute"
-          class="font-quicksand w-40 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+          @click="goToRoutePlace"
+          class="font-quicksand w-40 text-white bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
         >
           Visualizar ruta
         </button>
@@ -91,13 +62,18 @@
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map"
+import { toRaw } from "vue"
+import { GoogleMap, Marker, Polyline } from "vue3-google-map"
 import BackButton from "@/components/buttons/BackButton"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
 import { toast } from "vue3-toastify"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
+<<<<<<< HEAD
 import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
 import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
+=======
+import { getApiRoute } from "@/components/Viajes/helpers/ApiRoute"
+>>>>>>> 9b270d5c45fe00e259b08db37c537e91a43eefbf
 
 export default {
   name: "GoogleMaps",
@@ -106,6 +82,7 @@ export default {
     Marker,
     BackButton,
     LocalitationIcon,
+    Polyline,
   },
   data() {
     return {
@@ -113,8 +90,10 @@ export default {
       isEmpyCurrenName: true,
       CurrentNamePlace: "",
       relativePosition: "",
+      distance: "",
+      duration: "",
+      flightPath: {},
       localitation: "",
-      currentPlace: "",
       placePhothos: "",
       placeRatings: "",
       placeAbouts: "",
@@ -122,16 +101,28 @@ export default {
       placeLongs: "",
       imageReferences: [],
       selectedReferences: [],
+<<<<<<< HEAD
       isEmptyVerRuta: true,
       EmptyVerRuta: "",
       preferences: [],
+=======
+      showRoute: false,
+>>>>>>> 9b270d5c45fe00e259b08db37c537e91a43eefbf
     }
   },
   methods: {
     SelectedPlace(event) {
+      this.showRoute = false
       this.placeLats = event.latLng.lat()
       this.placeLongs = event.latLng.lng()
+
+      let destination = {
+        latdestino: this.placeLats,
+        lngdestino: this.placeLongs,
+      }
+
       this.getNamePlace(event.placeId)
+      this.getRoute(destination)
     },
     async getNamePlace(placeId) {
       try {
@@ -141,7 +132,6 @@ export default {
             key: this.apiKey,
           },
         })
-        console.log(data)
         this.CurrentNamePlace = data.result.name
         this.CurrentNamePlace
           ? (this.isEmpyCurrenName = false)
@@ -157,9 +147,10 @@ export default {
         this.placeAbouts = data.result.editorial_summary.overview
         console.log(data)
       } catch (e) {
-        console.log("e.message")
+        console.log(e.message)
       }
     },
+<<<<<<< HEAD
 
     async getApiPreferences() {
       try {
@@ -175,7 +166,57 @@ export default {
         console.log(data)
       } catch (e) {
         console.log(e.message)
+=======
+    goToDescriptionPlace() {
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          photos: this.placePhothos,
+          names: this.CurrentNamePlace,
+          locations: this.localitation,
+          ratings: this.placeRatings,
+          lats: this.placeLats,
+          longs: this.placeLongs,
+          photosrefs: this.selectedReferences,
+          abouts: this.placeAbouts,
+        },
+      })
+    },
+    async getRoute(Destination) {
+      let { latdestino, lngdestino } = Destination
+      let { lat, lng } = this.relativePosition
+      try {
+        const { data } = await getApiRoute.get("", {
+          params: {
+            origin: `${lat}, ${lng}`,
+            destination: `${latdestino}, ${lngdestino}`,
+            key: this.apiKey,
+          },
+        })
+        let apiRoutes = data.routes[0].legs[0]
+        this.distance = apiRoutes.distance.text
+        this.duration = apiRoutes.duration.text
+        let steps = apiRoutes.steps
+        let stepsArray = []
+        stepsArray[0] = toRaw(this.relativePosition)
+        steps.forEach((step) => stepsArray.push(step.end_location))
+        this.steps = stepsArray
+      } catch (error) {
+        console("Error en la solicitud de la API de direcciones", error)
+>>>>>>> 9b270d5c45fe00e259b08db37c537e91a43eefbf
       }
+    },
+    goToRoutePlace() {
+      this.showRoute = true
+      const flightPlanCoordinates = this.steps
+      const flightPath = {
+        path: flightPlanCoordinates,
+        geodesic: true,
+        strokeColor: "#FF4500",
+        strokeOpacity: 2.0,
+        strokeWeight: 4.5,
+      }
+      this.flightPath = flightPath
     },
   },
 

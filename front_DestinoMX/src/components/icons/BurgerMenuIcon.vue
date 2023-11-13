@@ -20,5 +20,3 @@ export default {
   name: "BurgerButton",
 }
 </script>
-
-<style></style>
