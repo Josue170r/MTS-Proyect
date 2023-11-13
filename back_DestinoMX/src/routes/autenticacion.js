@@ -5,13 +5,15 @@ export const routerAutenticacion = Router();
 
 // Crear cuenta
 // Recibe:
-// Nombre, apellidoP, apellidoM, CorreoElectronico, Usuario, contrasena
+// Nombre, ApellidoP, ApellidoM, CorreoElectronico, Usuario, contrasena
 // Funciona OK
+
 routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
+  console.log("Desde el query", req.query)
   const {
     Nombre,
-    apellidoP,
-    apellidoM,
+    ApellidoP,
+    ApellidoM,
     CorreoElectronico,
     Usuario,
     contrasena,
@@ -28,7 +30,7 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
         });
       } else if (rows.length === 0) {
         mySqlConnection.query(
-          `insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,Contrasena) value('${Nombre}','${apellidoP}','${apellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
+          `insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
           (err) => {
             if (err) {
               res.status(500).json({

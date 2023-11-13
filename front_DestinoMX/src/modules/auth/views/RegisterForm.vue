@@ -25,18 +25,18 @@
           >
             <AtIcon />
             <Field
-              id="username"
-              v-model="user.username"
+              id="email"
+              v-model="user.email"
               class="pl-2 outline-none border-none w-full"
-              type="username"
-              name="username"
+              type="email"
+              name="email"
               placeholder="Correo electrónico"
             />
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
               class="flex block text-red-700 text-sm"
-              name="username"
+              name="email"
             ></ErrorMessage>
           </div>
           <div
@@ -56,6 +56,25 @@
             <ErrorMessage
               class="flex block text-red-700 text-sm"
               name="name"
+            ></ErrorMessage>
+          </div>
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
+            <UserIcon />
+            <Field
+              id="username"
+              v-model="user.username"
+              class="pl-2 outline-none border-none w-full"
+              type="text"
+              name="username"
+              placeholder="Nombre de usuario"
+            />
+          </div>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="username"
             ></ErrorMessage>
           </div>
           <div
@@ -180,12 +199,14 @@ export default {
 </script>
 
 <script setup>
-import { toRaw } from "vue"
+// import { toRaw } from "vue"
 import { reactive, computed } from "vue"
 import * as yup from "yup"
 import { Field, Form, ErrorMessage } from "vee-validate"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 const user = reactive({
+  email: "",
   username: "",
   name: "",
   lastName: "",
@@ -195,10 +216,11 @@ const user = reactive({
 })
 
 const schema = yup.object({
-  username: yup
+  email: yup
     .string()
     .required("El correo electrónico es obligatorio")
     .email("Ingrese un correo electrónico válido"),
+  username: yup.string().required("El usuario es obligatorio"),
   name: yup.string().required("Este campo es obligatorio"),
   lastName: yup.string().required("Este campo es obligatorio"),
   secondLastName: yup.string().required("Este campo es obligatorio"),
@@ -219,7 +241,17 @@ const isFormEmpty = computed(() => {
 
 const onSubmit = async () => {
   try {
-    console.log(toRaw(user))
+    const res = await apiFromBackend.post("/api/crear-cuenta", {
+      params: {
+        Nombre: user.name,
+        ApellidoP: user.lastName,
+        ApellidoM: user.secondLastName,
+        CorreoElectronico: user.email,
+        Usuario: user.username,
+        contrasena: user.password,
+      },
+    })
+    console.log(res)
   } catch (error) {
     console.log(error.message)
   }
