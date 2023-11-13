@@ -12,7 +12,6 @@ import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
 //import SearchTrip from "@/components/Viajes/SearchTrip.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
 
-
 const routes = [
   {
     path: "/",
@@ -69,12 +68,11 @@ const routes = [
     component: homeScreen,
   },
   {
-
     path: "/preferences",
     name: "Preferences-Screen",
     component: PreferencesScreen,
   },
-{
+  {
     name: "Search-Trip",
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
