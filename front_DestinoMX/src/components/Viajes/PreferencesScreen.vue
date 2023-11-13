@@ -215,22 +215,22 @@
       </div>
     </div>
     <!--div de botones inicio-->
-    <div class="flex items-center justify-center">
-      <button
-        class="w-72 mt-2 py-6 rounded-lg text-black font-semibold bg-yellow-400 mb-6 flex items-center justify-center"
-      >
-        <img
-          src="@/assets/images/PreferencesImages/saveIcon.png"
-          alt="Icono"
-          class="w-6 h-6 items-center mr-1"
-        />
-        <span>Guardar</span>
-      </button>
-    </div>
   </div>
   <!--div del ap-->
 
   <!--Boton guardar-->
+  <div class="flex items-center justify-center">
+    <button
+      class="w-72 mt-2 py-6 rounded-lg text-black font-semibold bg-yellow-400 mb-6 flex items-center justify-center"
+    >
+      <img
+        src="@/assets/images/PreferencesImages/saveIcon.png"
+        alt="Icono"
+        class="w-6 h-6 items-center mr-1"
+      />
+      <span>Guardar</span>
+    </button>
+  </div>
 </template>
 
 <script>
