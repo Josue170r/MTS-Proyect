@@ -199,7 +199,7 @@ export default {
 </script>
 
 <script setup>
-// import { toRaw } from "vue"
+import { toast } from "vue3-toastify"
 import { reactive, computed } from "vue"
 import * as yup from "yup"
 import { Field, Form, ErrorMessage } from "vee-validate"
@@ -241,7 +241,7 @@ const isFormEmpty = computed(() => {
 
 const onSubmit = async () => {
   try {
-    const res = await apiFromBackend.post("/api/crear-cuenta", {
+    const { data } = await apiFromBackend.post("/api/crear-cuenta", {
       Nombre: user.name,
       ApellidoP: user.lastName,
       ApellidoM: user.secondLastName,
@@ -249,9 +249,20 @@ const onSubmit = async () => {
       Usuario: user.username,
       contrasena: user.password,
     })
-    console.log(res)
+    toast(data.mensaje, {
+      hideProgressBar: true,
+      autoClose: 1500,
+      type: "success",
+      theme: "colored",
+    })
+    // this.$router.push({ name: "login" })
   } catch (error) {
-    console.log(error.message)
+    toast(error.response.data.mensaje, {
+      hideProgressBar: true,
+      autoClose: 1500,
+      type: "error",
+      theme: "colored",
+    })
   }
 }
 </script>
