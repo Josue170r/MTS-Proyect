@@ -9,6 +9,7 @@ import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
+import MyTrip from "@/components/Viajes/MyTrip.vue"
 
 const routes = [
   {
@@ -40,6 +41,11 @@ const routes = [
     path: "/placedescription",
     name: "placedescription",
     component: PlaceDescription,
+  },
+  {
+    path: "/mytrip",
+    name: "mytrip",
+    component: MyTrip,
   },
   {
     path: "/about",
