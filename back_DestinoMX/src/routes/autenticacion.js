@@ -17,7 +17,7 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
     CorreoElectronico,
     Usuario,
     contrasena,
-  } = req.query;
+  } = req.body;
 
   mySqlConnection.query(
     `select * from usuario where CorreoElectronico= '${CorreoElectronico}' or usuario='${Usuario}';`,

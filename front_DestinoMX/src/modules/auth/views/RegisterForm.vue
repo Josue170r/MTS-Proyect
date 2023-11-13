@@ -242,14 +242,12 @@ const isFormEmpty = computed(() => {
 const onSubmit = async () => {
   try {
     const res = await apiFromBackend.post("/api/crear-cuenta", {
-      params: {
-        Nombre: user.name,
-        ApellidoP: user.lastName,
-        ApellidoM: user.secondLastName,
-        CorreoElectronico: user.email,
-        Usuario: user.username,
-        contrasena: user.password,
-      },
+      Nombre: user.name,
+      ApellidoP: user.lastName,
+      ApellidoM: user.secondLastName,
+      CorreoElectronico: user.email,
+      Usuario: user.username,
+      contrasena: user.password,
     })
     console.log(res)
   } catch (error) {
