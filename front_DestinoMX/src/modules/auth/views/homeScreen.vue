@@ -12,12 +12,12 @@
 
       <!-- Contenedor de la barra de búsqueda y botón -->
       <div
-        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white border border-gray-500 rounded-md flex items-center"
+        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
       >
         <!-- Barra de búsqueda -->
         <input
           type="text"
-          class="w-48 p-2 rounded-l-md"
+          class="w-48 p-2 outline-none border-none bg-white"
           placeholder="Buscar..."
         />
         <button>
