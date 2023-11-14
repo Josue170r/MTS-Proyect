@@ -20,9 +20,15 @@
           class="w-48 p-2 rounded-l-md"
           placeholder="Buscar..."
         />
+<<<<<<< HEAD
         <!-- Botón de búsqueda -->
         <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
         <SearchButton class="bg-black" />
+=======
+        <button>
+          <SearchIcon />
+        </button>
+>>>>>>> 200bd6d10ebf77767ea37bfda62fdaabb1ab2a07
       </div>
 
       <img
@@ -51,15 +57,15 @@
 
 <script>
 import AvatarButton from "@/components/buttons/AvatarButton"
-import SearchButton from "@/components/buttons/SearchButton"
+import SearchIcon from "@/components/icons/SearchIcon"
 import { GoogleMap, Marker } from "vue3-google-map"
-import BurgerMenu from "@/components/buttons/BurgerMenu.vue"
+import BurgerMenu from "@/components/buttons/BurgerMenu"
 import { toast } from "vue3-toastify"
 export default {
   name: "homeScreen",
   components: {
     AvatarButton,
-    SearchButton,
+    SearchIcon,
     GoogleMap,
     Marker,
     BurgerMenu,
