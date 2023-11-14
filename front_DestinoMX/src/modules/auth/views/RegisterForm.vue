@@ -219,7 +219,7 @@ export default {
         })
         toast(data.mensaje, {
           hideProgressBar: true,
-          autoClose: 500,
+          autoClose: 600,
           type: "success",
           theme: "colored",
           onClose: () => {
