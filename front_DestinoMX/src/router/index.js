@@ -72,6 +72,7 @@ const routes = [
     name: "Preferences-Screen",
     component: PreferencesScreen,
   },
+
   {
     name: "Search-Trip",
     path: "/:pathMatch(.*)*",
