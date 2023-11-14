@@ -6,6 +6,8 @@ import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
 import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
+import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
+//import Pree from "@/components/Viajes/Preferences.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
@@ -60,6 +62,18 @@ const routes = [
     component: GoogleMaps,
   },
   {
+
+    path: "/preferencesscreen",
+    name: "preferences-screen",
+    component: PreferencesScreen,
+  },
+  /*  
+  {
+    path: "/Preferences",
+    name: "Pre-ferences",
+    component: Pree,
+  },*/
+{
     path: "/calendartrip",
     name: "Itinerario",
     component: ItinerarioViajes,
@@ -90,6 +104,7 @@ const routes = [
     name: "mytrip",
     component: MyTrip,
   },
+
 ]
 
 const router = createRouter({
