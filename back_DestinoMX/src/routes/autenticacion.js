@@ -9,7 +9,6 @@ export const routerAutenticacion = Router();
 // Funciona OK
 
 routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
-  console.log("Desde el query", req.query)
   const {
     Nombre,
     ApellidoP,
@@ -66,8 +65,9 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
 // CorreoElectronico o Usuario, contrasena
 // Funciona OK
 routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
+  const { Usuario, contrasena } = req.body
   mySqlConnection.query(
-    `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${req.query.credencial}" OR Usuario = "${req.query.credencial}"`,
+    `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -81,7 +81,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           .json({ exito: false, mensaje: "Usuario no encontrado." });
       } else {
         const contrasenaBD = rows[0].contrasena;
-        if (contrasenaBD === req.query.contrasena) {
+        if (contrasenaBD === contrasena) {
           req.session.usuario = {
             idUsuario: rows[0].idUsuario,
           };
