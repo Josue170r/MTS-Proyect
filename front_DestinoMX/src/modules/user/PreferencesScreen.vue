@@ -332,7 +332,7 @@
   <!--div del ap-->
 
   <!--Boton guardar-->
-<<<<<<< HEAD:front_DestinoMX/src/components/Viajes/PreferencesScreen.vue
+  <<<<<<< HEAD:front_DestinoMX/src/components/Viajes/PreferencesScreen.vue
   <div class="flex items-center justify-center">
     <button
       @click="guardar"
@@ -346,8 +346,8 @@
       <span>Guardar</span>
     </button>
   </div>
-=======
->>>>>>> 200bd6d10ebf77767ea37bfda62fdaabb1ab2a07:front_DestinoMX/src/modules/user/PreferencesScreen.vue
+  ======= >>>>>>>
+  200bd6d10ebf77767ea37bfda62fdaabb1ab2a07:front_DestinoMX/src/modules/user/PreferencesScreen.vue
 </template>
 
 <script>

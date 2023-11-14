@@ -20,15 +20,15 @@
           class="w-48 p-2 rounded-l-md"
           placeholder="Buscar..."
         />
-<<<<<<< HEAD
+        <<<<<<< HEAD
         <!-- Botón de búsqueda -->
         <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
         <SearchButton class="bg-black" />
-=======
+        =======
         <button>
           <SearchIcon />
         </button>
->>>>>>> 200bd6d10ebf77767ea37bfda62fdaabb1ab2a07
+        >>>>>>> 200bd6d10ebf77767ea37bfda62fdaabb1ab2a07
       </div>
 
       <img

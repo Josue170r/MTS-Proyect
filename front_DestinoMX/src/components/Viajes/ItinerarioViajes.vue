@@ -69,11 +69,8 @@
 
       <!--INICIO ISnotEMPTYTRIP=TRUE-->
       <br />
-       v-else 
-      <div
-        class="flex items-center justify-between p-4 bg-gray-200 rounded-md"
-       
-      >
+      v-else
+      <div class="flex items-center justify-between p-4 bg-gray-200 rounded-md">
         <h1 class="mr-auto text-xl font-bold">Viajes Proximos</h1>
         <button class="flex items-center bg-white rounded-full p-2 ml-auto">
           <img
