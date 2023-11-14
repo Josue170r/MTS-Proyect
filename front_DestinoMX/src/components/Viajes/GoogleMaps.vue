@@ -134,7 +134,6 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.selectedReferences = this.imageReferences.slice(startingIndex)
         this.placeAbouts = data.result.editorial_summary.overview
-        console.log(data)
       } catch (e) {
         console.log(e.message)
       }
@@ -189,44 +188,6 @@ export default {
       }
       this.flightPath = flightPath
     },
-  },
-
-  goToDescriptionPlace() {
-    this.$router.push({
-      name: "placedescription",
-      query: {
-        photos: this.placePhothos,
-        names: this.CurrentNamePlace,
-        locations: this.localitation,
-        ratings: this.placeRatings,
-        lats: this.placeLats,
-        longs: this.placeLongs,
-        photosrefs: this.selectedReferences,
-        abouts: this.placeAbouts,
-      },
-    })
-  },
-  async getRoute(event) {
-    this.isEmptyVerRuta = false
-    this.EmptyVerRuta = "prueb"
-    this.getNamePlace(event.placeId)
-    const origin = this.localitation
-    const destination = this.relativePosition
-    try {
-      const response = await getRouteApi.get("/json", {
-        params: {
-          origin: origin,
-          destination: destination,
-          key: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
-        },
-      })
-      // Maneja la respuesta de la API aquí, por ejemplo, puedes imprimir la respuesta en la consola.
-      console.log(response.data)
-      // A continuación, puedes utilizar los datos de la respuesta para mostrar la ruta en tu mapa.
-    } catch (error) {
-      // Maneja errores aquí, por ejemplo, muestra un mensaje de error al usuario.
-      console.error("Error al obtener la ruta:", error)
-    }
   },
   created() {
     this.$getLocation()
