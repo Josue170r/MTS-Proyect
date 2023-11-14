@@ -69,74 +69,81 @@
 
       <!--INICIO ISnotEMPTYTRIP=TRUE-->
       <br />
-      v-else
-      <div class="flex items-center justify-between p-4 bg-gray-200 rounded-md">
-        <h1 class="mr-auto text-xl font-bold">Viajes Proximos</h1>
-        <button class="flex items-center bg-white rounded-full p-2 ml-auto">
-          <img
-            src="@/assets/images/CalendaryImages/PlusIcon.png"
-            alt="Icono"
-            class="w-6 h-6 object-contain"
-          />
-        </button>
-      </div>
-      <br />
-      <!-- Divs adicionales -->
-      <div class="flex flex-col md:flex-row md:space-x-4">
-        <div class="flex item-center flex-1 bg-white p-4 rounded-md">
-          <button class="mr-3 bg-gray-200 rounded-full">
+
+      <div
+        class="flex flex-col items-center justify-center"
+        v-if="isnotemptytrip"
+      >
+        <div
+          class="flex items-center justify-between p-4 bg-gray-200 rounded-md"
+        >
+          <h1 class="mr-auto text-xl font-bold">Viajes Proximos</h1>
+          <button class="flex items-center bg-white rounded-full p-2 ml-auto">
             <img
-              src="@/assets/images/CalendaryImages/LocationIcon.png"
+              src="@/assets/images/CalendaryImages/PlusIcon.png"
               alt="Icono"
-              class="w-9 h-9 object-contain"
-            />
-          </button>
-          <p>Mi Viaje a Mazatlan</p>
-          <button class="ml-12 p-2 bg-gray-200 rounded-full">
-            <img
-              src="@/assets/images/CalendaryImages/greaterThanIcon.png"
-              alt="Icono"
-              class="w-4 h-4 object-contain"
+              class="w-6 h-6 object-contain"
             />
           </button>
         </div>
         <br />
+        <!-- Divs adicionales -->
+        <div class="flex flex-col md:flex-row md:space-x-4">
+          <div class="flex item-center flex-1 bg-white p-4 rounded-md">
+            <button class="mr-3 bg-gray-200 rounded-full">
+              <img
+                src="@/assets/images/CalendaryImages/LocationIcon.png"
+                alt="Icono"
+                class="w-9 h-9 object-contain"
+              />
+            </button>
+            <p>Mi Viaje a Mazatlan</p>
+            <button class="ml-12 p-2 bg-gray-200 rounded-full">
+              <img
+                src="@/assets/images/CalendaryImages/greaterThanIcon.png"
+                alt="Icono"
+                class="w-4 h-4 object-contain"
+              />
+            </button>
+          </div>
+          <br />
 
-        <div class="flex item-center flex-1 bg-white p-4 rounded-md">
-          <button class="mr-3 bg-gray-200 rounded-full">
-            <img
-              src="@/assets/images/CalendaryImages/LocationIcon.png"
-              alt="Icono"
-              class="w-9 h-9 object-contain"
-            />
-          </button>
-          <p>Mi Viaje a Queretaro</p>
-          <button class="ml-12 p-2 bg-gray-200 rounded-full">
-            <img
-              src="@/assets/images/CalendaryImages/greaterThanIcon.png"
-              alt="Icono"
-              class="w-4 h-4 object-contain"
-            />
-          </button>
-        </div>
-        <br />
+          <div class="flex item-center flex-1 bg-white p-4 rounded-md">
+            <button class="mr-3 bg-gray-200 rounded-full">
+              <img
+                src="@/assets/images/CalendaryImages/LocationIcon.png"
+                alt="Icono"
+                class="w-9 h-9 object-contain"
+              />
+            </button>
+            <p>Mi Viaje a Queretaro</p>
+            <button class="ml-12 p-2 bg-gray-200 rounded-full">
+              <img
+                src="@/assets/images/CalendaryImages/greaterThanIcon.png"
+                alt="Icono"
+                class="w-4 h-4 object-contain"
+              />
+            </button>
+          </div>
+          <br />
 
-        <div class="flex item-center flex-1 bg-white p-4 rounded-md">
-          <button class="mr-3 bg-gray-200 rounded-full">
-            <img
-              src="@/assets/images/CalendaryImages/LocationIcon.png"
-              alt="Icono"
-              class="w-9 h-9 object-contain"
-            />
-          </button>
-          <p>Mi Viaje a CDMX</p>
-          <button class="ml-16 p-2 bg-gray-200 rounded-full">
-            <img
-              src="@/assets/images/CalendaryImages/greaterThanIcon.png"
-              alt="Icono"
-              class="w-4 h-4 object-contain"
-            />
-          </button>
+          <div class="flex item-center flex-1 bg-white p-4 rounded-md">
+            <button class="mr-3 bg-gray-200 rounded-full">
+              <img
+                src="@/assets/images/CalendaryImages/LocationIcon.png"
+                alt="Icono"
+                class="w-9 h-9 object-contain"
+              />
+            </button>
+            <p>Mi Viaje a CDMX</p>
+            <button class="ml-16 p-2 bg-gray-200 rounded-full">
+              <img
+                src="@/assets/images/CalendaryImages/greaterThanIcon.png"
+                alt="Icono"
+                class="w-4 h-4 object-contain"
+              />
+            </button>
+          </div>
         </div>
         <br />
       </div>
@@ -167,6 +174,7 @@ export default {
   data() {
     return {
       isemptytrip: false,
+      isnotemptytrip: true,
       tripdate: true,
     }
   },

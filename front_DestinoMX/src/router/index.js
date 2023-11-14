@@ -61,7 +61,6 @@ const routes = [
     component: GoogleMaps,
   },
   {
-
     path: "/preferencesscreen",
     name: "preferences-screen",
     component: PreferencesScreen,
@@ -72,7 +71,7 @@ const routes = [
     name: "Pre-ferences",
     component: Pree,
   },*/
-{
+  {
     path: "/calendartrip",
     name: "Itinerario",
     component: ItinerarioViajes,
@@ -103,7 +102,6 @@ const routes = [
     name: "mytrip",
     component: MyTrip,
   },
-
 ]
 
 const router = createRouter({
