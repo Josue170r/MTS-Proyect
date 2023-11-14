@@ -44,25 +44,6 @@
           >
             <UserIcon />
             <Field
-              id="name"
-              v-model="user.name"
-              class="pl-2 outline-none border-none w-full"
-              type="text"
-              name="name"
-              placeholder="Nombre(s) *"
-            />
-          </div>
-          <div class="ml-1 mb-2 -mt-1">
-            <ErrorMessage
-              class="flex block text-red-700 text-sm"
-              name="name"
-            ></ErrorMessage>
-          </div>
-          <div
-            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
-          >
-            <UserIcon />
-            <Field
               id="username"
               v-model="user.username"
               class="pl-2 outline-none border-none w-full"
@@ -75,6 +56,25 @@
             <ErrorMessage
               class="flex block text-red-700 text-sm"
               name="username"
+            ></ErrorMessage>
+          </div>
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
+            <UserIcon />
+            <Field
+              id="name"
+              v-model="user.name"
+              class="pl-2 outline-none border-none w-full"
+              type="text"
+              name="name"
+              placeholder="Nombre(s) *"
+            />
+          </div>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="name"
             ></ErrorMessage>
           </div>
           <div
@@ -178,6 +178,8 @@
 import AtIcon from "@/components/icons/atIcon.vue"
 import PasswordIcon from "@/components/icons/PasswordIcon"
 import UserIcon from "@/components/icons/UserIcon"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
 
 export default {
   name: "LoginForm",
@@ -193,27 +195,58 @@ export default {
     return {
       showPassword: false,
       showPassword2: false,
+      user: {
+        email: "",
+        username: "",
+        name: "",
+        lastName: "",
+        secondLastName: "",
+        password: "",
+        passwordConfirmation: "",
+      },
     }
+  },
+  methods: {
+    async onSubmit() {
+      try {
+        const { data } = await apiFromBackend.post("/api/crear-cuenta", {
+          Nombre: this.user.name,
+          ApellidoP: this.user.lastName,
+          ApellidoM: this.user.secondLastName,
+          CorreoElectronico: this.user.email,
+          Usuario: this.user.username,
+          contrasena: this.user.password,
+        })
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 600,
+          type: "success",
+          theme: "colored",
+          onClose: () => {
+            this.$router.push({ name: "login" })
+          },
+        })
+      } catch (error) {
+        toast(error.response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
+    },
+  },
+  computed: {
+    isFormEmpty() {
+      return !this.user.name || !this.user.passwordConfirmation
+    },
   },
 }
 </script>
 
 <script setup>
-// import { toRaw } from "vue"
-import { reactive, computed } from "vue"
 import * as yup from "yup"
 import { Field, Form, ErrorMessage } from "vee-validate"
-import { apiFromBackend } from "@/helpers/ApiFromBackend"
-
-const user = reactive({
-  email: "",
-  username: "",
-  name: "",
-  lastName: "",
-  secondLastName: "",
-  password: "",
-  passwordConfirmation: "",
-})
 
 const schema = yup.object({
   email: yup
@@ -234,24 +267,4 @@ const schema = yup.object({
     .oneOf([yup.ref("password"), null], "Las contraseñas deben coincidir")
     .min(8, "La contraseña debe tener al menos 8 caracteres"),
 })
-
-const isFormEmpty = computed(() => {
-  return !user
-})
-
-const onSubmit = async () => {
-  try {
-    const res = await apiFromBackend.post("/api/crear-cuenta", {
-      Nombre: user.name,
-      ApellidoP: user.lastName,
-      ApellidoM: user.secondLastName,
-      CorreoElectronico: user.email,
-      Usuario: user.username,
-      contrasena: user.password,
-    })
-    console.log(res)
-  } catch (error) {
-    console.log(error.message)
-  }
-}
 </script>
