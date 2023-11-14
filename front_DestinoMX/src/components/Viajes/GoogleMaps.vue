@@ -68,12 +68,7 @@ import BackButton from "@/components/buttons/BackButton"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
 import { toast } from "vue3-toastify"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
-<<<<<<< HEAD
-import { getRouteApi } from "@/components/Viajes/helpers/ApiRoute"
-import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
-=======
 import { getApiRoute } from "@/components/Viajes/helpers/ApiRoute"
->>>>>>> 9b270d5c45fe00e259b08db37c537e91a43eefbf
 
 export default {
   name: "GoogleMaps",
@@ -101,13 +96,7 @@ export default {
       placeLongs: "",
       imageReferences: [],
       selectedReferences: [],
-<<<<<<< HEAD
-      isEmptyVerRuta: true,
-      EmptyVerRuta: "",
-      preferences: [],
-=======
       showRoute: false,
->>>>>>> 9b270d5c45fe00e259b08db37c537e91a43eefbf
     }
   },
   methods: {
@@ -150,23 +139,6 @@ export default {
         console.log(e.message)
       }
     },
-<<<<<<< HEAD
-
-    async getApiPreferences() {
-      try {
-        const { data } = await getApiPreferences.get("/json", {
-          params: {
-            lattitude: this.placeLats,
-            longitude: this.placeLongs,
-            radius: 10000,
-            type: "restaurant",
-            apikey: this.apiKey,
-          },
-        })
-        console.log(data)
-      } catch (e) {
-        console.log(e.message)
-=======
     goToDescriptionPlace() {
       this.$router.push({
         name: "placedescription",
@@ -203,7 +175,6 @@ export default {
         this.steps = stepsArray
       } catch (error) {
         console("Error en la solicitud de la API de direcciones", error)
->>>>>>> 9b270d5c45fe00e259b08db37c537e91a43eefbf
       }
     },
     goToRoutePlace() {
