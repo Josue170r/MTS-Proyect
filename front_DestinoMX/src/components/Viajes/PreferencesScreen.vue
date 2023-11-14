@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <!-- Contenedor de la imagen de fondo -->
     <div class="relative">
       <!-- Contenedor del botón de avatar -->
@@ -42,8 +42,18 @@
           <!--BOTON1-->
 
           <div>
-            <button
+            <!-- <button
               class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center pl-4 pr-4"
+            >  -->
+            <button
+              @click="toggleButton(0)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(0),
+                'bg-green-200': highlightedButton === 0,
+                'bg-orange-300':
+                  !selectedButtons.includes(0) && highlightedButton !== 0,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/fairIcon.png"
@@ -55,7 +65,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(1)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(1),
+                'bg-green-200': highlightedButton === 1,
+                'bg-orange-300':
+                  !selectedButtons.includes(1) && highlightedButton !== 1,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/churchIcon.jpg"
@@ -67,7 +84,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(2)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(2),
+                'bg-green-200': highlightedButton === 2,
+                'bg-orange-300':
+                  !selectedButtons.includes(2) && highlightedButton !== 2,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/nature.png"
@@ -79,7 +103,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(3)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(3),
+                'bg-green-200': highlightedButton === 3,
+                'bg-orange-300':
+                  !selectedButtons.includes(3) && highlightedButton !== 3,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/museumIcon.jpg"
@@ -91,19 +122,33 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(4)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(4),
+                'bg-green-200': highlightedButton === 4,
+                'bg-orange-300':
+                  !selectedButtons.includes(4) && highlightedButton !== 4,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/barIcon.png"
                 alt="Icono"
                 class="w-6 h-6 items-center mr-1"
-              /><sppan>Bares y Pubs</sppan>
+              /><span>Bares y Pubs</span>
             </button>
           </div>
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(5)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(5),
+                'bg-green-200': highlightedButton === 5,
+                'bg-orange-300':
+                  !selectedButtons.includes(5) && highlightedButton !== 5,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/nightclubIcon.png"
@@ -115,7 +160,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(6)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(6),
+                'bg-green-200': highlightedButton === 6,
+                'bg-orange-300':
+                  !selectedButtons.includes(6) && highlightedButton !== 6,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/cinemaIcon.png"
@@ -127,7 +179,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(7)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(7),
+                'bg-green-200': highlightedButton === 7,
+                'bg-orange-300':
+                  !selectedButtons.includes(7) && highlightedButton !== 7,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/resIcon.png"
@@ -139,7 +198,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(8)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(8),
+                'bg-green-200': highlightedButton === 8,
+                'bg-orange-300':
+                  !selectedButtons.includes(8) && highlightedButton !== 8,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/coffeeIcon.png"
@@ -151,7 +217,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(9)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(9),
+                'bg-green-200': highlightedButton === 9,
+                'bg-orange-300':
+                  !selectedButtons.includes(9) && highlightedButton !== 9,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/gymIcon.jpg"
@@ -163,7 +236,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(10)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(10),
+                'bg-green-200': highlightedButton === 10,
+                'bg-orange-300':
+                  !selectedButtons.includes(10) && highlightedButton !== 10,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/mallicon.png"
@@ -175,7 +255,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(11)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(11),
+                'bg-green-200': highlightedButton === 11,
+                'bg-orange-300':
+                  !selectedButtons.includes(11) && highlightedButton !== 11,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/hoteIcon.png"
@@ -187,7 +274,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(12)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(12),
+                'bg-green-200': highlightedButton === 12,
+                'bg-orange-300':
+                  !selectedButtons.includes(12) && highlightedButton !== 12,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/libraryIcon.png"
@@ -200,7 +294,14 @@
 
           <div>
             <button
-              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold bg-orange-300 mb-2 flex items-center justify-center"
+              @click="toggleButton(13)"
+              :class="{
+                'bg-orange-100': selectedButtons.includes(13),
+                'bg-green-200': highlightedButton === 13,
+                'bg-orange-300':
+                  !selectedButtons.includes(13) && highlightedButton !== 13,
+              }"
+              class="w-full sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
             >
               <img
                 src="@/assets/images/PreferencesImages/monumentIcon.png"
@@ -221,6 +322,7 @@
   <!--Boton guardar-->
   <div class="flex items-center justify-center">
     <button
+      @click="guardar"
       class="w-72 mt-2 py-6 rounded-lg text-black font-semibold bg-yellow-400 mb-6 flex items-center justify-center"
     >
       <img
@@ -235,13 +337,90 @@
 
 <script>
 import AvatarButton from "@/components/buttons/AvatarButton"
+//import { toast } from "vue3-toastify"
+import { toast } from "vue3-toastify"
+//import "vue3-toastify/dist/index.css"
 
 export default {
   name: "PreferencesScreen",
   components: {
     AvatarButton,
   },
+
+  data() {
+    return {
+      selectedButtons: [],
+      highlightedButton: null,
+    }
+  },
+  methods: {
+    toggleButton(index) {
+      if (this.selectedButtons.includes(index)) {
+        this.selectedButtons = this.selectedButtons.filter((i) => i !== index)
+        this.highlightedButton = null
+      } else {
+        this.selectedButtons.push(index)
+        this.highlightedButton = index
+      }
+    },
+
+    guardar() {
+      //
+      if (this.selectedButtons.length > 0) {
+        const selectedButtonNames = this.selectedButtons.map((index) => {
+          switch (index) {
+            case 0:
+              return "Parque de Atracciones"
+            case 1:
+              return "Lugares Religiosos"
+            case 2:
+              return "Parques Y Areas Naturales"
+            case 3:
+              return "Museos y Galerias"
+            case 4:
+              return "Bares y Pubs"
+            case 5:
+              return "CLubs Nocturnos"
+            case 6:
+              return "Centros de Entretenimiento"
+            case 7:
+              return "Restaurantes "
+            case 8:
+              return "Caferias"
+            case 9:
+              return "GYM"
+            case 10:
+              return "Plazas"
+            case 11:
+              return "Hoteles"
+            case 12:
+              return "Bibliotecas"
+            case 13:
+              return "Monumentos"
+            default:
+              return ""
+          }
+        })
+
+        console.log("Botones Guardados: ", selectedButtonNames)
+      }
+
+      //  else {
+      //   alert("ERROR: No has seleccionado ningun boton.")
+      // }
+      else {
+        toast.error("No has seleccionado preferencias.", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+  },
 }
 </script>
 
-<style></style>
+<style scoped>
+/* Estilos adicionales si es necesario */
+</style>
