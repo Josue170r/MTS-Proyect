@@ -129,3 +129,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+</style>
