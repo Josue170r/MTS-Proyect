@@ -109,8 +109,6 @@ export default {
     }
   },
   created() {
-    this.getArrayPlaces()
-    this.getNearImages()
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
@@ -123,8 +121,17 @@ export default {
           theme: "colored",
         })
       })
+    setTimeout(() => {
+      this.getArrayPlaces()
+      this.getNearImages()
+    }, 2000)
   },
   methods: {
+    goToMapScreen() {
+      this.$router.push({
+        name: "mapa-interactivo",
+      })
+    },
     async getArrayPlaces() {
       let { lat, lng } = this.relativePosition
       try {
@@ -140,12 +147,9 @@ export default {
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
-          } else {
-            // Si no hay referencia de foto, se agrega la referencia de la imagen por defecto
-            this.photosReferences.push("")
           }
         })
-        // console.log("Arreglo de referencias:", this.photosReferences)
+        console.log("Arreglo de referencias:", this.photosReferences)
         // console.log("Arreglo de lugares:", this.photosReferences)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
@@ -172,7 +176,7 @@ export default {
           imageURLs.push(imgUrl)
         }
         this.placeImages = toRaw(imageURLs)
-        console.log("Desde getNearImages:", this.placeImages)
+        console.log("Desde getNearImages:", imageURLs)
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
