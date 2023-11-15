@@ -122,8 +122,8 @@ export default {
         })
       })
     setTimeout(() => {
-      this.getArrayPlaces()
       this.getNearImages()
+      this.getArrayPlaces()
     }, 2000)
   },
   methods: {
