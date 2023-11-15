@@ -128,7 +128,7 @@ export default {
         this.CurrentNamePlace
           ? (this.isEmpyCurrenName = false)
           : (this.isEmpyCurrenName = true)
-        //To Do (Apartir de aquí hasta línea 138)
+        //To Do (Apartir de aquí hasta línea 140)
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
