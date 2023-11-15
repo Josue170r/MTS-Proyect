@@ -44,16 +44,51 @@
         <Marker :options="{ position: relativePosition }" />
       </GoogleMap>
     </div>
-    <div></div>
+
+    <div class="flex items-center justify-center w-full flex-col">
+      <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
+      <swiper
+        :slides-per-view="3"
+        :space-between="10"
+        :pagination="{
+          clickable: true,
+          el: '.swiper-pagination-custom',
+        }"
+        :modules="modules"
+        class="swiper-slide"
+      >
+        <swiper-slide
+          v-for="(place, index) in nearPlaces"
+          :key="place"
+          class="..."
+        >
+          <div class="mt-8 flex items-center justify-between flex-col">
+            <img
+              :src="placeImages[index]"
+              :alt="place.name"
+              class="mx-8 rounded-lg"
+            />
+            <p class="font-calibri mt-8">{{ place.name }}</p>
+          </div>
+        </swiper-slide>
+      </swiper>
+    </div>
   </div>
 </template>
 
 <script>
+import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import SearchIcon from "@/components/icons/SearchIcon"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
 import { toast } from "vue3-toastify"
+import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
+import { Swiper, SwiperSlide } from "swiper/vue"
+import { Pagination } from "swiper/modules"
+import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
+import "swiper/css"
+import "swiper/css/pagination"
 export default {
   name: "homeScreen",
   components: {
@@ -62,18 +97,24 @@ export default {
     GoogleMap,
     Marker,
     BurgerMenu,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
+      preference: "restaurant",
+      radio: 300,
+      nearPlaces: [],
+      photosReferences: [],
+      placeImages: [],
     }
   },
   created() {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
-        console.log(coordinates)
       })
       .catch((error) => {
         toast(error, {
@@ -83,6 +124,9 @@ export default {
           theme: "colored",
         })
       })
+    setTimeout(() => {
+      this.getArrayPlaces()
+    }, 2000)
   },
   methods: {
     goToMapScreen() {
@@ -90,6 +134,89 @@ export default {
         name: "mapa-interactivo",
       })
     },
+    async getArrayPlaces() {
+      let { lat, lng } = this.relativePosition
+      try {
+        const { data } = await getApiPreferences.get("/json", {
+          params: {
+            location: `${lat}, ${lng}`,
+            radius: this.radio,
+            type: this.preference,
+            key: this.apiKey,
+          },
+        })
+        this.nearPlaces = toRaw(data.results)
+        console.log(this.nearPlaces)
+        this.nearPlaces.forEach((place) => {
+          if (place.photos && place.photos.length > 0) {
+            this.photosReferences.push(place.photos[0].photo_reference)
+          } else {
+            this.photosReferences.push(
+              "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
+            )
+          }
+        })
+        this.getNearImages()
+        // console.log("Arreglo de lugares:", this.photosReferences)
+      } catch (error) {
+        toast.error("No se obtuvo el arreglo de lugares", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+    async getNearImages() {
+      try {
+        const imageURLs = []
+        for (const photoReference of this.photosReferences) {
+          const response = await getImgPlaceApi.get("/photo", {
+            params: {
+              maxwidth: "400",
+              photoreference: photoReference,
+              key: this.apiKey,
+            },
+            responseType: "blob",
+          })
+          const imgUrl = URL.createObjectURL(response.data)
+          imageURLs.push(imgUrl)
+        }
+        this.placeImages = toRaw(imageURLs)
+      } catch (error) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+  },
+  setup() {
+    return {
+      modules: [Pagination],
+    }
   },
 }
 </script>
+
+<style scoped>
+.swiper-slide {
+  width: 100%;
+  background: transparent;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  background: transparent;
+}
+</style>
