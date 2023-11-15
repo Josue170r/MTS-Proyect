@@ -60,7 +60,7 @@
           Selecciona la fecha de inicio de tu viaje y la fecha en que finalizará
           tu viaje.
         </h2>
-        <div class="container min-w-screen">
+        <div class="container min-w-screen" style="overflow-x: auto">
           <!-- fecha de inicio -->
           <v-dialog v-model="dialog" persistent>
             <template v-slot:activator="{ props }">
@@ -96,7 +96,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn text @click="cancelDateSelection">Cancelar</v-btn>
-                <v-btn text @click="saveDateSelection">OK</v-btn>
+                <v-btn text @click="saveDateSelection">Añadir fecha</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -270,6 +270,7 @@ export default {
 <style>
 .custom-container {
   width: 100%; /* Ajusta el ancho según tus necesidades */
-  padding: 5px 0; /* Ajusta el padding horizontal según tus necesidades */
+  padding: 0 0; /* Ajusta el padding horizontal según tus necesidades */
+  overflow-x: auto;
 }
 </style>
