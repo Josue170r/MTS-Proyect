@@ -103,13 +103,13 @@ export default {
       preference: "restaurant",
       radio: 300,
       nearPlaces: [],
-      imgReference: [],
       photosReferences: [],
-      placeImage: [],
+      placeImages: [],
     }
   },
   created() {
     this.getArrayPlaces()
+    this.getNearImages()
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
@@ -122,9 +122,6 @@ export default {
           theme: "colored",
         })
       })
-    setTimeout(() => {
-      this.getArrayPlaces()
-    }, 500)
   },
   methods: {
     async getArrayPlaces() {
@@ -144,11 +141,11 @@ export default {
             this.photosReferences.push(place.photos[0].photo_reference)
           } else {
             // Si no hay referencia de foto, se agrega la referencia de la imagen por defecto
-            this.photosReferences.push("./../images/noimages.jpg")
+            this.photosReferences.push("")
           }
         })
-        console.log("Desde homeScreen:", toRaw(this.nearPlaces))
-        console.log("Arreglo de referencias:", this.photosReferences)
+        // console.log("Arreglo de referencias:", this.photosReferences)
+        // console.log("Arreglo de lugares:", this.photosReferences)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -162,28 +159,19 @@ export default {
       try {
         const imageURLs = []
         for (const photoReference of this.photosReferences) {
-          try {
-            const response = await getImgPlaceApi.get("/photo", {
-              params: {
-                maxwidth: "400",
-                photoreference: photoReference,
-                key: this.apiKey,
-              },
-              responseType: "blob",
-            })
-            const imgUrl = URL.createObjectURL(response.data)
-            imageURLs.push(imgUrl)
-          } catch (error) {
-            // Si hay un error, asumimos que photoReference es una ruta relativa
-            const relativeImagePath = `./../images/noimages.jpg`
-            const imgUrl = URL.createObjectURL(
-              await fetch(relativeImagePath).then((r) => r.blob()),
-            )
-            imageURLs.push(imgUrl)
-          }
+          const response = await getImgPlaceApi.get("/photo", {
+            params: {
+              maxwidth: "400",
+              photoreference: photoReference,
+              key: this.apiKey,
+            },
+            responseType: "blob",
+          })
+          const imgUrl = URL.createObjectURL(response.data)
+          imageURLs.push(imgUrl)
         }
-        this.placeImage = toRaw(imageURLs)
-        console.log("Desde getNearImages:", this.placeImage)
+        this.placeImages = toRaw(imageURLs)
+        console.log("Desde getNearImages:", this.placeImages)
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
