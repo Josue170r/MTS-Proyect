@@ -25,12 +25,31 @@
           >
             <AtIcon />
             <Field
+              id="email"
+              v-model="user.email"
+              class="pl-2 outline-none border-none w-full"
+              type="email"
+              name="email"
+              placeholder="Correo electrónico"
+            />
+          </div>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-sm"
+              name="email"
+            ></ErrorMessage>
+          </div>
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
+            <UserIcon />
+            <Field
               id="username"
               v-model="user.username"
               class="pl-2 outline-none border-none w-full"
-              type="username"
+              type="text"
               name="username"
-              placeholder="Correo electrónico"
+              placeholder="Nombre de usuario"
             />
           </div>
           <div class="ml-1 mb-2 -mt-1">
@@ -159,6 +178,8 @@
 import AtIcon from "@/components/icons/atIcon.vue"
 import PasswordIcon from "@/components/icons/PasswordIcon"
 import UserIcon from "@/components/icons/UserIcon"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
 
 export default {
   name: "LoginForm",
@@ -174,31 +195,65 @@ export default {
     return {
       showPassword: false,
       showPassword2: false,
+      user: {
+        email: "",
+        username: "",
+        name: "",
+        lastName: "",
+        secondLastName: "",
+        password: "",
+        passwordConfirmation: "",
+      },
     }
+  },
+  methods: {
+    async onSubmit() {
+      try {
+        const { data } = await apiFromBackend.post("/api/crear-cuenta", {
+          Nombre: this.user.name,
+          ApellidoP: this.user.lastName,
+          ApellidoM: this.user.secondLastName,
+          CorreoElectronico: this.user.email,
+          Usuario: this.user.username,
+          contrasena: this.user.password,
+        })
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 600,
+          type: "success",
+          theme: "colored",
+          onClose: () => {
+            this.$router.push({ name: "login" })
+          },
+        })
+      } catch (error) {
+        toast(error.response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
+    },
+  },
+  computed: {
+    isFormEmpty() {
+      return !this.user.name || !this.user.passwordConfirmation
+    },
   },
 }
 </script>
 
 <script setup>
-import { toRaw } from "vue"
-import { reactive, computed } from "vue"
 import * as yup from "yup"
 import { Field, Form, ErrorMessage } from "vee-validate"
 
-const user = reactive({
-  username: "",
-  name: "",
-  lastName: "",
-  secondLastName: "",
-  password: "",
-  passwordConfirmation: "",
-})
-
 const schema = yup.object({
-  username: yup
+  email: yup
     .string()
     .required("El correo electrónico es obligatorio")
     .email("Ingrese un correo electrónico válido"),
+  username: yup.string().required("El usuario es obligatorio"),
   name: yup.string().required("Este campo es obligatorio"),
   lastName: yup.string().required("Este campo es obligatorio"),
   secondLastName: yup.string().required("Este campo es obligatorio"),
@@ -212,16 +267,4 @@ const schema = yup.object({
     .oneOf([yup.ref("password"), null], "Las contraseñas deben coincidir")
     .min(8, "La contraseña debe tener al menos 8 caracteres"),
 })
-
-const isFormEmpty = computed(() => {
-  return !user
-})
-
-const onSubmit = async () => {
-  try {
-    console.log(toRaw(user))
-  } catch (error) {
-    console.log(error.message)
-  }
-}
 </script>

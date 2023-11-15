@@ -12,16 +12,17 @@
 
       <!-- Contenedor de la barra de búsqueda y botón -->
       <div
-        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white border border-gray-500 rounded-md flex items-center"
+        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
       >
         <!-- Barra de búsqueda -->
         <input
           type="text"
-          class="w-48 p-2 rounded-l-md"
+          class="w-48 p-2 outline-none border-none bg-white"
           placeholder="Buscar..."
         />
-        <!-- Botón de búsqueda -->
-        <SearchButton class="bg-black text-gray-700 p-2 rounded-r-md" />
+        <button>
+          <SearchIcon />
+        </button>
       </div>
 
       <img
@@ -75,9 +76,9 @@
 <script>
 import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
-import SearchButton from "@/components/buttons/SearchButton"
+import SearchIcon from "@/components/icons/SearchIcon"
 import { GoogleMap, Marker } from "vue3-google-map"
-import BurgerMenu from "@/components/buttons/BurgerMenu.vue"
+import BurgerMenu from "@/components/buttons/BurgerMenu"
 import { toast } from "vue3-toastify"
 import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 import { Swiper, SwiperSlide } from "swiper/vue"
@@ -89,7 +90,7 @@ export default {
   name: "homeScreen",
   components: {
     AvatarButton,
-    SearchButton,
+    SearchIcon,
     GoogleMap,
     Marker,
     BurgerMenu,
