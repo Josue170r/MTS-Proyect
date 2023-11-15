@@ -49,7 +49,7 @@
       <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
       <swiper
         :slides-per-view="3"
-        :space-between="5"
+        :space-between="10"
         :pagination="{
           clickable: true,
           el: '.swiper-pagination-custom',
@@ -57,16 +57,19 @@
         :modules="modules"
         class="swiper-slide"
       >
-        <swiper-slide v-for="place in nearPlaces" :key="place">
-          <p class="font-calibri mt-8">{{ place.name }}</p>
-          <!-- <img
-            v-for="image in nearPlaces"
-            :key="image"
-            :src="image.photos.photo_reference"
-            alt="PlaceImage"
-            class="mb-2"
-          /> -->
-          <!-- <p class="font-quicksand">Rating: {{ place.rating }}</p> -->
+        <swiper-slide
+          v-for="(place, index) in nearPlaces"
+          :key="place"
+          class="..."
+        >
+          <div class="mt-8 flex items-center justify-between flex-col">
+            <img
+              :src="placeImages[index]"
+              :alt="place.name"
+              class="mx-8 rounded-lg"
+            />
+            <p class="font-calibri mt-8">{{ place.name }}</p>
+          </div>
         </swiper-slide>
       </swiper>
     </div>
@@ -122,7 +125,6 @@ export default {
         })
       })
     setTimeout(() => {
-      this.getNearImages()
       this.getArrayPlaces()
     }, 2000)
   },
@@ -144,12 +146,17 @@ export default {
           },
         })
         this.nearPlaces = toRaw(data.results)
+        console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
+          } else {
+            this.photosReferences.push(
+              "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
+            )
           }
         })
-        console.log("Arreglo de referencias:", this.photosReferences)
+        this.getNearImages()
         // console.log("Arreglo de lugares:", this.photosReferences)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
@@ -176,7 +183,6 @@ export default {
           imageURLs.push(imgUrl)
         }
         this.placeImages = toRaw(imageURLs)
-        console.log("Desde getNearImages:", imageURLs)
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
@@ -196,14 +202,11 @@ export default {
 </script>
 
 <style scoped>
-/* Personaliza la paginación para posicionarla debajo de las imágenes y hacerla más grande */
 .swiper-slide {
-  /* Elimina el fondo de cada slide */
+  width: 100%;
   background: transparent;
   text-align: center;
   font-size: 18px;
-
-  /* Center slide content vertically */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -211,7 +214,7 @@ export default {
 
 .swiper-slide img {
   display: block;
-  width: 100%;
+  width: 200px;
   height: 200px;
   object-fit: cover;
   background: transparent;
