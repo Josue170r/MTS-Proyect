@@ -63,7 +63,7 @@
                 src="@/assets/images/PreferencesImages/fairIcon.png"
                 alt="Icono"
                 class="w-6 h-6 items-center mr-1"
-              /><span>Parque</span>
+              /><span>Parque De Atracciones</span>
             </button>
           </div>
 
