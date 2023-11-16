@@ -50,7 +50,7 @@
       <div class="flex items-center justify-center w-full flex-col mr-4 ml-4">
         <div
           v-if="isLoading"
-          class="custom-loader mt-4"
+          class="custom-loader mt-16"
           :class="{ 'animate-custom': index === 0 }"
         ></div>
 
@@ -70,13 +70,23 @@
             :key="place"
             class="..."
           >
-            <div class="mt-8 flex items-center justify-between flex-col">
+            <div class="mt-8 mb-6 flex items-center justify-between flex-col">
               <img
                 :src="placeImages[index]"
                 :alt="place.name"
                 class="mx-8 rounded-lg"
               />
               <p class="font-calibri mt-8">{{ place.name }}</p>
+              <!-- <p class="mt-4">{{ place.rating }}</p> -->
+              <v-rating
+                half-increments
+                hover
+                :length="5"
+                :size="16"
+                :model-value="place.rating"
+                color="rgb(232, 176, 36)"
+                active-color="rgb(232, 176, 36)"
+              />
             </div>
           </swiper-slide>
         </swiper>
@@ -158,7 +168,7 @@ export default {
           },
         })
         this.nearPlaces = toRaw(data.results)
-        console.log(this.nearPlaces)
+        // console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -169,7 +179,7 @@ export default {
           }
         })
         this.getNearImages()
-        // console.log("Arreglo de lugares:", this.photosReferences)
+        console.log(this.nearPlaces)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -236,8 +246,8 @@ export default {
 }
 
 .custom-loader {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: 4px solid rgb(232, 176, 36);
   border-top: 4px solid transparent;
