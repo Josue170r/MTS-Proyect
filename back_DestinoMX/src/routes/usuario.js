@@ -28,7 +28,7 @@ routerUsuario.get("/api/perfil", (req, res) => {
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeObtencionDeDatos = `SELECT Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+    const consultaDeObtencionDeDatos = `SELECT Usuario,Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
     mySqlConnection.query(consultaDeObtencionDeDatos, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
