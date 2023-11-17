@@ -139,7 +139,6 @@ export default {
         },
       })
     },
-
     async getRoute(Destination) {
       let { latdestino, lngdestino } = Destination
       let { lat, lng } = this.relativePosition
