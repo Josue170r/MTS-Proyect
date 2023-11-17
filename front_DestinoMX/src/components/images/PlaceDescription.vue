@@ -208,10 +208,8 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-
-        console.log(this.lat)
-        console.log(this.long)
         console.log(this.placePhotosReferences)
+        console.log(this.placePhotoReference)
       } catch (error) {
         console.log(error.message)
       }
@@ -226,7 +224,7 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
-        console.log("Desde getImgPlace: ", this.placeImage)
+        console.log("Desde getImgPlace: ", img)
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
