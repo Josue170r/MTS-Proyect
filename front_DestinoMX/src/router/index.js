@@ -75,7 +75,6 @@ const routes = [
     component: PreferencesScreen,
   },
   {
-    name: "Search-Trip",
     name: "NoPageFound",
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
