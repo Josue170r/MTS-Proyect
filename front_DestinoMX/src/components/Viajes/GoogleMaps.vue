@@ -94,9 +94,8 @@ export default {
       placeAbouts: "",
       placeLats: "",
       placeLongs: "",
-      imageReferences: [],
-      selectedReferences: [],
       showRoute: false,
+      placeID: "",
     }
   },
   methods: {
@@ -104,7 +103,7 @@ export default {
       this.showRoute = false
       this.placeLats = event.latLng.lat()
       this.placeLongs = event.latLng.lng()
-
+      this.placeID = event.placeId
       let destination = {
         latdestino: this.placeLats,
         lngdestino: this.placeLongs,
@@ -113,6 +112,7 @@ export default {
       this.getNamePlace(event.placeId)
       this.getRoute(destination)
     },
+
     async getNamePlace(placeId) {
       try {
         const { data } = await getNameApi.get("/json", {
@@ -121,38 +121,25 @@ export default {
             key: this.apiKey,
           },
         })
+        console.log(data)
         this.CurrentNamePlace = data.result.name
         this.CurrentNamePlace
           ? (this.isEmpyCurrenName = false)
           : (this.isEmpyCurrenName = true)
-        this.imageReferences = data.result.photos.map(
-          (photo) => photo.photo_reference,
-        )
-        this.placePhothos = data.result.photos[0].photo_reference
-        this.localitation = data.result.vicinity
-        this.placeRatings = data.result.rating
-        const startingIndex = 1 // Índice de la segunda imagen
-        this.selectedReferences = this.imageReferences.slice(startingIndex)
-        this.placeAbouts = data.result.editorial_summary.overview
-      } catch (e) {
-        console.log(e.message)
+      } catch (error) {
+        console.log(error.message)
       }
     },
     goToDescriptionPlace() {
       this.$router.push({
         name: "placedescription",
         query: {
-          photos: this.placePhothos,
-          names: this.CurrentNamePlace,
-          locations: this.localitation,
-          ratings: this.placeRatings,
-          lats: this.placeLats,
-          longs: this.placeLongs,
-          photosrefs: this.selectedReferences,
-          abouts: this.placeAbouts,
+          //manda el placeID del lugar seleccionado a PlaceDescription
+          placeid: this.placeID,
         },
       })
     },
+
     async getRoute(Destination) {
       let { latdestino, lngdestino } = Destination
       let { lat, lng } = this.relativePosition

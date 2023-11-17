@@ -8,10 +8,11 @@ import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
 import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
-import PreferencesScreen from "@/components/Viajes/PreferencesScreen.vue"
+import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
 //import SearchTrip from "@/components/Viajes/SearchTrip.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
 import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
+import MyTrip from "@/components/Viajes/MyTrip.vue"
 
 const routes = [
   {
@@ -35,14 +36,14 @@ const routes = [
     component: AddToTrip,
   },
   {
-    path: "/newtrip",
-    name: "newtrip",
-    component: NewTrip,
-  },
-  {
     path: "/placedescription",
     name: "placedescription",
     component: PlaceDescription,
+  },
+  {
+    path: "/newtrip",
+    name: "newtrip",
+    component: NewTrip,
   },
   {
     path: "/about",
@@ -75,6 +76,7 @@ const routes = [
   },
   {
     name: "Search-Trip",
+    name: "NoPageFound",
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,
   },
@@ -82,6 +84,11 @@ const routes = [
     path: "/editTrip",
     name: "EditTrip",
     component: EditTripScreen,
+  },
+  {
+    path: "/mytrip",
+    name: "mytrip",
+    component: MyTrip,
   },
 ]
 
