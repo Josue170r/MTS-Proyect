@@ -176,11 +176,11 @@ export default {
     }
   },
   created() {
-    this.placiD = this.$route.query.placeid
-    this.getNamePlace(this.placiD)
-    this.getWeather()
+    this.placeiD = this.$route.query.placeid
+    this.getNamePlace(this.placeiD)
     this.getImgPlace()
     this.getImgsPlaces()
+    this.getWeather()
   },
   methods: {
     async getNamePlace(placeID) {
@@ -191,7 +191,7 @@ export default {
             key: this.apiKey,
           },
         })
-        console.log(data)
+        console.log("Desde getNamePlace: ", data)
         this.placeName = data.result.name
         this.placeName
           ? (this.isEmpyCurrenName = false)
@@ -211,7 +211,7 @@ export default {
 
         console.log(this.lat)
         console.log(this.long)
-        console.log()
+        console.log(this.placePhotosReferences)
       } catch (error) {
         console.log(error.message)
       }
@@ -226,7 +226,7 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
-        console.log(this.placeImage)
+        console.log("Desde getImgPlace: ", this.placeImage)
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
@@ -259,7 +259,7 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
-        // console.log("Desde place description:", this.placeImages)
+        console.log("Desde getImgsPlaces:", this.placeImages)
       } catch (e) {
         toast.error(e, {
           theme: "colored",
@@ -279,7 +279,7 @@ export default {
           },
         })
         this.placeWeather = parseInt(data.main.temp - 273.15)
-        console.log(data)
+        console.log("Desde getWeather: ", data)
       } catch (e) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
