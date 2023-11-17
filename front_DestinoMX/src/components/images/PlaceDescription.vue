@@ -173,14 +173,20 @@ export default {
       selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
+      orderMethods: [],
     }
   },
   created() {
     this.placeiD = this.$route.query.placeid
-    this.getNamePlace(this.placeiD)
-    this.getImgPlace()
-    this.getImgsPlaces()
-    this.getWeather()
+    this.getNamePlace(this.placeiD).then(() => {
+      console.log("After getNamePlace")
+      this.getImgPlace()
+      console.log("After getImgPlace")
+      this.getImgsPlaces()
+      console.log("After getImgsPlaces")
+      this.getWeather()
+      console.log("After getWeather")
+    })
   },
   methods: {
     async getNamePlace(placeID) {
@@ -208,10 +214,8 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-
-        console.log(this.lat)
-        console.log(this.long)
         console.log(this.placePhotosReferences)
+        return data
       } catch (error) {
         console.log(error.message)
       }
