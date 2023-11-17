@@ -94,8 +94,6 @@ export default {
       placeAbouts: "",
       placeLats: "",
       placeLongs: "",
-      imageReferences: [],
-      selectedReferences: [],
       showRoute: false,
       placeID: "",
     }
@@ -128,16 +126,6 @@ export default {
         this.CurrentNamePlace
           ? (this.isEmpyCurrenName = false)
           : (this.isEmpyCurrenName = true)
-        //To Do (Apartir de aquí hasta línea 140)
-        this.imageReferences = data.result.photos.map(
-          (photo) => photo.photo_reference,
-        )
-        this.placePhothos = data.result.photos[0].photo_reference
-        this.localitation = data.result.vicinity
-        this.placeRatings = data.result.rating
-        const startingIndex = 1 // Índice de la segunda imagen
-        this.selectedReferences = this.imageReferences.slice(startingIndex)
-        this.placeAbouts = data.result.editorial_summary.overview
       } catch (error) {
         console.log(error.message)
       }
@@ -146,15 +134,8 @@ export default {
       this.$router.push({
         name: "placedescription",
         query: {
-          // placeid: this.placeID,
-          photos: this.placePhothos,
-          names: this.CurrentNamePlace,
-          locations: this.localitation,
-          ratings: this.placeRatings,
-          lats: this.placeLats,
-          longs: this.placeLongs,
-          photosrefs: this.selectedReferences,
-          abouts: this.placeAbouts,
+          //manda el placeID del lugar seleccionado a PlaceDescription
+          placeid: this.placeID,
         },
       })
     },
