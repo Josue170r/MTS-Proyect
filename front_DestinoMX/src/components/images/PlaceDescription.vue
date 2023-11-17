@@ -14,7 +14,7 @@
         <img
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl w-full"
+          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-80"
         />
       </div>
       <div v-else>
@@ -173,19 +173,14 @@ export default {
       selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
-      orderMethods: [],
     }
   },
   created() {
     this.placeiD = this.$route.query.placeid
     this.getNamePlace(this.placeiD).then(() => {
-      console.log("After getNamePlace")
-      this.getImgPlace()
-      console.log("After getImgPlace")
-      this.getImgsPlaces()
-      console.log("After getImgsPlaces")
       this.getWeather()
-      console.log("After getWeather")
+      this.getImgPlace()
+      this.getImgsPlaces()
     })
   },
   methods: {
@@ -199,18 +194,14 @@ export default {
         })
         console.log("Desde getNamePlace: ", data)
         this.placeName = data.result.name
-        this.placeName
-          ? (this.isEmpyCurrenName = false)
-          : (this.isEmpyCurrenName = true)
-        //To Do (Apartir de aquí hasta línea 140)
+        this.lat = data.result.geometry.location.lat
+        this.long = data.result.geometry.location.lng
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
         this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
         this.rating = data.result.rating
-        this.lat = data.result.geometry.location.lat
-        this.long = data.result.geometry.location.lng
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
