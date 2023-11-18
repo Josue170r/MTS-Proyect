@@ -2,14 +2,11 @@ import { mySqlConnection } from "../DB/DB_connection.js";
 import { Router } from "express";
 
 export const routerPreferencias = Router();
-<<<<<<< HEAD
-=======
 
 
->>>>>>> ab54d7b8e86d8738b72270b0a10ec9dc62fb7149
 
 //Consulta - Angel
-routerPreferencias.post("/api/preferenciasRead/",(req,res) =>{
+routerPreferencias.post("/api/PreferenciasRead/",(req,res) =>{
     const idUsuario = req.body.idUsuario;
     const idCatPreferencias = req.body.idUsuarioPreferencias;
     if (!idUsuario) {
@@ -25,7 +22,6 @@ routerPreferencias.post("/api/preferenciasRead/",(req,res) =>{
         });
     }
 
-<<<<<<< HEAD
     if(Object.keys(idPreferencias).length<=0){
         return res.status(500).json({
             success: false,
@@ -58,9 +54,7 @@ routerPreferencias.post("/api/preferenciasRead/",(req,res) =>{
         }
     }
 });
-//Insercion - Pedro
-=======
->>>>>>> ab54d7b8e86d8738b72270b0a10ec9dc62fb7149
+
 
 //Insercion - Pedro
 routerPreferencias.post("/api/PreferenciasInsert", (req, res) => {
