@@ -30,7 +30,7 @@ routerPreferencias.post("/api/PreferenciasRead/",(req,res) =>{
     }
     
     mySqlConnection.query(`WITH a as(
-        SELECT idCatPreferencias FROM preferencias WHERE idUsuario="${req.query.idUsuario}")`,(err,rows) =>{
+        SELECT idCatPreferencias FROM preferencias WHERE idUsuario="${idUsuario}")`,(err,rows) =>{
         if(err){//Caso de error
             return res.status(400).json({
                 success: false,
