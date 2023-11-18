@@ -6,6 +6,7 @@ import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
+import { routerPreferencias } from "./routes/preferencias.js";
 
 // Inicializando la aplicacion.
 const app = express();
