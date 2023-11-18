@@ -38,7 +38,7 @@
         Calendario de Viajes
       </h1>
 
-      <v-container>
+      <v-container class="mb-4">
         <v-row justify="space-around">
           <v-date-picker
             elevation="0"
@@ -50,17 +50,33 @@
         </v-row>
       </v-container>
 
-      <div class="flex flex-col items-center justify-center" v-if="isemptytrip">
-        <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
-          Vaya... Aún no tienes Viajes en tu itinerario
-        </h1>
-        <button
-          type="button"
-          @click="goToNewTripForm"
-          class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+      <!--INSERTAR DIV GLOBAL CON FONDO-->
+      <div class="bg-white rounded-lg p-8">
+        <div
+          class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
         >
-          Crear Nuevo Viaje
-        </button>
+          <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
+            Viajes Proximos
+          </h1>
+        </div>
+
+        <div
+          class="flex flex-col items-center justify-center"
+          v-if="isemptytrip"
+        >
+          <BellIcon />
+          <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
+            ¡Aun tienes mucho por descubrir!
+          </h1>
+
+          <button
+            type="button"
+            @click="goToNewTripForm"
+            class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-yellow-300 mb-2"
+          >
+            Crear Mi Primer Viaje
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -69,11 +85,14 @@
 <script>
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
+import BellIcon from "@/components/icons/BellIcon.vue"
+
 export default {
   name: "ItinerarioViajes",
   components: {
     BackButtonIcon,
     AvatarButton,
+    BellIcon,
   },
 
   data() {
