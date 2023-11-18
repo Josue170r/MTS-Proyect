@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
     <!-- Contenedor de la imagen de fondo -->
     <div class="relative">
       <!-- Contenedor del botón de avatar -->
@@ -48,14 +48,16 @@
     <div class="flex items-center justify-center w-full flex-col">
       <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
       <div class="flex items-center justify-center w-full flex-col mr-4 ml-4">
-        <div
-          v-if="isLoading"
-          class="custom-loader mt-16"
-          :class="{ 'animate-custom': index === 0 }"
-        ></div>
+        <div class="flex justify-center items-center flex-col" v-if="isLoading">
+          <div
+            class="custom-loader mt-16"
+            :class="{ 'animate-custom': index === 0 }"
+          ></div>
+          <h1>Cargando sugerencias</h1>
+        </div>
 
         <swiper
-          v-if="!isLoading"
+          v-else
           :slides-per-view="3"
           :space-between="10"
           :pagination="{
@@ -72,6 +74,7 @@
           >
             <div class="mt-8 mb-6 flex items-center justify-between flex-col">
               <img
+                @click="goToPlaceDescription(place)"
                 :src="placeImages[index]"
                 :alt="place.name"
                 class="mx-8 rounded-lg"
@@ -147,12 +150,20 @@ export default {
       })
     setTimeout(() => {
       this.getArrayPlaces()
-    }, 2000)
+    }, 500)
   },
   methods: {
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
+      })
+    },
+    goToPlaceDescription(place) {
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          placeid: place.reference,
+        },
       })
     },
     async getArrayPlaces() {
@@ -205,9 +216,7 @@ export default {
           imageURLs.push(imgUrl)
         }
         this.placeImages = toRaw(imageURLs)
-        setTimeout(() => {
-          this.isLoading = false
-        }, 1500)
+        this.isLoading = false
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",

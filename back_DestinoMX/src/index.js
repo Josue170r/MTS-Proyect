@@ -6,7 +6,11 @@ import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
+<<<<<<< HEAD
 import { routerPreferencias } from "./routes/preferencias.js";
+=======
+import { routerPreferencias} from "./routes/preferencias.js"
+>>>>>>> ab54d7b8e86d8738b72270b0a10ec9dc62fb7149
 
 // Inicializando la aplicacion.
 const app = express();
@@ -39,6 +43,7 @@ app.use(routerAutenticacion);
 app.use(routerViajes);
 app.use(routerFavoritos);
 app.use(routerCalendario);
+app.use(routerPreferencias);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
