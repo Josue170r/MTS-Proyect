@@ -14,7 +14,7 @@
         <img
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl w-full"
+          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-80"
         />
       </div>
       <div v-else>
@@ -128,6 +128,7 @@
 
 <script>
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
+import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
 import { getWeatherPlace } from "@/components/images/helpers/getWeatherPlace"
 import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
@@ -168,24 +169,48 @@ export default {
       lat: "",
       long: "",
       placeWeather: "",
+      imageReferences: [],
+      selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
     }
   },
   created() {
-    this.placePhotoReference = this.$route.query.photos
-    this.placePhotosReferences = this.$route.query.photosrefs
-    this.placeName = this.$route.query.names
-    this.location = this.$route.query.locations
-    this.rating = this.$route.query.ratings
-    this.about = this.$route.query.abouts
-    this.lat = this.$route.query.lats
-    this.long = this.$route.query.longs
-    this.getImgPlace()
-    this.getWeather()
-    this.getImgsPlaces()
+    this.placeiD = this.$route.query.placeid
+    this.getNamePlace(this.placeiD).then(() => {
+      this.getWeather()
+      this.getImgPlace()
+      this.getImgsPlaces()
+    })
   },
   methods: {
+    async getNamePlace(placeID) {
+      try {
+        const { data } = await getNameApi.get("/json", {
+          params: {
+            place_id: placeID,
+            key: this.apiKey,
+          },
+        })
+        console.log("Desde getNamePlace: ", data)
+        this.placeName = data.result.name
+        this.lat = data.result.geometry.location.lat
+        this.long = data.result.geometry.location.lng
+        this.imageReferences = data.result.photos.map(
+          (photo) => photo.photo_reference,
+        )
+        this.placePhotoReference = data.result.photos[0].photo_reference
+        this.location = data.result.vicinity
+        this.rating = data.result.rating
+        const startingIndex = 1 // Índice de la segunda imagen
+        this.placePhotosReferences = this.imageReferences.slice(startingIndex)
+        this.about = data.result.editorial_summary.overview
+        console.log(this.placePhotosReferences)
+        return data
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
     async getImgPlace() {
       try {
         const img = await getImgPlaceApi.get("/photo", {
@@ -196,6 +221,7 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
+        console.log("Desde getImgPlace: ", this.placeImage)
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
@@ -228,7 +254,7 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
-        console.log("Desde place description:", this.placeImages)
+        console.log("Desde getImgsPlaces:", this.placeImages)
       } catch (e) {
         toast.error(e, {
           theme: "colored",
@@ -238,7 +264,6 @@ export default {
         })
       }
     },
-
     async getWeather() {
       try {
         const { data } = await getWeatherPlace.get("/weather", {
@@ -249,6 +274,7 @@ export default {
           },
         })
         this.placeWeather = parseInt(data.main.temp - 273.15)
+        console.log("Desde getWeather: ", data)
       } catch (e) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",

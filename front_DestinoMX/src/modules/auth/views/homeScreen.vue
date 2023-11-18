@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
     <!-- Contenedor de la imagen de fondo -->
     <div class="relative">
       <!-- Contenedor del botón de avatar -->
@@ -47,31 +47,53 @@
 
     <div class="flex items-center justify-center w-full flex-col">
       <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
-      <swiper
-        :slides-per-view="3"
-        :space-between="10"
-        :pagination="{
-          clickable: true,
-          el: '.swiper-pagination-custom',
-        }"
-        :modules="modules"
-        class="swiper-slide"
-      >
-        <swiper-slide
-          v-for="(place, index) in nearPlaces"
-          :key="place"
-          class="..."
+      <div class="flex items-center justify-center w-full flex-col mr-4 ml-4">
+        <div class="flex justify-center items-center flex-col" v-if="isLoading">
+          <div
+            class="custom-loader mt-16"
+            :class="{ 'animate-custom': index === 0 }"
+          ></div>
+          <h1>Cargando sugerencias</h1>
+        </div>
+
+        <swiper
+          v-else
+          :slides-per-view="3"
+          :space-between="10"
+          :pagination="{
+            clickable: true,
+            el: '.swiper-pagination-custom',
+          }"
+          :modules="modules"
+          class="swiper-slide"
         >
-          <div class="mt-8 flex items-center justify-between flex-col">
-            <img
-              :src="placeImages[index]"
-              :alt="place.name"
-              class="mx-8 rounded-lg"
-            />
-            <p class="font-calibri mt-8">{{ place.name }}</p>
-          </div>
-        </swiper-slide>
-      </swiper>
+          <swiper-slide
+            v-for="(place, index) in nearPlaces"
+            :key="place"
+            class="..."
+          >
+            <div class="mt-8 mb-6 flex items-center justify-between flex-col">
+              <img
+                @click="goToPlaceDescription(place)"
+                :src="placeImages[index]"
+                :alt="place.name"
+                class="mx-8 rounded-lg"
+              />
+              <p class="font-calibri mt-8">{{ place.name }}</p>
+              <!-- <p class="mt-4">{{ place.rating }}</p> -->
+              <v-rating
+                half-increments
+                hover
+                :length="5"
+                :size="16"
+                :model-value="place.rating"
+                color="rgb(232, 176, 36)"
+                active-color="rgb(232, 176, 36)"
+              />
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
     </div>
   </div>
 </template>
@@ -89,6 +111,7 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
+
 export default {
   name: "homeScreen",
   components: {
@@ -109,6 +132,7 @@ export default {
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
+      isLoading: true,
     }
   },
   created() {
@@ -126,7 +150,7 @@ export default {
       })
     setTimeout(() => {
       this.getArrayPlaces()
-    }, 2000)
+    }, 500)
   },
   methods: {
     goToMapScreen() {
@@ -134,7 +158,16 @@ export default {
         name: "mapa-interactivo",
       })
     },
+    goToPlaceDescription(place) {
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          placeid: place.reference,
+        },
+      })
+    },
     async getArrayPlaces() {
+      this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
         const { data } = await getApiPreferences.get("/json", {
@@ -146,7 +179,7 @@ export default {
           },
         })
         this.nearPlaces = toRaw(data.results)
-        console.log(this.nearPlaces)
+        // console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -157,7 +190,7 @@ export default {
           }
         })
         this.getNearImages()
-        // console.log("Arreglo de lugares:", this.photosReferences)
+        console.log(this.nearPlaces)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -183,6 +216,7 @@ export default {
           imageURLs.push(imgUrl)
         }
         this.placeImages = toRaw(imageURLs)
+        this.isLoading = false
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
@@ -218,5 +252,43 @@ export default {
   height: 200px;
   object-fit: cover;
   background: transparent;
+}
+
+.custom-loader {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid rgb(232, 176, 36);
+  border-top: 4px solid transparent;
+  animation: spin 1s linear infinite;
+}
+
+.animate-custom {
+  animation: bounce 1s infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
 }
 </style>
