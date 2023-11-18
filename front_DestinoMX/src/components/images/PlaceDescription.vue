@@ -14,7 +14,7 @@
         <img
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl w-full"
+          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-80"
         />
       </div>
       <div v-else>
@@ -177,10 +177,11 @@ export default {
   },
   created() {
     this.placeiD = this.$route.query.placeid
-    this.getNamePlace(this.placeiD)
-    this.getImgPlace()
-    this.getImgsPlaces()
-    this.getWeather()
+    this.getNamePlace(this.placeiD).then(() => {
+      this.getWeather()
+      this.getImgPlace()
+      this.getImgsPlaces()
+    })
   },
   methods: {
     async getNamePlace(placeID) {
@@ -193,25 +194,19 @@ export default {
         })
         console.log("Desde getNamePlace: ", data)
         this.placeName = data.result.name
-        this.placeName
-          ? (this.isEmpyCurrenName = false)
-          : (this.isEmpyCurrenName = true)
-        //To Do (Apartir de aquí hasta línea 140)
+        this.lat = data.result.geometry.location.lat
+        this.long = data.result.geometry.location.lng
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
         this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
         this.rating = data.result.rating
-        this.lat = data.result.geometry.location.lat
-        this.long = data.result.geometry.location.lng
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-
-        console.log(this.lat)
-        console.log(this.long)
         console.log(this.placePhotosReferences)
+        return data
       } catch (error) {
         console.log(error.message)
       }
