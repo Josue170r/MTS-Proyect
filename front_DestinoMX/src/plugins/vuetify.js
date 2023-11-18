@@ -17,6 +17,7 @@ export const vuetify = createVuetify({
     //
   },
   icons: {
-    iconfont: "mdi", // Configura el iconfont para utilizar Material Design Icons
+    iconfont: "mdi",
+    color: "#fdba74",
   },
 })
