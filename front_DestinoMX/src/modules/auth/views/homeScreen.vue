@@ -17,9 +17,16 @@
             class="w-48 p-2 outline-none border-none bg-white"
             placeholder="Buscar..."
           />
-          <button>
+          <button @click="openModal">
             <SearchIcon />
           </button>
+        </div>
+        <div>
+          <SearchResultsModal
+            :showModal="showModal"
+            :searchResults="searchResults"
+            @close="closeModal"
+          />
         </div>
         <img
           src="@/assets/images/imagen003.png"
@@ -122,6 +129,7 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
+import SearchResultsModal from "@/components/Viajes/searchPlace.vue"
 
 export default {
   name: "homeScreen",
@@ -133,6 +141,7 @@ export default {
     BurgerMenu,
     Swiper,
     SwiperSlide,
+    SearchResultsModal,
   },
   data() {
     return {
@@ -144,6 +153,8 @@ export default {
       photosReferences: [],
       placeImages: [],
       isLoading: true,
+      showModal: false,
+      searchResults: [],
     }
   },
   created() {
@@ -164,6 +175,13 @@ export default {
     }, 500)
   },
   methods: {
+    openModal() {
+      this.searchResults = ["Restaurantes", "Parques", "Museoas"]
+      this.showModal = true
+    },
+    closeModal() {
+      this.showModal = false
+    },
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
