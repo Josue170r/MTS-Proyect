@@ -1,7 +1,7 @@
 <template>
   <div class="absolute-screen h-full flex justify-center">
     <div class="justify-center items-center">
-      <div class="flex-1 bg-white mx-8 md:w-96">
+      <div class="flex-1 bg-white mx-8 md:w-full">
         <div
           class="mt-80 h-flex justify-center items-center bg-gray-100 rounded-lg"
         >
@@ -46,7 +46,7 @@
                 :to="{
                   name: 'login',
                 }"
-                class="font-baskerville mx-4 text-md text-orange-300 mt-8 cursor-pointer hover:text-white"
+                class="font-baskerville mx-4 text-lg text-orange-300 mt-8 cursor-pointer hover:text-black"
               >
                 Iniciar Sesión
               </router-link>
