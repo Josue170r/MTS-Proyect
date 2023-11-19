@@ -87,7 +87,10 @@
               Viajes Proximos
             </h1>
           </div>
-          <PlusIcon class="ml-auto" />
+
+          <button type="button" @click="goToNewTripForm" class="ml-auto">
+            <PlusIcon class="ml-auto" />
+          </button>
         </div>
         <!--Div para la ruta 1 de viajes-->
         <div class="flex flex-row ml-2 mr-0 items-center justify-center">
@@ -102,9 +105,10 @@
           </div>
           <GreaterThanIcon class="ml-auto" />
         </div>
+
         <!--Div para la ruta 1 de viajes-->
 
-        <!--Div para la ruta 2 de viajes-->
+        <!--Div para la ruta 2 de viajes--
         <div class="flex flex-row ml-2 mr-0 items-center justify-center">
           <LocalitationIcon3 />
           <div class="flex-col">
@@ -117,9 +121,9 @@
           </div>
           <GreaterThanIcon class="ml-auto" />
         </div>
-        <!--Div para la ruta21 de viajes-->
+        --Div para la ruta21 de viajes--
 
-        <!--Div para la ruta 3 de viajes-->
+        --Div para la ruta 3 de viajes-
         <div class="flex flex-row ml-2 mr-0 items-center justify-center">
           <LocalitationIcon3 />
           <div class="flex-col">
@@ -132,7 +136,8 @@
           </div>
           <GreaterThanIcon class="ml-auto" />
         </div>
-        <!--Div para la ruta 3 de viajes-->
+        --Div para la ruta 3 de viajes--
+      -->
 
         <!--Div del else-->
       </div>
