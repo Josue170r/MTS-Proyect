@@ -2,13 +2,11 @@
   <div class="absolute-screen h-full flex justify-center">
     <div class="justify-center items-center">
       <div class="flex-1 bg-white mx-8 md:w-full">
-        <div
-          class="mt-80 h-flex justify-center items-center bg-gray-100 rounded-lg"
-        >
+        <div class="mt-80 h-flex justify-center items-center bg-gray-100">
           <img
             src="@/assets/images/DestinoMX.png"
             alt="logo"
-            class="mx-auto w-64 p-2 pl-8"
+            class="mx-auto w-64 p-2 pl-8 pt-8"
           />
           <div class="w-full px-5 py-5 pb-8">
             <h1 class="text-gray-800 font-bold text-2xl mb-4">
@@ -18,9 +16,7 @@
               Favor de introducir su email para recuperar la contraseña.
             </p>
             <form @submit.prevent="loginJWT">
-              <div
-                class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
-              >
+              <div class="flex items-center border-2 py-2 px-3 mb-4 bg-white">
                 <AtIcon />
                 <input
                   id="username"
@@ -33,6 +29,7 @@
               </div>
               <button
                 :disabled="isFormEmpty"
+                type="submit"
                 class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-6 bg-orange-300"
                 :class="[
                   isFormEmpty
@@ -70,17 +67,19 @@ export default {
   },
   data() {
     return {
-      username: "",
+      user: {
+        username: "Josue",
+      },
     }
   },
   computed: {
     isFormEmpty() {
-      return !this.username
+      return !this.user.username
     },
   },
   methods: {
     async loginJWT() {
-      console.log(this.username)
+      console.log(this.user.username)
     },
   },
 }
@@ -92,11 +91,13 @@ export default {
 }
 
 .absolute-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url("@/assets/images/image005.webp");
   background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: absolute;
   background-position: center;
-  height: 100vh;
 }
 </style>

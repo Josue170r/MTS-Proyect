@@ -1,77 +1,134 @@
 <template>
-  <div class="absolute-screen h-full flex justify-center">
+  <div class="absolute-screen min-h-screen flex justify-center">
     <div class="justify-center items-center">
-      <div class="flex-1 bg-white mx-8 md:w-full">
-        <div
-          class="mt-80 h-flex justify-center items-center bg-gray-100 rounded-md"
-        >
-          <img
-            src="@/assets/images/DestinoMX.png"
-            alt="logo"
-            class="mx-auto w-64 p-2 pl-8"
-          />
-          <div class="w-full px-5 py-5 pb-8">
-            <h1 class="text-gray-800 font-bold text-2xl mb-4">
-              Recupera tu contraseña
-            </h1>
-            <p class="text-sm text-gray-800 mb-7">
-              Favor de introducir su email para recuperar la contraseña.
-            </p>
-            <form @submit.prevent="loginJWT">
-              <div
-                class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
-              >
-                <AtIcon />
-                <input
-                  id="username"
-                  v-model="username"
-                  class="w-full pl-2 outline-none border-none bg-white"
-                  type="text"
-                  name="email"
-                  placeholder="Usuario o Email"
-                />
-              </div>
-              <button
-                :disabled="isFormEmpty"
-                class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-6 bg-orange-300"
-                :class="[
-                  isFormEmpty
-                    ? 'opacity-60 cursor-not-allowed'
-                    : 'hover:outline hover:outline-1 hover:outline-orange-400',
-                ]"
-              >
-                Recuperar Contraseña
-              </button>
-              <router-link
-                :to="{
-                  name: 'login',
-                }"
-                class="font-baskerville mx-4 text-lg text-orange-300 mt-8 cursor-pointer hover:text-black"
-              >
-                Iniciar Sesión
-              </router-link>
-            </form>
-          </div>
+      <div class="pt-16 flex justify-center text-center">
+        <div>
+          <BackButton class="-ml-24" />
         </div>
+        <h1 class="text-4xl mb-8 text-white font-baskerville">
+          ¡Hola {{ user.username }}!
+        </h1>
+      </div>
+      <div class="flex flex-col items-center">
+        <img
+          src="@/assets/images/user_image2.png"
+          alt="logo"
+          class="mx-auto w-64 p-2 pl-8"
+        />
+        <button class="bg-white rounded-full h-10 w-10 ml-32 -mt-10">
+          <PlusCircleIcon />
+        </button>
+      </div>
+      <div class="flex-1 bg-gray-100 md:w-full rounded-xl mt-32">
+        <v-card class="mx-auto w-[340px] rounded-xl" max-width="600">
+          <v-list>
+            <div class="mt-4 mb-8">
+              <div class="flex items-center ml-4">
+                <v-icon color="#fed7aa" size="30">mdi-account</v-icon>
+                <v-list-item class="ml-3">
+                  {{ user.name }}
+                </v-list-item>
+                <div class="ml-16">
+                  <v-tooltip text="Editar Cuenta">
+                    <template v-slot:activator="{ props }">
+                      <button v-bind="props">
+                        <v-icon color="#fed7aa" size="30">mdi-pencil</v-icon>
+                      </button>
+                    </template>
+                  </v-tooltip>
+                </div>
+              </div>
+
+              <v-divider
+                :thickness="3"
+                class="border-opacity-100"
+                inset
+              ></v-divider>
+
+              <div class="flex items-center ml-4">
+                <v-icon color="#fed7aa" size="30">mdi-lock</v-icon>
+                <v-list-item class="ml-3" title="Cambiar Contraseña">
+                </v-list-item>
+                <div class="ml-9">
+                  <v-tooltip text="Cambiar Contraseña">
+                    <template v-slot:activator="{ props }">
+                      <button v-bind="props">
+                        <v-icon color="#fed7aa" size="30"
+                          >mdi-arrow-right-bold-circle-outline</v-icon
+                        >
+                      </button>
+                    </template>
+                  </v-tooltip>
+                </div>
+              </div>
+
+              <v-divider
+                :thickness="3"
+                class="border-opacity-100"
+                inset
+              ></v-divider>
+
+              <div class="flex items-center ml-4">
+                <v-icon color="#fed7aa" size="30">mdi-email</v-icon>
+                <v-list-item class="ml-3">
+                  {{ user.email }}
+                </v-list-item>
+              </div>
+
+              <v-divider
+                :thickness="3"
+                class="border-opacity-100"
+                inset
+              ></v-divider>
+
+              <div class="flex items-center ml-4">
+                <v-icon color="#fed7aa" size="30">mdi-close-circle</v-icon>
+                <v-list-item class="ml-3" title="Eliminar Cuenta">
+                </v-list-item>
+                <div class="ml-16">
+                  <v-tooltip text="Eliminar Cuenta">
+                    <template v-slot:activator="{ props }">
+                      <button class="ml-2" v-bind="props">
+                        <v-icon color="#fed7aa" size="30"
+                          >mdi-arrow-right-bold-circle-outline</v-icon
+                        >
+                      </button>
+                    </template>
+                  </v-tooltip>
+                </div>
+              </div>
+            </div>
+          </v-list>
+        </v-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import AtIcon from "@/components/icons/atIcon"
-// import { apiFromBackend } from "@/helpers/ApiFromBackend"
-// import { toast } from "vue3-toastify"
+// import AtIcon from "@/components/icons/atIcon"
+import BackButton from "@/components/buttons/BackButton"
+import PlusCircleIcon from "@/components/icons/PlusCircleIcon"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
 
 export default {
   name: "LoginForm",
   components: {
-    AtIcon,
+    BackButton,
+    PlusCircleIcon,
   },
   data() {
     return {
-      username: "",
+      user: {
+        username: "Josue",
+        name: "Josue Montalban",
+        email: "josuemonro@gmail.com",
+      },
     }
+  },
+  created() {
+    // this.getUserInformation()
   },
   computed: {
     isFormEmpty() {
@@ -79,8 +136,19 @@ export default {
     },
   },
   methods: {
-    async loginJWT() {
-      console.log(this.username)
+    async getUserInformation() {
+      try {
+        const response = await apiFromBackend.get("/api/perfil", {})
+        console.log(response)
+      } catch ({ response }) {
+        console.log("Reesponse:", response)
+        toast(response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
     },
   },
 }
@@ -99,5 +167,9 @@ export default {
   height: 100vh;
   /* Ajusta el valor de alpha (a) para cambiar la opacidad (0 es transparente, 1 es opaco) */
   background-color: rgba(0, 0, 0, 0.5); /* Ejemplo con opacidad al 50% */
+}
+
+.customize-color {
+  color: #fed7aa;
 }
 </style>
