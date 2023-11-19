@@ -5,7 +5,7 @@ export const routerAutenticacion = Router();
 
 // Crear cuenta
 // Recibe:
-// Nombre, ApellidoP, ApellidoM, CorreoElectronico, Usuario, contrasena
+// Nombre, ApellidoP, apellidoM, CorreoElectronico, Usuario, contrasena
 // Funciona OK
 
 routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
@@ -28,7 +28,8 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
           err: err,
         });
       } else if (rows.length === 0) {
-        mySqlConnection.query(`insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
+        mySqlConnection.query(
+          `insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,Contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
           (err) => {
             if (err) {
               res.status(500).json({
