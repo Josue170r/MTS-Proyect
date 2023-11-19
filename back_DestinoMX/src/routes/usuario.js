@@ -23,3 +23,27 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
     });
   }
 });
+
+routerUsuario.get("/api/perfil", (req, res) => {
+  if (!req.session.usuario) {
+    console.log(req.session.usuario)
+    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+  } else {
+    const consultaDeObtencionDeDatos = `SELECT Usuario,Nombre,ApellidoP,ApellidoM,CorreoElectronico FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+    mySqlConnection.query(consultaDeObtencionDeDatos, (err, rows, fields) => {
+      if (err) {
+        res.status(500).json({
+          exito: false,
+          mensaje: "No se pudieron obtener los datos del usuario.",
+          err: err,
+        });
+      } else {
+        res.status(200).json({
+          exito: true,
+          mensaje: "Datos obtenidos correctamente",
+          datosUsuario: {...rows[0]}
+        });
+      }
+    });
+  }
+});

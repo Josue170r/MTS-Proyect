@@ -29,17 +29,6 @@
   </div>
 </template>
 
-<style scoped>
-.startup-screen {
-  background-image: url("@/assets/images/fondoPantallaInicio.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  height: 100vh;
-}
-</style>
-
 <script>
 export default {
   name: "StartupScreen",
@@ -58,3 +47,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.startup-screen {
+  background-image: url("@/assets/images/fondoPantallaInicio.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  height: 100vh;
+}
+</style>

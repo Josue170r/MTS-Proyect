@@ -9,7 +9,6 @@ import homeScreen from "@/modules/auth/views/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
-//import SearchTrip from "@/components/Viajes/SearchTrip.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
 import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 import MyTrip from "@/components/Viajes/MyTrip.vue"
@@ -46,13 +45,26 @@ const routes = [
     component: NewTrip,
   },
   {
-    path: "/about",
+    path: "/forgot-password",
     name: "about",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+      import(
+        /* webpackChunkName: "about" */ "@/modules/user/screens/ForgotPassword.vue"
+      ),
+  },
+  {
+    path: "/user/profile",
+    name: "user-profile",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ "@/modules/user/loged/UserProfile.vue"
+      ),
   },
   {
     path: "/map",
