@@ -10,7 +10,7 @@ routerPreferencias.post("/api/PreferenciasRead/",(req,res) =>{
     const idUsuario = req.query.idUsuario;
     //const idCatPreferencias = req.body.idUsuarioPreferencias;
 
-    mySqlConnection.query(`SELECT catpreferencias.idPlacesTipo FROM catpreferencias INNER JOIN preferencias ON preferencias.idCatPreferencias=catpreferencias.idCatPreferencias WHERE preferencias.idUsuario="${idUsuario}")`,(err) =>{
+    mySqlConnection.query(`SELECT catpreferencias.idPlacesTipo FROM catpreferencias INNER JOIN preferencias ON preferencias.idCatPreferencias=catpreferencias.idCatPreferencias WHERE preferencias.idUsuario="${idUsuario}"`,(err,results) =>{
         if(err){//Caso de error
             return res.status(400).json({
                 success: false,
@@ -19,7 +19,7 @@ routerPreferencias.post("/api/PreferenciasRead/",(req,res) =>{
             });
         } else {
             //Muestra contenido existente
-            return res.json({mensaje:"Consulta realizada correctamente"});
+            return res.json(results);
         }    
     });
 });
@@ -68,7 +68,7 @@ routerPreferencias.post("/api/PreferenciasInsert", (req, res) => {
 
 
 //Modificacion - Rodrigo
-routerPreferencias.post("/api/preferentsUpdate/", (req,res)=>{
+routerPreferencias.post("/api/PreferenciasUpdate/", (req,res)=>{
    
     const idUsuario=req.body.idUsuario;
     const idPreferencias=req.body.idUsuarioPreferencias;
@@ -103,22 +103,39 @@ routerPreferencias.post("/api/preferentsUpdate/", (req,res)=>{
             });
         }
         else{
-            for(const key in idPreferencias){
-                const value=idPreferencias[key];
-                
-                mySqlConnection.query(`insert into preferencias values (${idUsuario}, "${value}");`,(err2)=>{
-                    if(err2){
-                        return res.status(400).json({
-                            success: false,
-                            error: "Error al conectar a la base",
-                            message: err2
-                        });
-                    }
+            const promesasConsultas = [];
+
+            for (const key in idPreferencias) {
+                const value = idPreferencias[key];
+
+                const promesaConsulta = new Promise((resolve, reject) => {
+                    mySqlConnection.query(`insert into preferencias values (${idUsuario}, "${value}");`, (err2) => {
+                        if (err2) {
+                            reject(err2);
+                        } else {
+                            resolve();
+                        }
+                    });
                 });
+
+                promesasConsultas.push(promesaConsulta);
             }
-            return res.json({mensaje: "Se han modificado correctamente"});
-        } 
-        
-    
+
+            // Utiliza Promise.all para esperar que todas las consultas se completen
+            Promise.all(promesasConsultas)
+                .then(() => {
+                    // Todas las consultas fueron exitosas
+                    return res.json({ mensaje: "Se han modificado correctamente" });
+                })
+                .catch((error) => {
+                    // Al menos una consulta falló
+                    console.error('Error en al menos una consulta');
+                    return res.status(400).json({
+                        success: false,
+                        error: "errorSQL",
+                        message: error.message
+                    });
+                });
+        }    
     });
 });
