@@ -23,7 +23,8 @@ USE `mts_database` ;
 CREATE TABLE IF NOT EXISTS `mts_database`.`Usuario` (
   `idUsuario` INT NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(20) NOT NULL,
-  `Apellidos` TEXT NOT NULL,
+  `ApellidoP` TEXT NOT NULL,
+  `ApellidoM` TEXT NULL,
   `CorreoElectronico` TEXT NOT NULL,
   `Usuario` TEXT NOT NULL,
   `contrasena` VARCHAR(32) NOT NULL,
@@ -37,7 +38,7 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`Favoritos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`Favoritos` (
-  `idPlaceLugar` TEXT NOT NULL,
+  `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Favoritos_Usuario_idx` (`idUsuario` ASC) VISIBLE,
@@ -65,8 +66,8 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`Viajes` (
   CONSTRAINT `fk_Viajes_Usuario1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `mts_database`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -74,7 +75,7 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`Historial`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`Historial` (
-  `idPlaceLugar` TEXT NOT NULL,
+  `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Historial_Usuario_idx` (`idUsuario` ASC) INVISIBLE,
@@ -90,7 +91,7 @@ ENGINE = InnoDB;
 -- Table `mts_database`.`LugaresDeViajes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`LugaresDeViajes` (
-  `idPlacesLugar` TEXT NOT NULL,
+  `idPlacesLugar` VARCHAR(500) NOT NULL,
   `idViajes` INT NOT NULL,
   `fechaEspecifica` DATE NOT NULL,
   PRIMARY KEY (`idPlacesLugar`, `idViajes`),
@@ -102,6 +103,85 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`LugaresDeViajes` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `mts_database`.`catPreferencias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mts_database`.`catPreferencias` (
+  `idCatPreferencias` VARCHAR(30) NOT NULL,
+  `idPlacesTipo` VARCHAR(26) NOT NULL,
+  PRIMARY KEY (`idCatPreferencias`, `idPlacesTipo`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mts_database`.`Preferencias`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mts_database`.`Preferencias` (
+  `idUsuario` INT NOT NULL,
+  `idCatPreferencias` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`idUsuario`, `idCatPreferencias`),
+  INDEX `fk_Preferencias_Usuario1_idx` (`idUsuario` ASC) VISIBLE,
+  INDEX `fk_Preferencias_catPreferencias1_idx` (`idCatPreferencias` ASC) VISIBLE,
+  CONSTRAINT `fk_Preferencias_Usuario1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `mts_database`.`Usuario` (`idUsuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Preferencias_catPreferencias1`
+    FOREIGN KEY (`idCatPreferencias`)
+    REFERENCES `mts_database`.`catPreferencias` (`idCatPreferencias`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+insert into catPreferencias values 
+('parque de atracciones','amusement_park'),
+('parque de atracciones','tourist_attraction'),
+('lugares religiosos','church'),
+('lugares religiosos','hindu_temple'),
+('lugares religiosos','mosque'),
+('lugares religiosos','synagogue'),
+('parque y areas naturales','aquarium'),
+('parque y areas naturales','campground'),
+('parque y areas naturales','florist'),
+('parque y areas naturales','park'),
+('parque y areas naturales','zoo'),
+('museos y galerias','art_gallery'),
+('museos y galerias','museum'),
+('museos y galerias','painter'),
+('bares y pubs','bar'),
+('bares y pubs','liquor_store'),
+('parque y areas naturales','night_club'),
+('centros de entretenimiento','bowling_alley'),
+('centros de entretenimiento','casino'),
+('centros de entretenimiento','movie_rental'),
+('centros de entretenimiento','movie_theater'),
+('centros de entretenimiento','stadium'),
+('restaurantes','restaurant'),
+('cafeterias','bakery'),
+('cafeterias','cafe'),
+('gym','gym'),
+('plazas','beauty_salon'),
+('plazas','clothing_store'),
+('plazas','department_store'),
+('plazas','electronics_store'),
+('plazas','furniture_store'),
+('plazas','hair_care'),
+('plazas','hardware_store'),
+('plazas','home_goods_store'),
+('plazas','jewelry_store'),
+('plazas','pet_store'),
+('plazas','shoe_store'),
+('plazas','shopping_mall'),
+('plazas','spa'),
+('plazas','storage'),
+('plazas','store'),
+('hoteles','lodging'),
+('bibliotecas','book_store'),
+('bibliotecas','library'),
+('momumentos y lugares publicos','city_hall'),
+('momumentos y lugares publicos','local_government_office');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

@@ -5,8 +5,13 @@ export const routerAutenticacion = Router();
 
 // Crear cuenta
 // Recibe:
+<<<<<<< HEAD
 // Nombre, ApellidoP, apellidoM, CorreoElectronico, Usuario, contrasena
+=======
+// Nombre, ApellidoP, ApellidoM, CorreoElectronico, Usuario, contrasena
+>>>>>>> 565af9a1c674bb7025a37b23f28cb5247b1b01e8
 // Funciona OK
+
 routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
   const {
     Nombre,
@@ -15,7 +20,7 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
     CorreoElectronico,
     Usuario,
     contrasena,
-  } = req.query;
+  } = req.body;
 
   mySqlConnection.query(
     `select * from usuario where CorreoElectronico= '${CorreoElectronico}' or Usuario='${Usuario}';`,
@@ -28,7 +33,11 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
         });
       } else if (rows.length === 0) {
         mySqlConnection.query(
+<<<<<<< HEAD
           `insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,Contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
+=======
+          `insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
+>>>>>>> 565af9a1c674bb7025a37b23f28cb5247b1b01e8
           (err) => {
             if (err) {
               res.status(500).json({
@@ -64,8 +73,9 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
 // CorreoElectronico o Usuario, contrasena
 // Funciona OK
 routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
+  const { Usuario, contrasena } = req.body
   mySqlConnection.query(
-    `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${req.query.credencial}" OR Usuario = "${req.query.credencial}"`,
+    `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -79,7 +89,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           .json({ exito: false, mensaje: "Usuario no encontrado." });
       } else {
         const contrasenaBD = rows[0].contrasena;
-        if (contrasenaBD === req.query.contrasena) {
+        if (contrasenaBD === contrasena) {
           req.session.usuario = {
             idUsuario: rows[0].idUsuario,
           };

@@ -1,6 +1,8 @@
 <template>
-  <div class="min-h-screen w-full flex flex-col md:flex-row justify-center">
-    <div class="min-h-screen flex flex-col items-center mx-auto">
+  <div
+    class="startup-screen min-h-screen w-full flex flex-col md:flex-row justify-center"
+  >
+    <div class="flex flex-col items-center mx-auto">
       <div class="justify-center items-center">
         <img
           src="@/assets/images/DestinoMX.png"
@@ -10,11 +12,13 @@
 
         <button
           type="button"
+          @click="goToLoginView"
           class="block w-64 mt-96 py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
         >
           Iniciar Sesión
         </button>
         <button
+          @click="goToRegisterForm"
           type="button"
           class="block w-64 py-4 rounded-lg text-black font-semibold bg-white"
         >
@@ -25,8 +29,27 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "StartupScreen",
+  components: {},
+  methods: {
+    goToLoginView() {
+      this.$router.push({
+        name: "login",
+      })
+    },
+    goToRegisterForm() {
+      this.$router.push({
+        name: "register-form",
+      })
+    },
+  },
+}
+</script>
+
 <style scoped>
-body {
+.startup-screen {
   background-image: url("@/assets/images/fondoPantallaInicio.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -35,10 +58,3 @@ body {
   height: 100vh;
 }
 </style>
-
-<script>
-export default {
-  name: "StartupScreen",
-  components: {},
-};
-</script>

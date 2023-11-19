@@ -1,12 +1,23 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import LoginForm from "@/modules/auth/views/LoginForm.vue";
-import StartupScreen from "@/modules/auth/views/StartupScreen.vue";
+import { createRouter, createWebHashHistory } from "vue-router"
+import LoginForm from "@/modules/auth/views/LoginForm.vue"
+import AddToTrip from "@/components/Viajes/AddToTrip.vue"
+import PlaceDescription from "@/components/images/PlaceDescription.vue"
+import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
+import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
+import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
+import homeScreen from "@/modules/auth/views/homeScreen.vue"
+import NewTrip from "@/components/Viajes/NewTrip.vue"
+import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
+import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
+import NotFoundPage from "@/screens/NotFoundPage"
+import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
+import MyTrip from "@/components/Viajes/MyTrip.vue"
 
 const routes = [
   {
-    path: "/", // Cambia la ruta principal a "/startup" o cualquier otra que desees
+    path: "/",
     name: "startup",
-    component: StartupScreen, // Asocia la ruta principal al componente StartupScreen
+    component: StartupScreen,
   },
   {
     path: "/login",
@@ -14,19 +25,76 @@ const routes = [
     component: LoginForm,
   },
   {
-    path: "/about",
+    path: "/register",
+    name: "register-form",
+    component: RegisterForm,
+  },
+  {
+    path: "/addtotrip",
+    name: "addtotrip",
+    component: AddToTrip,
+  },
+  {
+    path: "/placedescription",
+    name: "placedescription",
+    component: PlaceDescription,
+  },
+  {
+    path: "/newtrip",
+    name: "newtrip",
+    component: NewTrip,
+  },
+  {
+    path: "/forgot-password",
     name: "about",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+      import(
+        /* webpackChunkName: "about" */ "@/modules/user/screens/ForgotPassword.vue"
+      ),
   },
-];
+  {
+    path: "/map",
+    name: "mapa-interactivo",
+    component: GoogleMaps,
+  },
+  {
+    path: "/calendartrip",
+    name: "Itinerario",
+    component: ItinerarioViajes,
+  },
+  {
+    path: "/home",
+    name: "home",
+    component: homeScreen,
+  },
+  {
+    path: "/preferences",
+    name: "Preferences-Screen",
+    component: PreferencesScreen,
+  },
+  {
+    name: "NoPageFound",
+    path: "/:pathMatch(.*)*",
+    component: NotFoundPage,
+  },
+  {
+    path: "/editTrip",
+    name: "EditTrip",
+    component: EditTripScreen,
+  },
+  {
+    path: "/mytrip",
+    name: "mytrip",
+    component: MyTrip,
+  },
+]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-});
+})
 
-export default router;
+export default router
