@@ -1,15 +1,17 @@
 <template>
   <div class="absolute-screen h-full flex justify-center">
-    <div class="justify-center items-center">
-      <div class="flex-1 bg-white mx-8 md:w-full">
-        <div class="mt-80 h-flex justify-center items-center bg-gray-100">
+    <div class="justify-center items-center rounded-xl">
+      <div class="flex-1 bg-white mx-8 md:w-full rounded-xl">
+        <div
+          class="mt-80 h-flex justify-center items-center bg-gray-100 rounded-xl"
+        >
           <img
             src="@/assets/images/DestinoMX.png"
             alt="logo"
             class="mx-auto w-64 p-2 pl-8 pt-8"
           />
-          <div class="w-full px-5 py-5 pb-8">
-            <h1 class="text-gray-800 font-bold text-2xl mb-4">
+          <div class="w-full px-5 py-5 pb-8 rounded-xl">
+            <h1 class="text-gray-800 font-bold text-2xl mb-4 rounded-xl">
               Recupera tu contraseña
             </h1>
             <p class="text-sm text-gray-800 mb-7">
@@ -30,7 +32,7 @@
               <button
                 :disabled="isFormEmpty"
                 type="submit"
-                class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-6 bg-orange-300"
+                class="font-quicksand block w-full mt-4 py-2 rounded-xl text-white font-semibold mb-6 bg-orange-300"
                 :class="[
                   isFormEmpty
                     ? 'opacity-60 cursor-not-allowed'
@@ -43,7 +45,7 @@
                 :to="{
                   name: 'login',
                 }"
-                class="font-baskerville mx-4 text-lg text-orange-300 mt-8 cursor-pointer hover:text-black"
+                class="font-baskerville mx-4 text-xl text-orange-300 mt-8 cursor-pointer hover:text-black"
               >
                 Iniciar Sesión
               </router-link>
