@@ -161,7 +161,7 @@ export default {
       })
     setTimeout(() => {
       this.getArrayPlaces()
-    }, 500)
+    }, 1000)
   },
   methods: {
     goToMapScreen() {
@@ -200,8 +200,10 @@ export default {
             )
           }
         })
-        this.getNearImages()
         console.log(this.nearPlaces)
+        setTimeout(() => {
+          this.getNearImages()
+        }, 500)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
