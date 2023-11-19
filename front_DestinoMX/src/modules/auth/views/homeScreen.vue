@@ -1,98 +1,109 @@
 <template>
   <div :class="[isLoading ? 'fixed opacity-50' : '...']">
-    <!-- Contenedor de la imagen de fondo -->
-    <div class="relative">
-      <!-- Contenedor del botón de avatar -->
-      <div class="absolute top-6 right-2 transform -translate-x-1">
-        <AvatarButton />
-      </div>
-      <div>
-        <BurgerMenu />
-      </div>
-
-      <!-- Contenedor de la barra de búsqueda y botón -->
-      <div
-        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
-      >
-        <!-- Barra de búsqueda -->
-        <input
-          type="text"
-          class="w-48 p-2 outline-none border-none bg-white"
-          placeholder="Buscar..."
-        />
-        <button>
-          <SearchIcon />
-        </button>
-      </div>
-
-      <img
-        src="@/assets/images/imagen003.png"
-        alt="imagen003"
-        class="w-full h-full object-cover"
-      />
-    </div>
-    <div class="flex items-center justify-center w-full flex-col">
-      <h1 class="text-xl text-center">Usted está aqui</h1>
-      <GoogleMap
-        @click="goToMapScreen"
-        :api-key="apiKey"
-        mapTypeId="terrain"
-        style="width: 88%; height: 210px; border-radius: 20px; overflow: hidden"
-        :center="relativePosition"
-        :zoom="14"
-      >
-        <Marker :options="{ position: relativePosition }" />
-      </GoogleMap>
-    </div>
-
-    <div class="flex items-center justify-center w-full flex-col">
-      <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
-      <div class="flex items-center justify-center w-full flex-col mr-4 ml-4">
-        <div class="flex justify-center items-center flex-col" v-if="isLoading">
-          <div
-            class="custom-loader mt-16"
-            :class="{ 'animate-custom': index === 0 }"
-          ></div>
-          <h1>Cargando sugerencias</h1>
+    <div class="min-h-screen w-full flex flex-col md:flex-row">
+      <div class="relative md:w-1/2 md:order-1">
+        <div class="absolute top-6 right-2 transform -translate-x-1">
+          <AvatarButton />
         </div>
-
-        <swiper
-          v-else
-          :slides-per-view="3"
-          :space-between="10"
-          :pagination="{
-            clickable: true,
-            el: '.swiper-pagination-custom',
-          }"
-          :modules="modules"
-          class="swiper-slide"
+        <div>
+          <BurgerMenu />
+        </div>
+        <div
+          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
         >
-          <swiper-slide
-            v-for="(place, index) in nearPlaces"
-            :key="place"
-            class="..."
+          <!-- Barra de búsqueda -->
+          <input
+            type="text"
+            class="w-48 p-2 outline-none border-none bg-white"
+            placeholder="Buscar..."
+          />
+          <button>
+            <SearchIcon />
+          </button>
+        </div>
+        <img
+          src="@/assets/images/imagen003.png"
+          alt="imagen003"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="md:w-1/2 md:order-2">
+        <div class="flex items-center justify-center w-full flex-col">
+          <h1 class="text-xl text-center mt-4">Usted está aqui</h1>
+          <GoogleMap
+            @click="goToMapScreen"
+            :api-key="apiKey"
+            mapTypeId="terrain"
+            :class="[
+              'w-full',
+              'md:w-3/4',
+              'lg:w-2/3',
+              'xl:w-1/2',
+              'h-64',
+              'md:h-60',
+              'lg:h-80',
+              'xl:h-100',
+            ]"
+            style="border-radius: 20px; width: 88%; overflow: hidden"
+            :center="relativePosition"
+            :zoom="14"
           >
-            <div class="mt-8 mb-6 flex items-center justify-between flex-col">
-              <img
-                @click="goToPlaceDescription(place)"
-                :src="placeImages[index]"
-                :alt="place.name"
-                class="mx-8 rounded-lg"
-              />
-              <p class="font-calibri mt-8">{{ place.name }}</p>
-              <!-- <p class="mt-4">{{ place.rating }}</p> -->
-              <v-rating
-                half-increments
-                hover
-                :length="5"
-                :size="16"
-                :model-value="place.rating"
-                color="rgb(232, 176, 36)"
-                active-color="rgb(232, 176, 36)"
-              />
+            <Marker :options="{ position: relativePosition }" />
+          </GoogleMap>
+          <div class="flex items-center justify-center w-full flex-col mb-8">
+            <h1 class="text-xl text-center mt-8">Explora cerca de ti</h1>
+            <div
+              class="flex items-center justify-center w-full flex-col mr-4 ml-4"
+            >
+              <div
+                class="flex justify-center items-center flex-col"
+                v-if="isLoading"
+              >
+                <div
+                  class="custom-loader mt-16"
+                  :class="{ 'animate-custom': index === 0 }"
+                ></div>
+                <h1>Cargando sugerencias</h1>
+              </div>
+              <swiper
+                v-else
+                :slides-per-view="3"
+                :space-between="10"
+                :pagination="{
+                  clickable: true,
+                  el: '.swiper-pagination-custom',
+                }"
+                :modules="modules"
+                class="swiper-slide"
+              >
+                <swiper-slide
+                  v-for="(place, index) in nearPlaces"
+                  :key="place"
+                  class="..."
+                >
+                  <div class="mt-4 flex items-center justify-between flex-col">
+                    <img
+                      @click="goToPlaceDescription(place)"
+                      :src="placeImages[index]"
+                      :alt="place.name"
+                      class="mx-8 rounded-lg mt-2"
+                    />
+                    <p class="mt-4">{{ place.name }}</p>
+                    <v-rating
+                      half-increments
+                      hover
+                      :length="5"
+                      :size="16"
+                      :model-value="place.rating"
+                      color="rgb(232, 176, 36)"
+                      active-color="rgb(232, 176, 36)"
+                    />
+                  </div>
+                </swiper-slide>
+              </swiper>
             </div>
-          </swiper-slide>
-        </swiper>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -128,7 +139,7 @@ export default {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
       preference: "restaurant",
-      radio: 300,
+      radio: 900,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
