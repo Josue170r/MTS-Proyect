@@ -6,6 +6,7 @@ import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
+import { routerUsuario } from "./routes/usuario.js";
 
 // Inicializando la aplicacion.
 const app = express();
@@ -38,6 +39,7 @@ app.use(routerAutenticacion);
 app.use(routerViajes);
 app.use(routerFavoritos);
 app.use(routerCalendario);
+app.use(routerUsuario);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {

@@ -57,7 +57,7 @@
           >
             <Marker :options="{ position: relativePosition }" />
           </GoogleMap>
-          <div class="flex items-center justify-center w-full flex-col">
+          <div class="flex items-center justify-center w-full flex-col mb-8">
             <h1 class="text-xl text-center mt-8">Explora cerca de ti</h1>
             <div
               class="flex items-center justify-center w-full flex-col mr-4 ml-4"
@@ -89,6 +89,13 @@
                   class="..."
                 >
                   <div class="mt-4 flex items-center justify-between flex-col">
+                    <img
+                      @click="goToPlaceDescription(place)"
+                      :src="placeImages[index]"
+                      :alt="place.name"
+                      class="mx-8 rounded-lg mt-2"
+                    />
+                    <p class="mt-4">{{ place.name }}</p>
                     <v-rating
                       half-increments
                       hover
@@ -98,13 +105,6 @@
                       color="rgb(232, 176, 36)"
                       active-color="rgb(232, 176, 36)"
                     />
-                    <img
-                      @click="goToPlaceDescription(place)"
-                      :src="placeImages[index]"
-                      :alt="place.name"
-                      class="mx-8 rounded-lg mt-2"
-                    />
-                    <p class="font-calibri mb-8 mt-4">{{ place.name }}</p>
                   </div>
                 </swiper-slide>
               </swiper>
