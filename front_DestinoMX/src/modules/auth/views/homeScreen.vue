@@ -1,77 +1,110 @@
 <template>
-  <div id="app">
-    <!-- Contenedor de la imagen de fondo -->
-    <div class="relative">
-      <!-- Contenedor del botón de avatar -->
-      <div class="absolute top-6 right-2 transform -translate-x-1">
-        <AvatarButton />
-      </div>
-      <div>
-        <BurgerMenu />
-      </div>
-
-      <!-- Contenedor de la barra de búsqueda y botón -->
-      <div
-        class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
-      >
-        <!-- Barra de búsqueda -->
-        <input
-          type="text"
-          class="w-48 p-2 outline-none border-none bg-white"
-          placeholder="Buscar..."
-        />
-        <button>
-          <SearchIcon />
-        </button>
-      </div>
-
-      <img
-        src="@/assets/images/imagen003.png"
-        alt="imagen003"
-        class="w-full h-full object-cover"
-      />
-    </div>
-    <div class="flex items-center justify-center w-full flex-col">
-      <h1 class="text-xl text-center">Usted está aqui</h1>
-      <GoogleMap
-        @click="goToMapScreen"
-        :api-key="apiKey"
-        mapTypeId="terrain"
-        style="width: 88%; height: 210px; border-radius: 20px; overflow: hidden"
-        :center="relativePosition"
-        :zoom="14"
-      >
-        <Marker :options="{ position: relativePosition }" />
-      </GoogleMap>
-    </div>
-
-    <div class="flex items-center justify-center w-full flex-col">
-      <h1 class="text-xl text-center mt-4">Explora cerca de ti</h1>
-      <swiper
-        :slides-per-view="3"
-        :space-between="10"
-        :pagination="{
-          clickable: true,
-          el: '.swiper-pagination-custom',
-        }"
-        :modules="modules"
-        class="swiper-slide"
-      >
-        <swiper-slide
-          v-for="(place, index) in nearPlaces"
-          :key="place"
-          class="..."
+  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
+    <div class="min-h-screen w-full flex flex-col md:flex-row">
+      <div class="relative md:w-1/2 md:order-1">
+        <div class="absolute top-6 right-2 transform -translate-x-1">
+          <AvatarButton />
+        </div>
+        <div>
+          <BurgerMenu />
+        </div>
+        <div
+          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
         >
-          <div class="mt-8 flex items-center justify-between flex-col">
-            <img
-              :src="placeImages[index]"
-              :alt="place.name"
-              class="mx-8 rounded-lg"
-            />
-            <p class="font-calibri mt-8">{{ place.name }}</p>
+          <!-- Barra de búsqueda -->
+          <input
+            type="text"
+            class="w-48 p-2 outline-none border-none bg-white"
+            placeholder="Buscar..."
+          />
+          <button>
+            <SearchIcon />
+          </button>
+        </div>
+        <img
+          src="@/assets/images/imagen003.png"
+          alt="imagen003"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="md:w-1/2 md:order-2">
+        <div class="flex items-center justify-center w-full flex-col">
+          <h1 class="text-xl text-center mt-4">Usted está aqui</h1>
+          <GoogleMap
+            @click="goToMapScreen"
+            :api-key="apiKey"
+            mapTypeId="terrain"
+            :class="[
+              'w-full',
+              'md:w-3/4',
+              'lg:w-2/3',
+              'xl:w-1/2',
+              'h-64',
+              'md:h-60',
+              'lg:h-80',
+              'xl:h-100',
+            ]"
+            style="border-radius: 20px; width: 88%; overflow: hidden"
+            :center="relativePosition"
+            :zoom="14"
+          >
+            <Marker :options="{ position: relativePosition }" />
+          </GoogleMap>
+          <div class="flex items-center justify-center w-full flex-col">
+            <h1 class="text-xl text-center mt-8">Explora cerca de ti</h1>
+            <div
+              class="flex items-center justify-center w-full flex-col mr-4 ml-4"
+            >
+              <div
+                class="flex justify-center items-center flex-col"
+                v-if="isLoading"
+              >
+                <div
+                  class="custom-loader mt-16"
+                  :class="{ 'animate-custom': index === 0 }"
+                ></div>
+                <h1>Cargando sugerencias</h1>
+              </div>
+              <swiper
+                v-else
+                :slides-per-view="3"
+                :space-between="10"
+                :pagination="{
+                  clickable: true,
+                  el: '.swiper-pagination-custom',
+                }"
+                :modules="modules"
+                class="swiper-slide"
+              >
+                <swiper-slide
+                  v-for="(place, index) in nearPlaces"
+                  :key="place"
+                  class="..."
+                >
+                  <div class="mt-4 flex items-center justify-between flex-col">
+                    <v-rating
+                      half-increments
+                      hover
+                      :length="5"
+                      :size="16"
+                      :model-value="place.rating"
+                      color="rgb(232, 176, 36)"
+                      active-color="rgb(232, 176, 36)"
+                    />
+                    <img
+                      @click="goToPlaceDescription(place)"
+                      :src="placeImages[index]"
+                      :alt="place.name"
+                      class="mx-8 rounded-lg mt-2"
+                    />
+                    <p class="font-calibri mb-8 mt-4">{{ place.name }}</p>
+                  </div>
+                </swiper-slide>
+              </swiper>
+            </div>
           </div>
-        </swiper-slide>
-      </swiper>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -89,6 +122,7 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
+
 export default {
   name: "homeScreen",
   components: {
@@ -105,10 +139,11 @@ export default {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
       preference: "restaurant",
-      radio: 300,
+      radio: 900,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
+      isLoading: true,
     }
   },
   created() {
@@ -126,7 +161,7 @@ export default {
       })
     setTimeout(() => {
       this.getArrayPlaces()
-    }, 2000)
+    }, 500)
   },
   methods: {
     goToMapScreen() {
@@ -134,7 +169,16 @@ export default {
         name: "mapa-interactivo",
       })
     },
+    goToPlaceDescription(place) {
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          placeid: place.reference,
+        },
+      })
+    },
     async getArrayPlaces() {
+      this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
         const { data } = await getApiPreferences.get("/json", {
@@ -146,7 +190,7 @@ export default {
           },
         })
         this.nearPlaces = toRaw(data.results)
-        console.log(this.nearPlaces)
+        // console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -157,7 +201,7 @@ export default {
           }
         })
         this.getNearImages()
-        // console.log("Arreglo de lugares:", this.photosReferences)
+        console.log(this.nearPlaces)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -183,6 +227,7 @@ export default {
           imageURLs.push(imgUrl)
         }
         this.placeImages = toRaw(imageURLs)
+        this.isLoading = false
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
@@ -218,5 +263,43 @@ export default {
   height: 200px;
   object-fit: cover;
   background: transparent;
+}
+
+.custom-loader {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid rgb(232, 176, 36);
+  border-top: 4px solid transparent;
+  animation: spin 1s linear infinite;
+}
+
+.animate-custom {
+  animation: bounce 1s infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
 }
 </style>
