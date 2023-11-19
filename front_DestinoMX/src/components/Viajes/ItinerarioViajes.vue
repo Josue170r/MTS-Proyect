@@ -52,6 +52,7 @@
 
       <!--INSERTAR DIV GLOBAL CON FONDO-->
       <div class="bg-white rounded-lg p-8">
+        <!--Empieza el condicional-->
         <div
           class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
         >
@@ -77,6 +78,63 @@
             Crear Mi Primer Viaje
           </button>
         </div>
+        <!--div del condicional v-if isemptytrip=true-->
+
+        <!--Div del else-->
+        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
+          <div class="flex-col items-center justify-center">
+            <h1 class="text-gray-800 py-4 ml-8 text-2xl text-center font-bold">
+              Viajes Proximos
+            </h1>
+          </div>
+          <PlusIcon class="ml-auto" />
+        </div>
+        <!--Div para la ruta 1 de viajes-->
+        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
+          <LocalitationIcon3 />
+          <div class="flex-col">
+            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
+              Mi Viaje a Mazatlan
+            </h1>
+            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+              08 octubre-10 octubre
+            </h1>
+          </div>
+          <GreaterThanIcon class="ml-auto" />
+        </div>
+        <!--Div para la ruta 1 de viajes-->
+
+        <!--Div para la ruta 2 de viajes-->
+        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
+          <LocalitationIcon3 />
+          <div class="flex-col">
+            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
+              Mi Viaje a CDMX
+            </h1>
+            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+              25 octubre-27 octubre
+            </h1>
+          </div>
+          <GreaterThanIcon class="ml-auto" />
+        </div>
+        <!--Div para la ruta21 de viajes-->
+
+        <!--Div para la ruta 3 de viajes-->
+        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
+          <LocalitationIcon3 />
+          <div class="flex-col">
+            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
+              Mi Viaje a Queretaro
+            </h1>
+            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+              29 octubre-30 octubre
+            </h1>
+          </div>
+          <GreaterThanIcon class="ml-auto" />
+        </div>
+        <!--Div para la ruta 3 de viajes-->
+
+        <!--Div del else-->
       </div>
     </div>
   </div>
@@ -86,13 +144,18 @@
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import BellIcon from "@/components/icons/BellIcon.vue"
-
+import PlusIcon from "@/components/icons/PlusIcon.vue"
+import GreaterThanIcon from "@/components/icons/GreaterThanIcon.vue"
+import LocalitationIcon3 from "@/components/icons/LocalitationIcon3.vue"
 export default {
   name: "ItinerarioViajes",
   components: {
     BackButtonIcon,
     AvatarButton,
     BellIcon,
+    PlusIcon,
+    GreaterThanIcon,
+    LocalitationIcon3,
   },
 
   data() {
