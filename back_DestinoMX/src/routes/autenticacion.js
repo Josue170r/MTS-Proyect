@@ -19,7 +19,7 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
   } = req.body;
 
   mySqlConnection.query(
-    `select * from usuario where CorreoElectronico= '${CorreoElectronico}' or usuario='${Usuario}';`,
+    `select * from usuario where CorreoElectronico= '${CorreoElectronico}' or Usuario='${Usuario}';`,
     (err, rows) => {
       if (err) {
         res.status(500).json({
@@ -28,8 +28,7 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
           err: err,
         });
       } else if (rows.length === 0) {
-        mySqlConnection.query(
-          `insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
+        mySqlConnection.query(`insert into usuario(Nombre,ApellidoP,ApellidoM,CorreoElectronico,Usuario,contrasena) value('${Nombre}','${ApellidoP}','${ApellidoM}','${CorreoElectronico}','${Usuario}','${contrasena}');`,
           (err) => {
             if (err) {
               res.status(500).json({
