@@ -12,17 +12,21 @@
           class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-full flex items-center shadow-md"
         >
           <input
-            v-model="namePlacerToFind"
+            v-model="namePlaceToFind"
             type="text"
             class="w-48 p-2 outline-none border-none bg-gray-100 rounded-full"
             placeholder="Buscar..."
-            @input="FindPlacesFromImput"
+            @input="FindPlacesFromInput"
           />
-          <ul>
-            <li v-for="(place, index) in places" :key="index">
-              {{ place.name }}
-            </li>
-          </ul>
+          <div>
+            <v-container class="text-center">
+              <ul>
+                <li v-for="(place, index) in places.slice(0, 6)" :key="index">
+                  {{ place.name }}
+                </li>
+              </ul>
+            </v-container>
+          </div>
           <button class="p-2">
             <SearchIcon />
           </button>
@@ -248,7 +252,7 @@ export default {
         })
       }
     },
-    async FindPlacesFromImput() {
+    async FindPlacesFromInput() {
       try {
         const response = await getSearchPlaceApi.get("", {
           params: {
@@ -256,8 +260,9 @@ export default {
             key: this.apiKey,
           },
         })
+        console.log("Desde la API", response)
         this.places = response.data.results
-        console.log(this.namePlaceToFind)
+        console.log(this.response.data.results)
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
