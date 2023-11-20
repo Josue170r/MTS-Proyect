@@ -12,11 +12,8 @@ import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
 import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 import MyTrip from "@/components/Viajes/MyTrip.vue"
-<<<<<<< HEAD
 import AboutUs from "@/components/Viajes/AboutUs.vue"
-=======
 import Favoritos from "@/components/Viajes/Favoritos.vue"
->>>>>>> f36a85e829095d4fda08c07d38509c8b83a10bee
 
 const routes = [
   {
@@ -107,15 +104,12 @@ const routes = [
     component: MyTrip,
   },
   {
-<<<<<<< HEAD
     path: "/aboutus",
     name: "aboutus",
     component: AboutUs,
-=======
     path: "/favoritos",
     name: "favoritos",
     component: Favoritos,
->>>>>>> f36a85e829095d4fda08c07d38509c8b83a10bee
   },
 ]
 

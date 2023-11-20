@@ -85,26 +85,7 @@
           />
         </button>
 
-        <!--Botones descargar APPSTORE & GOOGLEPLAY
-        <div class="flex-row flex w-full items-center space-x-4">
-          <button class="p-2 rounded-full" @click="redirectToAppStore">
-            <img
-              src="@/assets/images/AppStore.jpeg"
-              alt="APP STORE"
-              class="w-full h-auto"
-            />
-          </button>
-
-          <button class="p-2 rounded-full" @click="redirectToGooglePlay">
-            <img
-              src="@/assets/images/GooglePlay.jpeg"
-              alt="GOOGLE PLAY"
-              class="w-full h-auto"
-            />
-          </button>
-        </div>
-        -->
-
+  
         <!--TERMINA DESCUBRIMIENTO PERSONALIZADO-->
 
         <!--SOPORTE TECNICO-->
@@ -194,13 +175,6 @@ export default {
     goToHome() {
       this.$router.push("/home")
     },
-
-    // redirectToGooglePlay() {
-    //   window.open("https://play.google.com/store/apps", "_blank")
-    // },
-    // redirectToAppStore() {
-    //   window.open("https://www.apple.com/app-store/", "_blank")
-    // },
   },
 }
 </script>
