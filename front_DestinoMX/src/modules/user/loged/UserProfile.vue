@@ -28,7 +28,7 @@
                 <v-list-item class="ml-3">
                   {{ user.name }}
                 </v-list-item>
-                <div class="ml-20">
+                <div class="ml-[75px]">
                   <v-row justify="center">
                     <v-dialog v-model="dialog" persistent width="1024">
                       <template v-slot:activator="{ props }">
@@ -37,15 +37,15 @@
                         </button>
                       </template>
                       <v-card>
-                        <v-card-title>
-                          <span class="text-h5">Editar Perfil</span>
+                        <v-card-title class="text-center">
+                          <span class="text-h5 text-center">Editar Perfil</span>
                         </v-card-title>
                         <v-card-text>
                           <v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  v-model="updateProfile.lastname"
+                                  v-model="updateProfile.name"
                                   label="Nombre"
                                   required
                                 ></v-text-field>
@@ -209,7 +209,7 @@ export default {
       }
     },
     async changeUserInformation() {
-      console.log(this.changeuser.email)
+      console.log(this.updateProfile)
       this.dialog = false
     },
   },
