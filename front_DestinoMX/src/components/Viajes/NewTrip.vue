@@ -3,9 +3,9 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/login" class="absolute top-7 left-1 transform">
-        <BackButtonIcon />
-      </router-link>
+      <button class="absolute top-7 left-1 transform">
+        <BackButton />
+      </button>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
@@ -168,7 +168,8 @@
 </template>
 
 <script>
-import BackButtonIcon from "@/components/icons/BackButtonIcon"
+// import BackButtonIcon from "@/components/icons/BackButtonIcon"
+import BackButton from "@/components/buttons/BackButton.vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { useForm, useField } from "vee-validate"
 import * as yup from "yup"
@@ -183,7 +184,7 @@ configure({
 export default {
   name: "NewTrip",
   components: {
-    BackButtonIcon,
+    BackButton,
     AvatarButton,
   },
   computed: {
