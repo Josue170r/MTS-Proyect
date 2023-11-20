@@ -122,6 +122,7 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "homeScreen",
@@ -150,6 +151,7 @@ export default {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
+        this.getArrayPlaces()
       })
       .catch((error) => {
         toast(error, {
@@ -159,9 +161,6 @@ export default {
           theme: "colored",
         })
       })
-    setTimeout(() => {
-      this.getArrayPlaces()
-    }, 500)
   },
   methods: {
     goToMapScreen() {
@@ -200,8 +199,8 @@ export default {
             )
           }
         })
-        this.getNearImages()
         console.log(this.nearPlaces)
+        this.getNearImages()
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -209,6 +208,7 @@ export default {
           autoClose: 1500,
           hideProgressBar: true,
         })
+        this.loginJWT()
       }
     },
     async getNearImages() {
@@ -237,12 +237,53 @@ export default {
         })
       }
     },
+    async loginJWT() {
+      try {
+        const response = await apiFromBackend.post("/api/cuenta-activa")
+        console.log("Respuesta exitosa:", response)
+
+        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado en el frontend.
+      } catch (error) {
+        if (error.response) {
+          // El servidor respondió con un status diferente de 2xx
+          console.error("Respuesta de error del servidor:", error.response.data)
+          toast(error.response.data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
+        } else if (error.request) {
+          // La solicitud fue hecha pero no se recibió respuesta
+          console.error("No se recibió respuesta del servidor:", error.request)
+          toast("No se recibió respuesta del servidor", {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
+        } else {
+          // Ocurrió un error durante la configuración de la solicitud
+          console.error(
+            "Error durante la configuración de la solicitud:",
+            error.message,
+          )
+          toast("Error durante la configuración de la solicitud", {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
+        }
+      }
+    },
   },
   setup() {
     return {
       modules: [Pagination],
     }
   },
+  verificar: {},
 }
 </script>
 

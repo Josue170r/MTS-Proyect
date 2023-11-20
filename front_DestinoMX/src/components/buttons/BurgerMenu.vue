@@ -9,7 +9,7 @@
           class="mx-auto sm:-mt-4 pl-4"
         />
       </div>
-      <router-link :to="{ name: 'startup' }" class="flex items-center"
+      <router-link :to="{ name: 'user-profile' }" class="flex items-center"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -26,7 +26,7 @@
         </svg>
         <h1 class="text-black">Mi perfil</h1></router-link
       >
-      <router-link :to="{ name: 'startup' }" class="flex items-center"
+      <router-link :to="{ name: 'favoritos' }" class="flex items-center"
         ><FavoriteIcon class="mr-2" />
         <h1 class="text-black">Favoritos</h1></router-link
       >
