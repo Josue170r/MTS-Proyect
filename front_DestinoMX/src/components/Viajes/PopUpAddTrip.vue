@@ -1,31 +1,62 @@
 <template>
   <div class="popup-overlay relative z-10">
     <div class="popup-container">
-      <h1 class="text-2xl font-bold mb-4">
+      <h1 class="text-2xl font-bold mb-2">
         ¿A qué viaje le gustaría agregar este destino?
       </h1>
 
-      <!--Slider-->
+      <div v-if="viajes.length">
+        <!--Slider-->
+        <v-carousel class="hide-arrows" vertical>
+          <v-carousel-item v-for="(viaje, index) in viajes" :key="index">
+            <v-row>
+              <!-- Contenido del slider -->
+              <v-col cols="12" md="6">
+                <img :src="viaje.img" alt="Imagen del viaje" />
+              </v-col>
+              <v-col cols="12" md="6">
+                <h2 class="text-xl font-semibold">{{ viaje.name }}</h2>
+                <p>{{ viaje.fechas }}</p>
+                <p>{{ viaje.description }}</p>
+              </v-col>
+            </v-row>
+          </v-carousel-item>
+        </v-carousel>
+      </div>
 
-      <!-- <p class="mt-4">Slider</p>
-      {{ viaje.img }}
-      {{ viaje.name }}
-      {{ viaje.rango }}
-      {{ viaje.description }}
-    </EditTrip>
-    </AddTrip>  -->
+      <div v-else>
+        <!-- Si no se tienen viajes -->
+        <p
+          class="flex font-quicksand rounded-lg text-black text-xl relative z-20"
+          style="
+            max-width: 80%;
+            margin: auto;
+            text-align: center;
+            padding: 0px;
+            margin-top: 40px;
+          "
+        >
+          ¡Vaya!, aún no tienes ningún viaje creado
+        </p>
+        <img
+          v-if="!viajes.length"
+          src="@/assets/images/piramide.png"
+          class="relative z-10"
+          style="opacity: 0.3"
+        />
+      </div>
 
       <!-- Botones -->
       <div class="flex justify-between mt-4">
         <button
           @click="cancel"
-          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 ml-8 bg-gray-100 p-2 custom-button"
+          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 ml-4 mr-4 bg-gray-100 p-2 custom-button"
         >
           Cancelar
         </button>
         <button
           @click="createNewTrip"
-          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 mr-8 bg-orange-500 p-2 custom-button"
+          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 mr-4 ml-4 bg-orange-500 p-2 custom-button"
         >
           Crear nuevo viaje
         </button>
@@ -36,6 +67,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      viajes: [],
+    }
+  },
   methods: {
     cancel() {
       this.$emit("close-popup")
@@ -66,13 +102,12 @@ export default {
   background: #dad4bd;
   padding: 20px;
   border-radius: 8px;
-  max-width: 400px;
-  height: 680px;
+  max-width: 350px;
+  height: 600px;
   width: 100%;
   text-align: center;
 }
-
-.popup-container .custom-button {
-  margin-top: 130%;
+.hide-arrows .v-carousel__controls {
+  display: none !important;
 }
 </style>
