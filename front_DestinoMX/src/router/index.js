@@ -104,12 +104,14 @@ const routes = [
     component: MyTrip,
   },
   {
-    path: "/aboutus",
-    name: "aboutus",
-    component: AboutUs,
     path: "/favoritos",
     name: "favoritos",
     component: Favoritos,
+  },
+  {
+    path: "/aboutus",
+    name: "aboutus",
+    component: AboutUs,
   },
 ]
 
