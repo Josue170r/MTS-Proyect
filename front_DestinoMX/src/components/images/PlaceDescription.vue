@@ -97,7 +97,7 @@
 
       <!-- Galería -->
       <div class="h-[600] sm:flex flex-col mt-2 sm:h-[400px]">
-        <h1 class="ml-3 text-black py-1 text-left text-sm font-bold">
+        <h1 class="ml-3 mb-4 text-black py-1 text-left text-sm font-bold">
           {{ "Galería de imágenes" }}
         </h1>
         <!-- Agrega el componente GalleryImages aquí -->
@@ -105,7 +105,7 @@
       </div>
       <div class="flex justify-center mt-4">
         <button
-          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 bg-pink-300"
+          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
         >
           <div class="flex items-center">
             <span>Favoritos</span>
@@ -114,13 +114,15 @@
         </button>
 
         <button
-          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 bg-green-300"
+          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-green-300"
+          @click="PopUpAddTrip"
         >
           <div class="flex items-center">
             <span>Añadir a viaje</span>
             <AddIcon class="ml-1" />
           </div>
         </button>
+        <PopUpAddTrip v-if="showPopup" @close-popup="hideAddToTripPopup" />
       </div>
     </div>
   </div>
@@ -142,6 +144,7 @@ import WeatherIcon from "@/components/icons/WeatherIcon.vue"
 import GalleryImages from "@/components/images/GalleryImages.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
+import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
 
 export default {
   name: "PlaceDescription",
@@ -155,6 +158,7 @@ export default {
     WeatherIcon,
     GalleryImages,
     BackButton,
+    PopUpAddTrip,
   },
   data() {
     return {
@@ -173,6 +177,7 @@ export default {
       selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
+      showPopup: false,
     }
   },
   created() {
@@ -283,6 +288,12 @@ export default {
           hideProgressBar: true,
         })
       }
+    },
+    PopUpAddTrip() {
+      this.showPopup = true
+    },
+    hideAddToTripPopup() {
+      this.showPopup = false
     },
   },
 }
