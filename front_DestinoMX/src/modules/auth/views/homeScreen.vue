@@ -12,10 +12,17 @@
           class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-full flex items-center shadow-md"
         >
           <input
+            v-model="namePlacerToFind"
             type="text"
             class="w-48 p-2 outline-none border-none bg-gray-100 rounded-full"
             placeholder="Buscar..."
+            @input="FindPlacesFromImput"
           />
+          <ul>
+            <li v-for="(place, index) in places" :key="index">
+              {{ place.name }}
+            </li>
+          </ul>
           <button class="p-2">
             <SearchIcon />
           </button>
@@ -121,6 +128,7 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
+import { getSearchPlaceApi } from "@/helpers/ApiSearchPlace"
 
 export default {
   name: "homeScreen",
@@ -145,6 +153,8 @@ export default {
       isLoading: true,
       showModal: false,
       searchResults: [],
+      namePlaceToFind: "",
+      places: [],
     }
   },
   created() {
@@ -165,13 +175,6 @@ export default {
     }, 500)
   },
   methods: {
-    openModal() {
-      this.searchResults = ["Restaurantes", "Parques", "Museoas"]
-      this.showModal = true
-    },
-    closeModal() {
-      this.showModal = false
-    },
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
@@ -209,7 +212,7 @@ export default {
           }
         })
         this.getNearImages()
-        console.log(this.nearPlaces)
+        //console.log(this.nearPlaces)
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -236,6 +239,25 @@ export default {
         }
         this.placeImages = toRaw(imageURLs)
         this.isLoading = false
+      } catch (error) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+    async FindPlacesFromImput() {
+      try {
+        const response = await getSearchPlaceApi.get("", {
+          params: {
+            query: this.namePlaceToFind,
+            key: this.apiKey,
+          },
+        })
+        this.places = response.data.results
+        console.log(this.namePlaceToFind)
       } catch (error) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
