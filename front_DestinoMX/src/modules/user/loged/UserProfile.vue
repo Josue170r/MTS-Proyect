@@ -199,7 +199,7 @@ export default {
         const response = await apiFromBackend.get("/api/perfil", {})
         console.log(response)
       } catch ({ response }) {
-        console.log("Reesponse:", response)
+        console.log(response)
         toast(response.data.mensaje, {
           hideProgressBar: true,
           autoClose: 1500,

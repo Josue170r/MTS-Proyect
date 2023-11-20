@@ -32,6 +32,9 @@ app.use(
     secret: "1234",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: false,
+    }
   })
 );
 
