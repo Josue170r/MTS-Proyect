@@ -12,6 +12,7 @@ import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
 import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 import MyTrip from "@/components/Viajes/MyTrip.vue"
+import AboutUs from "@/components/Viajes/AboutUs.vue"
 
 const routes = [
   {
@@ -100,6 +101,11 @@ const routes = [
     path: "/mytrip",
     name: "mytrip",
     component: MyTrip,
+  },
+  {
+    path: "/aboutus",
+    name: "aboutus",
+    component: AboutUs,
   },
 ]
 
