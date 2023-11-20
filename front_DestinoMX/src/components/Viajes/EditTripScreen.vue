@@ -3,47 +3,99 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <button @click="$router.go(-1)" class="absolute top-7 left-1 transform">
+      <router-link to="/login" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
-      </button>
-      <div
-        class="mt-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-1 pt-1 bg-white border border-gray-300 rounded-md flex items-center"
-      >
-        <!-- Barra de búsqueda -->
-      </div>
-
+      </router-link>
       <div class="absolute top-6 right-2 transform -translate-x-1">
-        <!-- componente para el avatar del usuario -->
         <AvatarButton />
       </div>
       <img
-        src="@/assets/images/imagen003.png"
-        alt="imagen002"
+        src="@/assets/images/imagen004.png"
+        alt="imagen004"
         class="md:my-auto rounded-b-xl"
       />
     </div>
-    <div class="relative flex rounded-2xl items-center w-full flex-col">
-      <h1 class="text-gray-800 py-5 text-center text-3xl font-bold">
-        Mi Viaje a: CDMX
+    <div class="md:w-1/2 md:min-h-screen relative">
+      <!-- aqui empieza el viaje y los datos  -->
+
+      <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
+        Mi viaje a: CDMX
       </h1>
-    </div>
-    <div class="flex flex-col items-right justify-center">
-      <button
-        type="button"
-        @click="calendartrip"
-        class="block w-50 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
-      >
-        Guardar cambios
-      </button>
-    </div>
-    <div class="flex flex-col items-left justify-center">
-      <button
-        type="button"
-        @click="calendartrip"
-        class="block w-50 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-gray-300 mb-2"
-      >
-        Descartar cambios
-      </button>
+
+      <!-- div de botones -->
+
+      <div class="flex-row flex w-full items-center space-x-4">
+        <button
+          type="button"
+          @click="goToLoginView"
+          class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
+        >
+          Descartar cambios
+        </button>
+        <button
+          type="button"
+          class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+          @click="goToLoginView"
+        >
+          Guardar cambios
+        </button>
+      </div>
+      <!-- termina div de botones  -->
+
+      <span class="block text-sm mb-1"></span>
+
+      <!-- empieza div para lugares del viaje -->
+
+      <v-container>
+        <v-row>
+          <!-- Utiliza v-for para iterar sobre los días -->
+          <v-col
+            v-for="(day, index) in days"
+            :key="index"
+            cols="13"
+            sm="5"
+            md="10"
+          >
+            <v-card class="mx-auto" max-width="90%">
+              <v-list lines="two">
+                <button class="ml-3" v-bind="props">
+                  <v-icon color="#fed7aa" size="30">mdi-pencil</v-icon>
+                </button>
+                <v-list-subheader>
+                  <h1 class="text-gray-800 py-4 text-center text-xl font-bold">
+                    {{ day.date }}
+                  </h1>
+                </v-list-subheader>
+
+                <!-- Itera sobre las actividades del día -->
+                <v-list-item
+                  v-for="(activity, activityIndex) in day.activities"
+                  :key="activityIndex"
+                  :prepend-avatar="activity.image"
+                >
+                  <v-list-item-title>{{ activity.title }}</v-list-item-title>
+                  <v-list-item-subtitle>{{
+                    activity.description
+                  }}</v-list-item-subtitle>
+                  <div
+                    class="h-10 grid grid-cols-3 gap-12 content-center ml-2 py-2"
+                  >
+                    <div></div>
+                    <div></div>
+                    <div>
+                      <v-icon color="#fed7aa" size="30"
+                        >mdi-close-circle</v-icon
+                      >
+                    </div>
+                  </div>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <span class="block text-red-700 text-sm mb-4"></span>
     </div>
   </div>
 </template>
@@ -51,26 +103,60 @@
 <script>
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
+
 export default {
-  name: "EditTripScreen",
+  name: "MyTrip",
   components: {
     BackButtonIcon,
     AvatarButton,
   },
-
   data() {
     return {
-      isemptytrip: true,
-      tripdate: true,
+      // Más días y actividades aquí------> back lo conecta a un arreglo en la BD para que itere con el v-for
+      days: [
+        {
+          date: "Martes 13 de octubre",
+          activities: [
+            {
+              title: "Museo de Frida Khalo",
+              description: "Descripción uno",
+              image:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Museo_Frida_Kahlo.JPG/640px-Museo_Frida_Kahlo.JPG",
+            },
+            {
+              title: "Palacio de Bellas Artes",
+              description: "Llevar cartera y suéteres",
+              image:
+                "https://upload.wikimedia.org/wikipedia/commons/9/97/Bellas_Artes_01.jpg",
+            },
+          ],
+        },
+        {
+          date: " Miércoles 14 de octubre",
+          activities: [
+            {
+              title: "Pirámides de Teotihuacán",
+              description: "Llevar sombrilla, sandaloias, bloqueador y cartera",
+              image:
+                "https://historia.nationalgeographic.com.es/medio/2023/05/15/istock_1f1795c2_501453380_230515114913_1280x853.jpg",
+            },
+            {
+              title: "Villa de Guadalupe",
+              description:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
+              image:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Bas%C3%ADlica_de_Santa_Mar%C3%ADa_de_Guadalupe_2018.jpg/1200px-Bas%C3%ADlica_de_Santa_Mar%C3%ADa_de_Guadalupe_2018.jpg",
+            },
+          ],
+        },
+        //mas dias aqui en adelante para iterar etc
+      ],
     }
   },
-
-  methods: {
-    saveChanges() {
-      this.$router.push({
-        name: "calendartrip",
-      })
-    },
+  setup() {
+    return {
+      //***** */
+    }
   },
 }
 </script>
