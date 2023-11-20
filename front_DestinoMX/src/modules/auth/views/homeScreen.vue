@@ -9,24 +9,16 @@
           <BurgerMenu />
         </div>
         <div
-          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
+          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-full flex items-center shadow-md"
         >
-          <!-- Barra de búsqueda -->
           <input
             type="text"
-            class="w-48 p-2 outline-none border-none bg-white"
+            class="w-48 p-2 outline-none border-none bg-gray-100 rounded-full"
             placeholder="Buscar..."
           />
-          <button @click="openModal">
+          <button class="p-2">
             <SearchIcon />
           </button>
-        </div>
-        <div>
-          <SearchResultsModal
-            :showModal="showModal"
-            :searchResults="searchResults"
-            @close="closeModal"
-          />
         </div>
         <img
           src="@/assets/images/imagen003.png"
@@ -129,7 +121,6 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
-import SearchResultsModal from "@/components/Viajes/searchPlace.vue"
 
 export default {
   name: "homeScreen",
@@ -141,7 +132,6 @@ export default {
     BurgerMenu,
     Swiper,
     SwiperSlide,
-    SearchResultsModal,
   },
   data() {
     return {
