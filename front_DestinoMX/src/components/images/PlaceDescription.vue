@@ -14,7 +14,7 @@
         <img
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-80"
+          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-96"
         />
       </div>
       <div v-else>

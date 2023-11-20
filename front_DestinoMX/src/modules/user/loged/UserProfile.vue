@@ -38,72 +38,35 @@
                       </template>
                       <v-card>
                         <v-card-title>
-                          <span class="text-h5">User Profile</span>
+                          <span class="text-h5">Editar Perfil</span>
                         </v-card-title>
                         <v-card-text>
                           <v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  label="Legal first name*"
+                                  v-model="updateProfile.lastname"
+                                  label="Nombre"
                                   required
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  label="Legal middle name"
-                                  hint="example of helper text only on focus"
+                                  v-model="updateProfile.lastname"
+                                  label="Apellido Paterno"
+                                  required
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  label="Legal last name*"
-                                  hint="example of persistent helper text"
+                                  v-model="updateProfile.secondlastname"
+                                  label="Apellido Materno"
                                   persistent-hint
                                   required
                                 ></v-text-field>
                               </v-col>
-                              <v-col cols="12">
-                                <v-text-field
-                                  v-model="changeuser.email"
-                                  label="Email*"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12">
-                                <v-text-field
-                                  label="Password*"
-                                  type="password"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6">
-                                <v-select
-                                  :items="['0-17', '18-29', '30-54', '54+']"
-                                  label="Age*"
-                                  required
-                                ></v-select>
-                              </v-col>
-                              <v-col cols="12" sm="6">
-                                <v-autocomplete
-                                  :items="[
-                                    'Skiing',
-                                    'Ice hockey',
-                                    'Soccer',
-                                    'Basketball',
-                                    'Hockey',
-                                    'Reading',
-                                    'Writing',
-                                    'Coding',
-                                    'Basejump',
-                                  ]"
-                                  label="Interests"
-                                  multiple
-                                ></v-autocomplete>
-                              </v-col>
                             </v-row>
                           </v-container>
-                          <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
@@ -112,14 +75,14 @@
                             variant="text"
                             @click="dialog = false"
                           >
-                            Close
+                            Cerrar
                           </v-btn>
                           <v-btn
                             color="blue-darken-1"
                             variant="text"
-                            @click="changeUserInformaion"
+                            @click="changeUserInformation"
                           >
-                            Save
+                            Guardar
                           </v-btn>
                         </v-card-actions>
                       </v-card>
@@ -215,8 +178,10 @@ export default {
         email: "josuemonro@gmail.com",
       },
       dialog: false,
-      changeuser: {
-        email: "",
+      updateProfile: {
+        name: "",
+        lastname: "",
+        secondlastname: "",
       },
     }
   },
@@ -243,7 +208,7 @@ export default {
         })
       }
     },
-    async changeUserInformaion() {
+    async changeUserInformation() {
       console.log(this.changeuser.email)
       this.dialog = false
     },

@@ -150,6 +150,7 @@ export default {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
+        this.getArrayPlaces()
       })
       .catch((error) => {
         toast(error, {
@@ -159,9 +160,6 @@ export default {
           theme: "colored",
         })
       })
-    setTimeout(() => {
-      this.getArrayPlaces()
-    }, 1000)
   },
   methods: {
     goToMapScreen() {
@@ -201,9 +199,7 @@ export default {
           }
         })
         console.log(this.nearPlaces)
-        setTimeout(() => {
-          this.getNearImages()
-        }, 500)
+        this.getNearImages()
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
