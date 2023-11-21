@@ -1,7 +1,7 @@
 <template>
   <div :class="[isLoading ? 'fixed opacity-50' : '...']">
     <div class="min-h-screen w-full flex flex-col md:flex-row">
-      <div class="relative md:w-1/2 md:order-1">
+      <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
           <AvatarButton />
         </div>
@@ -18,15 +18,23 @@
             placeholder="Buscar..."
             @input="FindPlacesFromInput"
           />
-          <div>
-            <v-container class="text-center">
-              <ul>
-                <li v-for="(place, index) in places.slice(0, 6)" :key="index">
+          <ul
+            class="mt-80 absolute w-56 bg-white rounded-md shadow-md overflow-hidden"
+            v-if="places.length > 0"
+          >
+            <li
+              v-for="(place, index) in places.slice(0, 6)"
+              :key="index"
+              class="py-2 border-b last:border-b-0"
+            >
+              <div class="px-2 mr-4 flex items-center">
+                <SearchIcon />
+                <div class="px-2">
                   {{ place.name }}
-                </li>
-              </ul>
-            </v-container>
-          </div>
+                </div>
+              </div>
+            </li>
+          </ul>
           <button class="p-2">
             <SearchIcon />
           </button>
@@ -260,16 +268,11 @@ export default {
             key: this.apiKey,
           },
         })
-        console.log("Desde la API", response)
+        //console.log("Desde la API", response)
         this.places = response.data.results
         console.log(this.response.data.results)
       } catch (error) {
-        toast.error("Ha ocurrido algún error", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
+        console.log("Todo bien")
       }
     },
   },
