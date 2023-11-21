@@ -9,7 +9,7 @@
           class="mx-auto sm:-mt-4 pl-4"
         />
       </div>
-      <router-link :to="{ name: 'startup' }" class="flex items-center"
+      <router-link :to="{ name: 'user-profile' }" class="flex items-center"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -47,13 +47,12 @@ export default {
   methods: {
     logout() {
       // lógica para cerrar la sesión del usuario -> limpiar el token de autenticación, eliminar cookies, etc.
-
       // se manda al usuario a home
       this.$router.push({ name: "startup" })
     },
     account() {
       // se manda al usuario a la pag de su cuenta pero por el momento a HOME -> en el sig sprint dde front se crea esa pantalla
-      this.$router.push({ name: "startup" })
+      this.$router.push({ name: "user-profile" })
     },
   },
 }
