@@ -37,14 +37,15 @@
                         </button>
                       </template>
                       <v-card>
-                        <v-card-title class="text-center">
-                          <span class="text-h5 text-center">Editar Perfil</span>
+                        <v-card-title class="text-center font-baskerville">
+                          <span class="text-2xl">Editar Perfil</span>
                         </v-card-title>
                         <v-card-text>
                           <v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
+                                  class="font-baskerville text-lg"
                                   v-model="updateProfile.name"
                                   label="Nombre"
                                   required
@@ -52,6 +53,7 @@
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
+                                  class="font-baskerville text-lg"
                                   v-model="updateProfile.lastname"
                                   label="Apellido Paterno"
                                   required
@@ -59,6 +61,7 @@
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
+                                  class="font-baskerville text-lg"
                                   v-model="updateProfile.secondlastname"
                                   label="Apellido Materno"
                                   persistent-hint
