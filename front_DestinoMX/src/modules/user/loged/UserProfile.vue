@@ -129,7 +129,15 @@
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
                                   class="font-baskerville text-lg"
-                                  v-model="updatePassword.password"
+                                  v-model="updatePassword.currentPassword"
+                                  label="Contraseña Actual"
+                                  required
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="12" sm="6" md="4">
+                                <v-text-field
+                                  class="font-baskerville text-lg"
+                                  v-model="updatePassword.newPassword"
                                   label="Nueva Contraseña"
                                   required
                                 ></v-text-field>
@@ -239,7 +247,8 @@ export default {
         secondlastname: "",
       },
       updatePassword: {
-        password: "",
+        currentPassword: "",
+        newPassword: "",
         confirmPassword: "",
       },
     }
