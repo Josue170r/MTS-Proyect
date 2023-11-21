@@ -221,7 +221,7 @@ export default {
     }
   },
   created() {
-    // this.getUserInformation()
+    this.getUserInformation()
   },
   computed: {
     isFormEmpty() {
