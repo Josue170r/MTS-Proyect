@@ -3,14 +3,14 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/login" class="absolute top-7 left-1 transform">
+      <router-link to="/home" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
       </router-link>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
       <img
-        src="@/assets/images/imagen004.png"
+        src="@/assets/images/imagen006.png"
         alt="imagen004"
         class="md:my-auto rounded-b-xl"
       />
@@ -19,60 +19,60 @@
       <!-- aqui empieza el viaje y los datos  -->
 
       <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-        Mi viaje a: CDMX
+        Mis lugares favoritos
       </h1>
-
-      <!-- div de botones -->
-
-      <div class="flex-row flex w-full items-center space-x-4">
-        <button
-          type="button"
-          @click="goToLoginView"
-          class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
-        >
-          Editar ruta
-        </button>
-        <button
-          type="button"
-          class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
-          @click="goToLoginView"
-        >
-          Iniciar ruta
-        </button>
-      </div>
-      <!-- termina div de botones  -->
 
       <span class="block text-sm mb-2"></span>
 
-      <!-- empieza div para lugares del viaje -->
+      <!-- empieza div para favoritos -->
 
-      <v-container>
+      <!-- v if cuando SI hay favoritos en la BD -->
+      <v-container v-if="days.length > 0">
         <v-row>
-          <!-- Utiliza v-for para iterar sobre los días -->
+          <!-- Utiliza v-for para iterar sobre los lugares -->
           <v-col v-for="(day, index) in days" :key="index" cols="12">
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
-                <v-list-subheader>
-                  <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-                    {{ day.date }}
-                  </h1>
-                </v-list-subheader>
-
-                <!-- Itera sobre las actividades del día -->
+                <!-- Itera sobre la info de los lugares -->
                 <v-list-item
                   v-for="(activity, activityIndex) in day.activities"
                   :key="activityIndex"
-                  :prepend-avatar="activity.image"
                 >
-                  <v-list-item-title>{{ activity.title }}</v-list-item-title>
-                  <v-list-item-subtitle>{{
-                    activity.description
-                  }}</v-list-item-subtitle>
+                  <div class="d-flex flex-column justify-center align-center">
+                    <!-- Imagen cuadrada con bordes redondeados -->
+                    <v-img
+                      v-if="activity.image"
+                      :src="activity.image"
+                      height="80%"
+                      width="80%"
+                    ></v-img>
+                  </div>
+                  <br />
+                  <div class="d-flex flex-column justify-center align-center">
+                    <v-list-item-title>{{ activity.title }}</v-list-item-title>
+                    <v-list-item-subtitle>{{
+                      activity.description
+                    }}</v-list-item-subtitle>
+                  </div>
+
+                  <!-- Botón para eliminar el lugar-->
+                  <div class="absolute top-4 right-3">
+                    <deleteFav @click="deletePlace(index)" />
+                  </div>
                 </v-list-item>
               </v-list>
             </v-card>
           </v-col>
         </v-row>
+      </v-container>
+      <v-container
+        v-else
+        class="d-flex flex-column justify-center align-center"
+      >
+        <!-- Pantalla alternativa v-if cuando NO hay lugares favoritos -->
+        <h1>¡Vaya!</h1>
+        <h2>Aún no tienes lugares favoritos</h2>
+        <img src="@/assets/images/piramide.png" />
       </v-container>
 
       <span class="block text-red-700 text-sm mb-2"></span>
@@ -83,43 +83,45 @@
 <script>
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
+import deleteFav from "@/components/icons/deleteFav"
+// import favIcon from "@/components/icons/favIcon"
 
 export default {
   name: "MyTrip",
   components: {
     BackButtonIcon,
     AvatarButton,
+    deleteFav,
+    // favIcon,
   },
   data() {
     return {
       // Más días y actividades aquí------> back lo conecta a un arreglo en la BD para que itere con el v-for
       days: [
         {
-          date: "Martes 13 de octubre",
           activities: [
             {
-              title: "Museo de Frida Khalo",
-              description: "Descripción uno",
-              image:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Museo_Frida_Kahlo.JPG/640px-Museo_Frida_Kahlo.JPG",
-            },
-            {
               title: "Palacio de Bellas Artes",
-              description: "Llevar cartera y suéteres",
+              description:
+                "El Palacio de Bellas Artes es un recinto cultural ubicado en el Centro Histórico de la CDMX    ",
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/9/97/Bellas_Artes_01.jpg",
             },
           ],
         },
         {
-          date: " Miércoles 14 de octubre",
           activities: [
             {
               title: "Pirámides de Teotihuacán",
-              description: "Llevar sombrilla, sandaloias, bloqueador y cartera",
+              description:
+                "Teotihuacán es uno de los destinos más conocidos de México. Yacimiento espectacular con las gigantescas pirámides. Excursiones paseos globo.",
               image:
                 "https://historia.nationalgeographic.com.es/medio/2023/05/15/istock_1f1795c2_501453380_230515114913_1280x853.jpg",
             },
+          ],
+        },
+        {
+          activities: [
             {
               title: "Villa de Guadalupe",
               description:
@@ -133,6 +135,12 @@ export default {
         //mas dias aqui en adelante para iterar etc
       ],
     }
+  },
+  methods: {
+    deletePlace(index) {
+      // Elimina el lugar de la lista según el índice
+      this.days.splice(index, 1)
+    },
   },
   setup() {
     return {
