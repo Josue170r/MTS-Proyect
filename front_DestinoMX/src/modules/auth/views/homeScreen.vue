@@ -14,12 +14,12 @@
           <input
             v-model="namePlaceToFind"
             type="text"
-            class="w-48 p-2 outline-none border-none bg-gray-100 rounded-full"
+            class="w-48 p-2 outline-none border-none rounded-full"
             placeholder="Buscar..."
             @input="FindPlacesFromInput"
           />
           <ul
-            class="mt-80 absolute w-56 bg-white rounded-md shadow-md overflow-hidden"
+            class="mt-[450px] absolute w-56 bg-white rounded-md shadow-md overflow-hidden"
             v-if="places.length > 0"
           >
             <li
@@ -27,17 +27,21 @@
               :key="index"
               class="py-2 border-b last:border-b-0"
             >
-              <div class="px-2 mr-4 flex items-center">
-                <SearchIcon />
-                <div class="px-2">
-                  {{ place.name }}
-                </div>
+              <div
+                class="transition-all duration-300 ease-in-out hover:bg-gray-200 hover:text-gray-800"
+              >
+                <button class="text-black py-2 px-4">
+                  <div class="flex items-center">
+                    <!-- {{ place.icon }} -->
+                    <SearchIcon />
+                    <div class="px-2 h-flex">
+                      {{ place.name }}
+                    </div>
+                  </div>
+                </button>
               </div>
             </li>
           </ul>
-          <button class="p-2">
-            <SearchIcon />
-          </button>
         </div>
         <img
           src="@/assets/images/imagen003.png"
@@ -130,9 +134,9 @@
 <script>
 import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
-import SearchIcon from "@/components/icons/SearchIcon"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
+import SearchIcon from "@/components/icons/SearchIcon.vue"
 import { toast } from "vue3-toastify"
 import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 import { Swiper, SwiperSlide } from "swiper/vue"
@@ -167,6 +171,8 @@ export default {
       searchResults: [],
       namePlaceToFind: "",
       places: [],
+      showPlacesList: false,
+      iconPlaceToFind: [],
     }
   },
   created() {
@@ -268,9 +274,11 @@ export default {
             key: this.apiKey,
           },
         })
-        //console.log("Desde la API", response)
+        console.log("Desde la API", response)
         this.places = response.data.results
         console.log(this.response.data.results)
+        this.iconPlaceToFind = response.data.result.place.icon
+        console.log("Icono")
       } catch (error) {
         console.log("Todo bien")
       }
