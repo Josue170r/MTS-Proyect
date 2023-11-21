@@ -13,7 +13,7 @@ import NotFoundPage from "@/screens/NotFoundPage"
 import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 import MyTrip from "@/components/Viajes/MyTrip.vue"
 import AboutUs from "@/components/Viajes/AboutUs.vue"
-import Favoritos from "@/components/Viajes/Favoritos.vue"
+import Favoritos from "@/modules/user/Favoritos.vue"
 import HistoryScreenVue from "@/components/Viajes/HistoryScreen.vue"
 
 const routes = [

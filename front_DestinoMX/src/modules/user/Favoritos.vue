@@ -27,7 +27,7 @@
       <!-- empieza div para favoritos -->
 
       <!-- v if cuando SI hay favoritos en la BD -->
-      <v-container v-if="days.length > 0">
+      <v-container v-if="days.length != 0">
         <v-row>
           <!-- Utiliza v-for para iterar sobre los lugares -->
           <v-col v-for="(day, index) in days" :key="index" cols="12">
