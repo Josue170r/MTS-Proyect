@@ -70,3 +70,47 @@ routerUsuario.put("/api/editar-perfil", (req, res) => {
     });
   }
 });
+
+routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
+  if (!req.session.usuario)
+    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+  else {
+    const { contrasena, nuevaContrasena } = req.body;
+    const consultaVerificarContrasena = `SELECT contrasena from usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+    mySqlConnection.query(consultaVerificarContrasena, (err, rows, fields) => {
+      if (err)
+        res.res.status(500).json({
+          exito: false,
+          mensaje: "Error en la consulta",
+          err: err,
+        });
+      else {
+        if (contrasena !== rows[0].contrasena)
+          res.status(403).json({
+            exito: false,
+            mensaje: "Contraseña incorrecta",
+          });
+        else {
+          const consultaActualizarContrasena = `UPDATE usuario SET contrasena = "${nuevaContrasena}" WHERE idUsuario = ${req.session.usuario.idUsuario}`;
+          mySqlConnection.query(
+            consultaActualizarContrasena,
+            (err, rows, fields) => {
+              if (err)
+                res.res.status(500).json({
+                  exito: false,
+                  mensaje: "Error en la consulta",
+                  err: err,
+                });
+              else {
+                res.status(200).json({
+                  exito: true,
+                  mensaje: "Contraseña actualizada correctamente",
+                });
+              }
+            }
+          );
+        }
+      }
+    });
+  }
+});
