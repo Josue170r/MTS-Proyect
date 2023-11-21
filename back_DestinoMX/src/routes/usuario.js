@@ -25,7 +25,7 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
 });
 
 routerUsuario.get("/api/perfil", (req, res) => {
-  console.log("Request from api/perfil:", req.session)
+  console.log("Request from api/perfil:", req.session);
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
@@ -41,7 +41,30 @@ routerUsuario.get("/api/perfil", (req, res) => {
         res.status(200).json({
           exito: true,
           mensaje: "Datos obtenidos correctamente",
-          datosUsuario: {...rows[0]}
+          datosUsuario: { ...rows[0] },
+        });
+      }
+    });
+  }
+});
+
+routerUsuario.put("/api/editar-perfil", (req, res) => {
+  if (!req.session.usuario)
+    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+  else {
+    const { Nombre, ApellidoP, ApellidoM } = req.query;
+    const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${req.session.usuario.idUsuario}"`;
+    mySqlConnection.query(consultaCambiarDatos, (err, rows, fields) => {
+      if (err)
+        res.res.status(500).json({
+          exito: false,
+          mensaje: "Error en la consulta",
+          err: err,
+        });
+      else {
+        res.status(200).json({
+          exito: true,
+          mensaje: "Datos actualizados con exito.",
         });
       }
     });

@@ -65,7 +65,8 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
 // CorreoElectronico o Usuario, contrasena
 // Funciona OK
 routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
-  const { Usuario, contrasena } = req.body
+  const { Usuario, contrasena } = req.query
+  console.log("Hola")
   mySqlConnection.query(
     `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
