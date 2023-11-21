@@ -9,7 +9,7 @@
           class="mx-auto sm:-mt-4 pl-4"
         />
       </div>
-      <router-link :to="{ name: 'startup' }" class="flex items-center"
+      <router-link :to="{ name: 'user-profile' }" class="flex items-center"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -38,7 +38,7 @@
         ><ClockIcon class="mr-2" />
         <h1 class="text-black">Historial de viajes</h1></router-link
       >
-      <router-link :to="{ name: 'Itinerario' }" class="flex items-center"
+      <router-link :to="{ name: 'aboutus' }" class="flex items-center"
         ><supportIcon class="mr-2" />
         <h1 class="text-black">Contactar a soporte</h1></router-link
       >

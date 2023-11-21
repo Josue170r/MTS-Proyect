@@ -22,7 +22,7 @@
                 <AtIcon />
                 <input
                   id="username"
-                  v-model="username"
+                  v-model="user.username"
                   class="w-full pl-2 outline-none border-none bg-white"
                   type="text"
                   name="email"
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       user: {
-        username: "Josue",
+        username: "",
       },
     }
   },

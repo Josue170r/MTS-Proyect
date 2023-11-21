@@ -25,10 +25,10 @@
             <div class="mt-4 mb-8">
               <div class="flex items-center ml-4">
                 <v-icon color="#fed7aa" size="30">mdi-account</v-icon>
-                <v-list-item class="ml-3">
+                <v-list-item class="ml-3 font-baskerville text-lg">
                   {{ user.name }}
                 </v-list-item>
-                <div class="ml-20">
+                <div class="ml-[75px]">
                   <v-row justify="center">
                     <v-dialog v-model="dialog" persistent width="1024">
                       <template v-slot:activator="{ props }">
@@ -37,73 +37,39 @@
                         </button>
                       </template>
                       <v-card>
-                        <v-card-title>
-                          <span class="text-h5">User Profile</span>
+                        <v-card-title class="text-center font-baskerville">
+                          <span class="text-2xl">Editar Perfil</span>
                         </v-card-title>
                         <v-card-text>
                           <v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  label="Legal first name*"
+                                  class="font-baskerville text-lg"
+                                  v-model="updateProfile.name"
+                                  label="Nombre"
                                   required
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  label="Legal middle name"
-                                  hint="example of helper text only on focus"
+                                  class="font-baskerville text-lg"
+                                  v-model="updateProfile.lastname"
+                                  label="Apellido Paterno"
+                                  required
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field
-                                  label="Legal last name*"
-                                  hint="example of persistent helper text"
+                                  class="font-baskerville text-lg"
+                                  v-model="updateProfile.secondlastname"
+                                  label="Apellido Materno"
                                   persistent-hint
                                   required
                                 ></v-text-field>
                               </v-col>
-                              <v-col cols="12">
-                                <v-text-field
-                                  v-model="changeuser.email"
-                                  label="Email*"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12">
-                                <v-text-field
-                                  label="Password*"
-                                  type="password"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6">
-                                <v-select
-                                  :items="['0-17', '18-29', '30-54', '54+']"
-                                  label="Age*"
-                                  required
-                                ></v-select>
-                              </v-col>
-                              <v-col cols="12" sm="6">
-                                <v-autocomplete
-                                  :items="[
-                                    'Skiing',
-                                    'Ice hockey',
-                                    'Soccer',
-                                    'Basketball',
-                                    'Hockey',
-                                    'Reading',
-                                    'Writing',
-                                    'Coding',
-                                    'Basejump',
-                                  ]"
-                                  label="Interests"
-                                  multiple
-                                ></v-autocomplete>
-                              </v-col>
                             </v-row>
                           </v-container>
-                          <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
@@ -112,14 +78,14 @@
                             variant="text"
                             @click="dialog = false"
                           >
-                            Close
+                            Cerrar
                           </v-btn>
                           <v-btn
                             color="blue-darken-1"
                             variant="text"
-                            @click="changeUserInformaion"
+                            @click="changeUserInformation"
                           >
-                            Save
+                            Guardar
                           </v-btn>
                         </v-card-actions>
                       </v-card>
@@ -136,7 +102,8 @@
 
               <div class="flex items-center ml-4">
                 <v-icon color="#fed7aa" size="30">mdi-lock</v-icon>
-                <v-list-item class="ml-3" title="Cambiar Contraseña">
+                <v-list-item class="ml-3 font-baskerville text-lg">
+                  Cambiar Contraseña
                 </v-list-item>
                 <div class="ml-9">
                   <v-tooltip text="Cambiar Contraseña">
@@ -157,9 +124,9 @@
                 inset
               ></v-divider>
 
-              <div class="flex items-center ml-4">
+              <div class="flex items-center ml-4 font-baskerville">
                 <v-icon color="#fed7aa" size="30">mdi-email</v-icon>
-                <v-list-item class="ml-3">
+                <v-list-item class="ml-3 text-lg">
                   {{ user.email }}
                 </v-list-item>
               </div>
@@ -172,7 +139,8 @@
 
               <div class="flex items-center ml-4">
                 <v-icon color="#fed7aa" size="30">mdi-close-circle</v-icon>
-                <v-list-item class="ml-3" title="Eliminar Cuenta">
+                <v-list-item class="ml-3 font-baskerville text-lg">
+                  Eliminar Cuenta
                 </v-list-item>
                 <div class="ml-16">
                   <v-tooltip text="Eliminar Cuenta">
@@ -215,13 +183,15 @@ export default {
         email: "josuemonro@gmail.com",
       },
       dialog: false,
-      changeuser: {
-        email: "",
+      updateProfile: {
+        name: "",
+        lastname: "",
+        secondlastname: "",
       },
     }
   },
   created() {
-    // this.getUserInformation()
+    this.getUserInformation()
   },
   computed: {
     isFormEmpty() {
@@ -234,7 +204,7 @@ export default {
         const response = await apiFromBackend.get("/api/perfil", {})
         console.log(response)
       } catch ({ response }) {
-        console.log("Reesponse:", response)
+        console.log(response)
         toast(response.data.mensaje, {
           hideProgressBar: true,
           autoClose: 1500,
@@ -243,8 +213,8 @@ export default {
         })
       }
     },
-    async changeUserInformaion() {
-      console.log(this.changeuser.email)
+    async changeUserInformation() {
+      console.log(this.updateProfile)
       this.dialog = false
     },
   },
