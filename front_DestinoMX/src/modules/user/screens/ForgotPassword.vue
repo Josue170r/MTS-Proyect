@@ -98,7 +98,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("@/assets/images/image005.webp");
+  background-image: url("@/assets/images/image005.png");
   background-size: cover;
   background-position: center;
 }
