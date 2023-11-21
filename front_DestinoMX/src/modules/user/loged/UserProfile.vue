@@ -25,7 +25,7 @@
             <div class="mt-4 mb-8">
               <div class="flex items-center ml-4">
                 <v-icon color="#fed7aa" size="30">mdi-account</v-icon>
-                <v-list-item class="ml-3">
+                <v-list-item class="ml-3 font-baskerville text-lg">
                   {{ user.name }}
                 </v-list-item>
                 <div class="ml-[75px]">
@@ -99,7 +99,8 @@
 
               <div class="flex items-center ml-4">
                 <v-icon color="#fed7aa" size="30">mdi-lock</v-icon>
-                <v-list-item class="ml-3" title="Cambiar Contraseña">
+                <v-list-item class="ml-3 font-baskerville text-lg">
+                  Cambiar Contraseña
                 </v-list-item>
                 <div class="ml-9">
                   <v-tooltip text="Cambiar Contraseña">
@@ -120,9 +121,9 @@
                 inset
               ></v-divider>
 
-              <div class="flex items-center ml-4">
+              <div class="flex items-center ml-4 font-baskerville">
                 <v-icon color="#fed7aa" size="30">mdi-email</v-icon>
-                <v-list-item class="ml-3">
+                <v-list-item class="ml-3 text-lg">
                   {{ user.email }}
                 </v-list-item>
               </div>
@@ -135,7 +136,8 @@
 
               <div class="flex items-center ml-4">
                 <v-icon color="#fed7aa" size="30">mdi-close-circle</v-icon>
-                <v-list-item class="ml-3" title="Eliminar Cuenta">
+                <v-list-item class="ml-3 font-baskerville text-lg">
+                  Eliminar Cuenta
                 </v-list-item>
                 <div class="ml-16">
                   <v-tooltip text="Eliminar Cuenta">
