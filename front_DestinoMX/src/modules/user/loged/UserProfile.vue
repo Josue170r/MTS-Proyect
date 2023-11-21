@@ -38,7 +38,7 @@
                       </template>
                       <v-card>
                         <v-card-title class="text-center">
-                          <span class="text-h5 text-center">Editar Perfil</span>
+                          <span class="text-h5 text-center font-baskerville text-lg">Editar Perfil</span>
                         </v-card-title>
                         <v-card-text>
                           <v-container>
