@@ -14,7 +14,7 @@
         <img
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-80"
+          class="opacity-100 rounded-t-xl rounded-b-xl"
         />
       </div>
       <div v-else>
@@ -70,9 +70,9 @@
 
         <div
           v-if="about"
-          class="ml-3 mr-1 text-black font-Baskerville py-0 text-left text-sm"
+          class="ml-3 mr-1 text-black font-quicksand py-0 text-left text-sm"
         >
-          <p>
+          <p class="mt-2 mb-2 font-quicksand">
             {{ about }}
           </p>
         </div>

@@ -2,14 +2,22 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 
+
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
+import { routerPreferencias } from "./routes/preferencias.js";
 import { routerUsuario } from "./routes/usuario.js";
 
 // Inicializando la aplicacion.
 const app = express();
+import cors from 'cors';
+
+app.use(cors({
+  origin: 'http://localhost:8080', 
+  credentials: true, 
+}));
 
 // Settings
 // Utilizar el puerto definido por el servidor (al subirlo a la web), si no existe utiliza por defecto el puerto 3000 (local)
@@ -31,6 +39,9 @@ app.use(
     secret: "1234",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: false,
+    }
   })
 );
 
@@ -39,6 +50,7 @@ app.use(routerAutenticacion);
 app.use(routerViajes);
 app.use(routerFavoritos);
 app.use(routerCalendario);
+app.use(routerPreferencias);
 app.use(routerUsuario);
 
 // Iniciando el servidor

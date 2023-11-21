@@ -14,7 +14,7 @@
         />
         <div class="bg-accent w-full px-5">
           <h1 class="text-gray-800 font-bold text-2xl mb-1">¡Hola!</h1>
-          <p class="text-sm text-gray-800 mb-7">
+          <p class="text-md text-gray-800 mb-7 mt-3">
             Coloca tus credenciales para iniciar sesión
           </p>
           <form @submit.prevent="loginJWT">
@@ -47,18 +47,20 @@
             <div class="text-start">
               <router-link
                 :to="{ name: 'about' }"
-                class="font-baskerville mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
+                class="font-baskerville mx-4 text-md text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
                   >¿Necesitas ayuda?
-                  <span class="text-orange-300">Olvidé mi contraseña</span></u
+                  <span class="text-orange-300 text-md"
+                    >Olvidé mi contraseña</span
+                  ></u
                 >
               </router-link>
             </div>
             <button
               :disabled="isFormEmpty"
               type="submit"
-              class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+              class="text-lg h-11 font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
               :class="[
                 isFormEmpty
                   ? 'opacity-60 cursor-not-allowed'
@@ -70,7 +72,7 @@
             <div class="font-baskerville sm:text-start text-center mb-4 mt-4">
               <router-link
                 :to="{ name: 'register-form' }"
-                class="mx-4 text-sm text-gray-700 cursor-pointer text-gray-600"
+                class="mx-4 text-md text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
                   >No tengo una cuenta

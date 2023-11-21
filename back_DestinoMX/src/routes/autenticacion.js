@@ -81,10 +81,11 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           .json({ exito: false, mensaje: "Usuario no encontrado." });
       } else {
         const contrasenaBD = rows[0].contrasena;
-        if (contrasenaBD === contrasena) {
+        if (contrasenaBD == contrasena) {
           req.session.usuario = {
             idUsuario: rows[0].idUsuario,
           };
+          console.log("Request:", req.session)
           res
             .status(200)
             .json({ exito: true, mensaje: "Sesion iniciada con exito." });
@@ -112,4 +113,20 @@ routerAutenticacion.get("/api/cerrar-sesion", (req, res) => {
         .status(200)
         .json({ exito: true, mensaje: "Sesion cerrada con exito." });
   });
+});
+
+routerAutenticacion.post("/api/cuenta-activa", (req, res) => {
+  console.log(req.session)
+  if(req.session.usuario){
+    return res.status(200).json({
+      success: true,
+      error:"usuario activo"
+    });
+  }
+  else{
+    return res.status(400).json({
+      success: false,
+      error:"usuario desactivado"
+    });
+  }
 });

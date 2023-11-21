@@ -22,7 +22,7 @@
                 <AtIcon />
                 <input
                   id="username"
-                  v-model="username"
+                  v-model="user.username"
                   class="w-full pl-2 outline-none border-none bg-white"
                   type="text"
                   name="email"
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       user: {
-        username: "Josue",
+        username: "",
       },
     }
   },
@@ -98,7 +98,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("@/assets/images/image005.webp");
+  background-image: url("@/assets/images/image005.png");
   background-size: cover;
   background-position: center;
 }
