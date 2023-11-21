@@ -117,7 +117,7 @@ export default {
           Usuario: this.username,
           contrasena: this.password,
         })
-        this.$router.push({ name: "home" })
+        this.$router.push({ name: "user-profile" })
         console.log(response)
       } catch ({ response }) {
         toast(response.data.mensaje, {
@@ -126,6 +126,44 @@ export default {
           type: "error",
           theme: "colored",
         })
+      }
+      try {
+        const response = await apiFromBackend.post("/api/cuenta-activa")
+        console.log("Respuesta exitosa:", response)
+
+        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado en el frontend.
+      } catch (error) {
+        if (error.response) {
+          // El servidor respondió con un status diferente de 2xx
+          console.error("Respuesta de error del servidor:", error.response.data)
+          toast(error.response.data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
+        } else if (error.request) {
+          // La solicitud fue hecha pero no se recibió respuesta
+          console.error("No se recibió respuesta del servidor:", error.request)
+          toast("No se recibió respuesta del servidor", {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
+        } else {
+          // Ocurrió un error durante la configuración de la solicitud
+          console.error(
+            "Error durante la configuración de la solicitud:",
+            error.message,
+          )
+          toast("Error durante la configuración de la solicitud", {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
+        }
       }
     },
   },
