@@ -110,15 +110,14 @@ const routes = [
     component: Favoritos,
   },
   {
-<<<<<<< HEAD
     path: "/History",
     name: "History",
     component: HistoryScreenVue,
-=======
+  },
+  {
     path: "/aboutus",
     name: "aboutus",
     component: AboutUs,
->>>>>>> ebedec0adeb8eba7d00844ee164e7bccfb2c0291
   },
 ]
 
