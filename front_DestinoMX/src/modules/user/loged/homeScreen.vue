@@ -1,7 +1,7 @@
 <template>
   <div :class="[isLoading ? 'fixed opacity-50' : '...']">
     <div class="min-h-screen w-full flex flex-col md:flex-row">
-      <div class="relative md:w-1/2 md:order-1">
+      <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
           <AvatarButton />
         </div>
@@ -9,17 +9,39 @@
           <BurgerMenu />
         </div>
         <div
-          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-md flex items-center"
+          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-full flex items-center shadow-md"
         >
-          <!-- Barra de búsqueda -->
           <input
+            v-model="namePlaceToFind"
             type="text"
-            class="w-48 p-2 outline-none border-none bg-white"
+            class="w-48 p-2 outline-none border-none rounded-full"
             placeholder="Buscar..."
+            @input="FindPlacesFromInput"
           />
-          <button>
-            <SearchIcon />
-          </button>
+          <ul
+            class="mt-[450px] absolute w-56 bg-white rounded-md shadow-md overflow-hidden"
+            v-if="places.length > 0"
+          >
+            <li
+              v-for="(place, index) in places.slice(0, 6)"
+              :key="index"
+              class="py-2 border-b last:border-b-0"
+            >
+              <div
+                class="transition-all duration-300 ease-in-out hover:bg-gray-200 hover:text-gray-800"
+              >
+                <button class="text-black py-2 px-4">
+                  <div class="flex items-center">
+                    <!-- {{ place.icon }} -->
+                    <SearchIcon />
+                    <div class="px-2 h-flex">
+                      {{ place.name }}
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
         <img
           src="@/assets/images/imagen003.png"
@@ -112,9 +134,9 @@
 <script>
 import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
-import SearchIcon from "@/components/icons/SearchIcon"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
+import SearchIcon from "@/components/icons/SearchIcon.vue"
 import { toast } from "vue3-toastify"
 import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 import { Swiper, SwiperSlide } from "swiper/vue"
@@ -122,6 +144,7 @@ import { Pagination } from "swiper/modules"
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
+import { getSearchPlaceApi } from "@/helpers/ApiSearchPlace"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
@@ -145,6 +168,12 @@ export default {
       photosReferences: [],
       placeImages: [],
       isLoading: true,
+      showModal: false,
+      searchResults: [],
+      namePlaceToFind: "",
+      places: [],
+      showPlacesList: false,
+      iconPlaceToFind: [],
     }
   },
   created() {
@@ -199,6 +228,8 @@ export default {
             )
           }
         })
+        this.getNearImages()
+        //console.log(this.nearPlaces)
         console.log(this.nearPlaces)
         this.getNearImages()
       } catch (error) {
@@ -235,6 +266,23 @@ export default {
           autoClose: 1500,
           hideProgressBar: true,
         })
+      }
+    },
+    async FindPlacesFromInput() {
+      try {
+        const response = await getSearchPlaceApi.get("", {
+          params: {
+            query: this.namePlaceToFind,
+            key: this.apiKey,
+          },
+        })
+        console.log("Desde la API", response)
+        this.places = response.data.results
+        console.log(this.response.data.results)
+        this.iconPlaceToFind = response.data.result.place.icon
+        console.log("Icono")
+      } catch (error) {
+        console.log("Todo bien")
       }
     },
     async loginJWT() {
