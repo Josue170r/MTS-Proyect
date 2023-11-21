@@ -34,7 +34,7 @@
         ><TravelIcon class="mr-2" />
         <h1 class="text-black">Itinerario de viajes</h1></router-link
       >
-      <router-link :to="{ name: 'Itinerario' }" class="flex items-center"
+      <router-link :to="{ name: 'History' }" class="flex items-center"
         ><ClockIcon class="mr-2" />
         <h1 class="text-black">Historial de viajes</h1></router-link
       >

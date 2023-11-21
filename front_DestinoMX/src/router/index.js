@@ -13,6 +13,7 @@ import NotFoundPage from "@/screens/NotFoundPage"
 import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 import MyTrip from "@/components/Viajes/MyTrip.vue"
 import Favoritos from "@/components/Viajes/Favoritos.vue"
+import HistoryScreenVue from "@/components/Viajes/HistoryScreen.vue"
 
 const routes = [
   {
@@ -106,6 +107,11 @@ const routes = [
     path: "/favoritos",
     name: "favoritos",
     component: Favoritos,
+  },
+  {
+    path: "/History",
+    name: "History",
+    component: HistoryScreenVue,
   },
 ]
 
