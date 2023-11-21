@@ -14,6 +14,7 @@ import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
 import MyTrip from "@/components/Viajes/MyTrip.vue"
 import AboutUs from "@/components/Viajes/AboutUs.vue"
 import Favoritos from "@/modules/user/Favoritos.vue"
+import HistoryScreenVue from "@/components/Viajes/HistoryScreen.vue"
 
 const routes = [
   {
@@ -107,6 +108,11 @@ const routes = [
     path: "/favoritos",
     name: "favoritos",
     component: Favoritos,
+  },
+  {
+    path: "/History",
+    name: "History",
+    component: HistoryScreenVue,
   },
   {
     path: "/aboutus",
