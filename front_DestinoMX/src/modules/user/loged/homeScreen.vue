@@ -32,10 +32,11 @@
               >
                 <button class="text-black py-2 px-4">
                   <div class="flex items-center">
-                    <!-- {{ place.icon }} -->
-                    <SearchIcon />
-                    <div class="px-2 h-flex">
-                      {{ place.name }}
+                    <img :src="place.icon" />
+                    <div class="px-2 flex items-center">
+                      <h1 class="text-sm text-lowercase">
+                        {{ place.name }}
+                      </h1>
                     </div>
                   </div>
                 </button>
@@ -136,7 +137,6 @@ import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
-import SearchIcon from "@/components/icons/SearchIcon.vue"
 import { toast } from "vue3-toastify"
 import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 import { Swiper, SwiperSlide } from "swiper/vue"
@@ -151,7 +151,6 @@ export default {
   name: "homeScreen",
   components: {
     AvatarButton,
-    SearchIcon,
     GoogleMap,
     Marker,
     BurgerMenu,
