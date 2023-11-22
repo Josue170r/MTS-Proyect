@@ -28,7 +28,7 @@ app.set("port", process.env.PORT || 4000);
 app.use(morgan("dev"));
 
 // Permite recibir los datos a través de un formulario
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // Utiliza el formato de datos json
 app.use(express.json());
