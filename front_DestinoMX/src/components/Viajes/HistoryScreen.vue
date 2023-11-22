@@ -3,12 +3,13 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/home" class="absolute top-7 left-1 transform">
-        <BackButtonIcon />
-      </router-link>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
+      <div>
+        <BurgerMenu />
+      </div>
+
       <img
         src="@/assets/images/imagen006.png"
         alt="imagen004"
@@ -18,11 +19,11 @@
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->
 
-      <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-        Mis lugares favoritos
+      <h1 class="text-gray-800 py-5 text-center text-xl font-bold">
+        Historial de lugares visitados
       </h1>
 
-      <span class="block text-sm mb-2"></span>
+      <span class="block text-sm mb-1"></span>
 
       <!-- empieza div para favoritos -->
 
@@ -81,15 +82,15 @@
 </template>
 
 <script>
-import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
+import BurgerMenu from "@/components/icons/BurgerMenuIcon.vue"
 // import favIcon from "@/components/icons/favIcon"
 
 export default {
   name: "MyTrip",
   components: {
-    BackButtonIcon,
+    BurgerMenu,
     AvatarButton,
     deleteFav,
     // favIcon,

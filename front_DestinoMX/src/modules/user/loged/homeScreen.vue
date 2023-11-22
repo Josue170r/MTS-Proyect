@@ -238,7 +238,6 @@ export default {
           autoClose: 1500,
           hideProgressBar: true,
         })
-        this.loginJWT()
       }
     },
     async getNearImages() {

@@ -65,7 +65,7 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
 // CorreoElectronico o Usuario, contrasena
 // Funciona OK
 routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
-  const { Usuario, contrasena } = req.body
+  const { Usuario, contrasena } = req.body;
   mySqlConnection.query(
     `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
@@ -85,7 +85,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           req.session.usuario = {
             idUsuario: rows[0].idUsuario,
           };
-          console.log("Request:", req.session)
+          console.log("Request:", req.session);
           res
             .status(200)
             .json({ exito: true, mensaje: "Sesion iniciada con exito." });
@@ -116,17 +116,16 @@ routerAutenticacion.get("/api/cerrar-sesion", (req, res) => {
 });
 
 routerAutenticacion.post("/api/cuenta-activa", (req, res) => {
-  console.log(req.session)
-  if(req.session.usuario){
+  console.log(req.session);
+  if (req.session.usuario) {
     return res.status(200).json({
       success: true,
-      error:"usuario activo"
+      error: "usuario activo",
     });
-  }
-  else{
+  } else {
     return res.status(400).json({
       success: false,
-      error:"usuario desactivado"
+      error: "usuario desactivado",
     });
   }
 });
