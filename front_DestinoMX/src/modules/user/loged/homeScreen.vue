@@ -218,7 +218,6 @@ export default {
           },
         })
         this.nearPlaces = toRaw(data.results)
-        // console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -229,7 +228,6 @@ export default {
           }
         })
         this.getNearImages()
-        //console.log(this.nearPlaces)
         console.log(this.nearPlaces)
         this.getNearImages()
       } catch (error) {
