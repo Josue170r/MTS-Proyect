@@ -52,7 +52,7 @@ routerUsuario.put("/api/editar-perfil", (req, res) => {
   if (!req.session.usuario)
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   else {
-    const { Nombre, ApellidoP, ApellidoM } = req.query;
+    const { Nombre, ApellidoP, ApellidoM } = req.body;
     const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${req.session.usuario.idUsuario}"`;
     mySqlConnection.query(consultaCambiarDatos, (err, rows, fields) => {
       if (err)
@@ -65,6 +65,7 @@ routerUsuario.put("/api/editar-perfil", (req, res) => {
         res.status(200).json({
           exito: true,
           mensaje: "Datos actualizados con exito.",
+          rows,
         });
       }
     });
@@ -79,7 +80,7 @@ routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
     const consultaVerificarContrasena = `SELECT contrasena from usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
     mySqlConnection.query(consultaVerificarContrasena, (err, rows, fields) => {
       if (err)
-        res.res.status(500).json({
+        res.status(500).json({
           exito: false,
           mensaje: "Error en la consulta",
           err: err,
@@ -96,7 +97,7 @@ routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
             consultaActualizarContrasena,
             (err, rows, fields) => {
               if (err)
-                res.res.status(500).json({
+                res.status(500).json({
                   exito: false,
                   mensaje: "Error en la consulta",
                   err: err,
@@ -105,6 +106,7 @@ routerUsuario.put("/api/cambiar-contrasena", (req, res) => {
                 res.status(200).json({
                   exito: true,
                   mensaje: "Contraseña actualizada correctamente",
+                  rows,
                 });
               }
             }
