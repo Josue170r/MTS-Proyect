@@ -10,7 +10,7 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const { idPlaceLugar } = req.query;
+    const { idPlaceLugar } = req.body;
     const idUsuario = req.session.usuario.idUsuario;
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
 
@@ -69,7 +69,7 @@ routerFavoritos.delete("/api/favoritos", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
-    const { idPlaceLugar } = req.query;
+    const { idPlaceLugar } = req.body;
 
     const idUsuario = req.session.usuario.idUsuario;
     // Verificar si el usuario existe
