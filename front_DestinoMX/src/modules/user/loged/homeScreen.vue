@@ -138,13 +138,10 @@ import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
 import SearchIcon from "@/components/icons/SearchIcon.vue"
 import { toast } from "vue3-toastify"
-import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 import { Swiper, SwiperSlide } from "swiper/vue"
 import { Pagination } from "swiper/modules"
-import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
-import { getSearchPlaceApi } from "@/helpers/ApiSearchPlace"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
@@ -209,7 +206,7 @@ export default {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        const { data } = await getApiPreferences.get("/json", {
+        const { data } = await apiFromBackend.get("/api/nearBySearh", {
           params: {
             location: `${lat}, ${lng}`,
             radius: this.radio,
@@ -219,19 +216,6 @@ export default {
         })
         this.nearPlaces = toRaw(data.results)
         // console.log(this.nearPlaces)
-        this.nearPlaces.forEach((place) => {
-          if (place.photos && place.photos.length > 0) {
-            this.photosReferences.push(place.photos[0].photo_reference)
-          } else {
-            this.photosReferences.push(
-              "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
-            )
-          }
-        })
-        this.getNearImages()
-        //console.log(this.nearPlaces)
-        console.log(this.nearPlaces)
-        this.getNearImages()
       } catch (error) {
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
@@ -240,7 +224,7 @@ export default {
           hideProgressBar: true,
         })
       }
-    },
+    } /*
     async getNearImages() {
       try {
         const imageURLs = []
@@ -266,7 +250,7 @@ export default {
           hideProgressBar: true,
         })
       }
-    },
+    } /*
     async FindPlacesFromInput() {
       try {
         const response = await getSearchPlaceApi.get("", {
@@ -323,7 +307,7 @@ export default {
           })
         }
       }
-    },
+    },*/,
   },
   setup() {
     return {
