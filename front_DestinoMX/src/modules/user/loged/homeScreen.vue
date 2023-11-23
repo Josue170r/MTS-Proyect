@@ -206,16 +206,15 @@ export default {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        const { data } = await apiFromBackend.post("/api/nearBySearh", {
+        const { data } = await apiFromBackend.get("/api/nearBySearh", {
           params: {
             location: `${lat}, ${lng}`,
             radius: this.radio,
             type: this.preference,
-            key: this.apiKey,
           },
         })
         this.nearPlaces = toRaw(data.results)
-        // console.log(this.nearPlaces)
+        console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -230,6 +229,7 @@ export default {
         console.log(this.nearPlaces)
         this.getNearImages()*/
       } catch (error) {
+        console.log(error)
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
