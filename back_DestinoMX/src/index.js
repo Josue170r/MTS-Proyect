@@ -1,7 +1,6 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
-import axios from "Axios";
 
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
@@ -9,7 +8,9 @@ import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
 import { routerPreferencias } from "./routes/preferencias.js";
 import { routerUsuario } from "./routes/usuario.js";
-import { routerApi } from "./ApiGoogle/nearBySearch.js";
+import { routerApiNearBySearh } from "./ApiGoogle/nearBySearch.js";
+import { routerApiImg } from "./ApiGoogle/imagePlece.js"
+import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
 // Inicializando la aplicacion.
 const app = express();
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: 'http://192.168.1.72:8081',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
@@ -62,7 +63,9 @@ app.use(routerFavoritos);
 app.use(routerCalendario);
 app.use(routerPreferencias);
 app.use(routerUsuario);
-app.use(routerApi);
+app.use(routerApiNearBySearh);
+app.use(routerApiImg);
+app.use(routerApiWeather);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
