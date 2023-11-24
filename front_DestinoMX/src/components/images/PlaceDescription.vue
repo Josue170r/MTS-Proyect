@@ -131,7 +131,6 @@
 <script>
 import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
-import { getWeatherPlace } from "@/components/images/helpers/getWeatherPlace"
 import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
 import RatingIcon from "@/components/icons/RatingIcon.vue"
@@ -145,6 +144,7 @@ import GalleryImages from "@/components/images/GalleryImages.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "PlaceDescription",
@@ -189,6 +189,25 @@ export default {
     })
   },
   methods: {
+    async getWeather() {
+      try {
+        const { data } = await apiFromBackend.get("/api/Weather", {
+          params: {
+            lat: "19.606069",
+            lon: "-98.971432",
+          },
+        })
+        this.placeWeather = parseInt(data.main.temp - 273.15)
+        console.log("Desde getWeather: ", data)
+      } catch (e) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
     async getNamePlace(placeID) {
       try {
         const { data } = await getNameApi.get("/json", {
@@ -269,26 +288,7 @@ export default {
         })
       }
     },
-    async getWeather() {
-      try {
-        const { data } = await getWeatherPlace.get("/weather", {
-          params: {
-            lat: this.lat,
-            lon: this.long,
-            appid: this.apiKey2,
-          },
-        })
-        this.placeWeather = parseInt(data.main.temp - 273.15)
-        console.log("Desde getWeather: ", data)
-      } catch (e) {
-        toast.error("Ha ocurrido algún error", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
-      }
-    },
+
     PopUpAddTrip() {
       this.showPopup = true
     },
