@@ -6,10 +6,28 @@ import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
+import { routerPreferencias } from "./routes/preferencias.js";
 import { routerUsuario } from "./routes/usuario.js";
+import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
+import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
 // Inicializando la aplicacion.
 const app = express();
+import cors from 'cors';
+
+
+//inclusion de back api cors
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Reemplaza con el origen de tu aplicación Vue.js
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+app.use(cors({
+  origin: 'http://localhost:8080',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,  // Permite el envío de cookies
+}));
 
 // Settings
 // Utilizar el puerto definido por el servidor (al subirlo a la web), si no existe utiliza por defecto el puerto 3000 (local)
@@ -20,7 +38,7 @@ app.set("port", process.env.PORT || 4000);
 app.use(morgan("dev"));
 
 // Permite recibir los datos a través de un formulario
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // Utiliza el formato de datos json
 app.use(express.json());
@@ -31,6 +49,9 @@ app.use(
     secret: "1234",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: false,
+    }
   })
 );
 
@@ -39,7 +60,10 @@ app.use(routerAutenticacion);
 app.use(routerViajes);
 app.use(routerFavoritos);
 app.use(routerCalendario);
+app.use(routerPreferencias);
 app.use(routerUsuario);
+app.use(routerApiDetails);
+app.use(routerApiWeather);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {

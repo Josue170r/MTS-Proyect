@@ -14,7 +14,7 @@
         <img
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl w-96 h-80"
+          class="opacity-100 rounded-t-xl rounded-b-xl"
         />
       </div>
       <div v-else>
@@ -70,9 +70,9 @@
 
         <div
           v-if="about"
-          class="ml-3 mr-1 text-black font-Baskerville py-0 text-left text-sm"
+          class="ml-3 mr-1 text-black font-quicksand py-0 text-left text-sm"
         >
-          <p>
+          <p class="mt-2 mb-2 font-quicksand">
             {{ about }}
           </p>
         </div>
@@ -97,7 +97,7 @@
 
       <!-- Galería -->
       <div class="h-[600] sm:flex flex-col mt-2 sm:h-[400px]">
-        <h1 class="ml-3 text-black py-1 text-left text-sm font-bold">
+        <h1 class="ml-3 mb-4 text-black py-1 text-left text-sm font-bold">
           {{ "Galería de imágenes" }}
         </h1>
         <!-- Agrega el componente GalleryImages aquí -->
@@ -105,7 +105,7 @@
       </div>
       <div class="flex justify-center mt-4">
         <button
-          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 bg-pink-300"
+          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
         >
           <div class="flex items-center">
             <span>Favoritos</span>
@@ -114,22 +114,21 @@
         </button>
 
         <button
-          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 bg-green-300"
+          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-green-300"
+          @click="PopUpAddTrip"
         >
           <div class="flex items-center">
             <span>Añadir a viaje</span>
             <AddIcon class="ml-1" />
           </div>
         </button>
+        <PopUpAddTrip v-if="showPopup" @close-popup="hideAddToTripPopup" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
-import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
-import { getWeatherPlace } from "@/components/images/helpers/getWeatherPlace"
 import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
 import RatingIcon from "@/components/icons/RatingIcon.vue"
@@ -142,6 +141,8 @@ import WeatherIcon from "@/components/icons/WeatherIcon.vue"
 import GalleryImages from "@/components/images/GalleryImages.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
+import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "PlaceDescription",
@@ -155,12 +156,11 @@ export default {
     WeatherIcon,
     GalleryImages,
     BackButton,
+    PopUpAddTrip,
   },
   data() {
     return {
       placeImage: "",
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
-      apiKey2: "a4e3d3b9019328f729700ec96a75dc66",
       placePhotoReference: "",
       placeName: "",
       location: "",
@@ -173,6 +173,7 @@ export default {
       selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
+      showPopup: false,
     }
   },
   created() {
@@ -184,12 +185,30 @@ export default {
     })
   },
   methods: {
+    async getWeather() {
+      try {
+        const { data } = await apiFromBackend.get("/api/Weather", {
+          params: {
+            lat: "19.606069",
+            lon: "-98.971432",
+          },
+        })
+        this.placeWeather = parseInt(data.main.temp - 273.15)
+        console.log("Desde getWeather: ", data)
+      } catch (e) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
     async getNamePlace(placeID) {
       try {
-        const { data } = await getNameApi.get("/json", {
+        const { data } = await apiFromBackend.get("/api/placeName", {
           params: {
             place_id: placeID,
-            key: this.apiKey,
           },
         })
         console.log("Desde getNamePlace: ", data)
@@ -213,11 +232,10 @@ export default {
     },
     async getImgPlace() {
       try {
-        const img = await getImgPlaceApi.get("/photo", {
+        const img = await apiFromBackend.get("/api/imgPlace", {
           params: {
             maxwidth: "400",
             photoreference: this.placePhotoReference,
-            key: this.apiKey,
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
@@ -238,11 +256,10 @@ export default {
         const imageUrls = []
         // Itera a través de las referencias de fotos
         for (const photoReference of this.placePhotosReferences) {
-          const response = await getImgPlaceApi.get("/photo", {
+          const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
               maxwidth: "400",
               photoreference: photoReference, // Usa la referencia de foto actual
-              key: this.apiKey,
             },
             responseType: "blob", // Establece el tipo de respuesta como blob
           })
@@ -264,25 +281,12 @@ export default {
         })
       }
     },
-    async getWeather() {
-      try {
-        const { data } = await getWeatherPlace.get("/weather", {
-          params: {
-            lat: this.lat,
-            lon: this.long,
-            appid: this.apiKey2,
-          },
-        })
-        this.placeWeather = parseInt(data.main.temp - 273.15)
-        console.log("Desde getWeather: ", data)
-      } catch (e) {
-        toast.error("Ha ocurrido algún error", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
-      }
+
+    PopUpAddTrip() {
+      this.showPopup = true
+    },
+    hideAddToTripPopup() {
+      this.showPopup = false
     },
   },
 }
