@@ -1,5 +1,5 @@
 <template>
-  <div :class="[isLoading ? 'fixed opacity-75' : '...']">
+  <div :class="[isLoading ? 'fixed opacity-60' : '...']">
     <div class="min-h-screen w-full flex flex-col md:flex-row">
       <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -160,7 +160,7 @@ export default {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
       preference: "restaurant",
-      radio: 900,
+      radio: 150,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
@@ -225,9 +225,6 @@ export default {
           }
         })
         this.getNearImages()
-        //console.log(this.nearPlaces)
-        console.log(this.nearPlaces)
-        this.getNearImages()
       } catch (error) {
         console.log(error)
         toast.error("No se obtuvo el arreglo de lugares", {
@@ -262,13 +259,12 @@ export default {
           hideProgressBar: true,
         })
       }
-    } /*
+    },
     async FindPlacesFromInput() {
       try {
-        const response = await getSearchPlaceApi.get("", {
+        const response = await apiFromBackend.get("/api/searchPlace", {
           params: {
             query: this.namePlaceToFind,
-            key: this.apiKey,
           },
         })
         console.log("Desde la API", response)
@@ -279,7 +275,7 @@ export default {
       } catch (error) {
         console.log("Todo bien")
       }
-    }*/,
+    },
     async loginJWT() {
       try {
         const response = await apiFromBackend.post("/api/cuenta-activa")

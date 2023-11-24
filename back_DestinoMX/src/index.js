@@ -8,8 +8,7 @@ import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
 import { routerPreferencias } from "./routes/preferencias.js";
 import { routerUsuario } from "./routes/usuario.js";
-import { routerApiNearBySearh } from "./ApiGoogle/nearBySearch.js";
-import { routerApiImg } from "./ApiGoogle/imagePlece.js"
+import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
 // Inicializando la aplicacion.
@@ -25,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: 'http://192.168.1.72:8081',
+  origin: 'http://localhost:8080',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
@@ -63,8 +62,7 @@ app.use(routerFavoritos);
 app.use(routerCalendario);
 app.use(routerPreferencias);
 app.use(routerUsuario);
-app.use(routerApiNearBySearh);
-app.use(routerApiImg);
+app.use(routerApiDetails);
 app.use(routerApiWeather);
 
 // Iniciando el servidor
