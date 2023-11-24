@@ -59,17 +59,23 @@
                           <span class="text-2xl">Editar Perfil</span>
                         </v-card-title>
                         <v-card-text>
-                          <v-container :validation-schema="schema">
+                          <Form
+                            :validation-schema="schema"
+                            @submit="updateProfileFunction"
+                          >
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
-                                <div>
-                                  <v-text-field
-                                    class="font-baskerville text-lg"
+                                <div
+                                  class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
+                                >
+                                  <Field
+                                    id="name"
                                     v-model="updateProfile.name"
-                                    label="Nombre"
-                                    required
+                                    class="pl-2 outline-none border-none w-full"
+                                    type="text"
                                     name="name"
-                                  ></v-text-field>
+                                    placeholder="Nombre(s) *"
+                                  />
                                 </div>
                                 <div class="ml-1 mb-2 -mt-1">
                                   <ErrorMessage
@@ -79,42 +85,65 @@
                                 </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field
-                                  class="font-baskerville text-lg"
-                                  v-model="updateProfile.lastname"
-                                  label="Apellido Paterno"
-                                  required
-                                ></v-text-field>
+                                <div
+                                  class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
+                                >
+                                  <Field
+                                    id="lastName"
+                                    v-model="updateProfile.lastname"
+                                    class="pl-2 outline-none border-none w-full"
+                                    type="text"
+                                    name="lastName"
+                                    placeholder="Apellido paterno *"
+                                  />
+                                </div>
+                                <div class="ml-1 mb-2 -mt-1">
+                                  <ErrorMessage
+                                    class="flex block text-red-700 text-sm"
+                                    name="lastName"
+                                  ></ErrorMessage>
+                                </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field
-                                  class="font-baskerville text-lg"
-                                  v-model="updateProfile.secondlastname"
-                                  label="Apellido Materno"
-                                  persistent-hint
-                                  required
-                                ></v-text-field>
+                                <div
+                                  class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
+                                >
+                                  <Field
+                                    id="secondLastName"
+                                    v-model="updateProfile.secondlastname"
+                                    class="pl-2 outline-none border-none w-full"
+                                    type="text"
+                                    name="secondLastName"
+                                    placeholder="Apellido materno"
+                                  />
+                                </div>
+                                <div class="ml-1 mb-2 -mt-1">
+                                  <ErrorMessage
+                                    class="flex block text-red-700 text-sm"
+                                    name="secondLastName"
+                                  ></ErrorMessage>
+                                </div>
                               </v-col>
                             </v-row>
-                          </v-container>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                color="blue-darken-1"
+                                variant="text"
+                                @click="dialog = false"
+                              >
+                                Cerrar
+                              </v-btn>
+                              <v-btn
+                                color="blue-darken-1"
+                                variant="text"
+                                type="submit"
+                              >
+                                Guardar
+                              </v-btn>
+                            </v-card-actions>
+                          </Form>
                         </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn
-                            color="blue-darken-1"
-                            variant="text"
-                            @click="dialog = false"
-                          >
-                            Cerrar
-                          </v-btn>
-                          <v-btn
-                            color="blue-darken-1"
-                            variant="text"
-                            @click="updateProfileFunction"
-                          >
-                            Guardar
-                          </v-btn>
-                        </v-card-actions>
                       </v-card>
                     </v-dialog>
                   </v-row>
@@ -151,52 +180,93 @@
                           <span class="text-2xl">Cambiar Contraseña</span>
                         </v-card-title>
                         <v-card-text>
-                          <v-container>
+                          <Form
+                            :validation-schema="schequemaFrompassword"
+                            @submit="updatePasswordFuntion"
+                          >
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field
-                                  class="font-baskerville text-lg"
-                                  v-model="updatePassword.currentPassword"
-                                  label="Contraseña Actual"
-                                  required
-                                ></v-text-field>
+                                <div
+                                  class="flex items-center border-2 py-2 px-3 rounded-md mb-6 bg-white"
+                                >
+                                  <Field
+                                    id="currentPassword"
+                                    type="currentPassword"
+                                    autocomplete="off"
+                                    v-model="updatePassword.currentPassword"
+                                    class="pl-2 outline-none border-none w-full"
+                                    name="currentPassword"
+                                    placeholder="Contraseña actual"
+                                  />
+                                </div>
+                                <div class="ml-1 mb-2 -mt-1">
+                                  <ErrorMessage
+                                    class="flex block text-red-700 text-sm"
+                                    name="currentPassword"
+                                  ></ErrorMessage>
+                                </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field
-                                  class="font-baskerville text-lg"
-                                  v-model="updatePassword.newPassword"
-                                  label="Nueva Contraseña"
-                                  required
-                                ></v-text-field>
+                                <div
+                                  class="flex items-center border-2 py-2 px-3 rounded-md mb-6 bg-white"
+                                >
+                                  <Field
+                                    id="password"
+                                    type="password"
+                                    autocomplete="off"
+                                    v-model="updatePassword.newPassword"
+                                    class="pl-2 outline-none border-none w-full"
+                                    name="password"
+                                    placeholder="Nueva Contraseña"
+                                  />
+                                </div>
+                                <div class="ml-1 mb-2 -mt-1">
+                                  <ErrorMessage
+                                    class="flex block text-red-700 text-sm"
+                                    name="password"
+                                  ></ErrorMessage>
+                                </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field
-                                  class="font-baskerville text-lg"
-                                  v-model="updatePassword.confirmPassword"
-                                  label="Confirmar nueva contraseña"
-                                  required
-                                ></v-text-field>
+                                <div
+                                  class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
+                                >
+                                  <Field
+                                    id="passwordConfirmation"
+                                    v-model="updatePassword.confirmPassword"
+                                    class="pl-2 outline-none border-none w-full"
+                                    type="text"
+                                    name="passwordConfirmation"
+                                    placeholder="Confirma tu nueva contraseña"
+                                  />
+                                </div>
+                                <div class="ml-1 mb-2 -mt-1">
+                                  <ErrorMessage
+                                    class="flex block text-red-700 text-sm"
+                                    name="passwordConfirmation"
+                                  ></ErrorMessage>
+                                </div>
                               </v-col>
                             </v-row>
-                          </v-container>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                color="blue-darken-1"
+                                variant="text"
+                                @click="dialogfromPassword = false"
+                              >
+                                Cerrar
+                              </v-btn>
+                              <v-btn
+                                color="blue-darken-1"
+                                variant="text"
+                                type="submit"
+                              >
+                                Guardar
+                              </v-btn>
+                            </v-card-actions>
+                          </Form>
                         </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn
-                            color="blue-darken-1"
-                            variant="text"
-                            @click="dialogfromPassword = false"
-                          >
-                            Cerrar
-                          </v-btn>
-                          <v-btn
-                            color="blue-darken-1"
-                            variant="text"
-                            @click="updatePasswordFuntion"
-                          >
-                            Guardar
-                          </v-btn>
-                        </v-card-actions>
                       </v-card>
                     </v-dialog>
                   </v-row>
@@ -345,7 +415,7 @@ export default {
 
 <script setup>
 import * as yup from "yup"
-import { ErrorMessage } from "vee-validate"
+import { Field, Form, ErrorMessage } from "vee-validate"
 
 const schema = yup.object({
   name: yup
@@ -364,10 +434,15 @@ const schema = yup.object({
     ),
   secondLastName: yup
     .string()
+    .required("Este campo es obligatorio")
     .matches(
       /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
       "El segundo apellido solo puede contener",
     ),
+})
+
+const schequemaFrompassword = yup.object({
+  currentPassword: yup.string().required("La contraseña actual es obligatoria"),
   password: yup
     .string()
     .required("La contraseña es obligatoria")
