@@ -9,10 +9,10 @@ const getApiPreferences = axios.create({
 const apiKey = "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70"
 
 
-export const routerApi = Router()
+export const routerApiNearBySearh = Router()
 
-routerApi.get("/api/nearBySearh", async (req, res)=> {
-  const { location, radius, type } = req.query
+routerApiNearBySearh.get("/api/nearBySearh", async (req, res)=> {
+  const { location, radius, type} = req.query
   try {
     const response = await getApiPreferences.get('/json', {
       params: {

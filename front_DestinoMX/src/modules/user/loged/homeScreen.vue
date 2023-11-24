@@ -224,10 +224,10 @@ export default {
             )
           }
         })
-        /*this.getNearImages()
+        this.getNearImages()
         //console.log(this.nearPlaces)
         console.log(this.nearPlaces)
-        this.getNearImages()*/
+        this.getNearImages()
       } catch (error) {
         console.log(error)
         toast.error("No se obtuvo el arreglo de lugares", {
@@ -237,16 +237,15 @@ export default {
           hideProgressBar: true,
         })
       }
-    } /*
+    },
     async getNearImages() {
       try {
         const imageURLs = []
         for (const photoReference of this.photosReferences) {
-          const response = await getImgPlaceApi.get("/photo", {
+          const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
               maxwidth: "400",
               photoreference: photoReference,
-              key: this.apiKey,
             },
             responseType: "blob",
           })
@@ -280,7 +279,7 @@ export default {
       } catch (error) {
         console.log("Todo bien")
       }
-    },
+    }*/,
     async loginJWT() {
       try {
         const response = await apiFromBackend.post("/api/cuenta-activa")
@@ -320,7 +319,7 @@ export default {
           })
         }
       }
-    },*/,
+    },
   },
   setup() {
     return {
