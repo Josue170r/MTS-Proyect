@@ -46,13 +46,40 @@
           {{ location }}
         </div>
         <!-- Rating -->
-        <div class="flex flex-row ml-1 mr-0">
-          <RatingIcon />
-          <div class="ml-0 mr-4 text-black-900 text-left text-sm">
-            {{ rating }}
-          </div>
+        <div
+          class="flex flex-row ml-1 mr-4 relative z-400"
+          @mouseover="showPopUpRating"
+          @mouseout="hideRatingPopUp"
+        >
+          <button
+            ref="ratingButton"
+            class="flex py-1 px-1 rounded-lg text-gray text-base mr-3 ml-3 mb-4 mt-6"
+          >
+            <div
+              class="flex items-center"
+              @mouseover="showPopUpRating"
+              @mouseout="hideRatingPopUp"
+            >
+              <RatingButton class="ml-1" />
+              <p class="text-center">{{ rating }}</p>
+            </div>
+          </button>
         </div>
       </div>
+      <PopUpRating
+        ref="ratingPopup"
+        v-if="showPopup2"
+        :rating="rating"
+        :numratings="numratings"
+        class="mr-16"
+        style="
+          max-width: 100%;
+          text-align: center;
+          position: absolute;
+          z-index: 300;
+          left: 30%;
+        "
+      />
 
       <!-- Acerca de -->
 
@@ -131,7 +158,7 @@
 <script>
 import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
-import RatingIcon from "@/components/icons/RatingIcon.vue"
+import RatingButton from "@/components/buttons/RatingButton.vue"
 import ShareIcon from "@/components/icons/ShareIcon.vue"
 import ForwardIcon from "@/components/icons/ForwardButtonIcon.vue"
 import BackButton from "@/components/buttons/BackButton"
@@ -142,14 +169,15 @@ import GalleryImages from "@/components/images/GalleryImages.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
+import PopUpRating from "@/components/Viajes/PopUpRating.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "PlaceDescription",
   components: {
     LocalitationIcon2,
-    RatingIcon,
     ShareIcon,
+    RatingButton,
     ForwardIcon,
     FavoriteIcon,
     AddIcon,
@@ -157,6 +185,7 @@ export default {
     GalleryImages,
     BackButton,
     PopUpAddTrip,
+    PopUpRating,
   },
   data() {
     return {
@@ -165,6 +194,7 @@ export default {
       placeName: "",
       location: "",
       rating: "",
+      numratings: "",
       about: "",
       lat: "",
       long: "",
@@ -174,6 +204,8 @@ export default {
       placePhotosReferences: [],
       placeImages: [],
       showPopup: false,
+      showPopup2: false,
+      showRatingPopup: false,
     }
   },
   created() {
@@ -183,6 +215,12 @@ export default {
       this.getImgPlace()
       this.getImgsPlaces()
     })
+  },
+  mounted() {
+    this.$el.addEventListener("click", this.handleDocumentClick)
+  },
+  beforeUnmount() {
+    this.$el.removeEventListener("click", this.handleDocumentClick)
   },
   methods: {
     async getWeather() {
@@ -221,6 +259,7 @@ export default {
         this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
         this.rating = data.result.rating
+        this.numratings = data.result.user_ratings_total
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
@@ -287,6 +326,12 @@ export default {
     },
     hideAddToTripPopup() {
       this.showPopup = false
+    },
+    showPopUpRating() {
+      this.showPopup2 = true
+    },
+    hideRatingPopUp() {
+      this.showPopup2 = false
     },
   },
 }
