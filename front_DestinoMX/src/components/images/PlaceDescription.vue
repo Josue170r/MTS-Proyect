@@ -66,21 +66,21 @@
           </button>
         </div>
       </div>
-      <PopUpRating
-        ref="ratingPopup"
-        v-if="showPopup2"
-        :rating="rating"
-        :numratings="numratings"
-        class="mr-16"
-        style="
-          max-width: 100%;
-          text-align: center;
-          position: absolute;
-          z-index: 300;
-          left: 30%;
-        "
-      />
-
+      <div class="grid justify-items-end">
+        <PopUpRating
+          ref="ratingPopup"
+          v-if="showPopup2"
+          :rating="rating"
+          :numratings="numratings"
+          class="mr-16"
+          :style="{
+            maxWidth: '100%',
+            textAlign: 'center',
+            position: 'absolute',
+            zIndex: 300,
+          }"
+        />
+      </div>
       <!-- Acerca de -->
 
       <div>
