@@ -406,7 +406,25 @@ export default {
       this.dialog = false
     },
     async updatePasswordFuntion() {
-      console.log(this.updatePassword)
+      try {
+        const { data } = await apiFromBackend.put("/api/cambiar-contrasena", {
+          contrasena: this.updatePassword.currentPassword,
+          nuevaContrasena: this.updatePassword.confirmPassword,
+        })
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 600,
+          type: "success",
+          theme: "colored",
+        })
+      } catch ({ response }) {
+        toast(response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
       this.dialogfromPassword = false
     },
   },
