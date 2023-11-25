@@ -67,8 +67,7 @@ import { GoogleMap, Marker, Polyline } from "vue3-google-map"
 import BackButton from "@/components/buttons/BackButton"
 import LocalitationIcon from "@/components/icons/LocalitationIcon"
 import { toast } from "vue3-toastify"
-import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
-import { getApiRoute } from "@/components/Viajes/helpers/ApiRoute"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "GoogleMaps",
@@ -115,13 +114,11 @@ export default {
 
     async getNamePlace(placeId) {
       try {
-        const { data } = await getNameApi.get("/json", {
+        const { data } = await apiFromBackend.get("/api/placeName", {
           params: {
             place_id: placeId,
-            key: this.apiKey,
           },
         })
-        console.log(data)
         this.CurrentNamePlace = data.result.name
         this.CurrentNamePlace
           ? (this.isEmpyCurrenName = false)
@@ -143,11 +140,10 @@ export default {
       let { latdestino, lngdestino } = Destination
       let { lat, lng } = this.relativePosition
       try {
-        const { data } = await getApiRoute.get("", {
+        const { data } = await apiFromBackend.get("/api/routePlace", {
           params: {
             origin: `${lat}, ${lng}`,
             destination: `${latdestino}, ${lngdestino}`,
-            key: this.apiKey,
           },
         })
         let apiRoutes = data.routes[0].legs[0]

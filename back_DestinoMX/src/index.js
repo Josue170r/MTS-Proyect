@@ -2,21 +2,36 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 
-
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
 import { routerPreferencias } from "./routes/preferencias.js";
 import { routerUsuario } from "./routes/usuario.js";
+import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
+import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
 // Inicializando la aplicacion.
 const app = express();
 import cors from 'cors';
 
+
+//inclusion de back api cors
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Reemplaza con el origen de tu aplicación Vue.js
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 app.use(cors({
+<<<<<<< HEAD
   origin: 'http://localhost:8081', 
   credentials: true, 
+=======
+  origin: 'http://localhost:8080',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,  // Permite el envío de cookies
+>>>>>>> b6003a756da914a82110b89b6f5f0ae2a78e40d6
 }));
 
 // Settings
@@ -52,6 +67,8 @@ app.use(routerFavoritos);
 app.use(routerCalendario);
 app.use(routerPreferencias);
 app.use(routerUsuario);
+app.use(routerApiDetails);
+app.use(routerApiWeather);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
