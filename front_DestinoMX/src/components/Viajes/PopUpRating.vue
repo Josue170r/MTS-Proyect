@@ -3,8 +3,7 @@
     ref="popup"
     elevation="24"
     height="160"
-    width="300"
-    readonly
+    width="250"
     class="d-flex flex-column mx-auto py-2 font-quicksand rounded-lg text-black text-base"
   >
     <div class="d-flex justify-center font-semibold mt-1 text-xl">Ratings</div>
@@ -18,6 +17,8 @@
       <v-rating
         :model-value="rating"
         color="yellow-darken-3"
+        readonly
+        density="comfortable"
         half-increments
       ></v-rating>
       <div class="px-2 py-2">{{ numratings }} rating(s)</div>
