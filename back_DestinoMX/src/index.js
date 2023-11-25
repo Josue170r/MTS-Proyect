@@ -24,14 +24,9 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-<<<<<<< HEAD
-  origin: 'http://localhost:8081', 
-  credentials: true, 
-=======
-  origin: 'http://localhost:8080',
+  origin: 'http://localhost:8081',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
->>>>>>> b6003a756da914a82110b89b6f5f0ae2a78e40d6
 }));
 
 // Settings
