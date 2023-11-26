@@ -1,0 +1,5 @@
+
+openssl genpkey -algorithm RSA -out localhost.key
+openssl req -x509 -key localhost.key -out localhost.crt -days 3650 -subj "/CN=192.168.1.72"
+
+

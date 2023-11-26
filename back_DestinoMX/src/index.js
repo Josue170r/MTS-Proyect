@@ -1,6 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import https from "https";
+import fs from "fs";
 
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
@@ -13,6 +15,15 @@ import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
 // Inicializando la aplicacion.
 const app = express();
+
+//Utilizacion de credenciales temporales SSL
+const credentials={
+  key: fs.readFileSync('src/OpenSSL/certKey.key','utf-8'),
+  cert: fs.readFileSync('src/OpenSSL/cert.crt','utf-8'),
+}
+
+const httpsS=https.createServer(credentials,app)
+
 import cors from 'cors';
 
 
@@ -24,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: 'https://192.168.1.72:8081',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
@@ -66,6 +77,6 @@ app.use(routerApiDetails);
 app.use(routerApiWeather);
 
 // Iniciando el servidor
-app.listen(app.get("port"), () => {
+httpsS.listen(app.get("port"), () => {
   console.log(`server listen on port ${app.get("port")}`);
 });
