@@ -176,6 +176,7 @@ import * as yup from "yup"
 import { configure } from "vee-validate"
 import { localize } from "@vee-validate/i18n"
 import es from "@vee-validate/i18n/dist/locale/es.json"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 configure({
   generateMessage: localize({ es }),
@@ -208,8 +209,19 @@ export default {
     const { value: DescriptionTrip, errorMessage: DescriptionTripError } =
       useField("DescriptionTrip")
 
-    const onSubmit = handleSubmit((values) => {
-      console.log(values)
+    const onSubmit = handleSubmit(async (values) => {
+      try {
+        const response = await apiFromBackend.post("/api/viaje", {
+          nombreMiViajeSQL: values.TripNamem,
+          descripcionViaje: values.DescriptionTrip,
+          diaInicioSQL: this.startDate,
+          diaFinalSQL: this.endDate,
+          colorPlantilla: "#F1262637",
+        })
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
     })
 
     return {

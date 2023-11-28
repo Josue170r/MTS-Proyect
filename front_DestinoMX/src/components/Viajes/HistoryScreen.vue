@@ -84,7 +84,7 @@
 <script>
 import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
-import BurgerMenu from "@/components/icons/BurgerMenuIcon.vue"
+import BurgerMenu from "@/components/buttons/BurgerMenu"
 // import favIcon from "@/components/icons/favIcon"
 
 export default {

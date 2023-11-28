@@ -117,6 +117,7 @@
                       :length="5"
                       :size="16"
                       :model-value="place.rating"
+                      readonly
                       color="rgb(232, 176, 36)"
                       active-color="rgb(232, 176, 36)"
                     />
