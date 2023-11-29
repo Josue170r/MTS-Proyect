@@ -116,7 +116,6 @@ routerAutenticacion.get("/api/cerrar-sesion", (req, res) => {
 });
 
 routerAutenticacion.post("/api/cuenta-activa", (req, res) => {
-  console.log(req.session);
   if (req.session.usuario) {
     return res.status(200).json({
       success: true,

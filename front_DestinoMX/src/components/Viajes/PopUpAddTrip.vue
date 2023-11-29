@@ -107,7 +107,7 @@ export default {
   width: 100%;
   text-align: center;
 }
-.hide-arrows .v-carousel__controls {
+.hide-arrows {
   display: none !important;
 }
 </style>

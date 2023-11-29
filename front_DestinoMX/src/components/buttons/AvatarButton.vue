@@ -34,17 +34,33 @@
 </template>
 
 <script>
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 export default {
   name: "AvatarButton",
   data: () => ({
     //estos datos de la BD los manejarian los del equipo de back
     user: {
-      initials: "DM",
-      fullName: "Daniela Martínez",
-      email: "danielaM@outlook.com",
+      initials: "",
+      fullName: "",
+      email: "",
     },
   }),
+  created() {
+    this.getUserInformation()
+  },
   methods: {
+    async getUserInformation() {
+      try {
+        const { data } = await apiFromBackend.get("/api/perfil", {})
+        const { Nombre, ApellidoP, CorreoElectronico } = data.datosUsuario
+        console.log()
+        this.user.initials = `${Nombre[0]}${ApellidoP[0]}`
+        this.user.fullName = `${Nombre} ${ApellidoP}`
+        this.user.email = `${CorreoElectronico}`
+      } catch ({ response }) {
+        console.log(response)
+      }
+    },
     logout() {
       // lógica para cerrar la sesión del usuario -> limpiar el token de autenticación, eliminar cookies, etc.
       // se manda al usuario a home

@@ -46,14 +46,41 @@
           {{ location }}
         </div>
         <!-- Rating -->
-        <div class="flex flex-row ml-1 mr-0">
-          <RatingIcon />
-          <div class="ml-0 mr-4 text-black-900 text-left text-sm">
-            {{ rating }}
-          </div>
+        <div
+          class="flex flex-row ml-1 mr-4 relative z-400"
+          @mouseover="showPopUpRating"
+          @mouseout="hideRatingPopUp"
+        >
+          <button
+            ref="ratingButton"
+            class="flex py-1 px-1 rounded-lg text-gray text-base mr-3 ml-3 mb-4 mt-6"
+          >
+            <div
+              class="flex items-center"
+              @mouseover="showPopUpRating"
+              @mouseout="hideRatingPopUp"
+            >
+              <RatingButton class="ml-1" />
+              <p class="text-center">{{ rating }}</p>
+            </div>
+          </button>
         </div>
       </div>
-
+      <div class="grid justify-items-end">
+        <PopUpRating
+          ref="ratingPopup"
+          v-if="showPopup2"
+          :rating="rating"
+          :numratings="numratings"
+          class="mr-16"
+          :style="{
+            maxWidth: '100%',
+            textAlign: 'center',
+            position: 'absolute',
+            zIndex: 300,
+          }"
+        />
+      </div>
       <!-- Acerca de -->
 
       <div>
@@ -129,12 +156,9 @@
 </template>
 
 <script>
-import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
-import { getNameApi } from "@/components/Viajes/helpers/ApiPlaceName"
-import { getWeatherPlace } from "@/components/images/helpers/getWeatherPlace"
 import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
-import RatingIcon from "@/components/icons/RatingIcon.vue"
+import RatingButton from "@/components/buttons/RatingButton.vue"
 import ShareIcon from "@/components/icons/ShareIcon.vue"
 import ForwardIcon from "@/components/icons/ForwardButtonIcon.vue"
 import BackButton from "@/components/buttons/BackButton"
@@ -145,13 +169,15 @@ import GalleryImages from "@/components/images/GalleryImages.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
+import PopUpRating from "@/components/Viajes/PopUpRating.vue"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "PlaceDescription",
   components: {
     LocalitationIcon2,
-    RatingIcon,
     ShareIcon,
+    RatingButton,
     ForwardIcon,
     FavoriteIcon,
     AddIcon,
@@ -159,16 +185,16 @@ export default {
     GalleryImages,
     BackButton,
     PopUpAddTrip,
+    PopUpRating,
   },
   data() {
     return {
       placeImage: "",
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
-      apiKey2: "a4e3d3b9019328f729700ec96a75dc66",
       placePhotoReference: "",
       placeName: "",
       location: "",
       rating: "",
+      numratings: "",
       about: "",
       lat: "",
       long: "",
@@ -178,6 +204,8 @@ export default {
       placePhotosReferences: [],
       placeImages: [],
       showPopup: false,
+      showPopup2: false,
+      showRatingPopup: false,
     }
   },
   created() {
@@ -188,13 +216,37 @@ export default {
       this.getImgsPlaces()
     })
   },
+  mounted() {
+    this.$el.addEventListener("click", this.handleDocumentClick)
+  },
+  beforeUnmount() {
+    this.$el.removeEventListener("click", this.handleDocumentClick)
+  },
   methods: {
+    async getWeather() {
+      try {
+        const { data } = await apiFromBackend.get("/api/Weather", {
+          params: {
+            lat: "19.606069",
+            lon: "-98.971432",
+          },
+        })
+        this.placeWeather = parseInt(data.main.temp - 273.15)
+        console.log("Desde getWeather: ", data)
+      } catch (e) {
+        toast.error("Ha ocurrido algún error", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
     async getNamePlace(placeID) {
       try {
-        const { data } = await getNameApi.get("/json", {
+        const { data } = await apiFromBackend.get("/api/placeName", {
           params: {
             place_id: placeID,
-            key: this.apiKey,
           },
         })
         console.log("Desde getNamePlace: ", data)
@@ -207,6 +259,7 @@ export default {
         this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
         this.rating = data.result.rating
+        this.numratings = data.result.user_ratings_total
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
@@ -218,11 +271,10 @@ export default {
     },
     async getImgPlace() {
       try {
-        const img = await getImgPlaceApi.get("/photo", {
+        const img = await apiFromBackend.get("/api/imgPlace", {
           params: {
             maxwidth: "400",
             photoreference: this.placePhotoReference,
-            key: this.apiKey,
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
@@ -243,11 +295,10 @@ export default {
         const imageUrls = []
         // Itera a través de las referencias de fotos
         for (const photoReference of this.placePhotosReferences) {
-          const response = await getImgPlaceApi.get("/photo", {
+          const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
               maxwidth: "400",
               photoreference: photoReference, // Usa la referencia de foto actual
-              key: this.apiKey,
             },
             responseType: "blob", // Establece el tipo de respuesta como blob
           })
@@ -269,31 +320,18 @@ export default {
         })
       }
     },
-    async getWeather() {
-      try {
-        const { data } = await getWeatherPlace.get("/weather", {
-          params: {
-            lat: this.lat,
-            lon: this.long,
-            appid: this.apiKey2,
-          },
-        })
-        this.placeWeather = parseInt(data.main.temp - 273.15)
-        console.log("Desde getWeather: ", data)
-      } catch (e) {
-        toast.error("Ha ocurrido algún error", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
-      }
-    },
+
     PopUpAddTrip() {
       this.showPopup = true
     },
     hideAddToTripPopup() {
       this.showPopup = false
+    },
+    showPopUpRating() {
+      this.showPopup2 = true
+    },
+    hideRatingPopUp() {
+      this.showPopup2 = false
     },
   },
 }

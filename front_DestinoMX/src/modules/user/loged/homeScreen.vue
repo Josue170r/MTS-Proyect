@@ -119,6 +119,7 @@
                       :length="5"
                       :size="16"
                       :model-value="place.rating"
+                      readonly
                       color="rgb(232, 176, 36)"
                       active-color="rgb(232, 176, 36)"
                     />
@@ -139,13 +140,10 @@ import AvatarButton from "@/components/buttons/AvatarButton"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
 import { toast } from "vue3-toastify"
-import { getApiPreferences } from "@/components/Viajes/helpers/ApiPreferences"
 import { Swiper, SwiperSlide } from "swiper/vue"
 import { Pagination } from "swiper/modules"
-import { getImgPlaceApi } from "@/components/images/helpers/getImagePlace"
 import "swiper/css"
 import "swiper/css/pagination"
-import { getSearchPlaceApi } from "@/helpers/ApiSearchPlace"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
@@ -163,7 +161,7 @@ export default {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
       preference: "restaurant",
-      radio: 900,
+      radio: 150,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
@@ -210,16 +208,15 @@ export default {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        const { data } = await getApiPreferences.get("/json", {
+        const { data } = await apiFromBackend.get("/api/nearBySearh", {
           params: {
             location: `${lat}, ${lng}`,
             radius: this.radio,
             type: this.preference,
-            key: this.apiKey,
           },
         })
         this.nearPlaces = toRaw(data.results)
-        // console.log(this.nearPlaces)
+        console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -230,10 +227,8 @@ export default {
           }
         })
         this.getNearImages()
-        //console.log(this.nearPlaces)
-        console.log(this.nearPlaces)
-        this.getNearImages()
       } catch (error) {
+        console.log(error)
         toast.error("No se obtuvo el arreglo de lugares", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
@@ -246,11 +241,10 @@ export default {
       try {
         const imageURLs = []
         for (const photoReference of this.photosReferences) {
-          const response = await getImgPlaceApi.get("/photo", {
+          const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
               maxwidth: "400",
               photoreference: photoReference,
-              key: this.apiKey,
             },
             responseType: "blob",
           })
@@ -270,10 +264,9 @@ export default {
     },
     async FindPlacesFromInput() {
       try {
-        const response = await getSearchPlaceApi.get("", {
+        const response = await apiFromBackend.get("/api/searchPlace", {
           params: {
             query: this.namePlaceToFind,
-            key: this.apiKey,
           },
         })
         console.log("Desde la API", response)
