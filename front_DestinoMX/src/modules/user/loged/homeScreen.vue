@@ -1,5 +1,5 @@
 <template>
-  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
+  <div :class="[isLoading ? 'fixed opacity-50' : '...']" @click="closeMenu">
     <div class="min-h-screen w-full flex flex-col md:flex-row">
       <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -14,27 +14,28 @@
           <input
             v-model="namePlaceToFind"
             type="text"
-            class="w-48 p-2 outline-none border-none rounded-full"
-            placeholder="Buscar..."
+            class="w-64 p-2 outline-none border-none rounded-pill"
+            placeholder="Busca tu próximo DestinoMX ... "
             @input="FindPlacesFromInput"
           />
+
           <ul
-            class="mt-[450px] absolute w-56 bg-white rounded-md shadow-md overflow-hidden"
-            v-if="places.length > 0"
+            class="sm: mt-[350px] lg: mt-[450px] absolute w-64 bg-white rounded-md shadow-md overflow-hidden"
+            v-if="places.length > 5"
           >
             <li
-              v-for="(place, index) in places.slice(0, 6)"
+              v-for="(place, index) in places.slice(0, 5)"
               :key="index"
-              class="py-2 border-b last:border-b-0"
+              class="w-auto py-2 border-b last:border-b-0"
             >
-              <div
-                class="transition-all duration-300 ease-in-out hover:bg-gray-200 hover:text-gray-800"
-              >
-                <button class="text-black py-2 px-4">
+              <div>
+                <button
+                  class="w-full py-2 px-4 transition-all duration-300 ease-in-out hover:bg-gray-200 focus:bg-gray-200 hover:text-gray-800 focus:text-gray-800"
+                >
                   <div class="flex items-center">
-                    <img :src="place.icon" />
+                    <img :src="place.icon" class="w-6 h-6 brightness" />
                     <div class="px-2 flex items-center">
-                      <h1 class="text-sm text-lowercase">
+                      <h1 class="text-sm text-lowercase text-left">
                         {{ place.name }}
                       </h1>
                     </div>
@@ -173,6 +174,7 @@ export default {
       places: [],
       showPlacesList: false,
       iconPlaceToFind: [],
+      filteredPlaces: [],
     }
   },
   created() {
@@ -279,6 +281,13 @@ export default {
         console.log(this.response.data.results)
         this.iconPlaceToFind = response.data.result.place.icon
         console.log("Icono")
+        this.filteredPlaces = this.places
+          .filter((place) =>
+            place.name
+              .toLowerCase()
+              .includes(this.namePlaceToFind.toLowerCase()),
+          )
+          .slice(0, 6)
       } catch (error) {
         console.log("Todo bien")
       }
@@ -363,6 +372,10 @@ export default {
 
 .animate-custom {
   animation: bounce 1s infinite;
+}
+
+.brightness {
+  filter: brightness(0%);
 }
 
 @keyframes spin {
