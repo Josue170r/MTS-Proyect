@@ -298,15 +298,52 @@
                   Eliminar Cuenta
                 </v-list-item>
                 <div class="ml-16">
-                  <v-tooltip text="Eliminar Cuenta">
-                    <template v-slot:activator="{ props }">
-                      <button class="ml-2" v-bind="props">
-                        <v-icon color="#fed7aa" size="30"
-                          >mdi-arrow-right-bold-circle-outline</v-icon
+                  <v-row justify="center">
+                    <v-dialog
+                      v-model="dialogfromDelete"
+                      persistent
+                      width="1024"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <button v-bind="props">
+                          <v-icon color="#fed7aa" size="30" class="ml-3"
+                            >mdi-arrow-right-bold-circle-outline</v-icon
+                          >
+                        </button>
+                      </template>
+                      <v-card>
+                        <v-card-title class="text-center font-baskerville mt-2">
+                          <div
+                            class="text-center ml-3 mr-1 py-0 text-left text-xl"
+                            style="white-space: normal"
+                          >
+                            ¿Esta seguro de eliminar su cuenta?
+                          </div>
+                        </v-card-title>
+                        <v-card-text class="text-center"
+                          >Toda su información y la configuración de su cuenta
+                          serán eliminadas permanentemente.</v-card-text
                         >
-                      </button>
-                    </template>
-                  </v-tooltip>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            color="grey lighten-3"
+                            variant="text"
+                            @click="dialogfromDelete = false"
+                          >
+                            Cancelar
+                          </v-btn>
+                          <v-btn
+                            color="orange-darken-1"
+                            variant="text"
+                            @click="dialogfromDelete = false"
+                          >
+                            Aceptar
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
                 </div>
               </div>
             </div>
@@ -339,6 +376,7 @@ export default {
       dialog: false,
       loading: false,
       dialogfromPassword: false,
+      dialogfromDelete: false,
       updateProfile: {
         name: "",
         lastname: "",
