@@ -103,7 +103,9 @@
                   :key="place"
                   class="..."
                 >
-                  <div class="mt-4 flex items-center justify-between flex-col">
+                  <div
+                    class="mt-4 flex items-center justify-between flex-col mb-4"
+                  >
                     <img
                       @click="goToPlaceDescription(place)"
                       :src="placeImages[index]"
