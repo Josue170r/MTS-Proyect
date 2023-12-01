@@ -133,6 +133,7 @@
       <div class="flex justify-center mt-4">
         <button
           class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
+          @click="AddToFavorites"
         >
           <div class="flex items-center">
             <span>Favoritos</span>
@@ -189,6 +190,7 @@ export default {
   },
   data() {
     return {
+      placeiD: "",
       placeImage: "",
       placePhotoReference: "",
       placeName: "",
@@ -223,6 +225,17 @@ export default {
     this.$el.removeEventListener("click", this.handleDocumentClick)
   },
   methods: {
+    async AddToFavorites() {
+      try {
+        const response = await apiFromBackend.post("/api/favoritos", {
+          idPlaceLugar: this.placeiD,
+        })
+        console.log(response)
+      } catch ({ response }) {
+        const { data } = response
+        console.log(data)
+      }
+    },
     async getWeather() {
       try {
         const { data } = await apiFromBackend.get("/api/Weather", {
