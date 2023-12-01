@@ -128,14 +128,14 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
-                                @click="dialog = false"
+                                @click="closeDailogForProfile"
                               >
                                 Cerrar
                               </v-btn>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
                                 type="submit"
                               >
@@ -251,14 +251,14 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
-                                @click="dialogfromPassword = false"
+                                @click="closeDailogForPassword"
                               >
                                 Cerrar
                               </v-btn>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
                                 type="submit"
                               >
@@ -464,6 +464,18 @@ export default {
         })
       }
       this.dialogfromPassword = false
+    },
+    closeDailogForPassword() {
+      this.dialogfromPassword = false
+      this.updatePassword.confirmPassword = ""
+      this.updatePassword.currentPassword = ""
+      this.updatePassword.newPassword = ""
+    },
+    closeDailogForProfile() {
+      this.dialog = false
+      this.updateProfile.name = ""
+      this.updateProfile.lastname = ""
+      this.updateProfile.secondlastname = ""
     },
   },
 }
