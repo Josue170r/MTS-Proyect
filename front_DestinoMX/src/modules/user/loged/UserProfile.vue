@@ -336,7 +336,7 @@
                           <v-btn
                             color="orange-darken-1"
                             variant="text"
-                            @click="dialogfromDelete = false"
+                            @click="deleteUserAccount()"
                           >
                             Aceptar
                           </v-btn>
@@ -454,6 +454,28 @@ export default {
           autoClose: 600,
           type: "success",
           theme: "colored",
+        })
+      } catch ({ response }) {
+        toast(response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
+      this.dialogfromPassword = false
+    },
+    async deleteUserAccount() {
+      try {
+        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta")
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 400,
+          type: "success",
+          theme: "colored",
+          onClose: () => {
+            this.$router.push({ name: "/" })
+          },
         })
       } catch ({ response }) {
         toast(response.data.mensaje, {
