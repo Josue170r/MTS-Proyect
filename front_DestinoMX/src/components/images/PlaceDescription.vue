@@ -12,6 +12,7 @@
           ><BackButton
         /></router-link>
         <img
+          @click="hideRatingPopUp"
           :src="placeImage"
           alt="Imagen del lugar"
           class="opacity-100 rounded-t-xl rounded-b-xl"
@@ -23,7 +24,11 @@
           class="button absolute top-7 left-1 transform"
           ><BackButton
         /></router-link>
-        <img src="@/assets/images/noimages.jpg" alt="Imagen por defecto" />
+        <img
+          @click="hideRatingPopUp"
+          src="@/assets/images/noimages.jpg"
+          alt="Imagen por defecto"
+        />
       </div>
     </div>
     <div
@@ -31,39 +36,19 @@
     >
       <div class="flex flex-row ml-2 mr-0">
         <!-- Nombre y Compartir-->
-        <h1 class="ml-3 text-orange-500 py-3 text-left text-xl font-bold">
+        <h1 class="ml-3 text-orange-500 py-3 text-left text-2xl font-bold">
           {{ placeName }}
         </h1>
-        <button class="ml-0 mr-2 py-3">
+        <button class="ml-2 py-3">
           <ShareIcon />
         </button>
       </div>
 
       <div class="flex flex-row ml-2 mr-0">
         <!-- Dirección -->
-        <LocalitationIcon2 />
-        <div class="ml-0 underline text-blue-800 text-left text-xs">
+        <LocalitationIcon2 class="mb-3 mr-0.3 ml-1" />
+        <div class="ml-0 underline text-blue-800 text-left text-md mt-0.5">
           {{ location }}
-        </div>
-        <!-- Rating -->
-        <div
-          class="flex flex-row ml-1 mr-4 relative z-400"
-          @mouseover="showPopUpRating"
-          @mouseout="hideRatingPopUp"
-        >
-          <button
-            ref="ratingButton"
-            class="flex py-1 px-1 rounded-lg text-gray text-base mr-3 ml-3 mb-4 mt-6"
-          >
-            <div
-              class="flex items-center"
-              @mouseover="showPopUpRating"
-              @mouseout="hideRatingPopUp"
-            >
-              <RatingButton class="ml-1" />
-              <p class="text-center">{{ rating }}</p>
-            </div>
-          </button>
         </div>
       </div>
       <div class="grid justify-items-end">
@@ -85,13 +70,27 @@
 
       <div>
         <div class="flex flex-col">
-          <h1 class="ml-3 text-black py-1 text-left text-sm font-bold">
-            {{ "Acerca de" }}
-          </h1>
-          <div class="flex flex-row items-center text-sm py-0 px-0 ml-auto">
-            <WeatherIcon class="mr-2" />
-            {{ placeWeather }}
-            <p class="mr-4">{{ "°C" }}</p>
+          <div class="flex flex-row justify-end ml-1 mr-4 relative z-400 mt-2">
+            <h1 class="ml-3 text-black py-1 text-left text-lg font-bold mt-2">
+              {{ "Acerca de" }}
+            </h1>
+            <button
+              ref="ratingButton"
+              class="flex py-1 px-1 rounded-lg text-gray text-base ml-40"
+            >
+              <div
+                class="flex items-center mt-0.5 text-md"
+                @click="showPopUpRating"
+              >
+                <RatingButton class="ml-1" />
+                <p class="text-center text-lg">{{ rating }}</p>
+              </div>
+            </button>
+            <div class="flex flex-row items-center text-md py-0 px-0 ml-auto">
+              <WeatherIcon class="mr-2" />
+              {{ placeWeather }}
+              <p class="mr-4">{{ "°C" }}</p>
+            </div>
           </div>
         </div>
 
@@ -104,7 +103,7 @@
           </p>
         </div>
         <div v-else>
-          <p class="mt-4">
+          <p class="mt-4 mx-4">
             {{
               "Más información sobre el clima o datos del lugar (por definir)"
             }}
@@ -114,7 +113,7 @@
 
       <!-- Botón de reseñas -->
       <button
-        class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-2 ml-auto bg-orange-300"
+        class="mt-4 mr-4 flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-2 ml-auto bg-orange-300"
       >
         <div class="flex items-center">
           <span>Reseñas</span>
@@ -123,8 +122,11 @@
       </button>
 
       <!-- Galería -->
-      <div class="h-[600] sm:flex flex-col mt-2 sm:h-[400px]">
-        <h1 class="ml-3 mb-4 text-black py-1 text-left text-sm font-bold">
+      <div
+        @click="hideRatingPopUp"
+        class="h-[600] sm:flex flex-col mt-2 sm:h-[400px]"
+      >
+        <h1 class="ml-3 mb-4 text-black py-1 text-left text-lg font-bold">
           {{ "Galería de imágenes" }}
         </h1>
         <!-- Agrega el componente GalleryImages aquí -->
@@ -133,6 +135,7 @@
       <div class="flex justify-center mt-4">
         <button
           class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
+          @click="AddToFavorites"
         >
           <div class="flex items-center">
             <span>Favoritos</span>
@@ -189,6 +192,7 @@ export default {
   },
   data() {
     return {
+      placeiD: "",
       placeImage: "",
       placePhotoReference: "",
       placeName: "",
@@ -223,6 +227,23 @@ export default {
     this.$el.removeEventListener("click", this.handleDocumentClick)
   },
   methods: {
+    async AddToFavorites() {
+      try {
+        const response = await apiFromBackend.post("/api/favoritos", {
+          idPlaceLugar: this.placeiD,
+        })
+        toast.success("Lugar añadido a favoritos", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        console.log(response)
+      } catch ({ response }) {
+        const { data } = response
+        console.log(data)
+      }
+    },
     async getWeather() {
       try {
         const { data } = await apiFromBackend.get("/api/Weather", {
