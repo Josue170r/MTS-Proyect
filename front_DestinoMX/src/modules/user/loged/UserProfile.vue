@@ -128,14 +128,14 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
-                                @click="dialog = false"
+                                @click="closeDailogForProfile"
                               >
                                 Cerrar
                               </v-btn>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
                                 type="submit"
                               >
@@ -251,14 +251,14 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
-                                @click="dialogfromPassword = false"
+                                @click="closeDailogForPassword"
                               >
                                 Cerrar
                               </v-btn>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
                                 type="submit"
                               >
@@ -336,7 +336,7 @@
                           <v-btn
                             color="orange-darken-1"
                             variant="text"
-                            @click="dialogfromDelete = false"
+                            @click="deleteUserAccount()"
                           >
                             Aceptar
                           </v-btn>
@@ -464,6 +464,40 @@ export default {
         })
       }
       this.dialogfromPassword = false
+    },
+    async deleteUserAccount() {
+      try {
+        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta")
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 400,
+          type: "success",
+          theme: "colored",
+          onClose: () => {
+            this.$router.push({ name: "/" })
+          },
+        })
+      } catch ({ response }) {
+        toast(response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
+      this.dialogfromPassword = false
+    },
+    closeDailogForPassword() {
+      this.dialogfromPassword = false
+      this.updatePassword.confirmPassword = ""
+      this.updatePassword.currentPassword = ""
+      this.updatePassword.newPassword = ""
+    },
+    closeDailogForProfile() {
+      this.dialog = false
+      this.updateProfile.name = ""
+      this.updateProfile.lastname = ""
+      this.updateProfile.secondlastname = ""
     },
   },
 }
