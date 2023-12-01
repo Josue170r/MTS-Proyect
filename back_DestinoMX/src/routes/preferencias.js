@@ -5,9 +5,8 @@ export const routerPreferencias = Router();
 
 //Consulta - Angel
 routerPreferencias.post("/api/PreferenciasRead/", (req, res) => {
-  const { idUsuario } = req.body;
+  const idUsuario = req.session.usuario.idUsuario;
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
-
   mySqlConnection.query(
     `SELECT catpreferencias.idPlacesTipo FROM catpreferencias INNER JOIN preferencias ON preferencias.idCatPreferencias=catpreferencias.idCatPreferencias WHERE preferencias.idUsuario="${idUsuario}"`,
     (err, results) => {
