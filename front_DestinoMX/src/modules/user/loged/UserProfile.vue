@@ -474,7 +474,7 @@ export default {
           type: "success",
           theme: "colored",
           onClose: () => {
-            this.$router.push({ name: "/" })
+            this.$router.push({ name: "startup" })
           },
         })
       } catch ({ response }) {
