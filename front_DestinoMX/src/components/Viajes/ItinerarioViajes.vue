@@ -152,6 +152,7 @@ import BellIcon from "@/components/icons/BellIcon.vue"
 import PlusIcon from "@/components/icons/PlusIcon.vue"
 import GreaterThanIcon from "@/components/icons/GreaterThanIcon.vue"
 import LocalitationIcon3 from "@/components/icons/LocalitationIcon3.vue"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 export default {
   name: "ItinerarioViajes",
   components: {
@@ -169,7 +170,26 @@ export default {
       tripdate: true,
     }
   },
+  async created() {
+    try {
+      // Consulta para obtener los viajes del usuario.
+      const { data } = await apiFromBackend.get("/api/viaje")
 
+      // Los viajes se encuentran en el arreglo travels
+      const travels = data.info
+
+      // Por ahora solo mostramos ese arreglo en cosnsola. Se debe agregar el codigo para mostrarlo en la pantalla.
+      console.log(travels)
+    } catch (error) {
+      // Error al obtener los viajes del usuario. Hacer lo que se deba hacer en caso de error.
+      console.log(error)
+    }
+
+    return {
+      isemptytrip: true,
+      tripdate: true,
+    }
+  },
   methods: {
     goToNewTripForm() {
       this.$router.push({
