@@ -10,7 +10,7 @@ routerViajes.get("/api/viaje", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesion." });
   } else {
     mySqlConnection.query(
-      `SELECT * FROM viajes WHERE idViajes = ${req.session.usuario.idUsuario};`,
+      `SELECT colorPlantilla,descripcionViaje,diaFinal,diaInicio,nombreMiViaje FROM viajes WHERE idUsuario = ${req.session.usuario.idUsuario};`,
       (err, rows, fields) => {
         if (err) {
           res.status(500).json({
@@ -19,9 +19,9 @@ routerViajes.get("/api/viaje", (req, res) => {
             err: err,
           });
         } else if (rows.length === 0) {
-          res.status(404).json({ exito: false, mensaje: "Viaje inexistente." });
+          res.status(200).json({ exito: true, mensaje: "¡Aún no tienes viajes!" });
         } else {
-          res.status(200).json({ exito: true, info: { ...rows[0] } });
+          res.status(200).json({ exito: true, info: [ ...rows ] });
         }
       }
     );
