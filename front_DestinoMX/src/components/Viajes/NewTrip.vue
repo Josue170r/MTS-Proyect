@@ -190,7 +190,7 @@
 <script>
 import BackButton from "@/components/buttons/BackButton.vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
-// import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "NewTrip",
@@ -218,10 +218,20 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      console.log(this.trip)
-      console.log(this.startDate, this.endDate)
-      console.log(this.ColorInputPicker)
+    async onSubmit() {
+      try {
+        const { data } = await apiFromBackend.post("/api/viaje", {
+          nombreMiViaje: this.trip.TripName,
+          descripcionViaje: this.trip.DescriptionTrip,
+          colorPlantilla: this.ColorInputPicker,
+          diaInicio: this.startDate.toString(),
+          diaFinal: this.endDate.toString(),
+        })
+
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
     },
     validateDateRange() {
       // Agrega lógica para validar el rango de fechas aquí.
