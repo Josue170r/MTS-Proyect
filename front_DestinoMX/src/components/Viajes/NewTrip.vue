@@ -191,6 +191,8 @@
 import BackButton from "@/components/buttons/BackButton.vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
+import "vue3-toastify/dist/index.css"
 
 export default {
   name: "NewTrip",
@@ -200,7 +202,12 @@ export default {
   },
   computed: {
     isFormEmpty() {
-      return !this.trip.DescriptionTrip || !this.trip.TripName
+      return (
+        !this.trip.DescriptionTrip ||
+        !this.trip.TripName ||
+        !this.startDate ||
+        !this.endDate
+      )
     },
   },
   data() {
@@ -227,10 +234,23 @@ export default {
           diaInicio: this.startDate.toString(),
           diaFinal: this.endDate.toString(),
         })
-
         console.log(data)
-      } catch (error) {
-        console.log(error)
+        toast.success("Viaje creado con éxito", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        setTimeout(() => {
+          this.$router.push({ name: "Itinerario" })
+        }, 1200)
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
     validateDateRange() {

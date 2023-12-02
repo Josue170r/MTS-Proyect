@@ -10,11 +10,11 @@ import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
-import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
-import MyTrip from "@/components/Viajes/MyTrip.vue"
+import EditTripScreen from "@/components/Viajes/EditViewTrip.vue"
 import AboutUs from "@/components/Viajes/AboutUs.vue"
 import Favoritos from "@/modules/user/Favoritos.vue"
 import HistoryScreenVue from "@/components/Viajes/HistoryScreen.vue"
+import rePasword from "@/modules/auth/views/rePasword.vue"
 
 const routes = [
   {
@@ -100,11 +100,6 @@ const routes = [
     component: EditTripScreen,
   },
   {
-    path: "/mytrip",
-    name: "mytrip",
-    component: MyTrip,
-  },
-  {
     path: "/favoritos",
     name: "favoritos",
     component: Favoritos,
@@ -118,6 +113,11 @@ const routes = [
     path: "/aboutus",
     name: "aboutus",
     component: AboutUs,
+  },
+  {
+    path: "/rePasword",
+    name: "rePasword",
+    component: rePasword,
   },
 ]
 
