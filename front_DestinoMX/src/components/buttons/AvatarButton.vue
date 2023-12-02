@@ -53,8 +53,10 @@ export default {
       try {
         const { data } = await apiFromBackend.get("/api/perfil", {})
         const { Nombre, ApellidoP, CorreoElectronico } = data.datosUsuario
+        const initialName = Nombre[0].toUpperCase()
+        const initialLastName = ApellidoP[0].toUpperCase()
         console.log()
-        this.user.initials = `${Nombre[0]}${ApellidoP[0]}`
+        this.user.initials = `${initialName} ${initialLastName}`
         this.user.fullName = `${Nombre} ${ApellidoP}`
         this.user.email = `${CorreoElectronico}`
       } catch ({ response }) {

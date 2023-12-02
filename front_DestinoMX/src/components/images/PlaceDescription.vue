@@ -15,7 +15,7 @@
           @click="hideRatingPopUp"
           :src="placeImage"
           alt="Imagen del lugar"
-          class="opacity-100 rounded-t-xl rounded-b-xl"
+          class="opacity-100 rounded-t-xl rounded-b-xl max-h-96 w-[400px]"
         />
       </div>
       <div v-else>
@@ -34,7 +34,7 @@
     <div
       class="h-[600px] sm:flex flex-col md:w-1/2 flex-1 justify-center bg-gray-100 mt-0 sm:h-[700px]"
     >
-      <div class="flex flex-row ml-2 mr-0">
+      <div class="flex flex-row ml-2 mr-0" @click="hideRatingPopUp">
         <!-- Nombre y Compartir-->
         <h1 class="ml-3 text-orange-500 py-3 text-left text-2xl font-bold">
           {{ placeName }}
@@ -44,7 +44,7 @@
         </button>
       </div>
 
-      <div class="flex flex-row ml-2 mr-0">
+      <div class="flex flex-row ml-2 mr-0" @click="hideRatingPopUp">
         <!-- Dirección -->
         <LocalitationIcon2 class="mb-3 mr-0.3 ml-1" />
         <div class="ml-0 underline text-blue-800 text-left text-md mt-0.5">
@@ -53,6 +53,7 @@
       </div>
       <div class="grid justify-items-end">
         <PopUpRating
+          @click="hideRatingPopUp"
           ref="ratingPopup"
           v-if="showPopup2"
           :rating="rating"
@@ -134,6 +135,8 @@
       </div>
       <div class="flex justify-center mt-4">
         <button
+          :class="[isInFavorites ? 'opacity-60 cursor-not-allowed' : '...']"
+          :disabled="isInFavorites"
           class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
           @click="AddToFavorites"
         >
@@ -210,6 +213,7 @@ export default {
       showPopup: false,
       showPopup2: false,
       showRatingPopup: false,
+      isInFavorites: false,
     }
   },
   created() {
@@ -219,6 +223,7 @@ export default {
       this.getImgPlace()
       this.getImgsPlaces()
     })
+    this.getFavorites()
   },
   mounted() {
     this.$el.addEventListener("click", this.handleDocumentClick)
@@ -227,11 +232,25 @@ export default {
     this.$el.removeEventListener("click", this.handleDocumentClick)
   },
   methods: {
+    async getFavorites() {
+      try {
+        const { data } = await apiFromBackend.get("/api/favoritos")
+        const favorites = data.info
+        favorites.forEach((favorite) => {
+          if (favorite.idPlaceLugar === this.placeiD) {
+            this.isInFavorites = true
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async AddToFavorites() {
       try {
         const response = await apiFromBackend.post("/api/favoritos", {
           idPlaceLugar: this.placeiD,
         })
+        this.isInFavorites = true
         toast.success("Lugar añadido a favoritos", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
@@ -253,7 +272,6 @@ export default {
           },
         })
         this.placeWeather = parseInt(data.main.temp - 273.15)
-        console.log("Desde getWeather: ", data)
       } catch (e) {
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
@@ -284,7 +302,6 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-        console.log(this.placePhotosReferences)
         return data
       } catch (error) {
         console.log(error.message)
@@ -299,7 +316,6 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
-        console.log("Desde getImgPlace: ", this.placeImage)
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
@@ -331,7 +347,6 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
-        console.log("Desde getImgsPlaces:", this.placeImages)
       } catch (e) {
         toast.error(e, {
           theme: "colored",
