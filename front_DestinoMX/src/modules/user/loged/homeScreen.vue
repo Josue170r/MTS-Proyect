@@ -124,13 +124,9 @@
                   :key="place"
                   class="..."
                 >
-<<<<<<< HEAD
-                  <div class="flex items-center justify-between flex-col">
-=======
                   <div
                     class="mt-4 flex items-center justify-between flex-col mb-4"
                   >
->>>>>>> 39a1714dd0b36e5606b293566d6ec50b6cf8d156
                     <img
                       @click="goToPlaceDescription(place)"
                       :src="placeImages[index]"
