@@ -11,7 +11,9 @@
         <div
           class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white flex items-center shadow-md"
           :class="[
-            places.length > 5 ? 'rounded-t-xl' : 'rounded-t-xl rounded-b-xl',
+            places.length > 5
+              ? 'rounded-t-xl rounded-b-xl'
+              : 'rounded-t-xl rounded-b-xl',
           ]"
         >
           <div class="relative">
@@ -29,7 +31,7 @@
             </div>
             <ul
               ref="placesList"
-              class="absolute w-full md:w-full bg-white rounded-b shadow-md overflow-hidden rounded-md"
+              class="absolute w-72 mt-3 mr-8 bg-white rounded-b shadow-md overflow-hidden rounded-md"
               v-if="places.length > 5 && showSearch"
             >
               <li
@@ -192,12 +194,12 @@ export default {
       placeImages: [],
       isLoading: true,
       showModal: false,
+      showSearch: true,
       searchResults: [],
       namePlaceToFind: "",
       places: [],
       iconPlaceToFind: [],
       filteredPlaces: [],
-      showSearch: true,
     }
   },
   created() {

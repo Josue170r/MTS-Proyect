@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen w-full flex flex-col md:flex-row bg-gray-100">
+  <div
+    class="min-h-screen w-full flex flex-col md:flex-row bg-gray-100"
+    :class="[isLoading ? 'fixed opacity-50' : '...']"
+  >
     <div
       class="flex md:w-1/2 justify-center items-center md:bg-orange-300 bg-gray-200"
     >
@@ -57,7 +60,7 @@
           ref="ratingPopup"
           v-if="showPopup2"
           :rating="rating"
-          :numratings="numratings"
+          :numratings="reviews.length"
           class="mr-16"
           :style="{
             maxWidth: '100%',
@@ -112,16 +115,6 @@
         </div>
       </div>
 
-      <!-- Botón de reseñas -->
-      <button
-        class="mt-4 mr-4 flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-2 ml-auto bg-orange-300"
-      >
-        <div class="flex items-center">
-          <span>Reseñas</span>
-          <ForwardIcon class="ml-1" />
-        </div>
-      </button>
-
       <!-- Galería -->
       <div
         @click="hideRatingPopUp"
@@ -130,7 +123,14 @@
         <h1 class="ml-3 mb-4 text-black py-1 text-left text-lg font-bold">
           {{ "Galería de imágenes" }}
         </h1>
-        <!-- Agrega el componente GalleryImages aquí -->
+
+        <div class="flex justify-center items-center flex-col" v-if="isLoading">
+          <div
+            class="custom-loader mt-16"
+            :class="{ 'animate-custom': index === 0 }"
+          ></div>
+          <h1>Cargando imágenes</h1>
+        </div>
         <GalleryImages class="mb-4" :photosArray="placeImages" />
       </div>
       <div class="flex justify-center mt-4">
@@ -157,6 +157,22 @@
         </button>
         <PopUpAddTrip v-if="showPopup" @close-popup="hideAddToTripPopup" />
       </div>
+
+      <!-- Ratings -->
+
+      <div>
+        <swiper
+          :slides-per-view="3"
+          :space-between="10"
+          direction="vertical"
+          :pagination="{ clickable: true }"
+          class="mb-8"
+        >
+          <swiper-slide v-for="review in reviews" :key="review">
+            <h1>{{ review.author_name }}</h1>
+          </swiper-slide>
+        </swiper>
+      </div>
     </div>
   </div>
 </template>
@@ -166,7 +182,6 @@ import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
 import RatingButton from "@/components/buttons/RatingButton.vue"
 import ShareIcon from "@/components/icons/ShareIcon.vue"
-import ForwardIcon from "@/components/icons/ForwardButtonIcon.vue"
 import BackButton from "@/components/buttons/BackButton"
 import FavoriteIcon from "@/components/icons/FavoriteIcon.vue"
 import AddIcon from "@/components/icons/AddIcon.vue"
@@ -177,14 +192,17 @@ import "vue3-toastify/dist/index.css"
 import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
 import PopUpRating from "@/components/Viajes/PopUpRating.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
-
+import { Swiper, SwiperSlide } from "swiper/vue"
+import SwiperCore, { A11y, Autoplay, Pagination } from "swiper"
+import "swiper/css"
+import "swiper/css/pagination"
+SwiperCore.use([A11y, Autoplay, Pagination])
 export default {
   name: "PlaceDescription",
   components: {
     LocalitationIcon2,
     ShareIcon,
     RatingButton,
-    ForwardIcon,
     FavoriteIcon,
     AddIcon,
     WeatherIcon,
@@ -192,6 +210,8 @@ export default {
     BackButton,
     PopUpAddTrip,
     PopUpRating,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
@@ -210,10 +230,12 @@ export default {
       selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
+      reviews: [],
       showPopup: false,
       showPopup2: false,
       showRatingPopup: false,
       isInFavorites: false,
+      isLoading: true,
     }
   },
   created() {
@@ -298,6 +320,8 @@ export default {
         this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
         this.rating = data.result.rating
+        this.reviews = data.result.reviews
+        console.log(this.reviews)
         this.numratings = data.result.user_ratings_total
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
@@ -347,6 +371,7 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
+        this.isLoading = false
       } catch (e) {
         toast.error(e, {
           theme: "colored",
@@ -372,3 +397,65 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.swiper-slide {
+  width: 100%;
+  background: transparent;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  background: transparent;
+}
+
+.custom-loader {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid rgb(232, 176, 36);
+  border-top: 4px solid transparent;
+  animation: spin 1s linear infinite;
+}
+
+.animate-custom {
+  animation: bounce 1s infinite;
+}
+
+.brightness {
+  filter: brightness(0%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+</style>
