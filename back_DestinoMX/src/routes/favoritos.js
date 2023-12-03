@@ -50,7 +50,7 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
                 });
               else
                 res.status(200).json({
-                  exito: false,
+                  exito: true,
                   mensaje: "Sitio añadido a favoritos con éxito",
                 });
             });
@@ -111,7 +111,7 @@ routerFavoritos.delete("/api/favoritos", (req, res) => {
                   });
                 else
                   res.status(200).json({
-                    exito: false,
+                    exito: true,
                     mensaje: "Sitio eliminado de favoritos con éxito",
                   });
               }

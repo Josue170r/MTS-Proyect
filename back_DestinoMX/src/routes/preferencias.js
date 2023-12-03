@@ -5,9 +5,8 @@ export const routerPreferencias = Router();
 
 //Consulta - Angel
 routerPreferencias.post("/api/PreferenciasRead/", (req, res) => {
-  const { idUsuario } = req.body;
+  const idUsuario = req.session.usuario.idUsuario;
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
-
   mySqlConnection.query(
     `SELECT catpreferencias.idPlacesTipo FROM catpreferencias INNER JOIN preferencias ON preferencias.idCatPreferencias=catpreferencias.idCatPreferencias WHERE preferencias.idUsuario="${idUsuario}"`,
     (err, results) => {
@@ -26,70 +25,65 @@ routerPreferencias.post("/api/PreferenciasRead/", (req, res) => {
   );
 });
 
-//Insercion - Pedro
-routerPreferencias.post("/api/PreferenciasInsert", (req, res) => {
-  console.log("Entró en la ruta /api/PreferenciasInsert (Create)");
-
-  // Asumo que los datos de preferencias están disponibles en req.body
-  const { idUsuario, idCatPreferencias } = req.body;
-
-  // Verifica si los datos requeridos están presentes en la solicitud
-  if (!idUsuario) {
-    return res.status(400).json({
-      success: false,
-      message: "idUsuario es un campo obligatorio.",
+routerPreferencias.post("/api/consultar-Pantalla-Preferencias/", (req, res) => {
+  let idUsuario 
+  const idPreferencias=[];
+  if (!req.session.usuario) {
+    return res.status(403).json({
+      exito: false,
+      mensaje: "Se debe iniciar sesion.",
     });
   }
-
-  const idCatPreferenciasValue = idCatPreferencias || "valor_predeterminado";
-
-  const sqlQuery =
-    "INSERT INTO Preferencias (idUsuario, idCatPreferencias) VALUES (?, ?)";
-  const queryParams = [idUsuario, idCatPreferenciasValue];
-
-  console.log("Consulta SQL:", sqlQuery, queryParams);
-
-  mySqlConnection.query(sqlQuery, queryParams, (err, results) => {
-    if (!err) {
-      console.log("Inserción exitosa");
-      res.json({
-        success: true,
-        message: "Inserción de preferencias exitosa",
-        data: results,
-      });
-    } else {
-      console.error("Error en la inserción:", err);
-      res.status(500).json({
-        success: false,
-        message: "Error en la inserción de preferencias",
-        error: err,
-      });
+  else{
+    idUsuario=req.session.usuario.idUsuario;
+  }
+  //const idCatPreferencias = req.body.idUsuarioPreferencias;
+  mySqlConnection.query(
+    `select idCatPreferencias from preferencias where idUsuario="${idUsuario}"`,
+    (err, results) => {
+      if (err) {
+        //Caso de error
+        return res.status(400).json({
+          success: false,
+          error: "Error al conectar la base",
+          message: err,
+        });
+      } else {
+        //Muestra contenido existente
+        const idCatPreferenciasArray = results.map((result) => result.idCatPreferencias);
+        console.log(idCatPreferenciasArray);
+        return res.json(idCatPreferenciasArray);
+      }
     }
-  });
+  );
 });
 
 //Modificacion - Rodrigo
-routerPreferencias.post("/api/PreferenciasUpdate/", (req, res) => {
-  const {idUsuario, idPreferencias} = req.body;
+routerPreferencias.put("/api/modificar-preferencias/", (req, res) => {
+  const {idPreferencias} = req.body;
+  let idUsuario=null;
 
   //verificaciones de existencias
-  if (!idUsuario) {
-    return res.status(500).json({
-      success: false,
-      message: "idUsuario es un campo obligatorio.",
+  if (!req.session.usuario) {
+    return res.status(403).json({
+      exito: false,
+      mensaje: "Se debe iniciar sesion.",
     });
+  }
+  else{
+    idUsuario=req.session.usuario.idUsuario;
   }
   if (!idPreferencias) {
     return res.status(500).json({
-      success: false,
-      message: "Preferencias obligatorias",
+      exito: false,
+      mensaje: "No has seleccionado ninguna preferencia",
     });
   }
 
-  if (Object.keys(idPreferencias).length <= 0) {
+  if (Object.keys(idPreferencias).length < 3) {
     return res.status(500).json({
-      success: false,
-      message: "Preferencias obligatorias",
+      exito: false,
+      mensaje: "Se requiere al menos 3 preferencias",
     });
   }
 
@@ -98,9 +92,10 @@ routerPreferencias.post("/api/PreferenciasUpdate/", (req, res) => {
     (err) => {
       if (err) {
         return res.status(400).json({
-          success: false,
-          error: "Error al conectar a la base",
-          message: err,
+          exito: false,
+          message: "Error al conectar con la base de datos",
+          err: err,
+          
         });
       } else {
         const promesasConsultas = [];
@@ -128,18 +123,23 @@ routerPreferencias.post("/api/PreferenciasUpdate/", (req, res) => {
         Promise.all(promesasConsultas)
           .then(() => {
             // Todas las consultas fueron exitosas
-            return res.json({ mensaje: "Se han modificado correctamente" });
+            return res.status(200).json({ 
+              exito: true,
+              mensaje: "Se han modificado correctamente" },
+              );
           })
           .catch((error) => {
             // Al menos una consulta falló
-            console.error("Error en al menos una consulta");
+            console.error(error);
             return res.status(400).json({
-              success: false,
-              error: "errorSQL",
-              message: error.message,
+              exito: false,
+              mensaje: "No se pudo registrar al menos una preferencia",
+              err: err,
             });
           });
       }
+      
     }
+    
   );
 });

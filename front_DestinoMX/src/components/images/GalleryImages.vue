@@ -44,7 +44,6 @@ export default {
   },
   updated() {
     this.photosSwiper = this.photosArray
-    console.log("Desde galería de imágenes:", this.photosArray)
   },
   methods: {
     zoomImage(image) {

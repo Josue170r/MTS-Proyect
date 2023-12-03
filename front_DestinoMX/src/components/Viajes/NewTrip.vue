@@ -17,22 +17,47 @@
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- empieza el formulario -->
-      <form @submit="onSubmit" class="bg-accent w-full px-5">
+      <form @submit.prevent="onSubmit" class="bg-accent w-full px-5">
         <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
           Creación de nuevo viaje
         </h1>
         <h2 class="mb-3">¿Cómo te gustaría nombrar este viaje?</h2>
-        <div
-          class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
-        >
-          <input
-            id="TripName"
-            v-model="TripName"
-            class="pl-2 outline-none border-none w-full"
-            type="text"
-            name="TripName"
-            placeholder="Título del viaje *"
-          />
+        <div class="flex justify-center">
+          <div class="border-2 rounded-lg">
+            <input
+              id="TripName"
+              v-model="trip.TripName"
+              class="outline-none py-2 px-3 rounded-lg bg-white w-full"
+              type="text"
+              name="TripName"
+              placeholder="Título del viaje *"
+            />
+          </div>
+          <div>
+            <div class="text-center ml-4">
+              <v-btn
+                color="pink-lighten-3"
+                class="text-white"
+                @click="dialogColor = true"
+              >
+                Elegir Color
+              </v-btn>
+
+              <v-dialog v-model="dialogColor" width="auto">
+                <v-card>
+                  <v-card-text>
+                    <v-color-picker hide-inputs v-model="ColorInputPicker">
+                    </v-color-picker>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="primary" block @click="dialogColor = false"
+                      >Guardar</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+          </div>
         </div>
         <span class="block text-red-700 text-sm mb-2"></span>
         <h2 class="mb-3">
@@ -45,7 +70,7 @@
         >
           <input
             id="DescriptionTrip"
-            v-model="DescriptionTrip"
+            v-model="trip.DescriptionTrip"
             class="pl-2 outline-none border-none w-full h-[50px]"
             type="text"
             name="DescriptionTrip"
@@ -85,10 +110,8 @@
                       color="#fdba74"
                       show-adjacent-months
                       v-model="startDate"
-                      :allowed-dates="allowedDates"
                       min="2023-05-12"
                       max="2070-03-20"
-                      @input="validateDateRange"
                     ></v-date-picker>
                   </v-row>
                 </v-container>
@@ -125,10 +148,8 @@
                       color="#fdba74"
                       show-adjacent-months
                       v-model="endDate"
-                      :allowed-dates="allowedDates"
                       min="2023-05-12"
                       max="2070-03-20"
-                      @input="validateDateRange2"
                     ></v-date-picker>
                   </v-row>
                 </v-container>
@@ -144,7 +165,6 @@
         <div class="flex-row flex w-full items-center space-x-4">
           <button
             type="button"
-            @click="goToLoginView"
             class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
           >
             Añadir lugares
@@ -168,19 +188,9 @@
 </template>
 
 <script>
-// import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import BackButton from "@/components/buttons/BackButton.vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
-import { useForm, useField } from "vee-validate"
-import * as yup from "yup"
-import { configure } from "vee-validate"
-import { localize } from "@vee-validate/i18n"
-import es from "@vee-validate/i18n/dist/locale/es.json"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
-
-configure({
-  generateMessage: localize({ es }),
-})
 
 export default {
   name: "NewTrip",
@@ -190,58 +200,39 @@ export default {
   },
   computed: {
     isFormEmpty() {
-      return !this.DescriptionTrip || !this.TripName
+      return !this.trip.DescriptionTrip || !this.trip.TripName
     },
-  },
-  setup() {
-    const schema = yup.object({
-      TripName: yup.string().required(),
-      DescriptionTrip: yup.string().required(),
-    })
-    const { handleSubmit, isSubmitting, errors } = useForm({
-      validationSchema: schema,
-    })
-
-    console.log(errors)
-
-    const { value: TripName, errorMessage: TripNameError } =
-      useField("TripName")
-    const { value: DescriptionTrip, errorMessage: DescriptionTripError } =
-      useField("DescriptionTrip")
-
-    const onSubmit = handleSubmit(async (values) => {
-      try {
-        const response = await apiFromBackend.post("/api/viaje", {
-          nombreMiViajeSQL: values.TripNamem,
-          descripcionViaje: values.DescriptionTrip,
-          diaInicioSQL: this.startDate,
-          diaFinalSQL: this.endDate,
-          colorPlantilla: "#F1262637",
-        })
-        console.log(response)
-      } catch (error) {
-        console.log(error)
-      }
-    })
-
-    return {
-      TripName,
-      TripNameError,
-      DescriptionTrip,
-      DescriptionTripError,
-      isSubmitting,
-      onSubmit,
-    }
   },
   data() {
     return {
-      startDate: null,
-      endDate: null,
+      trip: {
+        DescriptionTrip: "",
+        TripName: "",
+      },
+      ColorInputPicker: "",
+      startDate: "",
+      endDate: "",
+      dialogColor: false,
       dialog: false,
       dialog2: false,
     }
   },
   methods: {
+    async onSubmit() {
+      try {
+        const { data } = await apiFromBackend.post("/api/viaje", {
+          nombreMiViaje: this.trip.TripName,
+          descripcionViaje: this.trip.DescriptionTrip,
+          colorPlantilla: this.ColorInputPicker,
+          diaInicio: this.startDate.toString(),
+          diaFinal: this.endDate.toString(),
+        })
+
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
     validateDateRange() {
       // Agrega lógica para validar el rango de fechas aquí.
       // if (this.startDate && this.endDate && this.startDate > this.endDate) {
