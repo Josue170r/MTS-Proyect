@@ -37,9 +37,9 @@
     <div
       class="h-[600px] sm:flex flex-col md:w-1/2 flex-1 justify-center bg-gray-100 mt-0 sm:h-[700px]"
     >
-      <div class="flex flex-row ml-2 mr-0" @click="hideRatingPopUp">
+      <div class="flex mx-4 mr-0" @click="hideRatingPopUp">
         <!-- Nombre y Compartir-->
-        <h1 class="ml-3 text-orange-500 py-3 text-left text-2xl font-bold">
+        <h1 class="text-orange-500 py-3 text-left text-2xl font-bold">
           {{ placeName }}
         </h1>
         <button class="ml-2 py-3 mr-4">
@@ -49,22 +49,22 @@
 
       <div
         v-if="location"
-        class="flex flex-row ml-2 mr-0 mt-2"
+        class="ml-3 mx-2 flex flex-row mt-2"
         @click="hideRatingPopUp"
       >
         <!-- Dirección -->
-        <LocalitationIcon2 class="mb-3 mr-0.3 ml-1" />
-        <div class="ml-1 mr-2 underline text-blue-800 text-left text-md mt-0.5">
+        <LocalitationIcon2 class="mb-3 mr-1" />
+        <div class="underline text-blue-800 text-left text-md mt-0.5">
           {{ location }}
         </div>
       </div>
       <div v-if="phone" class="flex flex-row ml-2 mr-0">
         <PhoneIcon class="mb-3 mr-0.3 ml-1" />
-        <div class="ml-1 text-orange-600 text-left text-md mt-0.5">
+        <div class="ml-2 mb-2 text-orange-600 text-left text-md mt-0.5">
           {{ phone }}
         </div>
       </div>
-      <div class="flex flex-row ml-2 mr-0">
+      <div class="flex flex-row ml-2 mr-0" v-if="status">
         <ClockIcon2
           class="mb-3 ml-1 w-5 h-5 text-red-700"
           stroke-width="1.2"
@@ -364,30 +364,34 @@ export default {
           },
         })
         console.log("Desde getNamePlace: ", data)
-        const isOpen = data.result.current_opening_hours.open_now
-        this.status = isOpen ? "Abierto - Hoy" : "Cerrado - Hoy"
-        const openhour = data.result.current_opening_hours.periods[0].open.time
-        this.openTime = this.formatDate(openhour)
-        const closehour =
-          data.result.current_opening_hours.periods[0].close.time
-        this.closeTime = this.formatDate(closehour)
-        this.phone = data.result.formatted_phone_number
+        this.rating = data.result.rating
+        this.reviews = data.result.reviews
         this.placeName = data.result.name
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
+        this.placePhotoReference = data.result.photos[0].photo_reference
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
-        this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
-        this.rating = data.result.rating
-        this.reviews = data.result.reviews
+        const isOpen = data.result.current_opening_hours
+          ? data.result.current_opening_hours.open_now
+          : ""
+        this.status = isOpen ? "Abierto - Hoy" : "Cerrado - Hoy"
+        const openhour = data.result.current_opening_hours
+          ? data.result.current_opening_hours.periods[0].open.time
+          : ""
+        this.openTime = openhour ? this.formatDate(openhour) : ""
+        const closehour = data.result.current_opening_hours
+          ? data.result.current_opening_hours.periods[0].close.time
+          : ""
+        this.closeTime = closehour ? this.formatDate(closehour) : ""
+        this.phone = data.result.formatted_phone_number
         // console.log(this.reviews)
-        this.numratings = data.result.user_ratings_total
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-        return data
+        console.log("Imágenes", this.imageReferences)
       } catch (error) {
         console.log(error.message)
       }
