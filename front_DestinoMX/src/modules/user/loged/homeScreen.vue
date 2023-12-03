@@ -205,6 +205,9 @@ export default {
           autoClose: 1500,
           hideProgressBar: true,
         })
+        if (response.data.mensaje === "No hay preferencias configuradas.") {
+          this.getArrayPlaces()
+        }
       }
     },
     goToMapScreen() {

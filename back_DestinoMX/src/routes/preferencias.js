@@ -29,12 +29,20 @@ routerPreferencias.get("/api/leer-Preferencias/", (req, res) => {
       } else {
         //Muestra contenido existente
 
-        const idTypesArray=results.map((index)=>index.idPlacesTipo)
-        console.log(idTypesArray)
-        return res.status(200).json({
-          exito: true,
-          idTypesArray
-        });
+        if(results.length!=0){
+          const idTypesArray=results.map((index)=>index.idPlacesTipo)
+          console.log(idTypesArray)
+          return res.status(200).json({
+            exito: true,
+            idTypesArray
+          });
+        }
+        else{
+          return res.status(400).json({
+            exito: false,
+            mensaje: "No hay preferencias configuradas.",
+          });
+        }        
       }
     }
   );
@@ -64,9 +72,16 @@ routerPreferencias.post("/api/consultar-Pantalla-Preferencias/", (req, res) => {
         });
       } else {
         //Muestra contenido existente
-        const idCatPreferenciasArray = results.map((result) => result.idCatPreferencias);
-        console.log(idCatPreferenciasArray);
-        return res.json(idCatPreferenciasArray);
+        if(results.length!=0){
+          const idCatPreferenciasArray = results.map((result) => result.idCatPreferencias);
+          return res.json(idCatPreferenciasArray);
+        }
+        else{
+          return res.status(400).json({
+            exito: false,
+            mensaje: "No hay preferencias configuradas.",
+          });
+        }
       }
     }
   );
