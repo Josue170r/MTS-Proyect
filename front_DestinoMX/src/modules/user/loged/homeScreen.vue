@@ -162,7 +162,7 @@ export default {
     return {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
-      preference: "restaurant",
+      preference: [],
       radio: 150,
       nearPlaces: [],
       photosReferences: [],
@@ -180,7 +180,7 @@ export default {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
-        this.getArrayPlaces()
+        this.getArrayPlacesPreferences()
       })
       .catch((error) => {
         toast(error, {
@@ -192,6 +192,21 @@ export default {
       })
   },
   methods: {
+    async getArrayPlacesPreferences() {
+      try {
+        const { data } = await apiFromBackend.get("/api/leer-Preferencias")
+        this.preference = data.idTypesArray
+        console.log(this.preference)
+        this.getArrayPlaces()
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
@@ -209,14 +224,19 @@ export default {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        const { data } = await apiFromBackend.get("/api/nearBySearh", {
-          params: {
-            location: `${lat}, ${lng}`,
-            radius: this.radio,
-            type: this.preference,
-          },
-        })
-        this.nearPlaces = toRaw(data.results)
+        for (let i = 0; i < this.preference.length; i++) {
+          const { data } = await apiFromBackend.get("/api/nearBySearh", {
+            params: {
+              location: `${lat}, ${lng}`,
+              radius: this.radio,
+              type: this.preference[i],
+            },
+          })
+          if (data.results.length != 0) {
+            this.nearPlaces.push(...Object.values(data.results))
+            console.log(data)
+          }
+        }
         console.log(this.nearPlaces)
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {

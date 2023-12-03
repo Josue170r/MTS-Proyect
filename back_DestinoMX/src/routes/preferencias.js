@@ -4,11 +4,20 @@ import { Router } from "express";
 export const routerPreferencias = Router();
 
 //Consulta - Angel
-routerPreferencias.post("/api/PreferenciasRead/", (req, res) => {
-  const idUsuario = req.session.usuario.idUsuario;
+routerPreferencias.get("/api/leer-Preferencias/", (req, res) => {
+  let idUsuario 
+  if (!req.session.usuario) {
+    return res.status(403).json({
+      exito: false,
+      mensaje: "Se debe iniciar sesion.",
+    });
+  }
+  else{
+    idUsuario=req.session.usuario.idUsuario;
+  }
   //const idCatPreferencias = req.body.idUsuarioPreferencias;
   mySqlConnection.query(
-    `SELECT catpreferencias.idPlacesTipo FROM catpreferencias INNER JOIN preferencias ON preferencias.idCatPreferencias=catpreferencias.idCatPreferencias WHERE preferencias.idUsuario="${idUsuario}"`,
+    `SELECT catpreferencias.idPlacesTipo FROM catpreferencias INNER JOIN preferencias ON preferencias.idCatPreferencias=catpreferencias.idCatPreferencias WHERE preferencias.idUsuario="${idUsuario}" order by RAND()`,
     (err, results) => {
       if (err) {
         //Caso de error
@@ -19,7 +28,13 @@ routerPreferencias.post("/api/PreferenciasRead/", (req, res) => {
         });
       } else {
         //Muestra contenido existente
-        return res.json(results);
+
+        const idTypesArray=results.map((index)=>index.idPlacesTipo)
+        console.log(idTypesArray)
+        return res.status(200).json({
+          exito: true,
+          idTypesArray
+        });
       }
     }
   );
@@ -27,7 +42,6 @@ routerPreferencias.post("/api/PreferenciasRead/", (req, res) => {
 
 routerPreferencias.post("/api/consultar-Pantalla-Preferencias/", (req, res) => {
   let idUsuario 
-  const idPreferencias=[];
   if (!req.session.usuario) {
     return res.status(403).json({
       exito: false,
