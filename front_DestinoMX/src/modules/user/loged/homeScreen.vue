@@ -135,7 +135,7 @@
                       :alt="place.name"
                       class="mx-8 rounded-lg mt-2"
                     />
-                    <h1 class="text-sm text-center mt-2 mb-2">
+                    <h1 class="text-md text-center mt-2 mb-2">
                       {{ place.name }}
                     </h1>
                     <v-rating
