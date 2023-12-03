@@ -160,16 +160,32 @@
 
       <!-- Ratings -->
 
-      <div>
+      <div class="mt-4">
         <swiper
           :slides-per-view="3"
           :space-between="10"
-          direction="vertical"
-          :pagination="{ clickable: true }"
-          class="mb-8"
+          :direction="'vertical'"
+          :pagination="{
+            clickable: true,
+          }"
+          :modules="modules"
+          class="swiper-slide mb-8"
         >
           <swiper-slide v-for="review in reviews" :key="review">
+            <v-avatar :image="review.profile_photo_url"></v-avatar>
             <h1>{{ review.author_name }}</h1>
+            <v-rating
+              half-increments
+              hover
+              :length="5"
+              :size="16"
+              :model-value="review.rating"
+              readonly
+              color="rgb(232, 176, 36)"
+              active-color="rgb(232, 176, 36)"
+            />
+            <p class="text-blue-500">{{ review.relative_time_description }}</p>
+            <p>{{ review.text }}</p>
           </swiper-slide>
         </swiper>
       </div>
@@ -192,11 +208,11 @@ import "vue3-toastify/dist/index.css"
 import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
 import PopUpRating from "@/components/Viajes/PopUpRating.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
-import { Swiper, SwiperSlide } from "swiper/vue"
-import SwiperCore, { A11y, Autoplay, Pagination } from "swiper"
+// import { Swiper, SwiperSlide } from "swiper/vue"
 import "swiper/css"
 import "swiper/css/pagination"
-SwiperCore.use([A11y, Autoplay, Pagination])
+// import { Pagination } from 'swiper/modules';
+
 export default {
   name: "PlaceDescription",
   components: {
@@ -210,8 +226,8 @@ export default {
     BackButton,
     PopUpAddTrip,
     PopUpRating,
-    Swiper,
-    SwiperSlide,
+    // Swiper,
+    // SwiperSlide,
   },
   data() {
     return {
@@ -401,20 +417,12 @@ export default {
 <style scoped>
 .swiper-slide {
   width: 100%;
-  background: transparent;
+  background-color: transparent;
   text-align: center;
   font-size: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.swiper-slide img {
-  display: block;
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  background: transparent;
 }
 
 .custom-loader {

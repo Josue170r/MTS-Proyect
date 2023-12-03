@@ -188,7 +188,7 @@ export default {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
       preference: [],
-      radio: 150,
+      radio: 400,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
@@ -275,7 +275,6 @@ export default {
           })
           if (data.results.length != 0) {
             this.nearPlaces.push(...Object.values(data.results))
-            console.log(data)
           }
         }
         console.log(this.nearPlaces)
