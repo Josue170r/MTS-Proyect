@@ -27,15 +27,15 @@
       <!-- empieza div para favoritos -->
 
       <!-- v if cuando SI hay favoritos en la BD -->
-      <v-container v-if="days.length != 0">
+      <v-container v-if="places.length != 0">
         <v-row>
           <!-- Utiliza v-for para iterar sobre los lugares -->
-          <v-col v-for="(day, index) in days" :key="index" cols="12">
+          <v-col v-for="(place, index) in places" :key="index" cols="12">
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <!-- Itera sobre la info de los lugares -->
                 <v-list-item
-                  v-for="(activity, activityIndex) in day.activities"
+                  v-for="(activity, activityIndex) in place.name"
                   :key="activityIndex"
                 >
                   <div class="d-flex flex-column justify-center align-center">
@@ -81,14 +81,29 @@
 </template>
 
 <script>
+import { toRaw } from "vue"
+import { toast } from "vue3-toastify"
+import "vue3-toastify/dist/index.css"
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 // import favIcon from "@/components/icons/favIcon"
-
+// this.days = [
+//       {
+//         activities: [
+//           {
+//             title: "Palacio de Bellas Artes",
+//             description:
+//               "El Palacio de Bellas Artes es un recinto cultural ubicado en el Centro Histórico de la CDMX",
+//             image:
+//               "https://upload.wikimedia.org/wikipedia/commons/9/97/Bellas_Artes_01.jpg",
+//           },
+//         ],
+//       },
+//     ]
 export default {
-  name: "MyTrip",
+  name: "LugaresFavoritos",
   components: {
     BackButtonIcon,
     AvatarButton,
@@ -97,47 +112,82 @@ export default {
   },
   data() {
     return {
-      days: [],
+      placePhotoReferences: "",
+      places: [],
     }
   },
-  async created() {
-    // Haciendo consulta al backend para obtener lugares favoritos.
-    const { data } = await apiFromBackend.get("/api/favoritos")
-
-    // places es un arreglo que contiene los ids de los lugares que estan en favoritos.
-    const places = data.info
-
-    // Por ahora solo mostramos places en consola.
-    console.log(places)
-
-    // Aqui se debe hacer la consulta a las APIS para obtener informacion de cada lugar e insertarla en el arreglo days.
-
-    /* Tambien se debe actualizar days. Por ahora solo retorna infomacion hardcodeada.
-     Más días y actividades aquí------> back lo conecta a un arreglo en la BD para que itere con el v-for */
-    this.days = [
-      {
-        activities: [
-          {
-            title: "Palacio de Bellas Artes",
-            description:
-              "El Palacio de Bellas Artes es un recinto cultural ubicado en el Centro Histórico de la CDMX",
-            image:
-              "https://upload.wikimedia.org/wikipedia/commons/9/97/Bellas_Artes_01.jpg",
-          },
-        ],
-      },
-    ]
+  created() {
+    this.getFavorites()
+   
   },
+  // Aqui se debe hacer la consulta a las APIS para obtener informacion de cada lugar e insertarla en el arreglo days.
+
+  /* Tambien se debe actualizar days. Por ahora solo retorna infomacion hardcodeada.
+     Más días y actividades aquí------> back lo conecta a un arreglo en la BD para que itere con el v-for */
+
   methods: {
+    async getFavorites() {
+      try {
+        // Hacer la solicitud al back-end para obtener lugares favoritos
+        const { data } = await apiFromBackend.get("/api/favoritos")
+
+        // Actualizar los datos locales en el componente con los favoritos obtenidos
+        if (data.exito) {
+          this.placeIds = data.info
+          console.log("This.placeIds: ", this.placeIds)
+          this.getNamePlaces()
+        }
+      } catch (error) {
+        console.error("Error al obtener lugares favoritos:", error)
+      }
+    },
+    async getNamePlaces() {
+      try {
+        for (const place_id of this.placeIds) {
+          console.log(place_id)
+          // const { data } = await apiFromBackend.get("/api/placeName", {
+          //   params: {
+          //     place_id,
+          //   },
+          // })
+          // this.places.push(data)
+        }
+        // this.placePhotoReferences = data.result.photos.photo_reference
+        console.log("Desde getNamePlace de Favoritos: ", this.places)
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
+    async getImgPlaces() {
+      try {
+        const imgageURLs = []
+        for (const photoReference of this.placePhotoReferences) {
+          const imgs = await apiFromBackend.get("/api/imgPlace", {
+            params: {
+              maxwidth: "400",
+              photoreference: photoReference,
+            },
+            responseType: "blob",
+          })
+          const imgUrl = URL.createObjectURL(imgs.data)
+          imgageURLs.push(imgUrl)
+          this.placeImages = toRaw(imgageURLs)
+          console.log(this.placeImages)
+        }
+      } catch (error) {
+        toast.error("No hay imágenes disponibles", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+
     deletePlace(index) {
       // Elimina el lugar de la lista según el índice
-      this.days.splice(index, 1)
+      this.favplaces.splice(index, 1)
     },
-  },
-  setup() {
-    return {
-      //***** */
-    }
   },
 }
 </script>

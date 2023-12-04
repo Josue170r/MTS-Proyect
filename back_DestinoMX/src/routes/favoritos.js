@@ -8,7 +8,7 @@ export const routerFavoritos = Router();
 // idPlaceLugar
 routerFavoritos.post("/api/favoritos", (req, res) => {
   if (!req.session.usuario) {
-    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+    res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesion." });
   } else {
     const { idPlaceLugar } = req.body;
     const idUsuario = req.session.usuario.idUsuario;
