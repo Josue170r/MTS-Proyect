@@ -42,6 +42,11 @@
                 <div>
                   <button
                     class="w-full py-2 px-4 transition-all duration-300 ease-in-out hover:bg-orange-100 hover:text-gray-800 focus:text-gray-800 rounded-md transition duration-300 ease-in-out transform-gpu"
+                    :class="{
+                      'bg-orange-100 text-gray-800 focus:text-gray-800':
+                        isSelected,
+                    }"
+                    @click="handleButtonClick"
                   >
                     <div class="flex items-center">
                       <img
@@ -200,6 +205,7 @@ export default {
       places: [],
       iconPlaceToFind: [],
       filteredPlaces: [],
+      isSelected: false,
     }
   },
   created() {
@@ -238,6 +244,13 @@ export default {
     },
     closeSearch() {
       this.showSearch = false
+      this.namePlaceToFind = ""
+      this.places = []
+      this.filteredPlaces = []
+      this.showSearch = true
+    },
+    handleButtonClick() {
+      this.isSelected = !this.isSelected
     },
     goToMapScreen() {
       this.$router.push({
