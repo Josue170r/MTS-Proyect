@@ -11,7 +11,7 @@
       </div>
 
       <img
-        src="@/assets/images/imagen006.png"
+        src="@/assets/images/imagen007.png"
         alt="imagen004"
         class="md:my-auto rounded-b-xl"
       />
@@ -19,11 +19,9 @@
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->
 
-      <h1 class="text-gray-800 py-5 text-center text-xl font-bold">
+      <h1 class="text-gray-800 py-1.5 text-center text-xl font-bold">
         Historial de lugares visitados
       </h1>
-
-      <span class="block text-sm mb-1"></span>
 
       <!-- empieza div para favoritos -->
 
@@ -39,6 +37,7 @@
                   v-for="(activity, activityIndex) in day.activities"
                   :key="activityIndex"
                 >
+                  <!-- *******************div principal de historial********************************** -->
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
@@ -47,19 +46,40 @@
                       height="80%"
                       width="80%"
                     ></v-img>
-                  </div>
-                  <br />
-                  <div class="d-flex flex-column justify-center align-center">
+                    <br />
+                    <!-- Descripcion -->
                     <v-list-item-title>{{ activity.title }}</v-list-item-title>
                     <v-list-item-subtitle>{{
                       activity.description
                     }}</v-list-item-subtitle>
+                    <br />
+                    <div
+                      class="d-flex flex-row px-5 mx-10 items-center space-x-8"
+                    >
+                      <!-- boton para ver la Descripcion del lugar -->
+                      <button
+                        @click="goToHome"
+                        type="button"
+                        class="font-quicksand block w-1/2 py-1 px-1 rounded-lg text-white bg-pink-300"
+                      >
+                        Explorar
+                      </button>
+                      <!-- icon favoritos -->
+                      <favIcon
+                        :class="[
+                          isInFavorites
+                            ? 'opacity-60 cursor-not-allowed'
+                            : '...',
+                        ]"
+                        :disabled="isInFavorites"
+                        @click="AddToFavorites"
+                      />
+                      <!-- icon de eliminar -->
+                      <deleteFav @click="deletePlace(index)" />
+                    </div>
                   </div>
-
-                  <!-- Botón para eliminar el lugar-->
-                  <div class="absolute top-4 right-3">
-                    <deleteFav @click="deletePlace(index)" />
-                  </div>
+                  <!-- ******************************************************************************** -->
+                  <br />
                 </v-list-item>
               </v-list>
             </v-card>
@@ -70,13 +90,19 @@
         v-else
         class="d-flex flex-column justify-center align-center"
       >
-        <!-- Pantalla alternativa v-if cuando NO hay lugares favoritos -->
+        <!-- Pantalla alternativa v-if cuando NO hay lugares visitados -->
         <h1>¡Vaya!</h1>
-        <h2>Aún no tienes lugares favoritos</h2>
-        <img src="@/assets/images/piramide.png" />
-      </v-container>
+        <h2>Aún tienes mucho por recorrer...</h2>
+        <img src="@/assets/images/ajolote.png" />
 
-      <span class="block text-red-700 text-sm mb-2"></span>
+        <button
+          @click="goToHome"
+          type="button"
+          class="font-quicksand block w-1/2 mt-4 py-3 px-4 rounded-lg text-white font-semibold mb-2 bg-pink-300"
+        >
+          Descubre ahora
+        </button>
+      </v-container>
     </div>
   </div>
 </template>
@@ -85,7 +111,10 @@
 import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
-// import favIcon from "@/components/icons/favIcon"
+import favIcon from "@/components/icons/favIcon"
+import { toast } from "vue3-toastify"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import "vue3-toastify/dist/index.css"
 
 export default {
   name: "MyTrip",
@@ -93,10 +122,20 @@ export default {
     BurgerMenu,
     AvatarButton,
     deleteFav,
-    // favIcon,
+    favIcon,
+    // placeiD: "",
+    // placeImage: "",
+    // placePhotoReference: "",
+    // placeName: "",
+    // location: "",
+    // rating: "",
+    // numratings: "",
+    // about: "",
   },
   data() {
     return {
+      isInFavorites: false,
+      isLoading: true,
       // Más días y actividades aquí------> back lo conecta a un arreglo en la BD para que itere con el v-for
       days: [
         {
@@ -141,6 +180,29 @@ export default {
     deletePlace(index) {
       // Elimina el lugar de la lista según el índice
       this.days.splice(index, 1)
+    },
+    goToHome() {
+      this.$router.push({
+        name: "home",
+      })
+    },
+    async AddToFavorites() {
+      try {
+        const response = await apiFromBackend.post("/api/favoritos", {
+          idPlaceLugar: this.placeiD,
+        })
+        this.isInFavorites = true
+        toast.success("Lugar añadido a favoritos", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        console.log(response)
+      } catch ({ response }) {
+        const { data } = response
+        console.log(data)
+      }
     },
   },
   setup() {
