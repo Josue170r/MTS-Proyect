@@ -89,7 +89,7 @@
           ref="ratingPopup"
           v-if="showPopup2"
           :rating="rating"
-          :numratings="reviews.length"
+          :numratings="numratings"
           class="mr-16"
           :style="{
             maxWidth: '100%',
@@ -373,6 +373,9 @@ export default {
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
+        this.numratings = data.result.user_ratings_total
+          ? data.result.user_ratings_total
+          : this.reviews.lenght
         this.location = data.result.vicinity
         const isOpen = data.result.current_opening_hours
           ? data.result.current_opening_hours.open_now
