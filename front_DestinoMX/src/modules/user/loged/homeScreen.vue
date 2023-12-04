@@ -1,5 +1,5 @@
 <template>
-  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
+  <div>
     <div class="min-h-screen w-full flex flex-col md:flex-row">
       <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
