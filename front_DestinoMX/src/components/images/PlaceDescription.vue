@@ -15,7 +15,7 @@
           ><BackButton
         /></router-link>
         <img
-          @click="hideRatingPopUp"
+          @click="hideRatingPopUp" 
           :src="placeImage"
           alt="Imagen del lugar"
           class="opacity-100 rounded-t-xl rounded-b-xl max-h-96 w-[400px]"
