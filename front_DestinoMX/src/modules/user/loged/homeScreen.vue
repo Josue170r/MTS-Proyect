@@ -290,7 +290,15 @@ export default {
             this.nearPlaces.push(...Object.values(data.results))
           }
         }
-        console.log(this.nearPlaces)
+        const uniqueNearPlaces = new Set(
+          this.nearPlaces.map((place) => place.reference),
+        )
+        this.nearPlaces = Array.from(uniqueNearPlaces).map((reference) => {
+          return this.nearPlaces.find((place) => place.reference === reference)
+        })
+
+        this.nearPlaces = this.nearPlaces.slice(0, 25)
+
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -357,46 +365,6 @@ export default {
           .slice(0, 6)
       } catch (error) {
         console.log("Todo bien")
-      }
-    },
-    async loginJWT() {
-      try {
-        const response = await apiFromBackend.post("/api/cuenta-activa")
-        console.log("Respuesta exitosa:", response)
-
-        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado en el frontend.
-      } catch (error) {
-        if (error.response) {
-          // El servidor respondió con un status diferente de 2xx
-          console.error("Respuesta de error del servidor:", error.response.data)
-          toast(error.response.data.mensaje, {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        } else if (error.request) {
-          // La solicitud fue hecha pero no se recibió respuesta
-          console.error("No se recibió respuesta del servidor:", error.request)
-          toast("No se recibió respuesta del servidor", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        } else {
-          // Ocurrió un error durante la configuración de la solicitud
-          console.error(
-            "Error durante la configuración de la solicitud:",
-            error.message,
-          )
-          toast("Error durante la configuración de la solicitud", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        }
       }
     },
   },
