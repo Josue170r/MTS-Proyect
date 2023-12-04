@@ -391,7 +391,6 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-        console.log("Imágenes", this.imageReferences)
       } catch (error) {
         console.log(error.message)
       }
