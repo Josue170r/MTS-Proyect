@@ -114,7 +114,7 @@
                                     class="pl-2 outline-none border-none w-full"
                                     type="text"
                                     name="secondLastName"
-                                    placeholder="Apellido materno"
+                                    placeholder="Apellido materno *"
                                   />
                                 </div>
                                 <div class="ml-1 mb-2 -mt-1">
@@ -128,14 +128,14 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
-                                @click="dialog = false"
+                                @click="closeDailogForProfile"
                               >
                                 Cerrar
                               </v-btn>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
                                 type="submit"
                               >
@@ -191,7 +191,7 @@
                                 >
                                   <Field
                                     id="currentPassword"
-                                    type="currentPassword"
+                                    type="password"
                                     autocomplete="off"
                                     v-model="updatePassword.currentPassword"
                                     class="pl-2 outline-none border-none w-full"
@@ -235,7 +235,7 @@
                                     id="passwordConfirmation"
                                     v-model="updatePassword.confirmPassword"
                                     class="pl-2 outline-none border-none w-full"
-                                    type="text"
+                                    type="password"
                                     name="passwordConfirmation"
                                     placeholder="Confirma tu nueva contraseña"
                                   />
@@ -251,14 +251,14 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
-                                @click="dialogfromPassword = false"
+                                @click="closeDailogForPassword"
                               >
                                 Cerrar
                               </v-btn>
                               <v-btn
-                                color="blue-darken-1"
+                                color="orange-darken-1"
                                 variant="text"
                                 type="submit"
                               >
@@ -298,15 +298,52 @@
                   Eliminar Cuenta
                 </v-list-item>
                 <div class="ml-16">
-                  <v-tooltip text="Eliminar Cuenta">
-                    <template v-slot:activator="{ props }">
-                      <button class="ml-2" v-bind="props">
-                        <v-icon color="#fed7aa" size="30"
-                          >mdi-arrow-right-bold-circle-outline</v-icon
+                  <v-row justify="center">
+                    <v-dialog
+                      v-model="dialogfromDelete"
+                      persistent
+                      width="1024"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <button v-bind="props">
+                          <v-icon color="#fed7aa" size="30" class="ml-3"
+                            >mdi-arrow-right-bold-circle-outline</v-icon
+                          >
+                        </button>
+                      </template>
+                      <v-card>
+                        <v-card-title class="text-center font-baskerville mt-2">
+                          <div
+                            class="text-center ml-3 mr-1 py-0 text-left text-xl"
+                            style="white-space: normal"
+                          >
+                            ¿Esta seguro de eliminar su cuenta?
+                          </div>
+                        </v-card-title>
+                        <v-card-text class="text-center"
+                          >Toda su información y la configuración de su cuenta
+                          serán eliminadas permanentemente.</v-card-text
                         >
-                      </button>
-                    </template>
-                  </v-tooltip>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            color="grey lighten-3"
+                            variant="text"
+                            @click="dialogfromDelete = false"
+                          >
+                            Cancelar
+                          </v-btn>
+                          <v-btn
+                            color="orange-darken-1"
+                            variant="text"
+                            @click="deleteUserAccount()"
+                          >
+                            Aceptar
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </v-row>
                 </div>
               </div>
             </div>
@@ -339,6 +376,7 @@ export default {
       dialog: false,
       loading: false,
       dialogfromPassword: false,
+      dialogfromDelete: false,
       updateProfile: {
         name: "",
         lastname: "",
@@ -353,6 +391,7 @@ export default {
   },
   created() {
     this.getUserInformation()
+    this.loginJWT()
   },
   computed: {
     isFormEmpty() {
@@ -426,6 +465,48 @@ export default {
         })
       }
       this.dialogfromPassword = false
+    },
+    async deleteUserAccount() {
+      try {
+        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta")
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 400,
+          type: "success",
+          theme: "colored",
+          onClose: () => {
+            this.$router.push({ name: "startup" })
+          },
+        })
+      } catch ({ response }) {
+        toast(response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
+      this.dialogfromPassword = false
+    },
+    async loginJWT() {
+      try {
+        const response = await apiFromBackend.post("/api/cuenta-activa")
+        console.log("Respuesta exitosa:", response)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    closeDailogForPassword() {
+      this.dialogfromPassword = false
+      this.updatePassword.confirmPassword = ""
+      this.updatePassword.currentPassword = ""
+      this.updatePassword.newPassword = ""
+    },
+    closeDailogForProfile() {
+      this.dialog = false
+      this.updateProfile.name = ""
+      this.updateProfile.lastname = ""
+      this.updateProfile.secondlastname = ""
     },
   },
 }

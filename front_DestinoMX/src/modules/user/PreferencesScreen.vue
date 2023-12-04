@@ -52,9 +52,9 @@
             <button
               @click="toggleButton(0)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(0),
+                'bg-orange-300': selectedButtons.includes(0),
                 'bg-green-200': highlightedButton === 0,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(0) && highlightedButton !== 0,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -71,9 +71,9 @@
             <button
               @click="toggleButton(1)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(1),
+                'bg-orange-300': selectedButtons.includes(1),
                 'bg-green-200': highlightedButton === 1,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(1) && highlightedButton !== 1,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -90,9 +90,9 @@
             <button
               @click="toggleButton(2)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(2),
+                'bg-orange-300': selectedButtons.includes(2),
                 'bg-green-200': highlightedButton === 2,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(2) && highlightedButton !== 2,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -109,9 +109,9 @@
             <button
               @click="toggleButton(3)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(3),
+                'bg-orange-300': selectedButtons.includes(3),
                 'bg-green-200': highlightedButton === 3,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(3) && highlightedButton !== 3,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -128,9 +128,9 @@
             <button
               @click="toggleButton(4)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(4),
+                'bg-orange-300': selectedButtons.includes(4),
                 'bg-green-200': highlightedButton === 4,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(4) && highlightedButton !== 4,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -147,9 +147,9 @@
             <button
               @click="toggleButton(5)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(5),
+                'bg-orange-300': selectedButtons.includes(5),
                 'bg-green-200': highlightedButton === 5,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(5) && highlightedButton !== 5,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -166,9 +166,9 @@
             <button
               @click="toggleButton(6)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(6),
+                'bg-orange-300': selectedButtons.includes(6),
                 'bg-green-200': highlightedButton === 6,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(6) && highlightedButton !== 6,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -185,9 +185,9 @@
             <button
               @click="toggleButton(7)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(7),
+                'bg-orange-300': selectedButtons.includes(7),
                 'bg-green-200': highlightedButton === 7,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(7) && highlightedButton !== 7,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -204,9 +204,9 @@
             <button
               @click="toggleButton(8)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(8),
+                'bg-orange-300': selectedButtons.includes(8),
                 'bg-green-200': highlightedButton === 8,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(8) && highlightedButton !== 8,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -223,9 +223,9 @@
             <button
               @click="toggleButton(9)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(9),
+                'bg-orange-300': selectedButtons.includes(9),
                 'bg-green-200': highlightedButton === 9,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(9) && highlightedButton !== 9,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -242,9 +242,9 @@
             <button
               @click="toggleButton(10)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(10),
+                'bg-orange-300': selectedButtons.includes(10),
                 'bg-green-200': highlightedButton === 10,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(10) && highlightedButton !== 10,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -261,9 +261,9 @@
             <button
               @click="toggleButton(11)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(11),
+                'bg-orange-300': selectedButtons.includes(11),
                 'bg-green-200': highlightedButton === 11,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(11) && highlightedButton !== 11,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -280,9 +280,9 @@
             <button
               @click="toggleButton(12)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(12),
+                'bg-orange-300': selectedButtons.includes(12),
                 'bg-green-200': highlightedButton === 12,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(12) && highlightedButton !== 12,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -300,9 +300,9 @@
             <button
               @click="toggleButton(13)"
               :class="{
-                'bg-orange-100': selectedButtons.includes(13),
+                'bg-orange-300': selectedButtons.includes(13),
                 'bg-green-200': highlightedButton === 13,
-                'bg-orange-300':
+                'bg-orange-100':
                   !selectedButtons.includes(13) && highlightedButton !== 13,
               }"
               class="w-full hover:outline hover:outline-1 hover:outline-orange-400 sm:w-max py-2 rounded-lg text-black font-semibold mb-2 flex items-center justify-center pl-4 pr-4"
@@ -339,6 +339,7 @@
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { toast } from "vue3-toastify"
 import BurgerMenu from "@/components/buttons/BurgerMenu.vue"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 
 export default {
   name: "PreferencesScreen",
@@ -346,7 +347,9 @@ export default {
     AvatarButton,
     BurgerMenu,
   },
-
+  created() {
+    this.consultarPreferencias()
+  },
   data() {
     return {
       selectedButtons: [],
@@ -364,52 +367,135 @@ export default {
       }
     },
 
-    guardar() {
+    async guardar() {
       //
       if (this.selectedButtons.length > 0) {
         const selectedButtonNames = this.selectedButtons.map((index) => {
           switch (index) {
             case 0:
-              return "Parque de Atracciones"
+              return "parque de atracciones"
             case 1:
-              return "Lugares Religiosos"
+              return "lugares religiosos"
             case 2:
-              return "Parques Y Areas Naturales"
+              return "parque y areas naturales"
             case 3:
-              return "Museos y Galerias"
+              return "museos y galerias"
             case 4:
-              return "Bares y Pubs"
+              return "bares y pubs"
             case 5:
-              return "CLubs Nocturnos"
+              return "clubes nocturnos"
             case 6:
-              return "Centros de Entretenimiento"
+              return "centros de entretenimiento"
             case 7:
-              return "Restaurantes "
+              return "restaurantes"
             case 8:
-              return "Caferias"
+              return "cafeterias"
             case 9:
-              return "GYM"
+              return "gym"
             case 10:
-              return "Plazas"
+              return "plazas"
             case 11:
-              return "Hoteles"
+              return "hoteles"
             case 12:
-              return "Bibliotecas"
+              return "bibliotecas"
             case 13:
-              return "Monumentos"
+              return "momumentos y lugares publicos"
             default:
               return ""
           }
         })
 
         console.log("Botones Guardados: ", selectedButtonNames)
-      }
 
-      //  else {
-      //   alert("ERROR: No has seleccionado ningun boton.")
-      // }
-      else {
+        try {
+          const { data } = await apiFromBackend.put(
+            "/api/modificar-preferencias",
+            {
+              idPreferencias: selectedButtonNames,
+            },
+          )
+          console.log(data)
+          toast(data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "success",
+            theme: "colored",
+          })
+        } catch ({ response }) {
+          toast.error(response.data.mensaje, {
+            theme: "colored",
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 1500,
+            hideProgressBar: true,
+          })
+        }
+      } else {
         toast.error("No has seleccionado preferencias.", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
+    },
+
+    async consultarPreferencias() {
+      try {
+        const { data } = await apiFromBackend.post(
+          "/api/consultar-Pantalla-Preferencias/",
+        )
+        const selectedButtonNames = data.map((result) => {
+          switch (result) {
+            case "parque de atracciones":
+              this.toggleButton(0)
+              return 0
+            case "lugares religiosos":
+              this.toggleButton(1)
+              return 1
+            case "parque y areas naturales":
+              this.toggleButton(2)
+              return 2
+            case "museos y galerias":
+              this.toggleButton(3)
+              return 3
+            case "bares y pubs":
+              this.toggleButton(4)
+              return 4
+            case "clubes nocturnos":
+              this.toggleButton(5)
+              return 5
+            case "centros de entretenimiento":
+              this.toggleButton(6)
+              return 6
+            case "restaurantes":
+              this.toggleButton(7)
+              return 7
+            case "cafeterias":
+              this.toggleButton(8)
+              return 8
+            case "gym":
+              this.toggleButton(9)
+              return 9
+            case "plazas":
+              this.toggleButton(10)
+              return 10
+            case "hoteles":
+              this.toggleButton(11)
+              return 11
+            case "bibliotecas":
+              this.toggleButton(12)
+              return 12
+            case "momumentos y lugares publicos":
+              this.toggleButton(13)
+              return 13
+            default:
+              return ""
+          }
+        })
+
+        console.log(selectedButtonNames)
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,

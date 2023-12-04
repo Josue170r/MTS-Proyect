@@ -42,6 +42,7 @@ routerApiDetails.get("/api/placeName", async (req, res) => {
       params: {
         place_id,
         key: apiKey,
+        language: "es",
       },
     });
     res.status(200).json(response.data);

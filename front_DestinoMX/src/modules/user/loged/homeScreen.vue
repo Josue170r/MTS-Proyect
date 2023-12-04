@@ -1,5 +1,5 @@
 <template>
-  <div :class="[isLoading ? 'fixed opacity-60' : '...']">
+  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
     <div class="min-h-screen w-full flex flex-col md:flex-row">
       <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -9,39 +9,67 @@
           <BurgerMenu />
         </div>
         <div
-          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white rounded-full flex items-center shadow-md"
+          class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white flex items-center shadow-md"
+          :class="[
+            places.length > 5
+              ? 'rounded-t-xl rounded-b-xl'
+              : 'rounded-t-xl rounded-b-xl',
+          ]"
         >
-          <input
-            v-model="namePlaceToFind"
-            type="text"
-            class="w-48 p-2 outline-none border-none rounded-full"
-            placeholder="Buscar..."
-            @input="FindPlacesFromInput"
-          />
-          <ul
-            class="mt-[450px] absolute w-56 bg-white rounded-md shadow-md overflow-hidden"
-            v-if="places.length > 0"
-          >
-            <li
-              v-for="(place, index) in places.slice(0, 6)"
-              :key="index"
-              class="py-2 border-b last:border-b-0"
+          <div class="relative">
+            <div class="flex items-center">
+              <input
+                v-model="namePlaceToFind"
+                type="text"
+                class="w-64 md:w-96 px-2 py-2 outline-none border-none flex-grow mr-2"
+                placeholder="Busca tu próximo DestinoMX ..."
+                @input="FindPlacesFromInput"
+              />
+              <button v-if="namePlaceToFind.length > 0" @click="closeSearch">
+                <CloseIcon class="text-left" />
+              </button>
+            </div>
+            <ul
+              ref="placesList"
+              class="absolute w-72 mt-3 mr-8 bg-white rounded-b shadow-md overflow-hidden rounded-md"
+              v-if="places.length > 5 && showSearch"
             >
-              <div
-                class="transition-all duration-300 ease-in-out hover:bg-gray-200 hover:text-gray-800"
+              <li
+                v-for="(place, index) in places.slice(0, 5)"
+                :key="index"
+                class="w-full py-2 border-b last:border-b-0 transition duration-300 ease-in-out hover:bg-orange-100 focus:bg-orange-200"
               >
-                <button class="text-black py-2 px-4">
-                  <div class="flex items-center">
-                    <!-- {{ place.icon }} -->
-                    <SearchIcon />
-                    <div class="px-2 h-flex">
-                      {{ place.name }}
+                <div>
+                  <button
+                    class="w-full py-2 px-4 transition-all duration-300 ease-in-out hover:bg-orange-100 hover:text-gray-800 focus:text-gray-800 rounded-md transition duration-300 ease-in-out transform-gpu"
+                    :class="{
+                      'bg-orange-100 text-gray-800 focus:text-gray-800':
+                        isSelected,
+                    }"
+                    @click="handleButtonClick"
+                  >
+                    <div class="flex items-center">
+                      <img
+                        :src="place.icon"
+                        class="w-6 h-6 brightness object-cover rounded-md mr-2"
+                      />
+                      <div class="flex flex-col">
+                        <h1
+                          class="text-sm text-lowercase text-left cursor-pointer transition-all duration-300 ease-in-out transform-gpu"
+                          @click="goToPlaceDescriptionFromSearch(place)"
+                        >
+                          {{ place.name }}
+                        </h1>
+                        <h1 class="text-sm text-gray-500">
+                          {{ place.address }}
+                        </h1>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              </div>
-            </li>
-          </ul>
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <img
           src="@/assets/images/imagen003.png"
@@ -51,7 +79,7 @@
       </div>
       <div class="md:w-1/2 md:order-2">
         <div class="flex items-center justify-center w-full flex-col">
-          <h1 class="text-xl text-center mt-4">Usted está aqui</h1>
+          <h1 class="text-xl text-center mt-2 mb-2">Usted está aqui</h1>
           <GoogleMap
             @click="goToMapScreen"
             :api-key="apiKey"
@@ -73,7 +101,7 @@
             <Marker :options="{ position: relativePosition }" />
           </GoogleMap>
           <div class="flex items-center justify-center w-full flex-col mb-8">
-            <h1 class="text-xl text-center mt-8">Explora cerca de ti</h1>
+            <h1 class="text-xl text-center mt-2 mb-2">Explora cerca de ti</h1>
             <div
               class="flex items-center justify-center w-full flex-col mr-4 ml-4"
             >
@@ -103,20 +131,25 @@
                   :key="place"
                   class="..."
                 >
-                  <div class="mt-4 flex items-center justify-between flex-col">
+                  <div
+                    class="mt-4 flex items-center justify-between flex-col mb-4"
+                  >
                     <img
                       @click="goToPlaceDescription(place)"
                       :src="placeImages[index]"
                       :alt="place.name"
                       class="mx-8 rounded-lg mt-2"
                     />
-                    <p class="mt-4">{{ place.name }}</p>
+                    <h1 class="text-md text-center mt-2 mb-2">
+                      {{ place.name }}
+                    </h1>
                     <v-rating
                       half-increments
                       hover
                       :length="5"
                       :size="16"
                       :model-value="place.rating"
+                      readonly
                       color="rgb(232, 176, 36)"
                       active-color="rgb(232, 176, 36)"
                     />
@@ -136,48 +169,50 @@ import { toRaw } from "vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { GoogleMap, Marker } from "vue3-google-map"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
-import SearchIcon from "@/components/icons/SearchIcon.vue"
 import { toast } from "vue3-toastify"
 import { Swiper, SwiperSlide } from "swiper/vue"
 import { Pagination } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/pagination"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import CloseIcon from "@/components/icons/CloseIcon.vue"
 
 export default {
   name: "homeScreen",
   components: {
     AvatarButton,
-    SearchIcon,
     GoogleMap,
     Marker,
     BurgerMenu,
     Swiper,
     SwiperSlide,
+    CloseIcon,
   },
   data() {
     return {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
-      preference: "restaurant",
-      radio: 150,
+      preference: [],
+      radio: 400,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
       isLoading: true,
       showModal: false,
+      showSearch: true,
       searchResults: [],
       namePlaceToFind: "",
       places: [],
-      showPlacesList: false,
       iconPlaceToFind: [],
+      filteredPlaces: [],
+      isSelected: false,
     }
   },
   created() {
     this.$getLocation()
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
-        this.getArrayPlaces()
+        this.getArrayPlacesPreferences()
       })
       .catch((error) => {
         toast(error, {
@@ -189,6 +224,34 @@ export default {
       })
   },
   methods: {
+    async getArrayPlacesPreferences() {
+      try {
+        const { data } = await apiFromBackend.get("/api/leer-Preferencias")
+        this.preference = data.idTypesArray
+        console.log(this.preference)
+        this.getArrayPlaces()
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        if (response.data.mensaje === "No hay preferencias configuradas.") {
+          this.getArrayPlaces()
+        }
+      }
+    },
+    closeSearch() {
+      this.showSearch = false
+      this.namePlaceToFind = ""
+      this.places = []
+      this.filteredPlaces = []
+      this.showSearch = true
+    },
+    handleButtonClick() {
+      this.isSelected = !this.isSelected
+    },
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
@@ -202,19 +265,40 @@ export default {
         },
       })
     },
+    goToPlaceDescriptionFromSearch(place) {
+      const placeId = place.place_id
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          placeid: placeId,
+        },
+      })
+    },
     async getArrayPlaces() {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        const { data } = await apiFromBackend.get("/api/nearBySearh", {
-          params: {
-            location: `${lat}, ${lng}`,
-            radius: this.radio,
-            type: this.preference,
-          },
+        for (let i = 0; i < this.preference.length; i++) {
+          const { data } = await apiFromBackend.get("/api/nearBySearh", {
+            params: {
+              location: `${lat}, ${lng}`,
+              radius: this.radio,
+              type: this.preference[i],
+            },
+          })
+          if (data.results.length != 0) {
+            this.nearPlaces.push(...Object.values(data.results))
+          }
+        }
+        const uniqueNearPlaces = new Set(
+          this.nearPlaces.map((place) => place.reference),
+        )
+        this.nearPlaces = Array.from(uniqueNearPlaces).map((reference) => {
+          return this.nearPlaces.find((place) => place.reference === reference)
         })
-        this.nearPlaces = toRaw(data.results)
-        console.log(this.nearPlaces)
+
+        this.nearPlaces = this.nearPlaces.slice(0, 25)
+
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -272,48 +356,15 @@ export default {
         console.log(this.response.data.results)
         this.iconPlaceToFind = response.data.result.place.icon
         console.log("Icono")
+        this.filteredPlaces = this.places
+          .filter((place) =>
+            place.name
+              .toLowerCase()
+              .includes(this.namePlaceToFind.toLowerCase()),
+          )
+          .slice(0, 6)
       } catch (error) {
         console.log("Todo bien")
-      }
-    },
-    async loginJWT() {
-      try {
-        const response = await apiFromBackend.post("/api/cuenta-activa")
-        console.log("Respuesta exitosa:", response)
-
-        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado en el frontend.
-      } catch (error) {
-        if (error.response) {
-          // El servidor respondió con un status diferente de 2xx
-          console.error("Respuesta de error del servidor:", error.response.data)
-          toast(error.response.data.mensaje, {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        } else if (error.request) {
-          // La solicitud fue hecha pero no se recibió respuesta
-          console.error("No se recibió respuesta del servidor:", error.request)
-          toast("No se recibió respuesta del servidor", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        } else {
-          // Ocurrió un error durante la configuración de la solicitud
-          console.error(
-            "Error durante la configuración de la solicitud:",
-            error.message,
-          )
-          toast("Error durante la configuración de la solicitud", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        }
       }
     },
   },
@@ -356,6 +407,10 @@ export default {
 
 .animate-custom {
   animation: bounce 1s infinite;
+}
+
+.brightness {
+  filter: brightness(0%);
 }
 
 @keyframes spin {

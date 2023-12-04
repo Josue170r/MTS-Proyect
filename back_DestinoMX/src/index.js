@@ -8,6 +8,7 @@ import { routerCalendario } from "./routes/calendario.js";
 import { routerAutenticacion } from "./routes/autenticacion.js";
 import { routerPreferencias } from "./routes/preferencias.js";
 import { routerUsuario } from "./routes/usuario.js";
+import { routerHistorial } from "./routes/historial.js";
 import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
@@ -24,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: 'http://localhost:8081',
+  origin: ['http://localhost:8080', 'http://localhost:8081'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
@@ -64,6 +65,7 @@ app.use(routerPreferencias);
 app.use(routerUsuario);
 app.use(routerApiDetails);
 app.use(routerApiWeather);
+app.use(routerHistorial);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
