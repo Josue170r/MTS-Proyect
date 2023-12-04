@@ -1,5 +1,8 @@
 <template>
-  <div class="min-h-screen w-full flex flex-col md:flex-row bg-gray-100">
+  <div
+    class="min-h-screen w-full flex flex-col md:flex-row bg-gray-100"
+    :class="[isLoading ? 'fixed opacity-50' : '...']"
+  >
     <div
       class="flex md:w-1/2 justify-center items-center md:bg-orange-300 bg-gray-200"
     >
@@ -34,30 +37,59 @@
     <div
       class="h-[600px] sm:flex flex-col md:w-1/2 flex-1 justify-center bg-gray-100 mt-0 sm:h-[700px]"
     >
-      <div class="flex flex-row ml-2 mr-0" @click="hideRatingPopUp">
+      <div class="flex mx-4 mr-0" @click="hideRatingPopUp">
         <!-- Nombre y Compartir-->
-        <h1 class="ml-3 text-orange-500 py-3 text-left text-2xl font-bold">
+        <h1 class="text-orange-500 py-3 text-left text-2xl font-bold">
           {{ placeName }}
         </h1>
-        <button class="ml-2 py-3">
+        <button class="ml-2 py-3 mr-4">
           <ShareIcon />
         </button>
       </div>
 
-      <div class="flex flex-row ml-2 mr-0" @click="hideRatingPopUp">
+      <div
+        v-if="location"
+        class="ml-3 mx-2 flex flex-row mt-2"
+        @click="hideRatingPopUp"
+      >
         <!-- Dirección -->
-        <LocalitationIcon2 class="mb-3 mr-0.3 ml-1" />
-        <div class="ml-0 underline text-blue-800 text-left text-md mt-0.5">
+        <LocalitationIcon2 class="mb-3 mr-1" />
+        <div class="underline text-blue-800 text-left text-md mt-0.5">
           {{ location }}
         </div>
       </div>
+      <div v-if="phone" class="flex flex-row ml-2 mr-0">
+        <PhoneIcon class="mb-3 mr-0.3 ml-1" />
+        <div class="ml-2 mb-2 text-orange-600 text-left text-md mt-0.5">
+          {{ phone }}
+        </div>
+      </div>
+      <div class="flex flex-row ml-2 mr-0" v-if="status">
+        <ClockIcon2
+          class="mb-3 ml-1 w-5 h-5 text-red-700"
+          stroke-width="1.2"
+          color-stroke="red"
+        />
+        <div class="ml-1 text-orange-600 text-left text-md mt-0">
+          <div class="flex flex-col">
+            {{ status }}
+            <div class="flex flex-row">
+              <p class="font-quicksand mr-2">Abre a las</p>
+              {{ openTime }}
+              <p class="font-quicksand ml-2 mr-2">Cierra a las</p>
+              {{ closeTime }}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="grid justify-items-end">
         <PopUpRating
           @click="hideRatingPopUp"
           ref="ratingPopup"
           v-if="showPopup2"
           :rating="rating"
-          :numratings="numratings"
+          :numratings="reviews.length"
           class="mr-16"
           :style="{
             maxWidth: '100%',
@@ -70,36 +102,29 @@
       <!-- Acerca de -->
 
       <div>
-        <div class="flex flex-col">
-          <div class="flex flex-row justify-end ml-1 mr-4 relative z-400 mt-2">
-            <h1 class="ml-3 text-black py-1 text-left text-lg font-bold mt-2">
-              {{ "Acerca de" }}
-            </h1>
-            <button
-              ref="ratingButton"
-              class="flex py-1 px-1 rounded-lg text-gray text-base ml-40"
-            >
-              <div
-                class="flex items-center mt-0.5 text-md"
-                @click="showPopUpRating"
-              >
-                <RatingButton class="ml-1" />
-                <p class="text-center text-lg">{{ rating }}</p>
-              </div>
-            </button>
-            <div class="flex flex-row items-center text-md py-0 px-0 ml-auto">
-              <WeatherIcon class="mr-2" />
-              {{ placeWeather }}
-              <p class="mr-4">{{ "°C" }}</p>
+        <div class="flex flex-row ml-auto items-center justify-end mr-4">
+          <h1 class="ml-4 text-black py-1 mr-auto text-lg font-bold mt-2 mb-0">
+            {{ "Acerca de" }}
+          </h1>
+          <button
+            ref="ratingButton"
+            class="py-1 px-1 rounded-lg text-gray text-base mt-0 mb-0"
+          >
+            <div class="flex text-md" @click="showPopUpRating">
+              <RatingButton class="ml-1 mr-2 mt-0 mb-0" />
+              <p class="text-center text-lg mt-1">{{ rating }}</p>
             </div>
+          </button>
+          <div class="flex text-md mr-2">
+            <WeatherIcon class="mr-2" />
+            <p class="mr-4 text-lg">{{ placeWeather }} °C</p>
           </div>
         </div>
-
         <div
           v-if="about"
           class="ml-3 mr-1 text-black font-quicksand py-0 text-left text-sm"
         >
-          <p class="mt-2 mb-2 font-quicksand">
+          <p class="mt-0 mb-2 mr-4 font-quicksand text-justify">
             {{ about }}
           </p>
         </div>
@@ -112,16 +137,6 @@
         </div>
       </div>
 
-      <!-- Botón de reseñas -->
-      <button
-        class="mt-4 mr-4 flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-2 ml-auto bg-orange-300"
-      >
-        <div class="flex items-center">
-          <span>Reseñas</span>
-          <ForwardIcon class="ml-1" />
-        </div>
-      </button>
-
       <!-- Galería -->
       <div
         @click="hideRatingPopUp"
@@ -130,7 +145,14 @@
         <h1 class="ml-3 mb-4 text-black py-1 text-left text-lg font-bold">
           {{ "Galería de imágenes" }}
         </h1>
-        <!-- Agrega el componente GalleryImages aquí -->
+
+        <div class="flex justify-center items-center flex-col" v-if="isLoading">
+          <div
+            class="custom-loader mt-16"
+            :class="{ 'animate-custom': index === 0 }"
+          ></div>
+          <h1>Cargando imágenes</h1>
+        </div>
         <GalleryImages class="mb-4" :photosArray="placeImages" />
       </div>
       <div class="flex justify-center mt-4">
@@ -157,6 +179,48 @@
         </button>
         <PopUpAddTrip v-if="showPopup" @close-popup="hideAddToTripPopup" />
       </div>
+
+      <!-- Ratings -->
+
+      <div class="mt-4">
+        <swiper
+          :slidesPerView="1"
+          :spaceBetween="2"
+          :modules="modules"
+          class="swiper-slide mb-8"
+        >
+          <swiper-slide v-for="review in reviews" :key="review">
+            <div class="flex flex-col items-center">
+              <div class="flex flex-row ml-1 mr-4 mt-2">
+                <v-avatar :image="review.profile_photo_url"></v-avatar>
+              </div>
+              <div class="flex flex-row ml-1 mr-4 mt-2">
+                <h1>{{ review.author_name }}</h1>
+              </div>
+              <div class="flex flex-row ml-1 mr-4 mt-2">
+                <v-rating
+                  half-increments
+                  hover
+                  :length="5"
+                  :size="16"
+                  :model-value="review.rating"
+                  readonly
+                  color="rgb(232, 176, 36)"
+                  active-color="rgb(232, 176, 36)"
+                />
+              </div>
+              <div class="flex flex-row ml-1 mr-4 mt-2">
+                <p class="text-blue-500">
+                  {{ review.relative_time_description }}
+                </p>
+              </div>
+              <div class="flex flex-row justify ml-1 mr-4 mt-2">
+                <p>{{ review.text }}</p>
+              </div>
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
     </div>
   </div>
 </template>
@@ -164,9 +228,10 @@
 <script>
 import { toRaw } from "vue"
 import LocalitationIcon2 from "@/components/icons/LocalitationIcon2.vue"
+import PhoneIcon from "@/components/icons/PhoneIcon.vue"
+import ClockIcon2 from "@/components/icons/ClockIcon2.vue"
 import RatingButton from "@/components/buttons/RatingButton.vue"
 import ShareIcon from "@/components/icons/ShareIcon.vue"
-import ForwardIcon from "@/components/icons/ForwardButtonIcon.vue"
 import BackButton from "@/components/buttons/BackButton"
 import FavoriteIcon from "@/components/icons/FavoriteIcon.vue"
 import AddIcon from "@/components/icons/AddIcon.vue"
@@ -177,14 +242,19 @@ import "vue3-toastify/dist/index.css"
 import PopUpAddTrip from "@/components/Viajes/PopUpAddTrip.vue"
 import PopUpRating from "@/components/Viajes/PopUpRating.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { Swiper, SwiperSlide } from "swiper/vue"
+import "swiper/css"
+import "swiper/css/pagination"
+import { Pagination } from "swiper/modules"
 
 export default {
   name: "PlaceDescription",
   components: {
     LocalitationIcon2,
+    PhoneIcon,
+    ClockIcon2,
     ShareIcon,
     RatingButton,
-    ForwardIcon,
     FavoriteIcon,
     AddIcon,
     WeatherIcon,
@@ -192,6 +262,8 @@ export default {
     BackButton,
     PopUpAddTrip,
     PopUpRating,
+    Swiper,
+    SwiperSlide,
   },
   data() {
     return {
@@ -206,22 +278,25 @@ export default {
       lat: "",
       long: "",
       placeWeather: "",
+      phone: "",
       imageReferences: [],
       selectedReferences: [],
       placePhotosReferences: [],
       placeImages: [],
+      reviews: [],
       showPopup: false,
       showPopup2: false,
       showRatingPopup: false,
       isInFavorites: false,
+      isLoading: true,
     }
   },
   created() {
     this.placeiD = this.$route.query.placeid
     this.getNamePlace(this.placeiD).then(() => {
-      this.getWeather()
       this.getImgPlace()
       this.getImgsPlaces()
+      this.getWeather()
     })
     this.getFavorites()
   },
@@ -289,23 +364,42 @@ export default {
           },
         })
         console.log("Desde getNamePlace: ", data)
+        this.rating = data.result.rating
+        this.reviews = data.result.reviews
         this.placeName = data.result.name
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
+        this.placePhotoReference = data.result.photos[0].photo_reference
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
-        this.placePhotoReference = data.result.photos[0].photo_reference
         this.location = data.result.vicinity
-        this.rating = data.result.rating
-        this.numratings = data.result.user_ratings_total
+        const isOpen = data.result.current_opening_hours
+          ? data.result.current_opening_hours.open_now
+          : ""
+        this.status = isOpen ? "Abierto - Hoy" : "Cerrado - Hoy"
+        const openhour = data.result.current_opening_hours
+          ? data.result.current_opening_hours.periods[0].open.time
+          : ""
+        this.openTime = openhour ? this.formatDate(openhour) : ""
+        const closehour = data.result.current_opening_hours
+          ? data.result.current_opening_hours.periods[0].close.time
+          : ""
+        this.closeTime = closehour ? this.formatDate(closehour) : ""
+        this.phone = data.result.formatted_phone_number
+        // console.log(this.reviews)
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
-        return data
       } catch (error) {
         console.log(error.message)
       }
+    },
+    formatDate(hour) {
+      const [hours, minutes] = hour.match(/.{1,2}/g)
+      const formattedHours = hours.padStart(2, "0")
+      const formattedMinutes = minutes.padEnd(2, "0")
+      return ` ${formattedHours}:${formattedMinutes} horas`
     },
     async getImgPlace() {
       try {
@@ -347,6 +441,7 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
+        this.isLoading = false
       } catch (e) {
         toast.error(e, {
           theme: "colored",
@@ -370,5 +465,64 @@ export default {
       this.showPopup2 = false
     },
   },
+  setup() {
+    return {
+      modules: [Pagination],
+    }
+  },
 }
 </script>
+
+<style scoped>
+.swiper-slide {
+  width: 100%;
+  background-color: transparent;
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-loader {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid rgb(232, 176, 36);
+  border-top: 4px solid transparent;
+  animation: spin 1s linear infinite;
+}
+
+.animate-custom {
+  animation: bounce 1s infinite;
+}
+
+.brightness {
+  filter: brightness(0%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+</style>
