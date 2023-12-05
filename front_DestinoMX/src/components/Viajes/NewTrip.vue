@@ -191,6 +191,8 @@
 import BackButton from "@/components/buttons/BackButton.vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
+import "vue3-toastify/dist/index.css"
 
 export default {
   name: "NewTrip",
@@ -227,7 +229,13 @@ export default {
           diaInicio: this.startDate.toString(),
           diaFinal: this.endDate.toString(),
         })
-
+        toast.success("Viaje creado con éxito", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        this.$router.push({ name: "Itinerario" })
         console.log(data)
       } catch (error) {
         console.log(error)
