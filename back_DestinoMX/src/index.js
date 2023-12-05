@@ -11,6 +11,7 @@ import { routerUsuario } from "./routes/usuario.js";
 import { routerHistorial } from "./routes/historial.js";
 import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
+import { mailerApi } from "./Mailer/mailer.js";
 
 // Inicializando la aplicacion.
 const app = express();
@@ -66,6 +67,7 @@ app.use(routerUsuario);
 app.use(routerApiDetails);
 app.use(routerApiWeather);
 app.use(routerHistorial);
+app.use(mailerApi);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
