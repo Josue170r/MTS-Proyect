@@ -15,9 +15,10 @@
           class="w-48 p-2 rounded-l-md p-1"
           placeholder="Buscar..."
         />
-        <!-- Botón de búsqueda -->
+        <!-- Botón de búsqueda 
         <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
         <SearchButton class="bg-black" />
+        -->
       </div>
 
       <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -34,31 +35,21 @@
     <div
       class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
     >
-      <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-        Calendario de Viajes
-      </h1>
-
-      <v-container class="mb-4">
-        <v-row justify="space-around">
-          <v-date-picker
-            elevation="0"
-            style="width: 360px"
-            color="#fdba74"
-            show-adjacent-months
-          >
-          </v-date-picker>
-        </v-row>
-      </v-container>
-
       <!--INSERTAR DIV GLOBAL CON FONDO-->
-      <div class="bg-white rounded-lg p-8">
+      <div class="bg-white rounded-lg p-8 mt-8">
         <!--Empieza el condicional-->
+
         <div
-          class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
+          class="flex-row md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
         >
           <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
-            Viajes Proximos
+            Tus Proximos Viajes
           </h1>
+          <div class="flex ml-4 mr-0 items-center justify-center">
+            <button type="button" @click="goToNewTripForm" class="ml-auto">
+              <PlusIcon class="ml-auto" />
+            </button>
+          </div>
         </div>
 
         <div
@@ -67,7 +58,8 @@
         >
           <BellIcon />
           <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
-            ¡Aun tienes mucho por descubrir!
+            ¡Vaya! <br />
+            Aun no tienes ningun viaje.
           </h1>
 
           <button
@@ -78,67 +70,30 @@
             Crear Mi Primer Viaje
           </button>
         </div>
-        <!--div del condicional v-if isemptytrip=true-->
 
-        <!--Div del else-->
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <div class="flex-col items-center justify-center">
-            <h1 class="text-gray-800 py-4 ml-8 text-2xl text-center font-bold">
-              Viajes Proximos
+        <div
+          v-for="travel in travels"
+          :key="travel.id"
+          class="flex flex-row ml-2 mr-0 items-center justify-center"
+        >
+          <v-avatar :color="travel.colorPlantilla" size="x-small"></v-avatar>
+          <div class="flex flex-col ml-2 mr-0 items-center justify-center">
+            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
+              {{ travel.nombreMiViaje }}
+            </h1>
+
+            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+              {{ travel.diaInicio.slice(0, 10) }} -
+              {{ travel.diaFinal.slice(0, 10) }}
+            </h1>
+            <h1 class="text-gray-300 py-1 text-center text-l font-bold mb-2">
+              {{ travel.descripcionViaje }}
             </h1>
           </div>
-
-          <button type="button" @click="goToNewTripForm" class="ml-auto">
-            <PlusIcon class="ml-auto" />
+          <button type="button" @click="goToEditTrip" class="ml-auto">
+            <GreaterThanIcon class="ml-4" />
           </button>
         </div>
-        <!--Div para la ruta 1 de viajes-->
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <LocalitationIcon3 />
-          <div class="flex-col">
-            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-              Mi Viaje a Mazatlan
-            </h1>
-            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
-              08 octubre-10 octubre
-            </h1>
-          </div>
-          <GreaterThanIcon class="ml-auto" />
-        </div>
-
-        <!--Div para la ruta 1 de viajes-->
-
-        <!--Div para la ruta 2 de viajes--
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <LocalitationIcon3 />
-          <div class="flex-col">
-            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-              Mi Viaje a CDMX
-            </h1>
-            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
-              25 octubre-27 octubre
-            </h1>
-          </div>
-          <GreaterThanIcon class="ml-auto" />
-        </div>
-        --Div para la ruta21 de viajes--
-
-        --Div para la ruta 3 de viajes-
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <LocalitationIcon3 />
-          <div class="flex-col">
-            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-              Mi Viaje a Queretaro
-            </h1>
-            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
-              29 octubre-30 octubre
-            </h1>
-          </div>
-          <GreaterThanIcon class="ml-auto" />
-        </div>
-        --Div para la ruta 3 de viajes--
-      -->
-
         <!--Div del else-->
       </div>
     </div>
@@ -151,8 +106,8 @@ import AvatarButton from "@/components/buttons/AvatarButton"
 import BellIcon from "@/components/icons/BellIcon.vue"
 import PlusIcon from "@/components/icons/PlusIcon.vue"
 import GreaterThanIcon from "@/components/icons/GreaterThanIcon.vue"
-import LocalitationIcon3 from "@/components/icons/LocalitationIcon3.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+//import EditTripScreen from "./EditTripScreen.vue"
 export default {
   name: "ItinerarioViajes",
   components: {
@@ -161,13 +116,13 @@ export default {
     BellIcon,
     PlusIcon,
     GreaterThanIcon,
-    LocalitationIcon3,
   },
 
   data() {
     return {
       isemptytrip: true,
       tripdate: true,
+      travels: [],
     }
   },
   async created() {
@@ -176,13 +131,18 @@ export default {
       const { data } = await apiFromBackend.get("/api/viaje")
 
       // Los viajes se encuentran en el arreglo travels
-      const travels = data.info
+      // const travels = data.info
+      this.travels = data.info
+
+      this.isemptytrip = this.travels.length === 0
 
       // Por ahora solo mostramos ese arreglo en cosnsola. Se debe agregar el codigo para mostrarlo en la pantalla.
-      console.log(travels)
+      //console.log(travels)
+      console.log(this.travels)
     } catch (error) {
       // Error al obtener los viajes del usuario. Hacer lo que se deba hacer en caso de error.
-      console.log(error)
+      //console.log(error)
+      console.error(error)
     }
 
     return {
@@ -194,6 +154,12 @@ export default {
     goToNewTripForm() {
       this.$router.push({
         name: "newtrip",
+      })
+    },
+
+    goToEditTrip() {
+      this.$router.push({
+        name: "EditTrip",
       })
     },
   },
