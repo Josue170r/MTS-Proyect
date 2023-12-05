@@ -118,7 +118,6 @@ export default {
   },
   created() {
     this.getFavorites()
-   
   },
   // Aqui se debe hacer la consulta a las APIS para obtener informacion de cada lugar e insertarla en el arreglo days.
 
@@ -144,13 +143,13 @@ export default {
     async getNamePlaces() {
       try {
         for (const place_id of this.placeIds) {
-          console.log(place_id)
-          // const { data } = await apiFromBackend.get("/api/placeName", {
-          //   params: {
-          //     place_id,
-          //   },
-          // })
-          // this.places.push(data)
+          console.log(place_id.idPlaceLugar)
+          const { data } = await apiFromBackend.get("/api/placeName", {
+            params: {
+              place_id: place_id.idPlaceLugar,
+            },
+          })
+          this.places.push(data.result)
         }
         // this.placePhotoReferences = data.result.photos.photo_reference
         console.log("Desde getNamePlace de Favoritos: ", this.places)
