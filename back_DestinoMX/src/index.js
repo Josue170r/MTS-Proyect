@@ -1,7 +1,9 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
-
+import https from "https";
+import fs from "fs";
+import cors from 'cors';
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
@@ -12,10 +14,19 @@ import { routerHistorial } from "./routes/historial.js";
 import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
+
+
+
 // Inicializando la aplicacion.
 const app = express();
-import cors from 'cors';
 
+
+//Utilizacion de credenciales temporales SSL
+const credentials={
+  key: fs.readFileSync('src/OpenSSL/certKey.key','utf-8'),
+  cert: fs.readFileSync('src/OpenSSL/cert.crt','utf-8'),
+}
+const httpsS=https.createServer(credentials,app)
 
 //inclusion de back api cors
 app.use((req, res, next) => {
@@ -25,7 +36,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:8081'],
+  origin: 'https://192.168.66.100:8081',///////////////////////////////////////////////////////////////////////////
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
@@ -68,6 +79,6 @@ app.use(routerApiWeather);
 app.use(routerHistorial);
 
 // Iniciando el servidor
-app.listen(app.get("port"), () => {
+httpsS.listen(app.get("port"), () => {
   console.log(`server listen on port ${app.get("port")}`);
 });
