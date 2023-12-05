@@ -186,8 +186,12 @@
         <swiper
           :slidesPerView="1"
           :spaceBetween="2"
+          :cssMode="true"
+          :navigation="true"
+          :mousewheel="true"
+          :keyboard="true"
           :modules="modules"
-          class="swiper-slide mb-8"
+          class="mySwiper mb-8"
         >
           <swiper-slide v-for="review in reviews" :key="review">
             <div class="flex flex-col items-center">
@@ -244,8 +248,9 @@ import PopUpRating from "@/components/Viajes/PopUpRating.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import { Swiper, SwiperSlide } from "swiper/vue"
 import "swiper/css"
+import "swiper/css/navigation"
 import "swiper/css/pagination"
-import { Pagination } from "swiper/modules"
+import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules"
 
 export default {
   name: "PlaceDescription",
@@ -369,14 +374,16 @@ export default {
         this.placeName = data.result.name
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
-        this.placePhotoReference = data.result.photos[0].photo_reference
+        this.location = data.result.vicinity
+        this.placePhotoReference = data.result.photos[0]
+          ? data.result.photos[0].photo_reference
+          : ""
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
         this.numratings = data.result.user_ratings_total
           ? data.result.user_ratings_total
           : this.reviews.lenght
-        this.location = data.result.vicinity
         const isOpen = data.result.current_opening_hours
           ? data.result.current_opening_hours.open_now
           : ""
@@ -470,7 +477,7 @@ export default {
   },
   setup() {
     return {
-      modules: [Pagination],
+      modules: [Navigation, Pagination, Mousewheel, Keyboard],
     }
   },
 }
