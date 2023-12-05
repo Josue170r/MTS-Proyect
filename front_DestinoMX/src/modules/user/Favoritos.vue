@@ -30,7 +30,7 @@
       <v-container v-if="places.length != 0">
         <v-row>
           <!-- Utiliza v-for para iterar sobre los lugares -->
-          <v-col v-for="(place, index) in places" :key="index" cols="12">
+          <v-col v-for="(place, index) in places" :key="index">
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <!-- Itera sobre la info de los lugares -->
@@ -114,6 +114,11 @@ export default {
     return {
       placePhotoReferences: "",
       places: [],
+      placesNames: [],
+      placesDescriptions: [],
+      placesRatings: [],
+      placesImgsReferences: [],
+      placeImages: [],
     }
   },
   created() {
@@ -133,8 +138,9 @@ export default {
         // Actualizar los datos locales en el componente con los favoritos obtenidos
         if (data.exito) {
           this.placeIds = data.info
-          console.log("This.placeIds: ", this.placeIds)
-          this.getNamePlaces()
+          this.getNamePlaces().then(() => {
+            this.getImgsPlaces()
+          })
         }
       } catch (error) {
         console.error("Error al obtener lugares favoritos:", error)
@@ -149,30 +155,44 @@ export default {
               place_id: place_id.idPlaceLugar,
             },
           })
+          const description =
+            data.result.editorial_summary?.overview || data.result.vicinity
+
           this.places.push(data.result)
+          this.placesNames.push(data.result.name)
+          this.placesDescriptions.push(description)
+          this.placesRatings.push(data.result.rating)
+          this.placesImgsReferences.push(data.result.photos[0].photo_reference)
         }
-        // this.placePhotoReferences = data.result.photos.photo_reference
         console.log("Desde getNamePlace de Favoritos: ", this.places)
+        console.log("Nombres: ", this.placesNames)
+        console.log("Descripción: ", this.placesDescriptions)
+        console.log("Rating: ", this.placesRatings)
+        console.log("References: ", this.placesImgsReferences)
       } catch (error) {
         console.log(error.message)
       }
     },
-    async getImgPlaces() {
+    async getImgsPlaces() {
       try {
-        const imgageURLs = []
-        for (const photoReference of this.placePhotoReferences) {
-          const imgs = await apiFromBackend.get("/api/imgPlace", {
+        console.log(
+          "References desde getImgsPlaces: ",
+          toRaw(this.placesImgsReferences),
+        )
+        const imageUrls = []
+        for (const photoReference of toRaw(this.placesImgsReferences)) {
+          const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
               maxwidth: "400",
               photoreference: photoReference,
             },
             responseType: "blob",
           })
-          const imgUrl = URL.createObjectURL(imgs.data)
-          imgageURLs.push(imgUrl)
-          this.placeImages = toRaw(imgageURLs)
-          console.log(this.placeImages)
+          const imgUrl = URL.createObjectURL(response.data)
+          imageUrls.push(imgUrl)
         }
+        this.placeImages = toRaw(imageUrls)
+        console.log("Urls de fotos this.placeImages: ", this.placeImages)
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",

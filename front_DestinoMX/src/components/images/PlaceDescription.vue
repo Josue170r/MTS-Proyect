@@ -74,9 +74,11 @@
           <div class="flex flex-col">
             {{ status }}
             <div class="flex flex-row">
-              <p class="font-quicksand mr-2">Abre a las</p>
+              <p v-if="openTime" class="font-quicksand mr-2">Abre a las</p>
               {{ openTime }}
-              <p class="font-quicksand ml-2 mr-2">Cierra a las</p>
+              <p v-if="closeTime" class="font-quicksand ml-2 mr-2">
+                Cierra a las
+              </p>
               {{ closeTime }}
             </div>
           </div>
