@@ -284,7 +284,7 @@ export default {
     },
     async codigoVerificacion() {
       try {
-        const { data } = await apiFromBackend.post("/api/cookie-validacion")
+        const { data } = await apiFromBackend.post("/api/cookie-cifra-creacion")
         console.log(data)
       } catch (response) {
         console.log(response.data.mensaje)

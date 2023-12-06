@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+
 export default {
   data: () => ({
     otp: "",
@@ -60,21 +62,30 @@ export default {
   methods: {
     onClick() {
       this.validating = true
-      setTimeout(() => {
+      setTimeout(async () => {
         this.validating = false
-        if (this.otp !== "123456") {
-          //harcodeado
-          this.otpError = "Código de verificación inválido"
-          console.log(this.otpError)
-        } else {
-          this.otpError = "Codigo verificado"
-          console.log(this.otpError)
+        try {
+          const { data } = await apiFromBackend.post(
+            "/api/cookie-cifra-validacion",
+            {
+              codigoUsuario: this.otp,
+            },
+          )
+          console.log(data.mensaje)
+        } catch (response) {
+          console.log(response.response.data.mensaje)
         }
       }, 2000)
     },
-    resetOtp() {
+    async resetOtp() {
       this.otp = ""
       this.otpError = ""
+      try {
+        const { data } = await apiFromBackend.post("/api/cookie-cifra-creacion")
+        console.log(data)
+      } catch (response) {
+        console.log(response.data.mensaje)
+      }
     },
   },
 }

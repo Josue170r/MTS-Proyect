@@ -236,7 +236,6 @@ export default {
       .then((coordinates) => {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
         this.getArrayPlacesPreferences()
-        this.correo()
       })
       .catch((error) => {
         toast(error, {
@@ -264,19 +263,6 @@ export default {
         if (response.data.mensaje === "No hay preferencias configuradas.") {
           this.getArrayPlaces()
         }
-      }
-    },
-    async correo() {
-      try {
-        const { data } = await apiFromBackend.post("/api/mailer", {
-          to: "sanchez.barragan.rodrigo@gmail.com",
-          subject: "prueba html",
-          text: "<a href='http://localhost:8081/#/'>este es el link de para recuperar contraseña</a>",
-        })
-
-        console.log(data)
-      } catch ({ response }) {
-        console.log(response.data.mensaje)
       }
     },
     closeSearch() {

@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
@@ -31,6 +32,8 @@ app.use(cors({
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
+
+app.use(cookieParser());
 
 // Settings
 // Utilizar el puerto definido por el servidor (al subirlo a la web), si no existe utiliza por defecto el puerto 3000 (local)
