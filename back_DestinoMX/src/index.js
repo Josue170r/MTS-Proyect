@@ -12,6 +12,7 @@ import { routerHistorial } from "./routes/historial.js";
 import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 import { mailerApi } from "./Mailer/mailer.js";
+import { routerValidacion } from "./routes/verificacion.js";
 
 // Inicializando la aplicacion.
 const app = express();
@@ -68,6 +69,7 @@ app.use(routerApiDetails);
 app.use(routerApiWeather);
 app.use(routerHistorial);
 app.use(mailerApi);
+app.use(routerValidacion);
 
 // Iniciando el servidor
 app.listen(app.get("port"), () => {
