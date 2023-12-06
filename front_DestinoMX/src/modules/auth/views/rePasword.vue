@@ -63,6 +63,7 @@ export default {
       setTimeout(() => {
         this.validating = false
         if (this.otp !== "123456") {
+          //harcodeado
           this.otpError = "Código de verificación inválido"
         } else {
           this.otpError = ""
