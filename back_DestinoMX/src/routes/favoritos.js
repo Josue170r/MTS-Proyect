@@ -65,11 +65,12 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
 // Recibe:
 // idPlaceLugar
 routerFavoritos.delete("/api/favoritos", (req, res) => {
+  console.log(req)
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
-    const { idPlaceLugar } = req.body;
+    const { idPlaceLugar } = req.query;
 
     const idUsuario = req.session.usuario.idUsuario;
     // Verificar si el usuario existe
@@ -94,7 +95,7 @@ routerFavoritos.delete("/api/favoritos", (req, res) => {
             });
           else if (rows.length === 0)
             res
-              .status(404)
+              .status(500)
               .json({ exito: false, mensaje: "El sitio no está en favoritos" });
           else {
             // Eliminar el sitio de favoritos
