@@ -100,8 +100,31 @@
           >
             <Marker :options="{ position: relativePosition }" />
           </GoogleMap>
+          <div
+            class="flex flex-col items-center justify-center mt-8 bg-gray-50 p-4 rounded-lg"
+            v-if="preference.length === 0"
+          >
+            <BellIcon />
+            <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
+              ¡Vaya! <br />
+              Aún no tienes preferencias
+            </h1>
+
+            <button
+              type="button"
+              @click="goToPreferencesScreen"
+              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+            >
+              Elegir preferencias
+            </button>
+          </div>
           <div class="flex items-center justify-center w-full flex-col mb-8">
-            <h1 class="text-xl text-center mt-2 mb-2">Explora cerca de ti</h1>
+            <h1
+              v-if="preference.length !== 0"
+              class="text-xl text-center mt-2 mb-2"
+            >
+              Explora cerca de ti
+            </h1>
             <div
               class="flex items-center justify-center w-full flex-col mr-4 ml-4"
             >
@@ -269,6 +292,11 @@ export default {
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
+      })
+    },
+    goToPreferencesScreen() {
+      this.$router.push({
+        name: "Preferences-Screen",
       })
     },
     goToPlaceDescription(place) {
