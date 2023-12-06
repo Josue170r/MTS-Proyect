@@ -202,7 +202,12 @@ export default {
   },
   computed: {
     isFormEmpty() {
-      return !this.trip.DescriptionTrip || !this.trip.TripName
+      return (
+        !this.trip.DescriptionTrip ||
+        !this.trip.TripName ||
+        !this.startDate ||
+        !this.endDate
+      )
     },
   },
   data() {
@@ -229,16 +234,23 @@ export default {
           diaInicio: this.startDate.toString(),
           diaFinal: this.endDate.toString(),
         })
+        console.log(data)
         toast.success("Viaje creado con éxito", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
           hideProgressBar: true,
         })
-        this.$router.push({ name: "Itinerario" })
-        console.log(data)
-      } catch (error) {
-        console.log(error)
+        setTimeout(() => {
+          this.$router.push({ name: "Itinerario" })
+        }, 1200)
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
     validateDateRange() {

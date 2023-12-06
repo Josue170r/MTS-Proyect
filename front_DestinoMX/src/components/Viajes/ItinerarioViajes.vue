@@ -11,9 +11,11 @@
       >
         <!-- Barra de búsqueda -->
         <input
+          v-model="search"
           type="text"
           class="rounded-lg w-48 md:w-96 px-2 py-2 outline-none border-none flex-grow mr-2"
           placeholder="Buscar..."
+          @input="filterName"
         />
         <!-- Botón de búsqueda 
         <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
@@ -59,7 +61,7 @@
 
         <div
           v-if="!isemptytrip"
-          class="flex-row md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
+          class="flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
         >
           <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
             Tus Proximos Viajes
@@ -113,6 +115,7 @@ import BellIcon from "@/components/icons/BellIcon.vue"
 import PlusIcon from "@/components/icons/PlusIcon.vue"
 import GreaterThanIcon from "@/components/icons/GreaterThanIcon.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
 
 export default {
   name: "ItinerarioViajes",
@@ -126,9 +129,11 @@ export default {
 
   data() {
     return {
+      alertShow: false,
       isemptytrip: true,
       tripdate: true,
       travels: [],
+      AllTravels: [],
     }
   },
   async created() {
@@ -139,6 +144,7 @@ export default {
       // Los viajes se encuentran en el arreglo travels
       // const travels = data.info
       this.travels = data.info
+      this.AllTravels = data.info
 
       this.isemptytrip = this.travels.length === 0
 
@@ -161,7 +167,25 @@ export default {
         name: "newtrip",
       })
     },
-
+    filterName() {
+      if (this.search === "") {
+        this.alertShow = false
+        this.travels = this.AllTravels
+      } else {
+        this.travels = this.AllTravels.filter((travel) =>
+          travel.nombreMiViaje.includes(this.search),
+        )
+      }
+      if (this.travels.length === 0 && !this.alertShow) {
+        toast.error("No hay viajes con este nombre", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        this.alertShow = true
+      }
+    },
     goToEditTrip(travel) {
       const trip = toRaw(travel)
       console.log(trip)
