@@ -56,7 +56,6 @@ export default {
         const { Nombre, ApellidoP, CorreoElectronico } = data.datosUsuario
         const initialName = Nombre[0].toUpperCase()
         const initialLastName = ApellidoP[0].toUpperCase()
-        console.log()
         this.user.initials = `${initialName} ${initialLastName}`
         this.user.fullName = `${Nombre} ${ApellidoP}`
         this.user.email = `${CorreoElectronico}`
