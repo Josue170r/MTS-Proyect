@@ -111,9 +111,9 @@
 import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import favIcon from "@/components/icons/favIcon"
 import { toast } from "vue3-toastify"
-import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import "vue3-toastify/dist/index.css"
 
 export default {
@@ -141,33 +141,10 @@ export default {
         {
           activities: [
             {
-              title: "Palacio de Bellas Artes",
               description:
                 "El Palacio de Bellas Artes es un recinto cultural ubicado en el Centro Histórico de la CDMX    ",
               image:
                 "https://upload.wikimedia.org/wikipedia/commons/9/97/Bellas_Artes_01.jpg",
-            },
-          ],
-        },
-        {
-          activities: [
-            {
-              title: "Pirámides de Teotihuacán",
-              description:
-                "Teotihuacán es uno de los destinos más conocidos de México. Yacimiento espectacular con las gigantescas pirámides. Excursiones paseos globo.",
-              image:
-                "https://historia.nationalgeographic.com.es/medio/2023/05/15/istock_1f1795c2_501453380_230515114913_1280x853.jpg",
-            },
-          ],
-        },
-        {
-          activities: [
-            {
-              title: "Villa de Guadalupe",
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-              image:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Bas%C3%ADlica_de_Santa_Mar%C3%ADa_de_Guadalupe_2018.jpg/1200px-Bas%C3%ADlica_de_Santa_Mar%C3%ADa_de_Guadalupe_2018.jpg",
             },
           ],
         },
@@ -205,6 +182,7 @@ export default {
       }
     },
   },
+
   setup() {
     return {
       //***** */

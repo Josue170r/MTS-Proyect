@@ -306,6 +306,7 @@ export default {
       this.getWeather()
     })
     this.getFavorites()
+    this.AddToHistory()
   },
   mounted() {
     this.$el.addEventListener("click", this.handleDocumentClick)
@@ -345,6 +346,17 @@ export default {
         console.log(data)
       }
     },
+    async AddToHistory() {
+      try {
+        const response = await apiFromBackend.post("/api/historial", {
+          idPlaceLugar: this.placeiD,
+        })
+        console.log(response)
+      } catch ({ response }) {
+        console.log(response)
+      }
+    },
+
     async getWeather() {
       try {
         const { data } = await apiFromBackend.get("/api/Weather", {

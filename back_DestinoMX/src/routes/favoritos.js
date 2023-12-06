@@ -65,7 +65,6 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
 // Recibe:
 // idPlaceLugar
 routerFavoritos.delete("/api/favoritos", (req, res) => {
-  console.log(req)
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
