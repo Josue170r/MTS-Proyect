@@ -415,12 +415,15 @@ export default {
             },
           )
           console.log(data)
-          toast(data.mensaje, {
+          toast("Preferencias modificadas correctamente", {
             hideProgressBar: true,
             autoClose: 1500,
             type: "success",
             theme: "colored",
           })
+          setTimeout(() => {
+            this.$router.push({ name: "home" })
+          }, 1500)
         } catch ({ response }) {
           toast.error(response.data.mensaje, {
             theme: "colored",
