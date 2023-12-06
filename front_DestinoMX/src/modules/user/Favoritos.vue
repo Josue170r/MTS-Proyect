@@ -38,7 +38,6 @@
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
-                      v-if="placeImages[index]"
                       :src="placeImages[index]"
                       height="50%"
                       width="80%"
@@ -177,7 +176,6 @@ export default {
         })
       }
     },
-
     async deletePlace(place) {
       try {
         const { data } = await apiFromBackend.delete("/api/favoritos", {

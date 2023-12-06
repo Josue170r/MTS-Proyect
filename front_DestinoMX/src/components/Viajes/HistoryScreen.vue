@@ -141,19 +141,6 @@ export default {
         {
           activities: [
             {
-              async AddToHistory() {
-                try {
-                  const { response } = await apiFromBackend.get(
-                    "/api/historial",
-                    {
-                      idPlaceLugar: this.placeiD,
-                    },
-                  )
-                  console.log(response)
-                } catch ({ response }) {
-                  console.log(response)
-                }
-              },
               description:
                 "El Palacio de Bellas Artes es un recinto cultural ubicado en el Centro Histórico de la CDMX    ",
               image:
