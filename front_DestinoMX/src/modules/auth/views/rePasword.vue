@@ -6,7 +6,7 @@
     max-width="500"
     width="100%"
   >
-    <h3 class="text-h5">Recuperar contraseña</h3>
+    <h3 class="text-h5">Validacion de correo electrónico</h3>
 
     <div class="text-subtitle-2 font-weight-light mb-3">
       Por favor, introduce el código de verificación
@@ -65,8 +65,10 @@ export default {
         if (this.otp !== "123456") {
           //harcodeado
           this.otpError = "Código de verificación inválido"
+          console.log(this.otpError)
         } else {
-          this.otpError = ""
+          this.otpError = "Codigo verificado"
+          console.log(this.otpError)
         }
       }, 2000)
     },

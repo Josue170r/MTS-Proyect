@@ -269,9 +269,10 @@ export default {
           type: "success",
           theme: "colored",
           onClose: () => {
-            this.$router.push({ name: "login" })
+            this.$router.push({ name: "rePasword" })
           },
         })
+        this.codigoVerificacion()
       } catch (error) {
         toast(error.response.data.mensaje, {
           hideProgressBar: true,
@@ -279,6 +280,14 @@ export default {
           type: "error",
           theme: "colored",
         })
+      }
+    },
+    async codigoVerificacion() {
+      try {
+        const { data } = await apiFromBackend.post("/api/cookie-validacion")
+        console.log(data)
+      } catch (response) {
+        console.log(response.data.mensaje)
       }
     },
   },
