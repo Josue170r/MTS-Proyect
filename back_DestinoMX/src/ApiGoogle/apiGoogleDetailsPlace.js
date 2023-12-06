@@ -10,7 +10,7 @@ const getApiRoute = axios.create({
   baseURL: "https://maps.googleapis.com/maps/api/directions",
 })
 
-const apiKey = "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70";
+const apiKey = "AIzaSyB9R_VtRFtlQfSX7ulfslNIt2T-H3lNVNQ";
 
 export const routerApiDetails = Router();
 
@@ -42,6 +42,7 @@ routerApiDetails.get("/api/placeName", async (req, res) => {
       params: {
         place_id,
         key: apiKey,
+        language: "es",
       },
     });
     res.status(200).json(response.data);

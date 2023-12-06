@@ -11,13 +11,16 @@
       >
         <!-- Barra de búsqueda -->
         <input
+          v-model="search"
           type="text"
-          class="w-48 p-2 rounded-l-md p-1"
+          class="rounded-lg w-48 md:w-96 px-2 py-2 outline-none border-none flex-grow mr-2"
           placeholder="Buscar..."
+          @input="filterName"
         />
-        <!-- Botón de búsqueda -->
+        <!-- Botón de búsqueda 
         <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
         <SearchButton class="bg-black" />
+        -->
       </div>
 
       <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -34,40 +37,17 @@
     <div
       class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
     >
-      <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-        Calendario de Viajes
-      </h1>
-
-      <v-container class="mb-4">
-        <v-row justify="space-around">
-          <v-date-picker
-            elevation="0"
-            style="width: 360px"
-            color="#fdba74"
-            show-adjacent-months
-          >
-          </v-date-picker>
-        </v-row>
-      </v-container>
-
       <!--INSERTAR DIV GLOBAL CON FONDO-->
-      <div class="bg-white rounded-lg p-8">
+      <div class="bg-white rounded-lg p-8 mt-8">
         <!--Empieza el condicional-->
-        <div
-          class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
-        >
-          <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
-            Viajes Proximos
-          </h1>
-        </div>
-
         <div
           class="flex flex-col items-center justify-center"
           v-if="isemptytrip"
         >
           <BellIcon />
           <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
-            ¡Aun tienes mucho por descubrir!
+            ¡Vaya! <br />
+            Aún no tienes viajes.
           </h1>
 
           <button
@@ -78,67 +58,49 @@
             Crear Mi Primer Viaje
           </button>
         </div>
-        <!--div del condicional v-if isemptytrip=true-->
 
-        <!--Div del else-->
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <div class="flex-col items-center justify-center">
-            <h1 class="text-gray-800 py-4 ml-8 text-2xl text-center font-bold">
-              Viajes Proximos
-            </h1>
+        <div
+          v-if="!isemptytrip"
+          class="flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
+        >
+          <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
+            Tus Proximos Viajes
+          </h1>
+          <div class="flex ml-4 mr-0 items-center justify-center">
+            <button type="button" @click="goToNewTripForm" class="ml-auto">
+              <PlusIcon class="ml-auto" />
+            </button>
           </div>
-
-          <button type="button" @click="goToNewTripForm" class="ml-auto">
-            <PlusIcon class="ml-auto" />
-          </button>
-        </div>
-        <!--Div para la ruta 1 de viajes-->
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <LocalitationIcon3 />
-          <div class="flex-col">
-            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-              Mi Viaje a Mazatlan
-            </h1>
-            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
-              08 octubre-10 octubre
-            </h1>
-          </div>
-          <GreaterThanIcon class="ml-auto" />
         </div>
 
-        <!--Div para la ruta 1 de viajes-->
+        <div v-if="!isemptytrip">
+          <div
+            v-for="travel in travels"
+            :key="travel.id"
+            class="flex flex-row ml-2 mr-0 items-center justify-center"
+          >
+            <v-avatar
+              :color="travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'"
+              size="x-small"
+            ></v-avatar>
+            <div class="flex flex-col ml-2 mr-0 items-center justify-center">
+              <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
+                {{ travel.nombreMiViaje }}
+              </h1>
 
-        <!--Div para la ruta 2 de viajes--
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <LocalitationIcon3 />
-          <div class="flex-col">
-            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-              Mi Viaje a CDMX
-            </h1>
-            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
-              25 octubre-27 octubre
-            </h1>
+              <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+                {{ travel.diaInicio.slice(0, 10) }} -
+                {{ travel.diaFinal.slice(0, 10) }}
+              </h1>
+              <h1 class="text-gray-300 py-1 text-center text-l font-bold mb-2">
+                {{ travel.descripcionViaje }}
+              </h1>
+            </div>
+            <button type="button" @click="goToEditTrip(travel)" class="ml-auto">
+              <GreaterThanIcon class="ml-4" />
+            </button>
           </div>
-          <GreaterThanIcon class="ml-auto" />
         </div>
-        --Div para la ruta21 de viajes--
-
-        --Div para la ruta 3 de viajes-
-        <div class="flex flex-row ml-2 mr-0 items-center justify-center">
-          <LocalitationIcon3 />
-          <div class="flex-col">
-            <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-              Mi Viaje a Queretaro
-            </h1>
-            <h1 class="text-gray-300 py-1 text-center text-l font-bold">
-              29 octubre-30 octubre
-            </h1>
-          </div>
-          <GreaterThanIcon class="ml-auto" />
-        </div>
-        --Div para la ruta 3 de viajes--
-      -->
-
         <!--Div del else-->
       </div>
     </div>
@@ -146,13 +108,15 @@
 </template>
 
 <script>
+import { toRaw } from "vue"
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import BellIcon from "@/components/icons/BellIcon.vue"
 import PlusIcon from "@/components/icons/PlusIcon.vue"
 import GreaterThanIcon from "@/components/icons/GreaterThanIcon.vue"
-import LocalitationIcon3 from "@/components/icons/LocalitationIcon3.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
+
 export default {
   name: "ItinerarioViajes",
   components: {
@@ -161,13 +125,15 @@ export default {
     BellIcon,
     PlusIcon,
     GreaterThanIcon,
-    LocalitationIcon3,
   },
 
   data() {
     return {
+      alertShow: false,
       isemptytrip: true,
       tripdate: true,
+      travels: [],
+      AllTravels: [],
     }
   },
   async created() {
@@ -176,13 +142,18 @@ export default {
       const { data } = await apiFromBackend.get("/api/viaje")
 
       // Los viajes se encuentran en el arreglo travels
-      const travels = data.info
+      // const travels = data.info
+      this.travels = data.info
+      this.AllTravels = data.info
+
+      this.isemptytrip = this.travels.length === 0
 
       // Por ahora solo mostramos ese arreglo en cosnsola. Se debe agregar el codigo para mostrarlo en la pantalla.
-      console.log(travels)
+      //console.log(travels)
     } catch (error) {
       // Error al obtener los viajes del usuario. Hacer lo que se deba hacer en caso de error.
-      console.log(error)
+      //console.log(error)
+      console.error(error)
     }
 
     return {
@@ -194,6 +165,37 @@ export default {
     goToNewTripForm() {
       this.$router.push({
         name: "newtrip",
+      })
+    },
+    filterName() {
+      if (this.search === "") {
+        this.alertShow = false
+        this.travels = this.AllTravels
+      } else {
+        this.travels = this.AllTravels.filter((travel) =>
+          travel.nombreMiViaje.includes(this.search),
+        )
+      }
+      if (this.travels.length === 0 && !this.alertShow) {
+        toast.error("No hay viajes con este nombre", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        this.alertShow = true
+      }
+    },
+    goToEditTrip(travel) {
+      const trip = toRaw(travel)
+      console.log(trip)
+      this.$router.push({
+        name: "EditTrip",
+        query: {
+          travel: trip.nombreMiViaje,
+          diaInicio: trip.diaInicio,
+          diaFinal: trip.diaFinal,
+        },
       })
     },
   },

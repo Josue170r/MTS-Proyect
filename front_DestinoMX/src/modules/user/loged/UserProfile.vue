@@ -114,7 +114,7 @@
                                     class="pl-2 outline-none border-none w-full"
                                     type="text"
                                     name="secondLastName"
-                                    placeholder="Apellido materno"
+                                    placeholder="Apellido materno *"
                                   />
                                 </div>
                                 <div class="ml-1 mb-2 -mt-1">
@@ -191,7 +191,7 @@
                                 >
                                   <Field
                                     id="currentPassword"
-                                    type="currentPassword"
+                                    type="password"
                                     autocomplete="off"
                                     v-model="updatePassword.currentPassword"
                                     class="pl-2 outline-none border-none w-full"
@@ -235,7 +235,7 @@
                                     id="passwordConfirmation"
                                     v-model="updatePassword.confirmPassword"
                                     class="pl-2 outline-none border-none w-full"
-                                    type="text"
+                                    type="password"
                                     name="passwordConfirmation"
                                     placeholder="Confirma tu nueva contraseña"
                                   />
@@ -391,6 +391,7 @@ export default {
   },
   created() {
     this.getUserInformation()
+    this.loginJWT()
   },
   computed: {
     isFormEmpty() {
@@ -486,6 +487,14 @@ export default {
         })
       }
       this.dialogfromPassword = false
+    },
+    async loginJWT() {
+      try {
+        const response = await apiFromBackend.post("/api/cuenta-activa")
+        console.log("Respuesta exitosa:", response)
+      } catch (error) {
+        console.log(error)
+      }
     },
     closeDailogForPassword() {
       this.dialogfromPassword = false

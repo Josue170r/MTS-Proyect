@@ -1,5 +1,5 @@
 <template>
-  <div :class="[isLoading ? 'fixed opacity-50' : '...']">
+  <div>
     <div class="min-h-screen w-full flex flex-col md:flex-row">
       <div class="relative z-50 md:w-1/2 md:order-1">
         <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -11,7 +11,9 @@
         <div
           class="mt-24 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-2 bg-white flex items-center shadow-md"
           :class="[
-            places.length > 5 ? 'rounded-t-xl' : 'rounded-t-xl rounded-b-xl',
+            places.length > 5
+              ? 'rounded-t-xl rounded-b-xl'
+              : 'rounded-t-xl rounded-b-xl',
           ]"
         >
           <div class="relative">
@@ -29,7 +31,7 @@
             </div>
             <ul
               ref="placesList"
-              class="absolute w-full md:w-full bg-white rounded-b shadow-md overflow-hidden rounded-md"
+              class="absolute w-72 mt-3 mr-8 bg-white rounded-b shadow-md overflow-hidden rounded-md"
               v-if="places.length > 5 && showSearch"
             >
               <li
@@ -40,6 +42,11 @@
                 <div>
                   <button
                     class="w-full py-2 px-4 transition-all duration-300 ease-in-out hover:bg-orange-100 hover:text-gray-800 focus:text-gray-800 rounded-md transition duration-300 ease-in-out transform-gpu"
+                    :class="{
+                      'bg-orange-100 text-gray-800 focus:text-gray-800':
+                        isSelected,
+                    }"
+                    @click="handleButtonClick"
                   >
                     <div class="flex items-center">
                       <img
@@ -93,8 +100,31 @@
           >
             <Marker :options="{ position: relativePosition }" />
           </GoogleMap>
+          <div
+            class="flex flex-col items-center justify-center mt-8 bg-gray-50 p-4 rounded-lg"
+            v-if="preference.length === 0"
+          >
+            <BellIcon />
+            <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
+              ¡Vaya! <br />
+              Aún no tienes preferencias
+            </h1>
+
+            <button
+              type="button"
+              @click="goToPreferencesScreen"
+              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+            >
+              Elegir preferencias
+            </button>
+          </div>
           <div class="flex items-center justify-center w-full flex-col mb-8">
-            <h1 class="text-xl text-center mt-2 mb-2">Explora cerca de ti</h1>
+            <h1
+              v-if="preference.length !== 0"
+              class="text-xl text-center mt-2 mb-2"
+            >
+              Explora cerca de ti
+            </h1>
             <div
               class="flex items-center justify-center w-full flex-col mr-4 ml-4"
             >
@@ -186,18 +216,19 @@ export default {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       relativePosition: "",
       preference: [],
-      radio: 150,
+      radio: 400,
       nearPlaces: [],
       photosReferences: [],
       placeImages: [],
       isLoading: true,
       showModal: false,
+      showSearch: true,
       searchResults: [],
       namePlaceToFind: "",
       places: [],
       iconPlaceToFind: [],
       filteredPlaces: [],
-      showSearch: true,
+      isSelected: false,
     }
   },
   created() {
@@ -236,10 +267,22 @@ export default {
     },
     closeSearch() {
       this.showSearch = false
+      this.namePlaceToFind = ""
+      this.places = []
+      this.filteredPlaces = []
+      this.showSearch = true
+    },
+    handleButtonClick() {
+      this.isSelected = !this.isSelected
     },
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
+      })
+    },
+    goToPreferencesScreen() {
+      this.$router.push({
+        name: "Preferences-Screen",
       })
     },
     goToPlaceDescription(place) {
@@ -273,10 +316,17 @@ export default {
           })
           if (data.results.length != 0) {
             this.nearPlaces.push(...Object.values(data.results))
-            console.log(data)
           }
         }
-        console.log(this.nearPlaces)
+        const uniqueNearPlaces = new Set(
+          this.nearPlaces.map((place) => place.reference),
+        )
+        this.nearPlaces = Array.from(uniqueNearPlaces).map((reference) => {
+          return this.nearPlaces.find((place) => place.reference === reference)
+        })
+
+        this.nearPlaces = this.nearPlaces.slice(0, 25)
+
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
             this.photosReferences.push(place.photos[0].photo_reference)
@@ -343,46 +393,6 @@ export default {
           .slice(0, 6)
       } catch (error) {
         console.log("Todo bien")
-      }
-    },
-    async loginJWT() {
-      try {
-        const response = await apiFromBackend.post("/api/cuenta-activa")
-        console.log("Respuesta exitosa:", response)
-
-        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado en el frontend.
-      } catch (error) {
-        if (error.response) {
-          // El servidor respondió con un status diferente de 2xx
-          console.error("Respuesta de error del servidor:", error.response.data)
-          toast(error.response.data.mensaje, {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        } else if (error.request) {
-          // La solicitud fue hecha pero no se recibió respuesta
-          console.error("No se recibió respuesta del servidor:", error.request)
-          toast("No se recibió respuesta del servidor", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        } else {
-          // Ocurrió un error durante la configuración de la solicitud
-          console.error(
-            "Error durante la configuración de la solicitud:",
-            error.message,
-          )
-          toast("Error durante la configuración de la solicitud", {
-            hideProgressBar: true,
-            autoClose: 1500,
-            type: "error",
-            theme: "colored",
-          })
-        }
       }
     },
   },
