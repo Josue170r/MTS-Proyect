@@ -189,7 +189,6 @@ export default {
           autoClose: 1500,
           hideProgressBar: true,
         })
-        console.log(object);
         window.location.reload()
       } catch (error) {
         console.log(error)
