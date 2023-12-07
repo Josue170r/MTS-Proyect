@@ -1,27 +1,33 @@
 <template>
-  <div class="popup-overlay relative z-10">
+  <div class="popup-overlay relative z-10 h-flex">
     <div class="popup-container">
       <h1 class="text-2xl font-bold mb-2">
         ¿A qué viaje le gustaría agregar este destino?
       </h1>
 
-      <div v-if="viajes.length">
-        <!--Slider-->
-        <v-carousel class="hide-arrows" vertical>
-          <v-carousel-item v-for="(viaje, index) in viajes" :key="index">
-            <v-row>
-              <!-- Contenido del slider -->
-              <v-col cols="12" md="6">
-                <img :src="viaje.img" alt="Imagen del viaje" />
-              </v-col>
-              <v-col cols="12" md="6">
-                <h2 class="text-xl font-semibold">{{ viaje.name }}</h2>
-                <p>{{ viaje.fechas }}</p>
-                <p>{{ viaje.description }}</p>
-              </v-col>
-            </v-row>
-          </v-carousel-item>
-        </v-carousel>
+      <div v-if="travels.length" class="overflow-auto max-h-[400px]">
+        <v-expansion-panels v-if="travels.length" multiple>
+          <v-expansion-panel v-for="(travel, index) in travels" :key="index">
+            <v-expansion-panel-title>
+              <v-avatar
+                class="mr-4"
+                :color="
+                  travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'
+                "
+                size="x-small"
+              ></v-avatar>
+              {{ travel.nombreMiViaje }}
+            </v-expansion-panel-title>
+            <v-expansion-panel-text
+              class="text-start"
+              v-for="date in dates[index]"
+              :key="date"
+              @click="addToTrip(date)"
+            >
+              {{ date }}
+            </v-expansion-panel-text>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </div>
 
       <div v-else>
@@ -39,7 +45,7 @@
           ¡Vaya!, aún no tienes ningún viaje creado
         </p>
         <img
-          v-if="!viajes.length"
+          v-if="!travels.length"
           src="@/assets/images/piramide.png"
           class="relative z-10"
           style="opacity: 0.3"
@@ -66,11 +72,19 @@
 </template>
 
 <script>
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { format, addDays, parseISO } from "date-fns"
+import { es } from "date-fns/locale"
+
 export default {
   data() {
     return {
-      viajes: [],
+      travels: [],
+      dates: [],
     }
+  },
+  created() {
+    this.getTrip()
   },
   methods: {
     cancel() {
@@ -79,6 +93,38 @@ export default {
     createNewTrip() {
       this.$router.push({ name: "newtrip" })
       this.$emit("close-popup")
+    },
+    async getTrip() {
+      try {
+        const { data } = await apiFromBackend.get("/api/viaje")
+        this.travels = data.info
+        this.travels.forEach((travel) => {
+          const dateRange = this.setDateArray(travel.diaInicio, travel.diaFinal)
+          this.dates.push(dateRange)
+        })
+        console.log(this.dates)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async addToTrip(date) {
+      console.log(date)
+    },
+    UpperDate(texto) {
+      return texto.charAt(0).toUpperCase() + texto.slice(1)
+    },
+    setDateArray(startDate, endDate) {
+      const fechas = []
+      let fechaActual = parseISO(startDate)
+
+      while (fechaActual <= parseISO(endDate)) {
+        const fechaFormateada = format(fechaActual, "EEEE d 'de' MMMM", {
+          locale: es,
+        })
+        fechas.push(this.UpperDate(fechaFormateada))
+        fechaActual = addDays(fechaActual, 1)
+      }
+      return fechas
     },
   },
 }
