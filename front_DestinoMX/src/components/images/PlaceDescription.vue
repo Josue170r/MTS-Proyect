@@ -351,6 +351,13 @@ export default {
         const response = await apiFromBackend.post("/api/historial", {
           idPlaceLugar: this.placeiD,
         })
+        this.isInHistory = true
+        toast.success("Lugar añadido a historial", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
         console.log(response)
       } catch ({ response }) {
         console.log(response)
