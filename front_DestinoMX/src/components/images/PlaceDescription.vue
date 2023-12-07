@@ -388,8 +388,8 @@ export default {
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
         this.placeName = data.result.name
-        this.rating = data.result.rating
-        this.reviews = data.result.reviews
+        this.rating = data.result.rating ? data.result.rating : 0
+        this.reviews = data.result.reviews ? data.result.reviews : []
         this.location = data.result.vicinity
         this.placePhotoReference = data.result.photos[0]
           ? data.result.photos[0].photo_reference
