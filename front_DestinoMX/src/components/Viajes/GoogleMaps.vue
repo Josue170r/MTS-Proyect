@@ -45,7 +45,7 @@
       </div>
       <div class="flex justify-around w-full mb-3">
         <button
-          :class="[isInHistory ? 'opacity-60 cursor-not-allowed' : '...']"
+          :class="[isInHistory ? 'opacity-100 cursor-allowed' : '...']"
           :disabled="isInHistory"
           class="font-quicksand w-40 text-white border bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
           @click="handleButtonClick"
@@ -181,12 +181,7 @@ export default {
           idPlaceLugar: this.placeiD,
         })
         this.isInHistory = true
-        toast.success("Lugar añadido a historial", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
+        console.log(this.isInHistory)
         console.log(response)
       } catch ({ response }) {
         console.log(response)
