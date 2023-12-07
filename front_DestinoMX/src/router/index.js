@@ -14,6 +14,7 @@ import EditTripScreen from "@/components/Viajes/EditViewTrip.vue"
 import AboutUs from "@/components/Viajes/AboutUs.vue"
 import Favoritos from "@/modules/user/Favoritos.vue"
 import HistoryScreenVue from "@/components/Viajes/HistoryScreen.vue"
+import rePasword from "@/modules/auth/views/rePasword.vue"
 
 const routes = [
   {
@@ -112,6 +113,11 @@ const routes = [
     path: "/aboutus",
     name: "aboutus",
     component: AboutUs,
+  },
+  {
+    path: "/rePasword",
+    name: "rePasword",
+    component: rePasword,
   },
 ]
 
