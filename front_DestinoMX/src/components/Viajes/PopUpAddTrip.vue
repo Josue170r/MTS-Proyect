@@ -18,8 +18,13 @@
               ></v-avatar>
               {{ travel.nombreMiViaje }}
             </v-expansion-panel-title>
-            <v-expansion-panel-text @click="addToTrip">
-              Some content
+            <v-expansion-panel-text
+              class="text-start"
+              v-for="date in dates[index]"
+              :key="date"
+              @click="addToTrip(date)"
+            >
+              {{ date }}
             </v-expansion-panel-text>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -68,11 +73,14 @@
 
 <script>
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { format, addDays, parseISO } from "date-fns"
+import { es } from "date-fns/locale"
 
 export default {
   data() {
     return {
       travels: [],
+      dates: [],
     }
   },
   created() {
@@ -90,13 +98,33 @@ export default {
       try {
         const { data } = await apiFromBackend.get("/api/viaje")
         this.travels = data.info
-        console.log(this.travels)
+        this.travels.forEach((travel) => {
+          const dateRange = this.setDateArray(travel.diaInicio, travel.diaFinal)
+          this.dates.push(dateRange)
+        })
+        console.log(this.dates)
       } catch (error) {
         console.error(error)
       }
     },
-    async addToTrip() {
-      console.log("Hola")
+    async addToTrip(date) {
+      console.log(date)
+    },
+    UpperDate(texto) {
+      return texto.charAt(0).toUpperCase() + texto.slice(1)
+    },
+    setDateArray(startDate, endDate) {
+      const fechas = []
+      let fechaActual = parseISO(startDate)
+
+      while (fechaActual <= parseISO(endDate)) {
+        const fechaFormateada = format(fechaActual, "EEEE d 'de' MMMM", {
+          locale: es,
+        })
+        fechas.push(this.UpperDate(fechaFormateada))
+        fechaActual = addDays(fechaActual, 1)
+      }
+      return fechas
     },
   },
 }
