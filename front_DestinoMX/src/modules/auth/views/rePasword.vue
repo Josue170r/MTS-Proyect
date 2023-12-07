@@ -6,7 +6,7 @@
     max-width="500"
     width="100%"
   >
-    <h3 class="text-h5">Recuperar contraseña</h3>
+    <h3 class="text-h5">Validacion de correo electrónico</h3>
 
     <div class="text-subtitle-2 font-weight-light mb-3">
       Por favor, introduce el código de verificación
@@ -51,29 +51,77 @@
 </template>
 
 <script>
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
+
 export default {
   data: () => ({
     otp: "",
     validating: false,
     otpError: "",
+    email: "",
   }),
   methods: {
     onClick() {
       this.validating = true
-      setTimeout(() => {
+      setTimeout(async () => {
         this.validating = false
-        if (this.otp !== "123456") {
-          //harcodeado
-          this.otpError = "Código de verificación inválido"
-        } else {
-          this.otpError = ""
+        try {
+          const { data } = await apiFromBackend.post(
+            "/api/cookie-cifra-validacion",
+            {
+              codigoUsuario: this.otp,
+              correo: this.email,
+            },
+          )
+          console.log(data.mensaje)
+          toast(data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 600,
+            type: "success",
+            theme: "colored",
+            onClose: () => {
+              this.$router.push({ name: "login" })
+            },
+          })
+        } catch (response) {
+          toast(response.response.data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
         }
       }, 2000)
     },
-    resetOtp() {
+    async resetOtp() {
       this.otp = ""
       this.otpError = ""
+      try {
+        const { data } = await apiFromBackend.post(
+          "/api/cookie-cifra-creacion",
+          {
+            correo: this.email,
+          },
+        )
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 600,
+          type: "success",
+          theme: "colored",
+        })
+      } catch (response) {
+        toast(response.response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
     },
+  },
+  mounted() {
+    this.email = this.$route.query.email
   },
 }
 </script>
