@@ -1,15 +1,22 @@
 import { Router } from "express";
 import crypto from "crypto";
-
+import { mandarCorreo } from "../Mailer/mailer.js"
 
 export const routerValidacion = Router();
 
 const secretKey = 'MTS-2023';
+let correo
 
 routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     //fecha y hora de vencimiento
     const date=new Date(Date.now()+120000)
     console.log(date)
+
+    if(!req.body.correo)
+        return res.status(500).json({exito:false,mensaje:"Correo no encontrado"})
+    else{
+        correo=req.body.correo
+    }
 
     //creacion de cifra de validacion
     let cifra='';
@@ -20,7 +27,14 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
         else
             cifra+=String(temp)
     }
-    console.log(cifra);
+    console.log(cifra)
+
+    try{
+        mandarCorreo(correo,"Codigo de verificación - MTS","<h2>Su código de verificacion es </h2> <h1>"+cifra+"</h1>")
+    }
+    catch(error){
+        return res.status(500).json({exito:false,mensaje:"Correo no enviado"})
+    }
 
     //encriptacion
     // Crear un objeto de cifrado usando el algoritmo AES con una clave
@@ -50,7 +64,6 @@ routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
     else
         return res.status(400).json({exito:false,mensaje:"Tiempo agotado"})
 
-
     // Crear un objeto de descifrado usando el mismo algoritmo y clave
     const decipher = crypto.createDecipher('aes-256-cbc', secretKey);
     //Desencriptar el valor
@@ -62,7 +75,5 @@ routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
     if(codigoUsuario==valorDesencriptado)
         return res.status(200).json({exito: true, mensaje:"Codigo valido"})
     else
-        return res.status(400).json({exito: false,mensaje:"Codigo invalido"})
-
-    
+        return res.status(400).json({exito: false,mensaje:"Codigo invalido"})    
 })

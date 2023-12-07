@@ -269,7 +269,10 @@ export default {
           type: "success",
           theme: "colored",
           onClose: () => {
-            this.$router.push({ name: "rePasword" })
+            this.$router.push({
+              name: "rePasword",
+              params: { email: this.user.email },
+            })
           },
         })
         this.codigoVerificacion()
@@ -284,10 +287,15 @@ export default {
     },
     async codigoVerificacion() {
       try {
-        const { data } = await apiFromBackend.post("/api/cookie-cifra-creacion")
+        const { data } = await apiFromBackend.post(
+          "/api/cookie-cifra-creacion",
+          {
+            correo: this.user.email,
+          },
+        )
         console.log(data)
       } catch (response) {
-        console.log(response.data.mensaje)
+        console.log(response.response.data.mensaje)
       }
     },
   },

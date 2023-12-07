@@ -58,6 +58,7 @@ export default {
     otp: "",
     validating: false,
     otpError: "",
+    email: "",
   }),
   methods: {
     onClick() {
@@ -81,12 +82,22 @@ export default {
       this.otp = ""
       this.otpError = ""
       try {
-        const { data } = await apiFromBackend.post("/api/cookie-cifra-creacion")
+        console.log(this.email)
+        const { data } = await apiFromBackend.post(
+          "/api/cookie-cifra-creacion",
+          {
+            correo: this.email,
+          },
+        )
         console.log(data)
       } catch (response) {
-        console.log(response.data.mensaje)
+        console.log(response.response.data.mensaje)
       }
     },
+  },
+  mounted() {
+    this.email = this.$route.params.email
+    //console.log(this.email)
   },
 }
 </script>

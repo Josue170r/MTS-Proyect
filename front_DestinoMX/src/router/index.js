@@ -115,7 +115,7 @@ const routes = [
     component: AboutUs,
   },
   {
-    path: "/rePasword",
+    path: "/rePasword/:email",
     name: "rePasword",
     component: rePasword,
   },
