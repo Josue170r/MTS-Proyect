@@ -271,7 +271,7 @@ export default {
           onClose: () => {
             this.$router.push({
               name: "rePasword",
-              params: { email: this.user.email },
+              query: { email: this.user.email },
             })
           },
         })

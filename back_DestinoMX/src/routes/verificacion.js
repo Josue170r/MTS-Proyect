@@ -1,17 +1,19 @@
 import { Router } from "express";
+import { mySqlConnection } from "../DB/DB_connection.js";
 import crypto from "crypto";
 import { mandarCorreo } from "../Mailer/mailer.js"
 
 export const routerValidacion = Router();
 
 const secretKey = 'MTS-2023';
-let correo
+
 
 routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     //fecha y hora de vencimiento
     const date=new Date(Date.now()+120000)
     console.log(date)
 
+    let correo
     if(!req.body.correo)
         return res.status(500).json({exito:false,mensaje:"Correo no encontrado"})
     else{
@@ -27,7 +29,6 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
         else
             cifra+=String(temp)
     }
-    console.log(cifra)
 
     try{
         mandarCorreo(correo,"Codigo de verificación - MTS","<h2>Su código de verificacion es </h2> <h1>"+cifra+"</h1>")
@@ -45,13 +46,19 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
 
     res.cookie('codigo_validacion', valorEncriptado, { expires: date, httpOnly: true });
 
-    return res.status(200).json({mensaje:"Se ha generado correctamente la cookie"})
+    return res.status(200).json({mensaje:"Se ha enviado el correo"})
 })
 
 routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
 
     let codigoUsuario
+    let correo
 
+    if(!req.body.correo)
+        return res.status(500).json({exito:false,mensaje:"Correo no encontrado"})
+    else{
+        correo=req.body.correo
+    }
     if(!req.body.codigoUsuario)
         return res.status(500).json({exito:false,mensaje:"Valor no encontrado"})
     else
@@ -72,8 +79,25 @@ routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
 
     console.log('Valor desencriptado:', valorDesencriptado);
 
-    if(codigoUsuario==valorDesencriptado)
-        return res.status(200).json({exito: true, mensaje:"Codigo valido"})
+    if(codigoUsuario==valorDesencriptado){
+        mySqlConnection.query(
+            `update usuario set codigoValidacion=000000 where CorreoElectronico='${correo}';`,
+            (err, results) => {
+                
+                if (err) {
+                    console.log("llega");
+                //Caso de error
+                return res.status(400).json({
+                    exito: false,
+                    mensaje: "Error al conectar la base",
+                    err: err,
+                });
+                } else {
+                    return res.status(200).json({exito: true, mensaje:"Se ha verificado correctamente"})
+                }
+            }
+        );
+    }
     else
         return res.status(400).json({exito: false,mensaje:"Codigo invalido"})    
-})
+}) 

@@ -52,6 +52,7 @@
 
 <script>
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
 
 export default {
   data: () => ({
@@ -70,11 +71,26 @@ export default {
             "/api/cookie-cifra-validacion",
             {
               codigoUsuario: this.otp,
+              correo: this.email,
             },
           )
           console.log(data.mensaje)
+          toast(data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 600,
+            type: "success",
+            theme: "colored",
+            onClose: () => {
+              this.$router.push({ name: "login" })
+            },
+          })
         } catch (response) {
-          console.log(response.response.data.mensaje)
+          toast(response.response.data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 1500,
+            type: "error",
+            theme: "colored",
+          })
         }
       }, 2000)
     },
@@ -82,22 +98,30 @@ export default {
       this.otp = ""
       this.otpError = ""
       try {
-        console.log(this.email)
         const { data } = await apiFromBackend.post(
           "/api/cookie-cifra-creacion",
           {
             correo: this.email,
           },
         )
-        console.log(data)
+        toast(data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 600,
+          type: "success",
+          theme: "colored",
+        })
       } catch (response) {
-        console.log(response.response.data.mensaje)
+        toast(response.response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
       }
     },
   },
   mounted() {
-    this.email = this.$route.params.email
-    //console.log(this.email)
+    this.email = this.$route.query.email
   },
 }
 </script>
