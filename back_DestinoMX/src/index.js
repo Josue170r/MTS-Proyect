@@ -1,9 +1,14 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+<<<<<<< HEAD
 import https from "https";
 import fs from "fs";
 import cors from 'cors';
+=======
+import cookieParser from "cookie-parser";
+
+>>>>>>> e591e38f60b0c3065b7846673963d78f469892c8
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
@@ -13,6 +18,8 @@ import { routerUsuario } from "./routes/usuario.js";
 import { routerHistorial } from "./routes/historial.js";
 import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
+import { mailerApi } from "./Mailer/mailer.js";
+import { routerValidacion } from "./routes/verificacion.js";
 
 
 
@@ -40,6 +47,8 @@ app.use(cors({
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
+
+app.use(cookieParser());
 
 // Settings
 // Utilizar el puerto definido por el servidor (al subirlo a la web), si no existe utiliza por defecto el puerto 3000 (local)
@@ -77,6 +86,8 @@ app.use(routerUsuario);
 app.use(routerApiDetails);
 app.use(routerApiWeather);
 app.use(routerHistorial);
+app.use(mailerApi);
+app.use(routerValidacion);
 
 // Iniciando el servidor
 httpsS.listen(app.get("port"), () => {
