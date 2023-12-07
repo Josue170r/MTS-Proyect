@@ -1,14 +1,11 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
-<<<<<<< HEAD
 import https from "https";
 import fs from "fs";
 import cors from 'cors';
-=======
 import cookieParser from "cookie-parser";
 
->>>>>>> e591e38f60b0c3065b7846673963d78f469892c8
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
 import { routerCalendario } from "./routes/calendario.js";
@@ -43,7 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: 'https://192.168.66.100:8081',///////////////////////////////////////////////////////////////////////////
+  origin: ['http://localhost:8080', 'http://localhost:8081', 'http://192.168.1.70:8080'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
