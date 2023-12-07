@@ -77,7 +77,7 @@
           <div
             v-for="travel in travels"
             :key="travel.id"
-            class="flex flex-row ml-2 mr-0 items-center justify-center"
+            class="flex ml-2 mr-0 justify-center"
           >
             <v-avatar
               :color="travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'"
