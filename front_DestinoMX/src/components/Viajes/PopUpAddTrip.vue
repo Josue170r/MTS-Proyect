@@ -5,7 +5,7 @@
         ¿A qué viaje le gustaría agregar este destino?
       </h1>
 
-      <div v-if="travels.length" class="overflow-auto h-[400px]">
+      <div v-if="travels.length" class="overflow-auto max-h-[400px]">
         <v-expansion-panels v-if="travels.length" multiple>
           <v-expansion-panel v-for="(travel, index) in travels" :key="index">
             <v-expansion-panel-title>
