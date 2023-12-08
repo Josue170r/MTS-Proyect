@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:8081', 'https://192.168.1.71:8081'],
+  origin: ['http://localhost:8080', 'http://localhost:8081', 'https://192.168.43.164:8081'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,  // Permite el envío de cookies
 }));
