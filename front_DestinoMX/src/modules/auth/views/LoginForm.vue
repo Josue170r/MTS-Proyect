@@ -60,7 +60,7 @@
             <button
               :disabled="isFormEmpty"
               type="submit"
-              class="text-lg h-11 font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+              class="text-lg h-11 font-quicksand block w-full mt-4 py-2 rounded-lg text-gray font-semibold mb-2 bg-orange-300"
               :class="[
                 isFormEmpty
                   ? 'opacity-60 cursor-not-allowed'
@@ -81,6 +81,44 @@
               </router-link>
             </div>
           </form>
+          <div class="flex items-center ml-4">
+            <div class="ml-20">
+              <v-row>
+                <v-dialog v-model="dialogVerification" persistent width="1024">
+                  <v-card>
+                    <v-card-title class="text-center font-baskerville mt-2">
+                      <div
+                        class="text-center ml-3 mr-1 py-0 text-left text-xl"
+                        style="white-space: normal"
+                      >
+                        El correo no se encuentra verificado
+                      </div>
+                    </v-card-title>
+                    <v-card-text class="text-center"
+                      >¿Desea verificar su correo?</v-card-text
+                    >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="grey lighten-3"
+                        variant="text"
+                        @click="dialogVerification = false"
+                      >
+                        Cancelar
+                      </v-btn>
+                      <v-btn
+                        color="orange-darken-1"
+                        variant="text"
+                        @click="verificationCorreo()"
+                      >
+                        Aceptar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-row>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -103,6 +141,8 @@ export default {
     return {
       username: "",
       password: "",
+      dialogVerification: false,
+      email: "",
     }
   },
   computed: {
@@ -117,8 +157,14 @@ export default {
           Usuario: this.username,
           contrasena: this.password,
         })
-        this.$router.push({ name: "user-profile" })
         console.log(response)
+        this.email = response.data.correo
+        const validation = response.data.validacion
+        if (validation == 0) {
+          this.$router.push({ name: "user-profile" })
+        } else {
+          this.dialogVerification = true
+        }
       } catch ({ response }) {
         toast(response.data.mensaje, {
           hideProgressBar: true,
@@ -146,6 +192,23 @@ export default {
             error.message,
           )
         }
+      }
+    },
+    async verificationCorreo() {
+      try {
+        this.$router.push({
+          name: "rePasword",
+          query: { email: this.email },
+        })
+        const { data } = await apiFromBackend.post(
+          "/api/cookie-cifra-creacion",
+          {
+            correo: this.email,
+          },
+        )
+        console.log(data)
+      } catch (response) {
+        console.log(response.response.data.mensaje)
       }
     },
   },
