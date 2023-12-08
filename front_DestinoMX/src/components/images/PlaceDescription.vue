@@ -308,12 +308,6 @@ export default {
     this.getFavorites()
     this.AddToHistory()
   },
-  mounted() {
-    this.$el.addEventListener("click", this.handleDocumentClick)
-  },
-  beforeUnmount() {
-    this.$el.removeEventListener("click", this.handleDocumentClick)
-  },
   methods: {
     async getFavorites() {
       try {
@@ -351,8 +345,6 @@ export default {
         const response = await apiFromBackend.post("/api/historial", {
           idPlaceLugar: this.placeiD,
         })
-        this.isInHistory = true
-        console.log(this.isInHistory)
         console.log(response)
       } catch ({ response }) {
         console.log(response)
