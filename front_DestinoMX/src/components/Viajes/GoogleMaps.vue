@@ -45,10 +45,8 @@
       </div>
       <div class="flex justify-around w-full mb-3">
         <button
-          :class="[isInHistory ? 'opacity-60 cursor-not-allowed' : '...']"
-          :disabled="isInHistory"
           class="font-quicksand w-40 text-white border bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
-          @click="handleButtonClick"
+          @click="goToDescriptionPlace"
         >
           Ver descripción
         </button>
@@ -109,13 +107,8 @@ export default {
         latdestino: this.placeLats,
         lngdestino: this.placeLongs,
       }
-
       this.getNamePlace(event.placeId)
       this.getRoute(destination)
-    },
-    handleButtonClick() {
-      this.AddToHistory()
-      this.goToDescriptionPlace()
     },
     async getNamePlace(placeId) {
       try {
@@ -174,23 +167,6 @@ export default {
         strokeWeight: 4.5,
       }
       this.flightPath = flightPath
-    },
-    async AddToHistory() {
-      try {
-        const response = await apiFromBackend.post("/api/historial", {
-          idPlaceLugar: this.placeiD,
-        })
-        this.isInHistory = true
-        toast.success("Lugar añadido a historial", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
-        console.log(response)
-      } catch ({ response }) {
-        console.log(response)
-      }
     },
   },
   created() {
