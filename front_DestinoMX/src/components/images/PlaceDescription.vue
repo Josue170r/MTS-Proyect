@@ -352,12 +352,7 @@ export default {
           idPlaceLugar: this.placeiD,
         })
         this.isInHistory = true
-        toast.success("Lugar añadido a historial", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
+        console.log(this.isInHistory)
         console.log(response)
       } catch ({ response }) {
         console.log(response)
@@ -393,8 +388,8 @@ export default {
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
         this.placeName = data.result.name
-        this.rating = data.result.rating
-        this.reviews = data.result.reviews
+        this.rating = data.result.rating ? data.result.rating : 0
+        this.reviews = data.result.reviews ? data.result.reviews : []
         this.location = data.result.vicinity
         this.placePhotoReference = data.result.photos[0]
           ? data.result.photos[0].photo_reference
