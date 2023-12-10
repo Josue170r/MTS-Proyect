@@ -40,7 +40,7 @@
                       :src="placeImages[index]"
                       height="13rem"
                       width="80%"
-                      @click="goToPlaceDescription"
+                      @click="goToPlaceDescription(place.reference)"
                     ></v-img>
                   </div>
                   <br />
@@ -60,7 +60,7 @@
                       />
                       <v-list-item-subtitle class="text-center mt-3 ml-4">
                         <FavoriteIcon
-                          :class="[isInFavorites ? 'fill: red' : '...']"
+                          class="fill: red"
                           @click="addToFavorties(place)"
                         />
                       </v-list-item-subtitle>
@@ -242,16 +242,13 @@ export default {
         name: "home",
       })
     },
-    goToPlaceDescription() {
+    goToPlaceDescription(place_id) {
       this.$router.push({
         name: "placedescription",
+        query: {
+          placeid: place_id,
+        },
       })
-    },
-
-    setup() {
-      return {
-        //***** */
-      }
     },
   },
 }
