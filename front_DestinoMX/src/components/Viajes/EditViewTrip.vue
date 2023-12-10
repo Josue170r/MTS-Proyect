@@ -85,7 +85,6 @@
                   </div>
                 </v-list-item> -->
               </v-list>
-              
             </v-card>
           </v-col>
         </v-row>
