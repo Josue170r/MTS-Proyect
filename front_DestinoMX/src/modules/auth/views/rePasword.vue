@@ -4,7 +4,7 @@
       <img
         src="@/assets/images/imagen008.png"
         alt="DESTINOMX"
-        class="absolute w-full h-full object-cover"
+        class="absolute w-full h-full object-cover md:"
       />
     </div>
     <div
