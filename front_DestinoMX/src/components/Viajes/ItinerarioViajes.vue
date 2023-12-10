@@ -17,10 +17,6 @@
           placeholder="Buscar..."
           @input="filterName"
         />
-        <!-- Botón de búsqueda 
-        <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
-        <SearchButton class="bg-black" />
-        -->
       </div>
 
       <div class="absolute top-6 right-2 transform -translate-x-1">

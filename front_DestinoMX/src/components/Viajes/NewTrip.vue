@@ -277,6 +277,7 @@ export default {
     cancelDateSelection2() {
       this.dialog2 = false
     },
+    /*
     saveDateSelection() {
       // Realiza cualquier acción que necesites con las fechas seleccionadas
       console.log("Fecha de inicio:", this.startDate)
@@ -284,6 +285,61 @@ export default {
     },
     saveDateSelection2() {
       // Realiza cualquier acción que necesites con las fechas seleccionadas
+      console.log("Fecha de fin:", this.endDate)
+      this.dialog2 = false
+    }, */
+    saveDateSelection() {
+      // Convertir las fechas a objetos Date
+      const currentDate = new Date()
+      const selectedDate = new Date(this.startDate)
+
+      // Comparar las fechas, teniendo en cuenta solo el día
+      currentDate.setHours(0, 0, 0, 0)
+      selectedDate.setHours(0, 0, 0, 0)
+
+      if (selectedDate < currentDate) {
+        // Muestra un mensaje de alerta en pantalla
+        toast.error("La fecha de inicio no puede ser anterior al día actual", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: true,
+        })
+
+        // Abre de nuevo el diálogo para seleccionar la fecha
+        this.dialog = true
+        return
+      }
+
+      // Realiza cualquier acción que necesites con la fecha de inicio
+      console.log("Fecha de inicio:", this.startDate)
+      this.dialog = false
+    },
+
+    saveDateSelection2() {
+      // Convertir las fechas a objetos Date
+      const startDate = new Date(this.startDate)
+      const endDate = new Date(this.endDate)
+
+      // Comparar las fechas
+      if (endDate < startDate) {
+        // Muestra un mensaje de alerta en pantalla
+        toast.error(
+          "La fecha de fin no puede ser anterior a la fecha de inicio",
+          {
+            theme: "colored",
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000,
+            hideProgressBar: true,
+          },
+        )
+
+        // Abre de nuevo el diálogo para seleccionar la fecha
+        this.dialog2 = true
+        return
+      }
+
+      // Realiza cualquier acción que necesites con la fecha de fin
       console.log("Fecha de fin:", this.endDate)
       this.dialog2 = false
     },
