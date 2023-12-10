@@ -55,12 +55,21 @@
             sm="5"
             md="10"
           >
+            <!--modifico esto para el vfor-->
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <v-list-subheader>
                   <h1 class="text-gray-800 py-4 text-center text-xl font-bold">
-                    {{ day }}
+                    {{ day.nombre }}
                   </h1>
+                  <!-- Agregar botón solo si es hoy -->
+                  <button
+                    v-if="day.esHoy"
+                    @click="iniciarRecorrido(day.fecha)"
+                    class="font-quicksand block w-full mt-2 py-2 rounded-lg text-white font-semibold mb-2 bg-green-700"
+                  >
+                    Iniciar Recorrido
+                  </button>
                 </v-list-subheader>
 
                 <!-- <v-list-item
@@ -125,6 +134,7 @@ export default {
     UpperDate(texto) {
       return texto.charAt(0).toUpperCase() + texto.slice(1)
     },
+    /*
     setDateArray(startDate, endDate) {
       const fechas = []
       let fechaActual = parseISO(startDate)
@@ -138,6 +148,39 @@ export default {
       }
       this.dates = fechas
       console.log(this.dates)
+    }, */
+    setDateArray(startDate, endDate) {
+      const fechas = []
+      let fechaActual = parseISO(startDate)
+
+      while (fechaActual <= parseISO(endDate)) {
+        const fechaFormateada = format(fechaActual, "EEEE d 'de' MMMM", {
+          locale: es,
+        })
+        const fechaObj = {
+          nombre: this.UpperDate(fechaFormateada),
+          fecha: fechaActual,
+          esHoy: this.isToday(fechaActual),
+        }
+        fechas.push(fechaObj)
+        fechaActual = addDays(fechaActual, 1)
+      }
+      this.dates = fechas
+    },
+    //Metodo para verificar si es hoy
+    isToday(date) {
+      const today = new Date()
+      return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      )
+    },
+    iniciarRecorrido(fecha) {
+      // Lógica para iniciar el recorrido en el día seleccionado
+      console.log(
+        `Iniciar recorrido para el día ${format(fecha, "yyyy-MM-dd")}`,
+      )
     },
   },
 }
