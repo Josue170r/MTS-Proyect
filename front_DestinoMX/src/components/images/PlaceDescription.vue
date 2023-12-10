@@ -74,9 +74,11 @@
           <div class="flex flex-col">
             {{ status }}
             <div class="flex flex-row">
-              <p class="font-quicksand mr-2">Abre a las</p>
+              <p v-if="openTime" class="font-quicksand mr-2">Abre a las</p>
               {{ openTime }}
-              <p class="font-quicksand ml-2 mr-2">Cierra a las</p>
+              <p v-if="closeTime" class="font-quicksand ml-2 mr-2">
+                Cierra a las
+              </p>
               {{ closeTime }}
             </div>
           </div>
@@ -304,12 +306,7 @@ export default {
       this.getWeather()
     })
     this.getFavorites()
-  },
-  mounted() {
-    this.$el.addEventListener("click", this.handleDocumentClick)
-  },
-  beforeUnmount() {
-    this.$el.removeEventListener("click", this.handleDocumentClick)
+    this.AddToHistory()
   },
   methods: {
     async getFavorites() {
@@ -343,6 +340,17 @@ export default {
         console.log(data)
       }
     },
+    async AddToHistory() {
+      try {
+        const response = await apiFromBackend.post("/api/historial", {
+          idPlaceLugar: this.placeiD,
+        })
+        console.log(response)
+      } catch ({ response }) {
+        console.log(response)
+      }
+    },
+
     async getWeather() {
       try {
         const { data } = await apiFromBackend.get("/api/Weather", {
@@ -369,11 +377,11 @@ export default {
           },
         })
         console.log("Desde getNamePlace: ", data)
-        this.rating = data.result.rating
-        this.reviews = data.result.reviews
-        this.placeName = data.result.name
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
+        this.placeName = data.result.name
+        this.rating = data.result.rating ? data.result.rating : 0
+        this.reviews = data.result.reviews ? data.result.reviews : []
         this.location = data.result.vicinity
         this.placePhotoReference = data.result.photos[0]
           ? data.result.photos[0].photo_reference

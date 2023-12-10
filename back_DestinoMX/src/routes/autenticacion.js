@@ -66,8 +66,9 @@ routerAutenticacion.post("/api/crear-cuenta", (req, res) => {
 // Funciona OK
 routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
   const { Usuario, contrasena } = req.body;
+  console.log(req);
   mySqlConnection.query(
-    `SELECT idUsuario,contrasena from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
+    `SELECT idUsuario,contrasena,CorreoElectronico,IFNULL(codigoValidacion, 1)as codigoValidacion from Usuario WHERE CorreoElectronico = "${Usuario}" OR Usuario = "${Usuario}"`,
     (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -88,7 +89,7 @@ routerAutenticacion.post("/api/iniciar-sesion", (req, res) => {
           console.log("Request:", req.session);
           res
             .status(200)
-            .json({ exito: true, mensaje: "Sesion iniciada con exito." });
+            .json({ exito: true, mensaje: "Sesion iniciada con exito.", correo:rows[0].CorreoElectronico, validacion:rows[0].codigoValidacion});
         } else {
           res
             .status(403)

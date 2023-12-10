@@ -45,8 +45,8 @@
       </div>
       <div class="flex justify-around w-full mb-3">
         <button
-          @click="goToDescriptionPlace"
           class="font-quicksand w-40 text-white border bg-red-800 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
+          @click="goToDescriptionPlace"
         >
           Ver descripción
         </button>
@@ -107,11 +107,9 @@ export default {
         latdestino: this.placeLats,
         lngdestino: this.placeLongs,
       }
-
       this.getNamePlace(event.placeId)
       this.getRoute(destination)
     },
-
     async getNamePlace(placeId) {
       try {
         const { data } = await apiFromBackend.get("/api/placeName", {
