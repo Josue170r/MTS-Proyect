@@ -22,7 +22,7 @@ import cors from 'cors';
 
 //inclusion de back api cors
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Reemplaza con el origen de tu aplicación Vue.js
+  res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });

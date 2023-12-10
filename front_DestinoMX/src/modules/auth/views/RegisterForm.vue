@@ -275,7 +275,7 @@ export default {
             })
           },
         })
-        this.codigoVerificacion()
+        this.verificationCorreo()
       } catch (error) {
         toast(error.response.data.mensaje, {
           hideProgressBar: true,
@@ -285,7 +285,7 @@ export default {
         })
       }
     },
-    async codigoVerificacion() {
+    async verificationCorreo() {
       try {
         const { data } = await apiFromBackend.post(
           "/api/cookie-cifra-creacion",
