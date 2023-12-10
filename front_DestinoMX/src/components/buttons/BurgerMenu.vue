@@ -25,7 +25,7 @@
           />
         </svg>
 
-        <h1 class="text-black">Inicio</h1></router-link
+        <h1>Inicio</h1></router-link
       >
       <router-link :to="{ name: 'user-profile' }" class="flex items-center"
         ><svg
@@ -42,29 +42,29 @@
             d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
           />
         </svg>
-        <h1 class="text-black">Mi perfil</h1></router-link
+        <h1>Mi perfil</h1></router-link
       >
       <router-link :to="{ name: 'favoritos' }" class="flex items-center"
         ><FavoriteIcon class="mr-2" />
-        <h1 class="text-black">Favoritos</h1></router-link
+        <h1>Favoritos</h1></router-link
       >
       <router-link :to="{ name: 'Itinerario' }" class="flex items-center"
         ><TravelIcon class="mr-2" />
-        <h1 class="text-black">Itinerario de viajes</h1></router-link
+        <h1>Itinerario de viajes</h1></router-link
       >
       <router-link :to="{ name: 'History' }" class="flex items-center"
         ><ClockIcon class="mr-2" />
-        <h1 class="text-black">Historial</h1></router-link
+        <h1>Historial</h1></router-link
       >
       <router-link :to="{ name: 'aboutus' }" class="flex items-center"
         ><supportIcon class="mr-2" />
-        <h1 class="text-black">Contactar a soporte</h1></router-link
+        <h1>Contactar a soporte</h1></router-link
       >
       <router-link
         :to="{ name: 'Preferences-Screen' }"
         class="flex items-center"
         ><settingsIcon class="mr-2" />
-        <h1 class="text-black">Preferencias</h1></router-link
+        <h1>Preferencias</h1></router-link
       >
       <button @click="CloseSesion" class="flex items-center">
         <CloseSesionIcon class="mr-2" />
@@ -111,3 +111,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+a {
+  color: black;
+}
+.router-link-exact-active {
+  color: #3498db;
+}
+</style>
