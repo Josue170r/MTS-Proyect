@@ -12,21 +12,26 @@ const transporte = nodemailer.createTransport({
 });
 
 const from = "mtsads77@gmail.com"
-
+let to
+let subject
+let text
 
 mailerApi.post("/api/mailer",(req,res)=>{
     
-    const {to, subject, text} = req.body
+    to = req.body.to
+    subject = req.body.subject
+    text = req.body.text
  
     if(!to || !subject || !text){
         return res.status(400).json({
             exito:false,
             mensaje:"Faltan mas parametros"
         })
-    }
-    
-    console.log(req.body);
+    }   
+    mandarCorreo(to, subject, text)   
+})
 
+export function mandarCorreo(to, subject, text){
     const mailOptions = {
         from,
         to,
@@ -51,15 +56,13 @@ mailerApi.post("/api/mailer",(req,res)=>{
         
         if (error) {
             console.log("req");
-
         console.error(error);
-        return;
+        return res.status(400).json({exito:false,mensaje:error});
         }
         console.log('Email sent: ' + info.response);
-        return res.status(200);
+        return res.status(200).json({exito:true,mensaje:"Se ha enviado correctamente"});
   });
-})
-
+}
 
 
 
