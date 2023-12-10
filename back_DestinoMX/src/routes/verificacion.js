@@ -31,7 +31,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     }
 
     try{
-        mandarCorreo(correo,"Codigo de verificación - MTS","<h2>Su código de verificacion es </h2> <h1>"+cifra+"</h1>")
+        mandarCorreo(correo,"Codigo de verificación - MTS","<h2>Su código de verificacion es: </h2> <h3>"+cifra+"</h3>")
     }
     catch(error){
         return res.status(500).json({exito:false,mensaje:"Correo no enviado"})
