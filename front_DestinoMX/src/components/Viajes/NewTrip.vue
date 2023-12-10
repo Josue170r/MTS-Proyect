@@ -100,28 +100,30 @@
                 </h2>
               </div>
             </template>
-            <v-card>
-              <v-card-text>
-                <v-container class="custom-container">
-                  <v-row justify="space-around">
-                    <v-date-picker
-                      width="0"
-                      elevation="0"
-                      color="#fdba74"
-                      show-adjacent-months
-                      v-model="startDate"
-                      min="2023-05-12"
-                      max="2070-03-20"
-                    ></v-date-picker>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="cancelDateSelection">Cancelar</v-btn>
-                <v-btn text @click="saveDateSelection">Añadir fecha</v-btn>
-              </v-card-actions>
-            </v-card>
+            <div class="flex items-center">
+              <v-card>
+                <v-card-text>
+                  <v-container class="custom-container">
+                    <v-row justify="space-around">
+                      <v-date-picker
+                        width="0"
+                        elevation="0"
+                        color="#fdba74"
+                        show-adjacent-months
+                        v-model="startDate"
+                        min="2023-05-12"
+                        max="2070-03-20"
+                      ></v-date-picker>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="cancelDateSelection">Cancelar</v-btn>
+                  <v-btn text @click="saveDateSelection">Añadir fecha</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
           </v-dialog>
         </div>
         <!-- fecha de FIN -->
@@ -137,29 +139,30 @@
                 <h2 class="mb-3 my-5">Fecha de Fin: <br />{{ endDate }}</h2>
               </div>
             </template>
-
-            <v-card>
-              <v-card-text>
-                <v-container class="custom-container">
-                  <v-row justify="space-around">
-                    <v-date-picker
-                      elevation="0"
-                      width="0"
-                      color="#fdba74"
-                      show-adjacent-months
-                      v-model="endDate"
-                      min="2023-05-12"
-                      max="2070-03-20"
-                    ></v-date-picker>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="cancelDateSelection2">Cancelar</v-btn>
-                <v-btn text @click="saveDateSelection2">OK</v-btn>
-              </v-card-actions>
-            </v-card>
+            <div class="flex items-center">
+              <v-card>
+                <v-card-text>
+                  <v-container class="custom-container">
+                    <v-row justify="space-around">
+                      <v-date-picker
+                        elevation="0"
+                        width="0"
+                        color="#fdba74"
+                        show-adjacent-months
+                        v-model="endDate"
+                        min="2023-05-12"
+                        max="2070-03-20"
+                      ></v-date-picker>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="cancelDateSelection2">Cancelar</v-btn>
+                  <v-btn text @click="saveDateSelection2">Añadir fecha</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
           </v-dialog>
         </div>
         <div class="flex-row flex w-full items-center space-x-4">

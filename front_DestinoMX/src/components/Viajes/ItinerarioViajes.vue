@@ -75,26 +75,33 @@
             :key="travel.id"
             class="flex ml-2 mr-0 justify-center"
           >
-            <v-avatar
-              :color="travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'"
-              size="x-small"
-            ></v-avatar>
-            <div class="flex flex-col ml-2 mr-0 items-center justify-center">
-              <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
-                {{ travel.nombreMiViaje }}
-              </h1>
-
-              <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+            <div class="flex flex-col place-items-center mx-12">
+              <div class="flex flex-row mt-4">
+                <v-avatar
+                  :color="
+                    travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'
+                  "
+                  size="x-small"
+                ></v-avatar>
+                <h1 class="text-gray-800 py-1 text-xl ml-8 font-bold">
+                  {{ travel.nombreMiViaje }}
+                </h1>
+              </div>
+              <h1 class="text-gray-300 py-1 text-l font-bold">
                 {{ travel.diaInicio.slice(0, 10) }} -
                 {{ travel.diaFinal.slice(0, 10) }}
               </h1>
-              <h1 class="text-gray-300 py-1 text-center text-l font-bold mb-2">
+              <h1 class="text-gray-300 py-1 text-l font-bold mb-2">
                 {{ travel.descripcionViaje }}
               </h1>
+              <button
+                type="button"
+                @click="goToEditTrip(travel)"
+                class="ml-auto mb-6"
+              >
+                <GreaterThanIcon class="ml-4" />
+              </button>
             </div>
-            <button type="button" @click="goToEditTrip(travel)" class="ml-auto">
-              <GreaterThanIcon class="ml-4" />
-            </button>
           </div>
         </div>
         <!--Div del else-->
