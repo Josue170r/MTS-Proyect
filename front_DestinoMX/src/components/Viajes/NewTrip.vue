@@ -100,28 +100,32 @@
                 </h2>
               </div>
             </template>
-            <v-card>
-              <v-card-text>
-                <v-container class="custom-container">
-                  <v-row justify="space-around">
-                    <v-date-picker
-                      width="0"
-                      elevation="0"
-                      color="#fdba74"
-                      show-adjacent-months
-                      v-model="startDate"
-                      min="2023-05-12"
-                      max="2070-03-20"
-                    ></v-date-picker>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="cancelDateSelection">Cancelar</v-btn>
-                <v-btn text @click="saveDateSelection">Añadir fecha</v-btn>
-              </v-card-actions>
-            </v-card>
+            <div class="flex items-center justify-center h-[1px]">
+              <v-card class="max-w-md w-full">
+                <v-card-text>
+                  <v-container class="custom-container">
+                    <v-row justify="space-around">
+                      <v-col cols="12">
+                        <v-date-picker
+                          width="0"
+                          elevation="0"
+                          color="#fdba74"
+                          show-adjacent-months
+                          v-model="startDate"
+                          min="2023-05-12"
+                          max="2070-03-20"
+                        ></v-date-picker>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="cancelDateSelection">Cancelar</v-btn>
+                  <v-btn text @click="saveDateSelection">Añadir fecha</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
           </v-dialog>
         </div>
         <!-- fecha de FIN -->
@@ -137,29 +141,32 @@
                 <h2 class="mb-3 my-5">Fecha de Fin: <br />{{ endDate }}</h2>
               </div>
             </template>
-
-            <v-card>
-              <v-card-text>
-                <v-container class="custom-container">
-                  <v-row justify="space-around">
-                    <v-date-picker
-                      elevation="0"
-                      width="0"
-                      color="#fdba74"
-                      show-adjacent-months
-                      v-model="endDate"
-                      min="2023-05-12"
-                      max="2070-03-20"
-                    ></v-date-picker>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="cancelDateSelection2">Cancelar</v-btn>
-                <v-btn text @click="saveDateSelection2">OK</v-btn>
-              </v-card-actions>
-            </v-card>
+            <div class="flex items-center justify-center h-[1px]">
+              <v-card class="max-w-md w-full">
+                <v-card-text>
+                  <v-container class="custom-container">
+                    <v-row justify="space-around">
+                      <v-col cols="12">
+                        <v-date-picker
+                          elevation="0"
+                          width="0"
+                          color="#fdba74"
+                          show-adjacent-months
+                          v-model="endDate"
+                          min="2023-05-12"
+                          max="2070-03-20"
+                        ></v-date-picker>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="cancelDateSelection2">Cancelar</v-btn>
+                  <v-btn text @click="saveDateSelection2">Añadir fecha</v-btn>
+                </v-card-actions>
+              </v-card>
+            </div>
           </v-dialog>
         </div>
         <div class="flex-row flex w-full items-center space-x-4">
@@ -202,7 +209,12 @@ export default {
   },
   computed: {
     isFormEmpty() {
-      return !this.trip.DescriptionTrip || !this.trip.TripName
+      return (
+        !this.trip.DescriptionTrip ||
+        !this.trip.TripName ||
+        !this.startDate ||
+        !this.endDate
+      )
     },
   },
   data() {
@@ -229,16 +241,23 @@ export default {
           diaInicio: this.startDate.toString(),
           diaFinal: this.endDate.toString(),
         })
+        console.log(data)
         toast.success("Viaje creado con éxito", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
           hideProgressBar: true,
         })
-        this.$router.push({ name: "Itinerario" })
-        console.log(data)
-      } catch (error) {
-        console.log(error)
+        setTimeout(() => {
+          this.$router.push({ name: "Itinerario" })
+        }, 1200)
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
     validateDateRange() {
@@ -265,6 +284,7 @@ export default {
     cancelDateSelection2() {
       this.dialog2 = false
     },
+    /*
     saveDateSelection() {
       // Realiza cualquier acción que necesites con las fechas seleccionadas
       console.log("Fecha de inicio:", this.startDate)
@@ -272,6 +292,61 @@ export default {
     },
     saveDateSelection2() {
       // Realiza cualquier acción que necesites con las fechas seleccionadas
+      console.log("Fecha de fin:", this.endDate)
+      this.dialog2 = false
+    }, */
+    saveDateSelection() {
+      // Convertir las fechas a objetos Date
+      const currentDate = new Date()
+      const selectedDate = new Date(this.startDate)
+
+      // Comparar las fechas, teniendo en cuenta solo el día
+      currentDate.setHours(0, 0, 0, 0)
+      selectedDate.setHours(0, 0, 0, 0)
+
+      if (selectedDate < currentDate) {
+        // Muestra un mensaje de alerta en pantalla
+        toast.error("La fecha de inicio no puede ser anterior al día actual", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000,
+          hideProgressBar: true,
+        })
+
+        // Abre de nuevo el diálogo para seleccionar la fecha
+        this.dialog = true
+        return
+      }
+
+      // Realiza cualquier acción que necesites con la fecha de inicio
+      console.log("Fecha de inicio:", this.startDate)
+      this.dialog = false
+    },
+
+    saveDateSelection2() {
+      // Convertir las fechas a objetos Date
+      const startDate = new Date(this.startDate)
+      const endDate = new Date(this.endDate)
+
+      // Comparar las fechas
+      if (endDate < startDate) {
+        // Muestra un mensaje de alerta en pantalla
+        toast.error(
+          "La fecha de fin no puede ser anterior a la fecha de inicio",
+          {
+            theme: "colored",
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000,
+            hideProgressBar: true,
+          },
+        )
+
+        // Abre de nuevo el diálogo para seleccionar la fecha
+        this.dialog2 = true
+        return
+      }
+
+      // Realiza cualquier acción que necesites con la fecha de fin
       console.log("Fecha de fin:", this.endDate)
       this.dialog2 = false
     },
