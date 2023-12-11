@@ -100,20 +100,22 @@
                 </h2>
               </div>
             </template>
-            <div class="flex items-center">
-              <v-card>
+            <div class="flex items-center justify-center h-[1px]">
+              <v-card class="max-w-md w-full">
                 <v-card-text>
                   <v-container class="custom-container">
                     <v-row justify="space-around">
-                      <v-date-picker
-                        width="0"
-                        elevation="0"
-                        color="#fdba74"
-                        show-adjacent-months
-                        v-model="startDate"
-                        min="2023-05-12"
-                        max="2070-03-20"
-                      ></v-date-picker>
+                      <v-col cols="12">
+                        <v-date-picker
+                          width="0"
+                          elevation="0"
+                          color="#fdba74"
+                          show-adjacent-months
+                          v-model="startDate"
+                          min="2023-05-12"
+                          max="2070-03-20"
+                        ></v-date-picker>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card-text>
@@ -139,20 +141,22 @@
                 <h2 class="mb-3 my-5">Fecha de Fin: <br />{{ endDate }}</h2>
               </div>
             </template>
-            <div class="flex items-center">
-              <v-card>
+            <div class="flex items-center justify-center h-[1px]">
+              <v-card class="max-w-md w-full">
                 <v-card-text>
                   <v-container class="custom-container">
                     <v-row justify="space-around">
-                      <v-date-picker
-                        elevation="0"
-                        width="0"
-                        color="#fdba74"
-                        show-adjacent-months
-                        v-model="endDate"
-                        min="2023-05-12"
-                        max="2070-03-20"
-                      ></v-date-picker>
+                      <v-col cols="12">
+                        <v-date-picker
+                          elevation="0"
+                          width="0"
+                          color="#fdba74"
+                          show-adjacent-months
+                          v-model="endDate"
+                          min="2023-05-12"
+                          max="2070-03-20"
+                        ></v-date-picker>
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-card-text>
