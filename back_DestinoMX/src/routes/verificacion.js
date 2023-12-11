@@ -101,3 +101,8 @@ routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
     else
         return res.status(400).json({exito: false,mensaje:"Codigo invalido"})    
 }) 
+
+
+
+
+
