@@ -3,9 +3,9 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/login" class="absolute top-7 left-1 transform">
+      <button @click="$router.go(-1)" class="absolute top-7 left-1 transform">
         <BackButtonIcon />
-      </router-link>
+      </button>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
@@ -19,7 +19,7 @@
       <!-- aqui empieza el viaje y los datos  -->
 
       <h1 class="text-gray-800 py-8 text-center text-xl font-bold">
-        Mi viaje a: CDMX
+        {{ travelName }}
       </h1>
 
       <!-- div de botones -->
@@ -48,27 +48,31 @@
 
       <v-container>
         <v-row>
-          <!-- Utiliza v-for para iterar sobre los días -->
           <v-col
-            v-for="(day, index) in days"
+            v-for="(day, index) in dates"
             :key="index"
             cols="13"
             sm="5"
             md="10"
           >
+            <!--modifico esto para el vfor-->
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
-                <button class="ml-3" v-bind="props">
-                  <v-icon color="#fed7aa" size="30">mdi-pencil</v-icon>
-                </button>
                 <v-list-subheader>
                   <h1 class="text-gray-800 py-4 text-center text-xl font-bold">
-                    {{ day.date }}
+                    {{ day.nombre }}
                   </h1>
+                  <!-- Agregar botón solo si es hoy -->
+                  <button
+                    v-if="day.esHoy"
+                    @click="iniciarRecorrido(day.fecha)"
+                    class="font-quicksand block w-full mt-2 py-2 rounded-lg text-white font-semibold mb-2 bg-green-700"
+                  >
+                    Iniciar Recorrido
+                  </button>
                 </v-list-subheader>
 
-                <!-- Itera sobre las actividades del día -->
-                <v-list-item
+                <!-- <v-list-item
                   v-for="(activity, activityIndex) in day.activities"
                   :key="activityIndex"
                   :prepend-avatar="activity.image"
@@ -88,7 +92,7 @@
                       >
                     </div>
                   </div>
-                </v-list-item>
+                </v-list-item> -->
               </v-list>
             </v-card>
           </v-col>
@@ -103,6 +107,8 @@
 <script>
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import AvatarButton from "@/components/buttons/AvatarButton"
+import { format, addDays, parseISO } from "date-fns"
+import { es } from "date-fns/locale"
 
 export default {
   name: "MyTrip",
@@ -112,51 +118,70 @@ export default {
   },
   data() {
     return {
-      // Más días y actividades aquí------> back lo conecta a un arreglo en la BD para que itere con el v-for
-      days: [
-        {
-          date: "Martes 13 de octubre",
-          activities: [
-            {
-              title: "Museo de Frida Khalo",
-              description: "Descripción uno",
-              image:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Museo_Frida_Kahlo.JPG/640px-Museo_Frida_Kahlo.JPG",
-            },
-            {
-              title: "Palacio de Bellas Artes",
-              description: "Llevar cartera y suéteres",
-              image:
-                "https://upload.wikimedia.org/wikipedia/commons/9/97/Bellas_Artes_01.jpg",
-            },
-          ],
-        },
-        {
-          date: " Miércoles 14 de octubre",
-          activities: [
-            {
-              title: "Pirámides de Teotihuacán",
-              description: "Llevar sombrilla, sandaloias, bloqueador y cartera",
-              image:
-                "https://historia.nationalgeographic.com.es/medio/2023/05/15/istock_1f1795c2_501453380_230515114913_1280x853.jpg",
-            },
-            {
-              title: "Villa de Guadalupe",
-              description:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do",
-              image:
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Bas%C3%ADlica_de_Santa_Mar%C3%ADa_de_Guadalupe_2018.jpg/1200px-Bas%C3%ADlica_de_Santa_Mar%C3%ADa_de_Guadalupe_2018.jpg",
-            },
-          ],
-        },
-        //mas dias aqui en adelante para iterar etc
-      ],
+      dates: [],
+      travelName: "",
+      diaInicio: "",
+      diaFinal: "",
     }
   },
-  setup() {
-    return {
-      //***** */
-    }
+  created() {
+    this.travelName = this.$route.query.travel
+    this.diaInicio = this.$route.query.diaInicio
+    this.diaFinal = this.$route.query.diaFinal
+    this.setDateArray(this.diaInicio, this.diaFinal)
+  },
+  methods: {
+    UpperDate(texto) {
+      return texto.charAt(0).toUpperCase() + texto.slice(1)
+    },
+    /*
+    setDateArray(startDate, endDate) {
+      const fechas = []
+      let fechaActual = parseISO(startDate)
+
+      while (fechaActual <= parseISO(endDate)) {
+        const fechaFormateada = format(fechaActual, "EEEE d 'de' MMMM", {
+          locale: es,
+        })
+        fechas.push(this.UpperDate(fechaFormateada))
+        fechaActual = addDays(fechaActual, 1)
+      }
+      this.dates = fechas
+      console.log(this.dates)
+    }, */
+    setDateArray(startDate, endDate) {
+      const fechas = []
+      let fechaActual = parseISO(startDate)
+
+      while (fechaActual <= parseISO(endDate)) {
+        const fechaFormateada = format(fechaActual, "EEEE d 'de' MMMM", {
+          locale: es,
+        })
+        const fechaObj = {
+          nombre: this.UpperDate(fechaFormateada),
+          fecha: fechaActual,
+          esHoy: this.isToday(fechaActual),
+        }
+        fechas.push(fechaObj)
+        fechaActual = addDays(fechaActual, 1)
+      }
+      this.dates = fechas
+    },
+    //Metodo para verificar si es hoy
+    isToday(date) {
+      const today = new Date()
+      return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      )
+    },
+    iniciarRecorrido(fecha) {
+      // Lógica para iniciar el recorrido en el día seleccionado
+      console.log(
+        `Iniciar recorrido para el día ${format(fecha, "yyyy-MM-dd")}`,
+      )
+    },
   },
 }
 </script>
