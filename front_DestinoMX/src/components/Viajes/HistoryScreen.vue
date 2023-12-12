@@ -140,11 +140,13 @@ export default {
         const { data } = await apiFromBackend.get("/api/historial")
 
         // Actualizar los datos locales en el componente con los favoritos obtenidos
-        this.placeIds = data.info.slice(0, -1)
-        console.log(this.placeIds)
-        this.getNamePlaces().then(() => {
-          this.getImgsPlaces()
-        })
+        if (data.exito) {
+          this.placeIds = data.info.slice(0, -1)
+          console.log(this.placeIds)
+          this.getNamePlaces().then(() => {
+            this.getImgsPlaces()
+          })
+        }
       } catch (error) {
         console.error("Error al obtener lugares del historial:", error)
       }
