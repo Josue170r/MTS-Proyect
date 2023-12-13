@@ -1,11 +1,12 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="none"
+    :fill="fillColor"
     viewBox="0 0 24 24"
     stroke-width="1.5"
-    stroke="currentColor"
-    class="w-6 h-6 text-gray-400 color-stroke"
+    stroke="red"
+    class="w-6 h-6 text-gray-400"
+    @click="toggleFavorite"
   >
     <path
       stroke-linecap="round"
@@ -18,11 +19,21 @@
 <script>
 export default {
   name: "FavoriteIcon",
+  data() {
+    return {
+      isFavorite: false, // Estado de favoritos local para cada instancia
+    }
+  },
+  computed: {
+    fillColor() {
+      return this.isFavorite ? "red" : "none"
+    },
+  },
+  methods: {
+    toggleFavorite() {
+      this.isFavorite = !this.isFavorite
+      this.$emit("toggle-favorite", this.isFavorite) // Emitir evento al hacer clic
+    },
+  },
 }
 </script>
-
-<style scoped>
-.color-stroke path {
-  stroke: red;
-}
-</style>

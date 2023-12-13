@@ -39,8 +39,9 @@
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
                       :src="placeImages[index]"
-                      height="50%"
+                      height="13rem"
                       width="80%"
+                      @click="goToPlaceDescription(place.reference)"
                     ></v-img>
                   </div>
                   <br />
@@ -118,31 +119,43 @@ export default {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/favoritos")
-
         // Actualizar los datos locales en el componente con los favoritos obtenidos
-        if (data.exito) {
-          this.placeIds = data.info
-          this.getNamePlaces().then(() => {
-            this.getImgsPlaces()
-          })
-        }
+        this.placeIds = data.info
+        this.placeIds = this.placeIds
+          .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
+          .map((place) => place.idPlaceLugar)
+        this.getNamePlaces().then(() => {
+          this.getImgsPlaces()
+        })
       } catch (error) {
-        console.error("Error al obtener lugares favoritos:", error)
+        console.error("Error al obtener lugares del favoritos:", error)
       }
     },
     async getNamePlaces() {
       try {
-        for (const place_id of this.placeIds) {
+        // Utiliza Promise.all para realizar las solicitudes de manera simultánea
+        const requests = this.placeIds.map(async (placeid) => {
           const { data } = await apiFromBackend.get("/api/placeName", {
             params: {
-              place_id: place_id.idPlaceLugar,
+              place_id: placeid,
             },
           })
-          this.places.push(data.result)
-          this.placesImgsReferences.push(data.result.photos[0].photo_reference)
-        }
-        console.log("Desde getNamePlace de Favoritos: ", this.places)
-        console.log("References: ", this.placesImgsReferences)
+          return data.result
+        })
+        const results = await Promise.all(requests)
+        this.places.push(...results)
+
+        // Imprime el arreglo de places después de que todas las solicitudes se completen
+        console.log("Arreglo de lugares: ", this.places)
+        // Agrega las referencias de imágenes al arreglo
+        this.placesImgsReferences.push(
+          ...results.map((result) =>
+            result.photos && result.photos.length > 0
+              ? result.photos[0].photo_reference
+              : "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
+          ),
+        )
+        console.log("Arreglo de referencias: ", this.placesImgsReferences)
       } catch (error) {
         console.log(error.message)
       }
@@ -193,6 +206,14 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    goToPlaceDescription(place_id) {
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          placeid: place_id,
+        },
+      })
     },
   },
 }
