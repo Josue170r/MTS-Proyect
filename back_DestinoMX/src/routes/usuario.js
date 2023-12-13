@@ -52,7 +52,7 @@ routerUsuario.put("/api/editar-perfil", (req, res) => {
   if (!req.session.usuario)
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   else {
-    console.log(req)
+    console.log(req);
     const { Nombre, ApellidoP, ApellidoM } = req.body;
     const consultaCambiarDatos = `UPDATE usuario SET Nombre = "${Nombre}", ApellidoP = "${ApellidoP}", ApellidoM = "${ApellidoM}" WHERE idUsuario = "${req.session.usuario.idUsuario}"`;
     mySqlConnection.query(consultaCambiarDatos, (err, rows, fields) => {
