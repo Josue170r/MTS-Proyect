@@ -20,12 +20,18 @@
 export default {
   name: "FavoriteIcon",
   props: {
-    isFavorite: Boolean,
+    isFavorite: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
       localIsFavorite: this.isFavorite,
     }
+  },
+  created() {
+    console.log(this.isFavorite)
   },
   computed: {
     fillColor() {

@@ -64,7 +64,9 @@
                       />
                       <v-list-item-subtitle class="text-center mt-3 ml-4">
                         <FavoriteIcon2
-                          :isFavorite="getFavorites(place.reference)"
+                          :isFavorite="
+                            placeIdsFavs.indexOf(place.reference) !== -1
+                          "
                           @toggle-favorite="
                             updateFavorites(place.reference, $event)
                           "
@@ -269,7 +271,7 @@ export default {
         console.log(error)
       }
     },
-    async getFavorites(placeReference) {
+    async getFavorites() {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/favoritos")
@@ -279,13 +281,13 @@ export default {
           .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
           .map((place) => place.idPlaceLugar)
 
-        const isFavorite = this.placeIdsFavs.some(
-          (favorite) => favorite === placeReference,
-        )
-        console.log("Is in favorites:", isFavorite)
-        console.log("Arreglo de favoritos: ", this.placeIdsFavs)
-        console.log("Referencia de lugar de historial: ", placeReference)
-        return isFavorite
+        // const isFavorite = this.placeIdsFavs.some(
+        //   (favorite) => favorite === placeReference,
+        // )
+        // console.log("Is in favorites:", isFavorite)
+        // console.log("Arreglo de favoritos: ", this.placeIdsFavs)
+        // console.log("Referencia de lugar de historial: ", placeReference)
+        // return isFavorite
       } catch (error) {
         console.error("Error al obtener lugares del favoritos:", error)
       }
