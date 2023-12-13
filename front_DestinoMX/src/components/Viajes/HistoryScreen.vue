@@ -44,8 +44,12 @@
                     ></v-img>
                   </div>
                   <br />
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-list-item-title>{{ place.name }}</v-list-item-title>
+                  <div class="d-flex flex-column align-center">
+                    <v-list-item-title
+                      class="text-center"
+                      style="white-space: normal; overflow: hidden"
+                      >{{ place.name }}</v-list-item-title
+                    >
 
                     <div class="flex flex-row items-center">
                       <v-rating
@@ -59,9 +63,11 @@
                         active-color="rgb(232, 176, 36)"
                       />
                       <v-list-item-subtitle class="text-center mt-3 ml-4">
-                        <FavoriteIcon
-                          class="fill: red"
-                          @click="addToFavorties(place)"
+                        <FavoriteIcon2
+                          :isFavorite="getFavorites(place.reference)"
+                          @toggle-favorite="
+                            updateFavorites(place.reference, $event)
+                          "
                         />
                       </v-list-item-subtitle>
                     </div>
@@ -106,7 +112,7 @@ import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
-import FavoriteIcon from "@/components/icons/FavoriteIcon.vue"
+import FavoriteIcon2 from "@/components/icons/FavoriteIcon2.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import { toRaw } from "vue"
@@ -117,7 +123,7 @@ export default {
     BurgerMenu,
     AvatarButton,
     deleteFav,
-    FavoriteIcon,
+    FavoriteIcon2,
   },
   data() {
     return {
@@ -126,10 +132,11 @@ export default {
       places: [],
       placeImages: [],
       placeIds: [],
-      favorites: [],
+      placeIdsFavs: [],
     }
   },
   created() {
+    this.getFavorites()
     this.getHistory()
   },
 
@@ -138,32 +145,40 @@ export default {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/historial")
-
         // Actualizar los datos locales en el componente con los favoritos obtenidos
-        if (data.exito) {
-          this.placeIds = data.info.slice(0, -1)
-          console.log(this.placeIds)
-          this.getNamePlaces().then(() => {
-            this.getImgsPlaces()
-          })
-        }
+        this.placeIds = data.info
+        this.placeIds = this.placeIds
+          .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
+          .map((place) => place.idPlaceLugar)
+
+        // console.log("Desde getHistory:", toRaw(this.placeIds))
+        this.getNamePlaces()
       } catch (error) {
         console.error("Error al obtener lugares del historial:", error)
       }
     },
     async getNamePlaces() {
       try {
-        for (const place_id of this.placeIds) {
-          console.log(place_id)
+        // Utiliza Promise.all para realizar las solicitudes de manera simultánea
+        const requests = this.placeIds.map(async (placeid) => {
           const { data } = await apiFromBackend.get("/api/placeName", {
             params: {
-              place_id: place_id.idPlaceLugar,
+              place_id: placeid,
             },
           })
-          this.places.push(data.result)
-          this.placesImgsReferences.push(data.result.photos[0].photo_reference)
-        }
+          return data.result
+        })
+        const results = await Promise.all(requests)
+        this.places.push(...results)
+        this.placesImgsReferences.push(
+          ...results.map((result) =>
+            result.photos && result.photos.length > 0
+              ? result.photos[0].photo_reference
+              : "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
+          ),
+        )
         this.getImgsPlaces()
+        // console.log("Arreglo de referencias: ", this.placesImgsReferences)
       } catch (error) {
         console.log(error.message)
       }
@@ -193,7 +208,49 @@ export default {
         })
       }
     },
-
+    async updateFavorites(placeReference, isFavorite) {
+      // Lógica para actualizar la lista de favoritos
+      if (isFavorite) {
+        this.addToFavorites(placeReference)
+      } else {
+        this.removeFromFavorites(placeReference)
+      }
+    },
+    async removeFromFavorites(place) {
+      try {
+        const { data } = await apiFromBackend.delete("/api/favoritos", {
+          params: {
+            idPlaceLugar: place,
+          },
+        })
+        toast.success(data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        window.location.reload()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async addToFavorites(place) {
+      try {
+        const response = await apiFromBackend.post("/api/favoritos", {
+          idPlaceLugar: place,
+        })
+        toast.success("Lugar añadido a favoritos", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        console.log(response)
+      } catch ({ response }) {
+        const { data } = response
+        console.log(data)
+      }
+    },
     async deletePlace(place) {
       try {
         const { data } = await apiFromBackend.delete("/api/historial", {
@@ -212,33 +269,30 @@ export default {
         console.log(error)
       }
     },
-    async addToFavorties(place) {
+    async getFavorites(placeReference) {
       try {
-        const response = await apiFromBackend.post("/api/favoritos", {
-          idPlaceLugar: place.reference,
-        })
-        this.isInFavorites = true
-        toast.success("Lugar añadido a favoritos", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
-        console.log(response)
-      } catch ({ response }) {
-        const { data } = response
-        console.log(data)
-      }
-    },
-    async getFavorites() {
-      try {
+        // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/favoritos")
-        this.favorites = data.info
-        console.log(this.favorites)
+        // Actualizar los datos locales en el componente con los favoritos obtenidos
+        this.placeIdsFavs = data.info
+        this.placeIdsFavs = this.placeIdsFavs
+          .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
+          .map((place) => place.idPlaceLugar)
+
+        const isFavorite = this.placeIdsFavs.some(
+          (favorite) => favorite === placeReference,
+        )
+        console.log("Is in favorites:", isFavorite)
+        console.log("Arreglo de favoritos: ", this.placeIdsFavs)
+        console.log("Referencia de lugar de historial: ", placeReference)
+        return isFavorite
       } catch (error) {
-        console.log(error)
+        console.error("Error al obtener lugares del favoritos:", error)
       }
     },
+    // async isInFavorites(placeReference) {
+
+    // },
     goToHome() {
       this.$router.push({
         name: "home",
