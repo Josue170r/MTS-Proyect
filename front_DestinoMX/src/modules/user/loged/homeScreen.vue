@@ -352,6 +352,7 @@ export default {
     async getNearImages() {
       try {
         const imageURLs = []
+        console.log(this.photosReferences)
         for (const photoReference of this.photosReferences) {
           const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
