@@ -45,8 +45,12 @@
                     ></v-img>
                   </div>
                   <br />
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-list-item-title>{{ place.name }}</v-list-item-title>
+                  <div class="d-flex flex-column align-center">
+                    <v-list-item-title
+                      class="text-center"
+                      style="white-space: normal; overflow: hidden"
+                      >{{ place.name }}</v-list-item-title
+                    >
                     <v-rating
                       half-increments
                       hover

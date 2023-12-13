@@ -44,8 +44,12 @@
                     ></v-img>
                   </div>
                   <br />
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-list-item-title>{{ place.name }}</v-list-item-title>
+                  <div class="d-flex flex-column align-center">
+                    <v-list-item-title
+                      class="text-center"
+                      style="white-space: normal; overflow: hidden"
+                      >{{ place.name }}</v-list-item-title
+                    >
 
                     <div class="flex flex-row items-center">
                       <v-rating
@@ -59,11 +63,9 @@
                         active-color="rgb(232, 176, 36)"
                       />
                       <v-list-item-subtitle class="text-center mt-3 ml-4">
-                        <FavoriteIcon
-                          :fill="
-                            placeisInFavorites(place.reference)
-                              ? 'BLUE'
-                              : 'PINK'
+                        <FavoriteIcon2
+                          :isFavorite="
+                            placeIdsFavs.indexOf(place.reference) !== -1
                           "
                           @toggle-favorite="
                             updateFavorites(place.reference, $event)
@@ -112,7 +114,7 @@ import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
 import BurgerMenu from "@/components/buttons/BurgerMenu"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
-import FavoriteIcon from "@/components/icons/FavoriteIcon.vue"
+import FavoriteIcon2 from "@/components/icons/FavoriteIcon2.vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import { toRaw } from "vue"
@@ -123,7 +125,7 @@ export default {
     BurgerMenu,
     AvatarButton,
     deleteFav,
-    FavoriteIcon,
+    FavoriteIcon2,
   },
   data() {
     return {
@@ -133,10 +135,10 @@ export default {
       placeImages: [],
       placeIds: [],
       placeIdsFavs: [],
-      isfavorite: true,
     }
   },
   created() {
+    this.getFavorites()
     this.getHistory()
   },
 
@@ -160,13 +162,7 @@ export default {
           .map((place) => place.idPlaceLugar)
 
         // console.log("Desde getHistory:", toRaw(this.placeIds))
-
-        this.getNamePlaces().then(() => {
-          this.getImgsPlaces()
-          this.getFavorites()
-          this.getFavorites()
-          this.updateFavorites()
-        })
+        this.getNamePlaces()
       } catch (error) {
         console.error("Error al obtener lugares del historial:", error)
       }
@@ -184,10 +180,6 @@ export default {
         })
         const results = await Promise.all(requests)
         this.places.push(...results)
-
-        // Imprime el arreglo de places después de que todas las solicitudes se completen
-        // console.log("Arreglo de lugares: ", this.places)
-        // Agrega las referencias de imágenes al arreglo
         this.placesImgsReferences.push(
           ...results.map((result) =>
             result.photos && result.photos.length > 0
@@ -195,6 +187,7 @@ export default {
               : "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
           ),
         )
+        this.getImgsPlaces()
         // console.log("Arreglo de referencias: ", this.placesImgsReferences)
       } catch (error) {
         console.log(error.message)
@@ -225,7 +218,14 @@ export default {
         })
       }
     },
-
+    async updateFavorites(placeReference, isFavorite) {
+      // Lógica para actualizar la lista de favoritos
+      if (isFavorite) {
+        this.addToFavorites(placeReference)
+      } else {
+        this.removeFromFavorites(placeReference)
+      }
+    },
     async removeFromFavorites(place) {
       try {
         const { data } = await apiFromBackend.delete("/api/favoritos", {
@@ -249,7 +249,6 @@ export default {
         const response = await apiFromBackend.post("/api/favoritos", {
           idPlaceLugar: place,
         })
-        this.isInFavorites = this.isInFavorites(place.reference)
         toast.success("Lugar añadido a favoritos", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
@@ -264,7 +263,7 @@ export default {
     },
     async deletePlace(place) {
       try {
-        const { data } = await apiFromBackend.delete("/api/favoritos", {
+        const { data } = await apiFromBackend.delete("/api/historial", {
           params: {
             idPlaceLugar: place,
           },
@@ -290,32 +289,20 @@ export default {
           .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
           .map((place) => place.idPlaceLugar)
 
-        // console.log("Desde getFavorites en History:", toRaw(this.placeIdsFavs))
+        // const isFavorite = this.placeIdsFavs.some(
+        //   (favorite) => favorite === placeReference,
+        // )
+        // console.log("Is in favorites:", isFavorite)
+        // console.log("Arreglo de favoritos: ", this.placeIdsFavs)
+        // console.log("Referencia de lugar de historial: ", placeReference)
+        // return isFavorite
       } catch (error) {
         console.error("Error al obtener lugares del favoritos:", error)
       }
     },
-    async isInFavorites() {
-      try {
-        // Verifica si el id del lugar está en el arreglo de favoritos
-        this.isfavorite = this.placeIdsFavs.includes(this.placeIds)
+    // async isInFavorites(placeReference) {
 
-        // Imprime el resultado de la verificación para depuración
-        console.log("Is in favorites:", this.isfavorite)
-      } catch (error) {
-        console.error("Error al verificar si está en favoritos:", error)
-      }
-    },
-    async placeisInFavorites(placeReference) {
-      try {
-        const hola = this.idPlaceLugar.includes(placeReference)
-        console.log("****************", hola)
-        return hola
-      } catch (error) {
-        console.error("Error al verificar si está en favoritos:", error)
-        return false // En caso de error, devolver falso
-      }
-    },
+    // },
     goToHome() {
       this.$router.push({
         name: "home",

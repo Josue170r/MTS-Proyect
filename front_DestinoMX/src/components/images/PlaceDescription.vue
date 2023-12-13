@@ -345,9 +345,9 @@ export default {
       this.getImgPlace()
       this.getImgsPlaces()
       this.getWeather()
+      this.AddToHistory()
     })
     this.getFavorites()
-    this.AddToHistory()
   },
   methods: {
     copyToClipboard() {
