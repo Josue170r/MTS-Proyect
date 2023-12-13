@@ -78,6 +78,26 @@ export default {
     LocalitationIcon,
     Polyline,
   },
+  created() {
+    // Usar las coordenadas recibidas
+
+    this.$getLocation()
+      .then((coordinates) => {
+        // Utilizar las coordenadas recibidas o las coordenadas actuales si no hay error
+        this.relativePosition = {
+          lat: coordinates.lat,
+          lng: coordinates.lng,
+        }
+      })
+      .catch((error) => {
+        toast(error, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      })
+  },
   data() {
     return {
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
@@ -168,20 +188,6 @@ export default {
       }
       this.flightPath = flightPath
     },
-  },
-  created() {
-    this.$getLocation()
-      .then((coordinates) => {
-        this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
-      })
-      .catch((error) => {
-        toast(error, {
-          hideProgressBar: true,
-          autoClose: 1500,
-          type: "error",
-          theme: "colored",
-        })
-      })
   },
 }
 </script>
