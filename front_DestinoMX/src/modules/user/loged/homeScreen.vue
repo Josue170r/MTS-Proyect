@@ -199,6 +199,7 @@ import "swiper/css"
 import "swiper/css/pagination"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import CloseIcon from "@/components/icons/CloseIcon.vue"
+import BellIcon from "@/components/icons/BellIcon.vue"
 
 export default {
   name: "homeScreen",
@@ -210,6 +211,7 @@ export default {
     Swiper,
     SwiperSlide,
     CloseIcon,
+    BellIcon,
   },
   data() {
     return {
@@ -350,6 +352,7 @@ export default {
     async getNearImages() {
       try {
         const imageURLs = []
+        console.log(this.photosReferences)
         for (const photoReference of this.photosReferences) {
           const response = await apiFromBackend.get("/api/imgPlace", {
             params: {

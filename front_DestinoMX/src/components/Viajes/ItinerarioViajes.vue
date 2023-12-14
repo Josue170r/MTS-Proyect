@@ -17,10 +17,6 @@
           placeholder="Buscar..."
           @input="filterName"
         />
-        <!-- Botón de búsqueda 
-        <button class="bg-orange-300 text-gray-700 p-2 rounded-r-md"></button>
-        <SearchButton class="bg-black" />
-        -->
       </div>
 
       <div class="absolute top-6 right-2 transform -translate-x-1">
@@ -38,7 +34,7 @@
       class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
     >
       <!--INSERTAR DIV GLOBAL CON FONDO-->
-      <div class="bg-white rounded-lg p-8 mt-8">
+      <div class="bg-white rounded-lg p-8 mt-6">
         <!--Empieza el condicional-->
         <div
           class="flex flex-col items-center justify-center"
@@ -53,7 +49,7 @@
           <button
             type="button"
             @click="goToNewTripForm"
-            class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-yellow-300 mb-2"
+            class="block w-64 rounded-r-md py-4 rounded-lg text-black font-semibold bg-yellow-300 mb-2"
           >
             Crear Mi Primer Viaje
           </button>
@@ -61,9 +57,9 @@
 
         <div
           v-if="!isemptytrip"
-          class="flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
+          class="flex flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
         >
-          <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
+          <h1 class="text-gray-800 text-center text-2xl font-bold">
             Tus Proximos Viajes
           </h1>
           <div class="flex ml-4 mr-0 items-center justify-center">
@@ -77,27 +73,27 @@
           <div
             v-for="travel in travels"
             :key="travel.id"
-            class="flex ml-2 mr-0 justify-center"
+            class="flex flex-between ml-4 items-center justify-center"
           >
             <v-avatar
               :color="travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'"
               size="x-small"
             ></v-avatar>
-            <div class="flex flex-col ml-2 mr-0 items-center justify-center">
-              <h1 class="text-gray-800 ml-4 py-1 text-center text-xl font-bold">
+
+            <div class="flex flex-col mx-12">
+              <h1 class="text-gray-800 py-1 text-xl font-bold">
                 {{ travel.nombreMiViaje }}
               </h1>
-
-              <h1 class="text-gray-300 py-1 text-center text-l font-bold">
+              <h1 class="text-gray-300 py-1 text-l font-bold">
                 {{ travel.diaInicio.slice(0, 10) }} -
                 {{ travel.diaFinal.slice(0, 10) }}
               </h1>
-              <h1 class="text-gray-300 py-1 text-center text-l font-bold mb-2">
+              <h1 class="text-gray-300 py-1 text-l font-bold mb-2">
                 {{ travel.descripcionViaje }}
               </h1>
             </div>
             <button type="button" @click="goToEditTrip(travel)" class="ml-auto">
-              <GreaterThanIcon class="ml-4" />
+              <GreaterThanIcon class="ml-auto" />
             </button>
           </div>
         </div>

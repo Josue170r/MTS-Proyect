@@ -15,7 +15,6 @@ import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 import { mailerApi } from "./Mailer/mailer.js";
 import { routerRecuperacion } from "./routes/recuperacion.js";
 import { routerValidacion } from "./routes/verificacion.js";
-
 // Inicializando la aplicacion.
 const app = express();
 import cors from 'cors';
