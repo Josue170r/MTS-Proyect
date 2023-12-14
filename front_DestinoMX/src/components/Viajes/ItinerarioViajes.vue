@@ -81,6 +81,9 @@
             ></v-avatar>
 
             <div class="flex flex-col mx-12">
+              <button type="button" @click="goToNewTripForm" class="ml-auto">
+                <PlusIcon class="ml-4 flex flex-between" />
+              </button>
               <h1 class="text-gray-800 py-1 text-xl font-bold">
                 {{ travel.nombreMiViaje }}
               </h1>
