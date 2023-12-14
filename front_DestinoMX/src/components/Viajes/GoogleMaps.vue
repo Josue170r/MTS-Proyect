@@ -149,7 +149,6 @@ export default {
       this.$router.push({
         name: "placedescription",
         query: {
-          //manda el placeID del lugar seleccionado a PlaceDescription
           placeid: this.placeID,
         },
       })
