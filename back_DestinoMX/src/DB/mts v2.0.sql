@@ -113,18 +113,19 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `mts_database`.`lugaresdeviajes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`lugaresdeviajes` (
-  `idPlacesLugar` VARCHAR(500) NOT NULL,
+  `idPlacesLugar` INT NOT NULL AUTO_INCREMENT,
   `idViajes` INT NOT NULL,
   `fechaEspecifica` TEXT NOT NULL,
   `nombrePlaces` TEXT NOT NULL,
   `imagePlaces` TEXT NOT NULL,
-  PRIMARY KEY (`idPlacesLugar`, `idViajes`),
-  INDEX `fk_LugaresDeViajes_Viajes1_idx` (`idViajes` ASC) VISIBLE,
-  CONSTRAINT `fk_LugaresDeViajes_Viajes1`
+  `placeID` VARCHAR(500) NOT NULL,
+  PRIMARY KEY (`idPlacesLugar`),
+  INDEX `fk_lugaresdeviajes_viajes1_idx` (`idViajes` ASC) VISIBLE,
+  CONSTRAINT `fk_lugaresdeviajes_viajes1`
     FOREIGN KEY (`idViajes`)
     REFERENCES `mts_database`.`viajes` (`idViajes`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -153,53 +154,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-insert into catPreferencias values 
-('parque de atracciones','amusement_park'),
-('parque de atracciones','tourist_attraction'),
-('lugares religiosos','church'),
-('lugares religiosos','hindu_temple'),
-('lugares religiosos','mosque'),
-('lugares religiosos','synagogue'),
-('parque y areas naturales','aquarium'),
-('parque y areas naturales','campground'),
-('parque y areas naturales','florist'),
-('parque y areas naturales','park'),
-('parque y areas naturales','zoo'),
-('museos y galerias','art_gallery'),
-('museos y galerias','museum'),
-('museos y galerias','painter'),
-('bares y pubs','bar'),
-('bares y pubs','liquor_store'),
-('clubes nocturnos','night_club'),
-('centros de entretenimiento','bowling_alley'),
-('centros de entretenimiento','casino'),
-('centros de entretenimiento','movie_rental'),
-('centros de entretenimiento','movie_theater'),
-('centros de entretenimiento','stadium'),
-('restaurantes','restaurant'),
-('cafeterias','bakery'),
-('cafeterias','cafe'),
-('gym','gym'),
-('plazas','beauty_salon'),
-('plazas','clothing_store'),
-('plazas','department_store'),
-('plazas','electronics_store'),
-('plazas','furniture_store'),
-('plazas','hair_care'),
-('plazas','hardware_store'),
-('plazas','home_goods_store'),
-('plazas','jewelry_store'),
-('plazas','pet_store'),
-('plazas','shoe_store'),
-('plazas','shopping_mall'),
-('plazas','spa'),
-('plazas','storage'),
-('plazas','store'),
-('hoteles','lodging'),
-('bibliotecas','book_store'),
-('bibliotecas','library'),
-('momumentos y lugares publicos','city_hall'),
-('momumentos y lugares publicos','local_government_office');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
