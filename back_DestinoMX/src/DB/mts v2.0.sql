@@ -115,7 +115,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `mts_database`.`lugaresdeviajes` (
   `idPlacesLugar` VARCHAR(500) NOT NULL,
   `idViajes` INT NOT NULL,
-  `fechaEspecifica` DATE NOT NULL,
+  `fechaEspecifica` TEXT NOT NULL,
   `nombrePlaces` TEXT NOT NULL,
   `imagePlaces` TEXT NOT NULL,
   PRIMARY KEY (`idPlacesLugar`, `idViajes`),
