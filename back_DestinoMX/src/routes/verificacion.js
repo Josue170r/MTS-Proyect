@@ -9,8 +9,8 @@ const secretKey = 'MTS-2023';
 
 
 routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
-    //fecha y hora de vencimiento
-    const date=new Date(Date.now()+120000)
+    //fecha y hora de vencimiento, 5 minutos despues
+    const date=new Date(Date.now()+300000)
     console.log(date)
 
     let correo
@@ -31,7 +31,7 @@ routerValidacion.post("/api/cookie-cifra-creacion", (req,res) => {
     }
 
     try{
-        mandarCorreo(correo,"Codigo de verificación - MTS","<h2>Su código de verificacion es: </h2> <h3>"+cifra+"</h3>")
+        mandarCorreo(correo,"Código de verificación - MTS","<h2>Su código de verificación es: </h2> <h3>"+cifra+"</h3>")
     }
     catch(error){
         return res.status(500).json({exito:false,mensaje:"Correo no enviado"})

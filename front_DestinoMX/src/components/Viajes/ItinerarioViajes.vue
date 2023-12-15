@@ -34,7 +34,7 @@
       class="md:w-1/2 md:min-h-screen relative flex rounded-2xl items-center w-full flex-col mb-8"
     >
       <!--INSERTAR DIV GLOBAL CON FONDO-->
-      <div class="bg-white rounded-lg p-8">
+      <div class="bg-white rounded-lg p-8 mt-6">
         <!--Empieza el condicional-->
         <div
           class="flex flex-col items-center justify-center"
@@ -49,7 +49,7 @@
           <button
             type="button"
             @click="goToNewTripForm"
-            class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-yellow-300 mb-2"
+            class="block w-64 rounded-r-md py-4 rounded-lg text-black font-semibold bg-yellow-300 mb-2"
           >
             Crear Mi Primer Viaje
           </button>
@@ -59,7 +59,7 @@
           v-if="!isemptytrip"
           class="flex flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
         >
-          <h1 class="text-gray-800 py-6 text-center text-2xl font-bold">
+          <h1 class="text-gray-800 text-center text-2xl font-bold">
             Tus Proximos Viajes
           </h1>
           <div class="flex ml-4 mr-0 items-center justify-center">
@@ -73,15 +73,24 @@
           <div
             v-for="travel in travels"
             :key="travel.id"
-            class="flex flex-row ml-4 items-center justify-center"
+            class="flex flex-between ml-4 items-center justify-center"
           >
             <v-avatar
               :color="travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'"
               size="x-small"
             ></v-avatar>
 
-            <div class="flex flex-col place-items-center mx-12">
-              <h1 class="text-gray-800 py-1 text-xl ml-8 font-bold">
+            <div class="flex flex-col mx-12">
+              <div class="flex-row ml-1 absolute left-4">
+                <v-btn icon="mdi-pencil" size="small"></v-btn>
+                <v-btn
+                  @click="DeleteTrip(travel)"
+                  icon="mdi-trash-can-outline"
+                  size="small"
+                >
+                </v-btn>
+              </div>
+              <h1 class="text-gray-800 py-1 text-xl font-bold">
                 {{ travel.nombreMiViaje }}
               </h1>
               <h1 class="text-gray-300 py-1 text-l font-bold">
@@ -92,9 +101,13 @@
                 {{ travel.descripcionViaje }}
               </h1>
             </div>
-            <button type="button" @click="goToEditTrip(travel)" class="ml-auto">
+            <v-btn
+              icon="mdi-chevron-right"
+              @click="goToEditTrip(travel)"
+              class="ml-auto"
+            >
               <GreaterThanIcon class="ml-auto" />
-            </button>
+            </v-btn>
           </div>
         </div>
         <!--Div del else-->
@@ -162,6 +175,24 @@ export default {
       this.$router.push({
         name: "newtrip",
       })
+    },
+    async DeleteTrip(travel) {
+      try {
+        const { data } = await apiFromBackend.delete("/api/viaje", {
+          params: {
+            idViajes: travel.idViajes,
+          },
+        })
+        toast.success(data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        window.location.reload()
+      } catch (error) {
+        console.error(error)
+      }
     },
     filterName() {
       if (this.search === "") {

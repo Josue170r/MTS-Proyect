@@ -179,7 +179,13 @@
             <AddIcon class="ml-1" />
           </div>
         </button>
-        <PopUpAddTrip v-if="showPopup" @close-popup="hideAddToTripPopup" />
+        <PopUpAddTrip
+          v-if="showPopup"
+          @close-popup="hideAddToTripPopup"
+          :placeName="placeName"
+          :imgPlace="placeImage"
+          :placeId="placeiD"
+        />
       </div>
 
       <!-- Ratings -->
