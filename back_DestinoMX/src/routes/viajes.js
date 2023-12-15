@@ -11,7 +11,7 @@ routerViajes.get("/api/viaje", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesion." });
   } else {
     mySqlConnection.query(
-      `SELECT colorPlantilla,descripcionViaje,diaFinal,diaInicio,nombreMiViaje FROM viajes WHERE idUsuario = ${req.session.usuario.idUsuario};`,
+      `SELECT * FROM viajes WHERE idUsuario = ${req.session.usuario.idUsuario};`,
       (err, rows, fields) => {
         if (err) {
           res.status(500).json({
@@ -263,8 +263,14 @@ routerViajes.post("/api/sitios", (req, res) => {
       mensaje: "Se debe iniciar sesión",
     });
   else {
-    const { idPlacesLugar, idViajes, fechaEspecifica } = req.body;
-    const checkIDQuery = `SELECT * FROM lugaresdeviajes WHERE idViajes = ${idViajes}`;
+    const {
+      placeID,
+      idViajes,
+      fechaEspecifica,
+      nombrePlaces,
+      imagePlaces,
+    } = req.body;
+    const checkIDQuery = `SELECT * FROM viajes WHERE idViajes = "${idViajes}"`;
     mySqlConnection.query(checkIDQuery, (err, rows, fields) => {
       if (err)
         res.status(500).json({
@@ -279,12 +285,13 @@ routerViajes.post("/api/sitios", (req, res) => {
           err,
         });
       } else {
-        const addPlaceQuery = `INSERT INTO lugaresdeviajes values (${idPlacesLugar}, ${idViajes}, "${fechaEspecifica}");`;
+        const addPlaceQuery = `INSERT INTO lugaresdeviajes (idViajes,fechaEspecifica,nombrePlaces,imagePlaces,placeID) values (${idViajes}, "${fechaEspecifica}", "${nombrePlaces}", "${imagePlaces}", "${placeID}");`;
+        console.log(addPlaceQuery);
         mySqlConnection.query(addPlaceQuery, (err, rows, fields) => {
           if (err)
             res.status(500).json({
               exito: false,
-              mensaje: "Error en la consulta",
+              mensaje: "Error en la consulta1",
               err,
             });
           else {
@@ -355,9 +362,9 @@ routerViajes.delete("/api/sitios", (req, res) => {
       mensaje: "Se debe iniciar sesión",
     });
   else {
-    const { idPlacesLugar } = req.body;
+    const { placeID } = req.body;
 
-    const deleteSitio = `DELETE FROM lugaresdeviajes WHERE idPlacesLugar = ${idPlacesLugar};`;
+    const deleteSitio = `DELETE FROM lugaresdeviajes WHERE idPlacesLugar = ${placeID};`;
     mySqlConnection.query(deleteSitio, (err, rows, fields) => {
       if (err)
         res.status(500).json({
