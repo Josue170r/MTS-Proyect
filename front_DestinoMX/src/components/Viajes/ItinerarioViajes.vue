@@ -81,6 +81,15 @@
             ></v-avatar>
 
             <div class="flex flex-col mx-12">
+              <div class="flex-row ml-1 absolute left-4">
+                <v-btn icon="mdi-pencil" size="small"></v-btn>
+                <v-btn
+                  @click="DeleteTrip(travel)"
+                  icon="mdi-trash-can-outline"
+                  size="small"
+                >
+                </v-btn>
+              </div>
               <h1 class="text-gray-800 py-1 text-xl font-bold">
                 {{ travel.nombreMiViaje }}
               </h1>
@@ -92,9 +101,13 @@
                 {{ travel.descripcionViaje }}
               </h1>
             </div>
-            <button type="button" @click="goToEditTrip(travel)" class="ml-auto">
+            <v-btn
+              icon="mdi-chevron-right"
+              @click="goToEditTrip(travel)"
+              class="ml-auto"
+            >
               <GreaterThanIcon class="ml-auto" />
-            </button>
+            </v-btn>
           </div>
         </div>
         <!--Div del else-->
@@ -162,6 +175,24 @@ export default {
       this.$router.push({
         name: "newtrip",
       })
+    },
+    async DeleteTrip(travel) {
+      try {
+        const { data } = await apiFromBackend.delete("/api/viaje", {
+          params: {
+            idViajes: travel.idViajes,
+          },
+        })
+        toast.success(data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        window.location.reload()
+      } catch (error) {
+        console.error(error)
+      }
     },
     filterName() {
       if (this.search === "") {

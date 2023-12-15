@@ -207,7 +207,7 @@ routerViajes.delete("/api/viaje", (req, res) => {
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeEliminacion = `DELETE FROM viajes WHERE idViajes = ${req.body.idViajes}`;
+    const consultaDeEliminacion = `DELETE FROM viajes WHERE idViajes = ${req.query.idViajes}`;
     mySqlConnection.query(consultaDeEliminacion, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
