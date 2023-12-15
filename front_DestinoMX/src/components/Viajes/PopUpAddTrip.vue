@@ -22,7 +22,7 @@
               class="text-start"
               v-for="date in dates[index]"
               :key="date"
-              @click="addToTrip(date)"
+              @click="addToTrip(date, travel)"
             >
               {{ date }}
             </v-expansion-panel-text>
@@ -76,10 +76,25 @@ import { format, addDays, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
 
 export default {
+  props: {
+    placeName: {
+      required: true,
+      type: String,
+    },
+    imgPlace: {
+      required: true,
+      type: String,
+    },
+    placeId: {
+      required: true,
+      type: String,
+    },
+  },
   data() {
     return {
       travels: [],
       dates: [],
+      namePlace: this.placeName,
     }
   },
   created() {
@@ -101,13 +116,23 @@ export default {
           const dateRange = this.setDateArray(travel.diaInicio, travel.diaFinal)
           this.dates.push(dateRange)
         })
-        console.log(this.dates)
       } catch (error) {
         console.error(error)
       }
     },
-    async addToTrip(date) {
-      console.log(date)
+    async addToTrip(date, travel) {
+      try {
+        const response = await apiFromBackend.post("/api/sitios", {
+          placeID: this.placeId,
+          idViajes: travel.idViajes,
+          fechaEspecifica: date,
+          nombrePlaces: this.namePlace,
+          imagePlaces: this.imgPlace,
+        })
+        console.log(response)
+      } catch (error) {
+        console.log(error)
+      }
     },
     UpperDate(texto) {
       return texto.charAt(0).toUpperCase() + texto.slice(1)
