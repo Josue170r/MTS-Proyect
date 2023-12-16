@@ -66,7 +66,7 @@ routerSitios.post("/api/sitios", (req, res) => {
           err,
         });
       } else {
-        const verifyExistingPlaceQuery = `SELECT * FROM lugaresdeviajes WHERE placeID = ? AND idViajes = ?;`;
+        const verifyExistingPlaceQuery = `SELECT * FROM lugaresdeviajes WHERE placeID = "${placeID}" and fechaEspecifica = "${fechaEspecifica}"`;
         mySqlConnection.query(
           verifyExistingPlaceQuery,
           [placeID, idViajes],
@@ -80,7 +80,7 @@ routerSitios.post("/api/sitios", (req, res) => {
             else if (rows.length > 0)
               res.status(409).json({
                 exito: false,
-                mensaje: "Este sitio ya existe en el viaje",
+                mensaje: `Este sitio ya se encuentra en el día ${fechaEspecifica}`,
                 info: rows,
               });
             else {

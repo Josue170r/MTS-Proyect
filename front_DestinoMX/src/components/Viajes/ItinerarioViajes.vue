@@ -69,45 +69,45 @@
           </div>
         </div>
 
-        <div v-if="!isemptytrip">
-          <div
-            v-for="travel in travels"
-            :key="travel.id"
-            class="flex flex-between ml-4 items-center justify-center"
-          >
-            <v-avatar
-              :color="travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'"
-              size="x-small"
-            ></v-avatar>
-
-            <div class="flex flex-col mx-12">
-              <div class="flex-row ml-1 absolute left-4">
-                <v-btn icon="mdi-pencil" size="small"></v-btn>
-                <v-btn
-                  @click="DeleteTrip(travel)"
-                  icon="mdi-trash-can-outline"
-                  size="small"
-                >
-                </v-btn>
-              </div>
-              <h1 class="text-gray-800 py-1 text-xl font-bold">
-                {{ travel.nombreMiViaje }}
-              </h1>
-              <h1 class="text-gray-300 py-1 text-l font-bold">
-                {{ travel.diaInicio.slice(0, 10) }} -
-                {{ travel.diaFinal.slice(0, 10) }}
-              </h1>
-              <h1 class="text-gray-300 py-1 text-l font-bold mb-2">
-                {{ travel.descripcionViaje }}
-              </h1>
+        <div v-if="!isemptytrip" class="mt-5">
+          <div v-for="travel in travels" :key="travel.id">
+            <div class="flex-row">
+              <v-btn icon="mdi-pencil" size="small" class="mr-4"></v-btn>
+              <v-btn
+                @click="DeleteTrip(travel)"
+                icon="mdi-trash-can-outline"
+                size="small"
+              >
+              </v-btn>
             </div>
-            <v-btn
-              icon="mdi-chevron-right"
-              @click="goToEditTrip(travel)"
-              class="ml-auto"
-            >
-              <GreaterThanIcon class="ml-auto" />
-            </v-btn>
+            <div class="flex flex-between ml-4 items-center justify-center">
+              <v-avatar
+                :color="
+                  travel.colorPlantilla ? travel.colorPlantilla : '#FFB74D'
+                "
+                size="x-small"
+              ></v-avatar>
+
+              <div class="flex flex-col mx-6">
+                <h1 class="text-gray-800 py-1 text-xl font-bold">
+                  {{ travel.nombreMiViaje }}
+                </h1>
+                <h1 class="text-gray-300 py-1 text-l font-bold">
+                  {{ travel.diaInicio.slice(0, 10) }} -
+                  {{ travel.diaFinal.slice(0, 10) }}
+                </h1>
+                <h1 class="text-gray-300 py-1 text-l font-bold mb-2">
+                  {{ travel.descripcionViaje }}
+                </h1>
+              </div>
+              <v-btn
+                icon="mdi-chevron-right"
+                @click="goToEditTrip(travel)"
+                class="ml-auto"
+              >
+                <GreaterThanIcon class="ml-auto" />
+              </v-btn>
+            </div>
           </div>
         </div>
         <!--Div del else-->
