@@ -60,7 +60,7 @@
             <button
               :disabled="isFormEmpty"
               type="submit"
-              class="text-lg h-11 font-quicksand block w-full mt-4 py-2 rounded-lg text-gray font-semibold mb-2 bg-orange-300"
+              class="text-lg text-white h-11 font-quicksand block w-full mt-4 py-2 rounded-lg font-semibold mb-2 bg-orange-300"
               :class="[
                 isFormEmpty
                   ? 'opacity-60 cursor-not-allowed'
