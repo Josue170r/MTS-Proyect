@@ -66,7 +66,7 @@ routerSitios.post("/api/sitios", (req, res) => {
           err,
         });
       } else {
-        const verifyExistingPlaceQuery = `SELECT * FROM lugaresdeviajes WHERE placeID = ? AND idViajes = ?;`;
+        const verifyExistingPlaceQuery = `SELECT * FROM lugaresdeviajes WHERE placeID = "${placeID}" and fechaEspecifica = "${fechaEspecifica}"`;
         mySqlConnection.query(
           verifyExistingPlaceQuery,
           [placeID, idViajes],
