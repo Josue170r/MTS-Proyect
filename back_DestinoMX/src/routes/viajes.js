@@ -1,4 +1,3 @@
-import { VARCHAR } from "mysql/lib/protocol/constants/types.js";
 import { mySqlConnection } from "../DB/DB_connection.js";
 import { Router } from "express";
 
@@ -207,7 +206,7 @@ routerViajes.delete("/api/viaje", (req, res) => {
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
   } else {
-    const consultaDeEliminacion = `DELETE FROM viajes WHERE idViajes = ${req.body.idViajes}`;
+    const consultaDeEliminacion = `DELETE FROM viajes WHERE idViajes = ${req.query.idViajes}`;
     mySqlConnection.query(consultaDeEliminacion, (err, rows, fields) => {
       if (err) {
         res.status(500).json({
@@ -219,164 +218,6 @@ routerViajes.delete("/api/viaje", (req, res) => {
         res
           .status(200)
           .json({ exito: true, mensaje: "Viaje eliminado correctamente." });
-      }
-    });
-  }
-});
-
-routerViajes.get("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
-    res.status(403).json({
-      exito: false,
-      mensaje: "Se debe iniciar sesión",
-    });
-  else {
-    const getViajesQuery = `SELECT idPlacesLugar, fechaEspecifica FROM lugaresdeviajes WHERE idViajes = ?`;
-    const { idViajes } = req.body;
-    mySqlConnection.query(getViajesQuery, [idViajes], (err, rows, fields) => {
-      if (err)
-        res.status(500).json({
-          exito: false,
-          mensaje: "Error en la consulta",
-          err,
-        });
-      else if (rows.length === 0) {
-        res.status(200).json({
-          exito: true,
-          mensaje: "No tienes sitios agregados",
-        });
-      } else {
-        res.status(200).json({
-          exito: true,
-          mensaje: "Datos recopilados con éxito",
-          info: rows,
-        });
-      }
-    });
-  }
-});
-
-routerViajes.post("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
-    res.status(403).json({
-      exito: false,
-      mensaje: "Se debe iniciar sesión",
-    });
-  else {
-    const {
-      placeID,
-      idViajes,
-      fechaEspecifica,
-      nombrePlaces,
-      imagePlaces,
-    } = req.body;
-    const checkIDQuery = `SELECT * FROM viajes WHERE idViajes = "${idViajes}"`;
-    mySqlConnection.query(checkIDQuery, (err, rows, fields) => {
-      if (err)
-        res.status(500).json({
-          exito: false,
-          mensaje: "Error en la consulta",
-          err,
-        });
-      else if (rows.length === 0) {
-        res.status(404).json({
-          exito: false,
-          mensaje: "No existe el viaje.",
-          err,
-        });
-      } else {
-        const addPlaceQuery = `INSERT INTO lugaresdeviajes (idViajes,fechaEspecifica,nombrePlaces,imagePlaces,placeID) values (${idViajes}, "${fechaEspecifica}", "${nombrePlaces}", "${imagePlaces}", "${placeID}");`;
-        console.log(addPlaceQuery);
-        mySqlConnection.query(addPlaceQuery, (err, rows, fields) => {
-          if (err)
-            res.status(500).json({
-              exito: false,
-              mensaje: "Error en la consulta1",
-              err,
-            });
-          else {
-            res.status(200).json({
-              exito: true,
-              mensaje: "Sitio añadido con éxito a tu viaje",
-              info: rows,
-            });
-          }
-        });
-      }
-    });
-  }
-});
-
-routerViajes.put("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
-    res.status(403).json({
-      exito: false,
-      mensaje: "Se debe iniciar sesión",
-    });
-  else {
-    const { idPlacesLugar, fechaEspecifica } = req.body;
-    const checkIDQuery = `SELECT * FROM lugaresdeviajes WHERE idPlacesLugar = ?`;
-    mySqlConnection.query(
-      checkIDQuery,
-      [idPlacesLugar],
-      (err, rows, fields) => {
-        if (err)
-          res.status(500).json({
-            exito: false,
-            mensaje: "Error en la consulta",
-            err,
-          });
-        else if (rows.length === 0) {
-          res.status(404).json({
-            exito: false,
-            mensaje: "No existe el viaje.",
-            err,
-          });
-        } else {
-          const updatePlaceQuery = `UPDATE lugaresdeviajes SET fechaEspecifica= "${fechaEspecifica}" WHERE idPlacesLugar = ${idPlacesLugar};`;
-          mySqlConnection.query(updatePlaceQuery, (err, rows, fields) => {
-            if (err)
-              res.status(500).json({
-                exito: false,
-                mensaje: "Error en la consulta",
-                err,
-              });
-            else {
-              res.status(200).json({
-                exito: true,
-                mensaje: "Sitio modificado con éxito a tu viaje",
-                info: rows,
-              });
-            }
-          });
-        }
-      }
-    );
-  }
-});
-
-routerViajes.delete("/api/sitios", (req, res) => {
-  if (!req.session.usuario)
-    res.status(403).json({
-      exito: false,
-      mensaje: "Se debe iniciar sesión",
-    });
-  else {
-    const { placeID } = req.body;
-
-    const deleteSitio = `DELETE FROM lugaresdeviajes WHERE idPlacesLugar = ${placeID};`;
-    mySqlConnection.query(deleteSitio, (err, rows, fields) => {
-      if (err)
-        res.status(500).json({
-          exito: false,
-          mensaje: "Error en la consulta",
-          err,
-        });
-      else {
-        res.status(200).json({
-          exito: true,
-          mensaje: "Viaje eliminado con éxito",
-        });
       }
     });
   }
