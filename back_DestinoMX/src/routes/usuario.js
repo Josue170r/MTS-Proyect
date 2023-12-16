@@ -17,6 +17,7 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
         });
       } else {
         res
+        
           .status(200)
           .json({ exito: true, mensaje: "¡La cuenta ha sido eliminada!" });
       }
