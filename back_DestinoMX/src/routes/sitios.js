@@ -11,8 +11,8 @@ routerSitios.get("/api/sitios", (req, res) => {
       mensaje: "Se debe iniciar sesión",
     });
   else {
-    const getSitiosQuery = `SELECT idPlacesLugar, fechaEspecifica FROM lugaresdeviajes WHERE idViajes = ?`;
-    const { idViajes } = req.body;
+    const getSitiosQuery = `SELECT * FROM lugaresdeviajes WHERE idViajes = ?`;
+    const { idViajes } = req.query;
     mySqlConnection.query(getSitiosQuery, [idViajes], (err, rows, fields) => {
       if (err)
         res.status(500).json({
@@ -66,7 +66,13 @@ routerSitios.post("/api/sitios", (req, res) => {
           err,
         });
       } else {
-        const verifyExistingPlaceQuery = `SELECT * FROM lugaresdeviajes WHERE placeID = "${placeID}" and fechaEspecifica = "${fechaEspecifica}"`;
+        const verifyExistingPlaceQuery = `
+          SELECT *
+          FROM lugaresdeviajes
+          WHERE placeID = "${placeID}"
+            AND fechaEspecifica = "${fechaEspecifica}"
+            AND idViajes = ${idViajes}
+        `;
         mySqlConnection.query(
           verifyExistingPlaceQuery,
           [placeID, idViajes],
@@ -84,7 +90,10 @@ routerSitios.post("/api/sitios", (req, res) => {
                 info: rows,
               });
             else {
-              const addPlaceQuery = `INSERT INTO lugaresdeviajes (idViajes,fechaEspecifica,nombrePlaces,imagePlaces,placeID) values (${idViajes}, "${fechaEspecifica}", "${nombrePlaces}", "${imagePlaces}", "${placeID}");`;
+              const addPlaceQuery = `
+                INSERT INTO lugaresdeviajes (idViajes, fechaEspecifica, nombrePlaces, imagePlaces, placeID)
+                VALUES (${idViajes}, "${fechaEspecifica}", "${nombrePlaces}", "${imagePlaces}", "${placeID}");
+              `;
               mySqlConnection.query(addPlaceQuery, (err, rows, fields) => {
                 if (err)
                   res.status(500).json({
@@ -140,7 +149,11 @@ routerSitios.put("/api/sitios", (req, res) => {
             err,
           });
         } else {
-          const updateTripQuery = `UPDATE lugaresdeviajes SET fechaEspecifica= "${fechaEspecifica}", nombrePlaces="${nombrePlaces}", imagePlaces="${imagePlaces}" WHERE placeID="${placeID}" AND idViajes="${idViajes}";`;
+          const updateTripQuery = `
+            UPDATE lugaresdeviajes
+            SET fechaEspecifica= "${fechaEspecifica}", nombrePlaces="${nombrePlaces}", imagePlaces="${imagePlaces}"
+            WHERE placeID="${placeID}" AND idViajes="${idViajes}";
+          `;
           mySqlConnection.query(updateTripQuery, (err, rows, fields) => {
             if (err)
               res.status(500).json({
@@ -169,9 +182,11 @@ routerSitios.delete("/api/sitios", (req, res) => {
       mensaje: "Se debe iniciar sesión",
     });
   else {
-    const { placeID, fechaEspecifica, idViajes } = req.body;
-
-    const deleteSitio = `DELETE FROM lugaresdeviajes WHERE placeID = "${placeID}" AND fechaEspecifica="${fechaEspecifica}" AND idViajes="${idViajes}";`;
+    const { placeID, fechaEspecifica, idViajes } = req.query;
+    const deleteSitio = `
+      DELETE FROM lugaresdeviajes
+      WHERE placeID = "${placeID}" AND fechaEspecifica="${fechaEspecifica}" AND idViajes="${idViajes}";
+    `;
     mySqlConnection.query(deleteSitio, (err, rows, fields) => {
       if (err)
         res.status(500).json({
@@ -182,7 +197,7 @@ routerSitios.delete("/api/sitios", (req, res) => {
       else {
         res.status(200).json({
           exito: true,
-          mensaje: "Viaje eliminado con éxito",
+          mensaje: "Sitio eliminado con éxito",
         });
       }
     });

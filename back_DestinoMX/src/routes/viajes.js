@@ -145,7 +145,11 @@ routerViajes.put("/api/viaje", (req, res) => {
               .json({ exito: false, mensaje: "Viaje inexistente." });
           } else {
             const nombreViajeSQL = req.body.nombreMiViaje.trim();
-            const consultaNombreViaje = `SELECT * FROM viajes WHERE idViajes = ${req.body.idViajes} AND nombreMiViaje = "${nombreViajeSQL}"`;
+            const consultaNombreViaje = `
+              SELECT *
+              FROM viajes
+              WHERE nombreMiViaje = "${nombreViajeSQL}"
+            `;
             mySqlConnection.query(consultaNombreViaje, (err, rows, fields) => {
               if (err) {
                 res.status(500).json({
@@ -153,26 +157,24 @@ routerViajes.put("/api/viaje", (req, res) => {
                   mensaje: "Error en la consulta",
                   err: err,
                 });
-              } else if (rows.length > 0)
+              } else if (rows.length > 0 && Number(rows[0].idViajes) !== Number(req.body.idViajes)) {
                 res.status(409).json({
                   exito: false,
                   mensaje: "Ya existe un viaje con ese nombre.",
                 });
-              else {
-                const diaInicio = new Date(req.body.diaInicio);
-                const diaFinal = new Date(req.body.diaFinal);
-
-                const diaInicioSQL = diaInicio.toISOString().slice(0, 10);
-                const diaFinalSQL = diaFinal.toISOString().slice(0, 10);
-
+              } else {
                 const {
                   idViajes,
-                  nombreMiViaje,
                   descripcionViaje,
                   colorPlantilla,
                 } = req.body;
-                const consultaActualizarViaje = `UPDATE viajes SET nombreMiViaje = "${nombreMiViaje}", descripcionViaje = "${descripcionViaje}", diaInicio = '${diaInicioSQL}', diaFinal = '${diaFinalSQL}', colorPlantilla = '${colorPlantilla}' where idViajes = ${idViajes};`;
-
+                const consultaActualizarViaje = `
+                  UPDATE viajes
+                  SET nombreMiViaje = "${nombreViajeSQL}",
+                      descripcionViaje = "${descripcionViaje}",
+                      colorPlantilla = '${colorPlantilla}'
+                  WHERE idViajes = ${idViajes};
+                `;
                 mySqlConnection.query(
                   consultaActualizarViaje,
                   (err, rows, fields) => {
