@@ -10,7 +10,7 @@ const getApiRoute = axios.create({
   baseURL: "https://maps.googleapis.com/maps/api/directions",
 })
 
-const apiKey = "AIzaSyB9R_VtRFtlQfSX7ulfslNIt2T-H3lNVNQ";
+const apiKey = "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA";
 
 export const routerApiDetails = Router();
 

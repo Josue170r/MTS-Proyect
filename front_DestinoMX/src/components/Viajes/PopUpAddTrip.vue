@@ -22,7 +22,7 @@
               class="text-start"
               v-for="date in dates[index]"
               :key="date"
-              @click="addToTrip(date)"
+              @click="addToTrip(date, travel)"
             >
               {{ date }}
             </v-expansion-panel-text>
@@ -74,12 +74,28 @@
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import { format, addDays, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
+import { toast } from "vue3-toastify"
 
 export default {
+  props: {
+    placeName: {
+      required: true,
+      type: String,
+    },
+    imgPlace: {
+      required: true,
+      type: String,
+    },
+    placeId: {
+      required: true,
+      type: String,
+    },
+  },
   data() {
     return {
       travels: [],
       dates: [],
+      namePlace: this.placeName,
     }
   },
   created() {
@@ -101,13 +117,33 @@ export default {
           const dateRange = this.setDateArray(travel.diaInicio, travel.diaFinal)
           this.dates.push(dateRange)
         })
-        console.log(this.dates)
       } catch (error) {
         console.error(error)
       }
     },
-    async addToTrip(date) {
-      console.log(date)
+    async addToTrip(date, travel) {
+      try {
+        const { data } = await apiFromBackend.post("/api/sitios", {
+          placeID: this.placeId,
+          idViajes: travel.idViajes,
+          fechaEspecifica: date,
+          nombrePlaces: this.namePlace,
+          imagePlaces: this.imgPlace,
+        })
+        toast.success(data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
     },
     UpperDate(texto) {
       return texto.charAt(0).toUpperCase() + texto.slice(1)

@@ -87,8 +87,6 @@ export function mandarCorreo(to, subject, text){
     <body>
         <img class="tamaño" src="https://lh3.googleusercontent.com/pw/ADCreHfKG3Xi0yjFeFAPcRPLKdsFjKt4mYKs9ZGyGOosY5-dNgqonGh7TuwaqjA5jKux5FbK3vyg5yHBUTK5X6bTW8BwNuSIAhdu9MQl-xOr6AVlcfEg05u68iM8o6ugZb5XckW2TS6AOv5zPXtsMkw7FR8p=w2046-h145-s-no?authuser=0" alt="MTS: Mexico Travel Solutions">
         <img src="https://lh3.googleusercontent.com/pw/ADCreHeuEDAWeyVNA6tlc2NtJNhFIAXPg1aYqO9QEt3gBZUyGzwue8Mw4LweOPL6C8Bxh04D_29X_g4LuvdYzAiiax0fX_Iubo0D7K0F0oz4LMK9KRQJ9dGDFd8sJ6G2FCavY9P1gm_qAwbDxXlPxLOQ5Uui=w950-h300-s-no-gm?authuser=0" alt="bannerMTS">
-        <h2>El siguiente código de verificación es válido durante los proximos: </h2>
-        <p>2 minutos</p>
         <p>${text}</p>    
     </body>
 </html>
@@ -102,7 +100,7 @@ export function mandarCorreo(to, subject, text){
         return res.status(400).json({exito:false,mensaje:error});
         }
         console.log('Email sent: ' + info.response);
-        return res.status(200).json({exito:true,mensaje:"Se ha enviado correctamente"});
+        return res.status(200).json({exito:true,mensaje:"Te enviamos un código a tu correo electrónico"});
   });
 }
 

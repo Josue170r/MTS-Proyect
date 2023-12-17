@@ -100,39 +100,140 @@
           </h2>
           <ul class="justify-start">
             <li
-              class="text-gray-800 py-2 px-6 text-center text-m leading-5 underline font-bold"
+              @click="toggleAnswer(1)"
+              :class="{
+                'text-orange-500': showAnswer[1],
+                'text-gray-800': !showAnswer[1],
+              }"
+              class="py-2 px-6 text-center text-m leading-5 underline font-bold cursor-pointer"
             >
               ¿Qué debo hacer si no recuerdo mi usuario y/o contraseña?
             </li>
             <li
-              class="text-gray-800 py-2 px-6 text-center text-m leading-5 underline font-bold"
+              v-if="showAnswer[1]"
+              class="text-gray-800 py-2 px-6 text-center text-m leading-5"
+            >
+              Si olvidaste tu contraseña o usuario no te preocupes, dirígete a
+              la sección de ““Recuperar contraseña“ presionando en la palabra
+              “Olvidé mi contraseña“ que se encuentra en el inicio de sesión.
+              Así mismo, si tu cuenta está registrada por correo de Google o
+              Usuario de Facebook, revisa si cuentas con conexión a Internet o
+              cierra y vuelve abrir la aplicación.
+            </li>
+            <!-- Repite el patrón para las demás preguntas -->
+
+            <li
+              @click="toggleAnswer(2)"
+              :class="{
+                'text-orange-500': showAnswer[2],
+                'text-gray-800': !showAnswer[2],
+              }"
+              class="py-2 px-6 text-center text-m leading-5 underline font-bold cursor-pointer"
             >
               ¿Existen compras dentro de la aplicación?
             </li>
             <li
-              class="text-gray-800 py-2 px-6 text-center text-m leading-5 underline font-bold"
+              v-if="showAnswer[2]"
+              class="text-gray-800 py-2 px-6 text-center text-m leading-5"
+            >
+              La aplicación de DestinoMX© no cuenta con compras dentro de la
+              aplicación ni tampoco debes pagar por usar nuestro servicio, por
+              lo que DestinoMX© no te obligará a compartir tus datos ni pedirte
+              medios de pago dentro o fuera de la aplicación. Si recibes
+              mensajes u otras medios de comunicación que se hacen pasar por
+              DestinoMX© para pagar por nuestros servicios, denúncialo ante las
+              autoridades correspondientes y evita a toda costa de caer en una
+              estafa.
+            </li>
+            <li
+              @click="toggleAnswer(3)"
+              :class="{
+                'text-orange-500': showAnswer[3],
+                'text-gray-800': !showAnswer[3],
+              }"
+              class="py-2 px-6 text-center text-m leading-5 underline font-bold cursor-pointer"
             >
               ¿Cómo puedo volver a consultar los lugares favoritos que
               seleccioné anteriormente?
             </li>
             <li
-              class="text-gray-800 py-2 px-6 text-center text-m leading-5 underline font-bold"
+              v-if="showAnswer[3]"
+              class="text-gray-800 py-2 px-6 text-center text-m leading-5"
+            >
+              En la sección de “Favoritos“ que se encuentra en la aplicación, se
+              encontrarán todos los lugares favoritos que elegiste para volver a
+              consultar la información que necesites y puedas tenerla accesible
+              en todo momento que uses la aplicación.
+            </li>
+            <li
+              @click="toggleAnswer(4)"
+              :class="{
+                'text-orange-500': showAnswer[4],
+                'text-gray-800': !showAnswer[4],
+              }"
+              class="py-2 px-6 text-center text-m leading-5 underline font-bold cursor-pointer"
             >
               ¿Por qué la aplicación me pide mis datos personales?
             </li>
             <li
-              class="text-gray-800 py-2 px-6 text-center justify-center text-m leading-5 underline font-bold"
+              v-if="showAnswer[4]"
+              class="text-gray-800 py-2 px-6 text-center text-m leading-5"
+            >
+              Tus datos personales como Nombre, Correo y/o Ubicación actual, las
+              usamos para poderte ofrecer un servicio eficiente al momento de
+              uses nuestra aplicación. Si tienes más dudas acerca de cómo usamos
+              tus datos y para qué los usamos, puedes consultar nuestros
+              Términos y Condiciones como también nuestra Política de Privacidad
+              para obtengas mayor información más detallada, estas secciones las
+              puedes encontrar en la configuración de la aplicación, presionando
+              en el botón de las “tres barras“ y después en el botón del
+              “engrane“ correspondientemente.
+            </li>
+            <li
+              @click="toggleAnswer(5)"
+              :class="{
+                'text-orange-500': showAnswer[5],
+                'text-gray-800': !showAnswer[5],
+              }"
+              class="py-2 px-6 text-center text-m leading-5 underline font-bold cursor-pointer"
             >
               ¿Cómo puedo agregar una reseña del lugar que visité?
             </li>
             <li
-              class="text-gray-800 py-2 px-6 text-center justify-center text-m leading-5 underline font-bold"
+              v-if="showAnswer[5]"
+              class="text-gray-800 py-2 px-6 text-center text-m leading-5"
+            >
+              Al momento de seleccionar el lugar que haya elegido, existe una
+              sección abajo de la información del lugar que ofrece un espacio
+              para agregar una reseña propia, esta sección puedes agregar una
+              reseña del lugar que se haya visitado y quieras compartir tu
+              experiencia. Para esto, recuerda que debes respetar los Términos y
+              Condiciones de nuestra aplicación, por lo que no se permitirá
+              comentario ofensivos hacia personas o terceros en tu reseña que
+              desees agregar.
+            </li>
+            <li
+              @click="toggleAnswer(6)"
+              :class="{
+                'text-orange-500': showAnswer[6],
+                'text-gray-800': !showAnswer[6],
+              }"
+              class="py-2 px-6 text-center text-m leading-5 underline font-bold cursor-pointer"
             >
               ¿Cómo puedo encontrar el lugar exacto que me gustaría visitar?
             </li>
+            <li
+              v-if="showAnswer[6]"
+              class="text-gray-800 py-2 px-6 text-center text-m leading-5"
+            >
+              Dentro de la publicación del lugar, encontrarás un botón que dirá
+              “Cómo llegar“, presionando dicho botón, te redigirá a una
+              aplicación de transporte que te recomendará los medios de
+              transporte y tiempos de horas más adecuados y efectivos para
+              llegar al destino a partir de tu ubicación.
+            </li>
           </ul>
         </div>
-
         <h2
           class="text-gray-800 py-2 px-6 text-center justify-center text-m leading-5"
         >
@@ -170,9 +271,17 @@ export default {
     AvatarButton,
     BurgerMenu,
   },
+  data() {
+    return {
+      showAnswer: [false, false, false, false, false, false],
+    }
+  },
   methods: {
     goToHome() {
       this.$router.push("/home")
+    },
+    toggleAnswer(index) {
+      this.showAnswer[index] = !this.showAnswer[index]
     },
   },
 }
