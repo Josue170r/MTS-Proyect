@@ -92,7 +92,11 @@
               <div
                 class="bg-white flex flex-row md:flex-row space-x-4 flex md:h-1/3 rounded-lg"
               >
-                <v-btn v-bind="props" class="text-center mt-4 my-5">
+                <v-btn
+                  :disabled="isEdit"
+                  v-bind="props"
+                  class="text-center mt-4 my-5"
+                >
                   Fecha de inicio
                 </v-btn>
                 <h2 class="mb-3 my-5">
@@ -135,7 +139,11 @@
               <div
                 class="bg-white flex flex-row md:flex-row space-x-4 min-w-screen flex md:h-1/3 rounded-lg"
               >
-                <v-btn v-bind="props" class="text-center mt-4 my-5">
+                <v-btn
+                  :disabled="isEdit"
+                  v-bind="props"
+                  class="text-center mt-4 my-5"
+                >
                   Fecha de fin
                 </v-btn>
                 <h2 class="mb-3 my-5">Fecha de Fin: <br />{{ endDate }}</h2>
@@ -169,7 +177,7 @@
             </div>
           </v-dialog>
         </div>
-        <div class="flex-row flex w-full items-center space-x-4">
+        <div class="flex justify-center items-center space-x-4">
           <button
             type="button"
             class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
@@ -229,10 +237,34 @@ export default {
       dialogColor: false,
       dialog: false,
       dialog2: false,
+      isEdit: false,
     }
   },
+  created() {
+    this.startDate = this.$route.query.diaInicio
+      ? this.$route.query.diaInicio
+      : ""
+    this.endDate = this.$route.query.diaFinal ? this.$route.query.diaFinal : ""
+    this.trip.TripName = this.$route.query.travel
+      ? this.$route.query.travel
+      : ""
+    this.trip.DescriptionTrip = this.$route.query.descripcion
+      ? this.$route.query.descripcion
+      : ""
+    this.ColorInputPicker = this.$route.query.colorPlantilla
+      ? this.$route.query.colorPlantilla
+      : ""
+    this.isEdit = this.$route.query.isEdit ? true : false
+  },
   methods: {
-    async onSubmit() {
+    onSubmit() {
+      if (this.isEdit) {
+        this.updateTrip()
+      } else {
+        this.saveTrip()
+      }
+    },
+    async saveTrip() {
       try {
         const { data } = await apiFromBackend.post("/api/viaje", {
           nombreMiViaje: this.trip.TripName,
@@ -260,23 +292,34 @@ export default {
         })
       }
     },
-    validateDateRange() {
-      // Agrega lógica para validar el rango de fechas aquí.
-      // if (this.startDate && this.endDate && this.startDate > this.endDate) {
-      //   // Si la fecha de inicio es posterior a la fecha de fin, ajusta las fechas.
-      //   const temp = this.startDate
-      //   this.startDate = this.endDate
-      //   this.endDate = temp
-      // }
-    },
-    validateDateRange2() {
-      // Agrega lógica para validar el rango de fechas aquí.
-      // if (this.startDate && this.endDate && this.startDate > this.endDate) {
-      //   // Si la fecha de inicio es posterior a la fecha de fin, ajusta las fechas.
-      //   const temp = this.startDate
-      //   this.startDate = this.endDate
-      //   this.endDate = temp
-      // }
+    async updateTrip() {
+      try {
+        const { data } = await apiFromBackend.put("/api/viaje", {
+          nombreMiViaje: this.trip.TripName,
+          descripcionViaje: this.trip.DescriptionTrip,
+          colorPlantilla: this.ColorInputPicker,
+          diaInicio: this.startDate.toString(),
+          diaFinal: this.endDate.toString(),
+          idViajes: this.$route.query.idViajes,
+        })
+        console.log(data)
+        toast.success("Viaje actualizado con éxito", {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+        setTimeout(() => {
+          this.$router.push({ name: "Itinerario" })
+        }, 1200)
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
     },
     cancelDateSelection() {
       this.dialog = false
@@ -284,17 +327,6 @@ export default {
     cancelDateSelection2() {
       this.dialog2 = false
     },
-    /*
-    saveDateSelection() {
-      // Realiza cualquier acción que necesites con las fechas seleccionadas
-      console.log("Fecha de inicio:", this.startDate)
-      this.dialog = false
-    },
-    saveDateSelection2() {
-      // Realiza cualquier acción que necesites con las fechas seleccionadas
-      console.log("Fecha de fin:", this.endDate)
-      this.dialog2 = false
-    }, */
     saveDateSelection() {
       // Convertir las fechas a objetos Date
       const currentDate = new Date()
@@ -306,7 +338,7 @@ export default {
 
       if (selectedDate < currentDate) {
         // Muestra un mensaje de alerta en pantalla
-        toast.error("La fecha de inicio no puede ser anterior al día actual", {
+        toast.error("La fecha de inicio no puede ser anterior a hoy", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 3000,
