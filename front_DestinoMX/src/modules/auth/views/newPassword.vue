@@ -1,90 +1,89 @@
 <template>
-  <div class="absolute-screen flex justify-center items-center">
-    <div class="w-54 mx-4 md:w-96 bg-gray-100 rounded-xl">
-      <img
-        src="@/assets/images/DestinoMX.png"
-        alt="logo"
-        class="mx-auto w-56"
-      />
-      <Form
-        @submit="onSubmit"
-        class="items-center w-full px-6 py-8 pb-8 rounded-xl"
-        :validation-schema="schema"
+  <div class="min-h-screen w-full flex flex-col md:flex-row">
+    <div class="flex md:w-1/2 justify-center items-center bg-orange-300">
+      <img src="@/assets/images/imagen009.png" alt="imagen009" />
+    </div>
+    <div class="md:flex flex-1 bg-white mx-8 my-8 sm:-my-0 order-1 md:order-2">
+      <div
+        class="mt-[-28] h-flex sm:h-flex md:flex flex-col md:w-1/2 flex-1 justify-center items-center bg-gray-100"
       >
-        <h1 class="text-md text-center font-normal text-gray-800 mb-7">
-          Crea una nueva contraseña
-        </h1>
-        <label
-          v-if="user.password"
-          for="password"
-          class="top-0 left-2 transition-all duration-300 text-gray-500"
+        <Form
+          @submit="onSubmit"
+          class="bg-accent w-full px-5 py-5"
+          :validation-schema="schema"
         >
-          Contraseña *
-        </label>
-        <div
-          class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
-        >
-          <PasswordIcon />
-          <Field
-            id="password"
-            v-model="user.password"
-            autocomplete="off"
-            class="w-full pl-2 outline-none border-non"
-            :type="showPassword ? 'text' : 'password'"
-            name="password"
-            placeholder="Contraseña *"
-          />
-        </div>
-        <div class="ml-1 mb-2 -mt-1">
-          <ErrorMessage
-            class="flex block text-red-700 text-md"
-            name="password"
-          ></ErrorMessage>
-        </div>
+          <h1 class="text-md text-center font-normal text-gray-800 mb-7">
+            Crea una nueva contraseña
+          </h1>
+          <label
+            v-if="user.password"
+            for="password"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Contraseña *
+          </label>
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+          >
+            <PasswordIcon />
+            <Field
+              id="password"
+              v-model="user.password"
+              autocomplete="off"
+              class="w-full pl-2 outline-none border-non"
+              :type="showPassword ? 'text' : 'password'"
+              name="password"
+              placeholder="Contraseña *"
+            />
+          </div>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-md"
+              name="password"
+            ></ErrorMessage>
+          </div>
 
-        <label
-          v-if="user.passwordConfirmation.length"
-          for="passwordConfirmation"
-          class="top-0 left-2 transition-all duration-300 text-gray-500"
-        >
-          Confirmar Contraseña *
-        </label>
-        <div
-          class="flex items-center border-2 py-2 px-3 rounded-lg mb-6 bg-white"
-        >
-          <PasswordIcon />
-          <Field
-            id="passwordConfirmation"
-            v-model="user.passwordConfirmation"
-            autocomplete="off"
-            class="pl-2 outline-none border-none w-full"
-            :type="showPassword2 ? 'text' : 'password'"
-            name="passwordConfirmation"
-            placeholder="Confirmar contraseña *"
-          />
-        </div>
-        <div class="ml-1 mb-2 -mt-1">
-          <ErrorMessage
-            class="flex block text-red-700 text-md"
-            name="passwordConfirmation"
-          ></ErrorMessage>
-        </div>
-        <div>
+          <label
+            v-if="user.passwordConfirmation"
+            for="passwordConfirmation"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Confirmar Contraseña *
+          </label>
+          <div
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-6 bg-white"
+          >
+            <PasswordIcon />
+            <Field
+              id="passwordConfirmation"
+              v-model="user.passwordConfirmation"
+              autocomplete="off"
+              class="pl-2 outline-none border-none w-full"
+              :type="showPassword2 ? 'text' : 'password'"
+              name="passwordConfirmation"
+              placeholder="Confirmar contraseña *"
+            />
+          </div>
+          <div class="ml-1 mb-2 -mt-1">
+            <ErrorMessage
+              class="flex block text-red-700 text-md"
+              name="passwordConfirmation"
+            ></ErrorMessage>
+          </div>
           <button
-            :disabled="isFormEmpty"
+            :disabled="isFormEmpty || !passwordsMatch"
             type="submit"
-            class="text-center font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
+            class="font-quicksand block w-full mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
             :class="[
-              isFormEmpty
+              isFormEmpty || !passwordsMatch
                 ? 'opacity-60 cursor-not-allowed'
                 : 'hover:outline hover:outline-1 hover:outline-orange-400',
             ]"
-            @click="redirectToLogin"
           >
             Validar contraseña
           </button>
-        </div>
-      </Form>
+        </Form>
+      </div>
     </div>
   </div>
 </template>
@@ -98,7 +97,6 @@ export default {
   name: "LoginForm",
   components: {
     PasswordIcon,
-    Field,
   },
   data() {
     return {
@@ -110,19 +108,7 @@ export default {
       },
     }
   },
-
-  computed: {
-    isFormEmpty() {
-      return !this.user.password || !this.user.passwordConfirmation
-    },
-  },
   methods: {
-    redirectToLogin() {
-      console.log("Redirigiendo a login")
-      this.$router.push({
-        name: "login",
-      })
-    },
     async onSubmit() {
       if (!this.isPasswordValid()) {
         toast("La contraseña no cumple con los requisitos mínimos", {
@@ -150,8 +136,6 @@ export default {
             })
           },
         })
-        this.isPasswordValid = true
-        this.user.password = ""
       } catch (error) {
         toast(error.response.data.mensaje, {
           hideProgressBar: true,
@@ -160,6 +144,16 @@ export default {
           theme: "colored",
         })
       }
+    },
+  },
+
+  computed: {
+    isPasswordValid() {
+      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
+      return regex.test(this.user.password)
+    },
+    passwordsMatch() {
+      return this.user.password === this.user.passwordConfirmation
     },
   },
 }
@@ -186,16 +180,3 @@ const schema = yup.object({
     .oneOf([yup.ref("password"), null], "Las contraseñas deben coincidir"),
 })
 </script>
-
-<style scoped>
-.absolute-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("@/assets/images/imagen009.jpg");
-  background-size: cover;
-  background-position: center;
-}
-</style>
