@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-    //Pantalla de GoogleMaps normal
+      //Pantalla de GoogleMaps normal
       apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
       isEmpyCurrenName: true,
       CurrentNamePlace: "",

@@ -515,6 +515,7 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
+        console.log(this.placeImages)
         this.isLoading = false
       } catch (e) {
         toast.error(e, {
