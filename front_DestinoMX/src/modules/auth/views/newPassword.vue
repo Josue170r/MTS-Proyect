@@ -30,7 +30,6 @@
             v-model="user.password"
             autocomplete="off"
             class="w-full pl-2 outline-none border-non"
-            :type="showPassword ? 'text' : 'password'"
             name="password"
             placeholder="Contraseña *"
           />
@@ -58,7 +57,6 @@
             v-model="user.passwordConfirmation"
             autocomplete="off"
             class="pl-2 outline-none border-none w-full"
-            :type="showPassword2 ? 'text' : 'password'"
             name="passwordConfirmation"
             placeholder="Confirmar contraseña *"
           />
@@ -102,8 +100,6 @@ export default {
   },
   data() {
     return {
-      showPassword: false,
-      showPassword2: false,
       user: {
         password: "",
         passwordConfirmation: "",

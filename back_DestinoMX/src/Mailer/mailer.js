@@ -100,7 +100,7 @@ export function mandarCorreo(to, subject, text){
         return res.status(400).json({exito:false,mensaje:error});
         }
         console.log('Email sent: ' + info.response);
-        return res.status(200).json({exito:true,mensaje:"Se ha enviado correctamente"});
+        return res.status(200).json({exito:true,mensaje:"Te enviamos un código a tu correo electrónico"});
   });
 }
 
