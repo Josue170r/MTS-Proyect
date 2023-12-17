@@ -91,12 +91,6 @@ export default {
           autoClose: 1000,
           type: "success",
           theme: "colored",
-          /*onClose: () => {
-            this.$router.push({
-              name: "rePasword",
-              query: { email: this.user.email },
-            })
-          },*/
         })
       } catch (response) {
         toast(response.data.mensaje, {
