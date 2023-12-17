@@ -41,7 +41,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
 
                     res.cookie('recuperacion_cookie', valorEncriptado, { expires: date, httpOnly: true });
 
-                    return res.status(200).json({mensaje:"Se ha enviado el correo"})
+                    return res.status(200).json({mensaje:"Te enviamos un correo para recuperar tu cuenta"})
                 }
                 else{
                     return res.status(200).json({exito:true,mensaje:"No se ha validado el correo"})
