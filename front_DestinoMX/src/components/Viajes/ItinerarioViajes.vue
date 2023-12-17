@@ -3,9 +3,7 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <button @click="$router.go(-1)" class="absolute top-7 left-1 transform">
-        <BackButtonIcon />
-      </button>
+      <BurgerMenu />
       <div
         class="mt-16 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-1 pt-1 bg-white border border-gray-300 rounded-md flex items-center"
       >
@@ -72,7 +70,12 @@
         <div v-if="!isemptytrip" class="mt-5">
           <div v-for="travel in travels" :key="travel.id">
             <div class="flex-row">
-              <v-btn icon="mdi-pencil" size="small" class="mr-4"></v-btn>
+              <v-btn
+                @click="goToEditTrip(travel)"
+                icon="mdi-pencil"
+                size="small"
+                class="mr-4"
+              ></v-btn>
               <v-btn
                 @click="DeleteTrip(travel)"
                 icon="mdi-trash-can-outline"
@@ -102,7 +105,7 @@
               </div>
               <v-btn
                 icon="mdi-chevron-right"
-                @click="goToEditTrip(travel)"
+                @click="goToViewTrip(travel)"
                 class="ml-auto"
               >
                 <GreaterThanIcon class="ml-auto" />
@@ -118,7 +121,7 @@
 
 <script>
 import { toRaw } from "vue"
-import BackButtonIcon from "@/components/icons/BackButtonIcon"
+import BurgerMenu from "@/components/buttons/BurgerMenu"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import BellIcon from "@/components/icons/BellIcon.vue"
 import PlusIcon from "@/components/icons/PlusIcon.vue"
@@ -129,7 +132,7 @@ import { toast } from "vue3-toastify"
 export default {
   name: "ItinerarioViajes",
   components: {
-    BackButtonIcon,
+    BurgerMenu,
     AvatarButton,
     BellIcon,
     PlusIcon,
@@ -215,13 +218,28 @@ export default {
     },
     goToEditTrip(travel) {
       const trip = toRaw(travel)
-      console.log(trip)
+      this.$router.push({
+        name: "newtrip",
+        query: {
+          travel: trip.nombreMiViaje,
+          descripcion: trip.descripcionViaje,
+          idViajes: trip.idViajes,
+          diaInicio: trip.diaInicio,
+          diaFinal: trip.diaFinal,
+          isEdit: true,
+          colorPlantilla: trip.colorPlantilla,
+        },
+      })
+    },
+    goToViewTrip(travel) {
+      const trip = toRaw(travel)
       this.$router.push({
         name: "EditTrip",
         query: {
           travel: trip.nombreMiViaje,
           diaInicio: trip.diaInicio,
           diaFinal: trip.diaFinal,
+          idViajes: trip.idViajes,
         },
       })
     },

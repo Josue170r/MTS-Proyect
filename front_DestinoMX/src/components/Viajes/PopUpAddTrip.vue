@@ -74,6 +74,7 @@
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import { format, addDays, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
+import { toast } from "vue3-toastify"
 
 export default {
   props: {
@@ -122,16 +123,26 @@ export default {
     },
     async addToTrip(date, travel) {
       try {
-        const response = await apiFromBackend.post("/api/sitios", {
+        const { data } = await apiFromBackend.post("/api/sitios", {
           placeID: this.placeId,
           idViajes: travel.idViajes,
           fechaEspecifica: date,
           nombrePlaces: this.namePlace,
           imagePlaces: this.imgPlace,
         })
-        console.log(response)
-      } catch (error) {
-        console.log(error)
+        toast.success(data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
       }
     },
     UpperDate(texto) {
