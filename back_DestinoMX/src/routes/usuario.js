@@ -10,13 +10,14 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
     const consultaDeEliminacion = `DELETE FROM usuario WHERE idUsuario = ${req.session.usuario.idUsuario}`;
     mySqlConnection.query(consultaDeEliminacion, (err, rows, fields) => {
       if (err) {
-        res.res.status(500).json({
+        res.status(500).json({
           exito: false,
           mensaje: "No se pudo eliminar tu cuenta",
           err: err,
         });
       } else {
         res
+        
           .status(200)
           .json({ exito: true, mensaje: "¡La cuenta ha sido eliminada!" });
       }
