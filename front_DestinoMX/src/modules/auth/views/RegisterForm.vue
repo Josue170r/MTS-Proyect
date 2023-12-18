@@ -17,9 +17,16 @@
           class="bg-accent w-full px-5 py-5"
           :validation-schema="schema"
         >
-          <p class="text-sm text-center font-normal text-gray-800 mb-7">
+          <p class="text-md text-center font-normal text-gray-800 mb-7">
             Porfavor llena los siguientes campos para la creación de tu cuenta
           </p>
+          <label
+            v-if="user.email"
+            for="email"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Correo Elctrónico *
+          </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
@@ -30,15 +37,22 @@
               class="pl-2 outline-none border-none w-full"
               type="email"
               name="email"
-              placeholder="Correo electrónico"
+              placeholder="Correo electrónico *"
             />
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="email"
             ></ErrorMessage>
           </div>
+          <label
+            v-if="user.username"
+            for="username"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Nombre de usuario *
+          </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
@@ -49,15 +63,22 @@
               class="pl-2 outline-none border-none w-full"
               type="text"
               name="username"
-              placeholder="Nombre de usuario"
+              placeholder="Nombre de usuario *"
             />
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="username"
             ></ErrorMessage>
           </div>
+          <label
+            v-if="user.name"
+            for="name"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Nombre *
+          </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
@@ -73,10 +94,17 @@
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="name"
             ></ErrorMessage>
           </div>
+          <label
+            v-if="user.lastName"
+            for="latName"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Apellido paterno *
+          </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
@@ -91,11 +119,17 @@
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="lastName"
             ></ErrorMessage>
           </div>
-
+          <label
+            v-if="user.secondLastName"
+            for="secondLastName"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Apellido materno *
+          </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
@@ -105,16 +139,22 @@
               class="pl-2 outline-none border-none w-full"
               type="text"
               name="secondLastName"
-              placeholder="Apellido materno"
+              placeholder="Apellido materno *"
             />
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="secondLastName"
             ></ErrorMessage>
           </div>
-
+          <label
+            v-if="user.password"
+            for="secondLastName"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Contraseña *
+          </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
           >
@@ -131,13 +171,19 @@
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="password"
             ></ErrorMessage>
           </div>
-
+          <label
+            v-if="user.passwordConfirmation"
+            for="passwordConfirmation"
+            class="top-0 left-2 transition-all duration-300 text-gray-500"
+          >
+            Confirmar Contraseña *
+          </label>
           <div
-            class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
+            class="flex items-center border-2 py-2 px-3 rounded-lg mb-6 bg-white"
           >
             <PasswordIcon />
             <Field
@@ -152,7 +198,7 @@
           </div>
           <div class="ml-1 mb-2 -mt-1">
             <ErrorMessage
-              class="flex block text-red-700 text-sm"
+              class="flex block text-red-700 text-md"
               name="passwordConfirmation"
             ></ErrorMessage>
           </div>
@@ -223,9 +269,13 @@ export default {
           type: "success",
           theme: "colored",
           onClose: () => {
-            this.$router.push({ name: "login" })
+            this.$router.push({
+              name: "rePasword",
+              query: { email: this.user.email },
+            })
           },
         })
+        this.verificationCorreo()
       } catch (error) {
         toast(error.response.data.mensaje, {
           hideProgressBar: true,
@@ -233,6 +283,19 @@ export default {
           type: "error",
           theme: "colored",
         })
+      }
+    },
+    async verificationCorreo() {
+      try {
+        const { data } = await apiFromBackend.post(
+          "/api/cookie-cifra-creacion",
+          {
+            correo: this.user.email,
+          },
+        )
+        console.log(data)
+      } catch (response) {
+        console.log(response.response.data.mensaje)
       }
     },
   },
@@ -252,19 +315,42 @@ const schema = yup.object({
   email: yup
     .string()
     .required("El correo electrónico es obligatorio")
-    .email("Ingrese un correo electrónico válido"),
+    .email("Ingrese un correo electrónico válido")
+    .matches(/@.*\..*/, "Ingrese un correo electrónico válido"),
   username: yup.string().required("El usuario es obligatorio"),
-  name: yup.string().required("Este campo es obligatorio"),
-  lastName: yup.string().required("Este campo es obligatorio"),
-  secondLastName: yup.string().required("Este campo es obligatorio"),
+  name: yup
+    .string()
+    .required("Este campo es obligatorio")
+    .matches(
+      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
+      "El nombre solo puede contener letras",
+    ),
+  lastName: yup
+    .string()
+    .required("Este campo es obligatorio")
+    .matches(
+      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
+      "Este campo solo puede contener letras",
+    ),
+  secondLastName: yup
+    .string()
+    .matches(
+      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
+      "Este campo solo puede contener letras",
+    ),
   password: yup
     .string()
-    .required("La contraseña es obliatoria")
-    .min(8, "La contraseña debe tener al menos 8 caracteres"),
+    .required("La contraseña es obligatoria")
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .max(32, "La contraseña no debe exceder los 32 caracteres")
+    .matches(/[A-Z]/, "Debe contener al menos una letra mayúscula")
+    .matches(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "Debe contener al menos un carácter especial",
+    ),
   passwordConfirmation: yup
     .string()
     .required("La confirmación de contraseña es obligatoria")
-    .oneOf([yup.ref("password"), null], "Las contraseñas deben coincidir")
-    .min(8, "La contraseña debe tener al menos 8 caracteres"),
+    .oneOf([yup.ref("password"), null], "Las contraseñas deben coincidir"),
 })
 </script>

@@ -5,13 +5,17 @@ import PlaceDescription from "@/components/images/PlaceDescription.vue"
 import StartupScreen from "@/modules/auth/views/StartupScreen.vue"
 import RegisterForm from "@/modules/auth/views/RegisterForm.vue"
 import GoogleMaps from "@/components/Viajes/GoogleMaps.vue"
-import homeScreen from "@/modules/auth/views/homeScreen.vue"
+import homeScreen from "@/modules/user/loged/homeScreen.vue"
 import NewTrip from "@/components/Viajes/NewTrip.vue"
 import ItinerarioViajes from "@/components/Viajes/ItinerarioViajes.vue"
 import PreferencesScreen from "@/modules/user/PreferencesScreen.vue"
 import NotFoundPage from "@/screens/NotFoundPage"
-import EditTripScreen from "@/components/Viajes/EditTripScreen.vue"
-import MyTrip from "@/components/Viajes/MyTrip.vue"
+import EditTripScreen from "@/components/Viajes/EditViewTrip.vue"
+import AboutUs from "@/components/Viajes/AboutUs.vue"
+import Favoritos from "@/modules/user/Favoritos.vue"
+import HistoryScreenVue from "@/components/Viajes/HistoryScreen.vue"
+import rePasword from "@/modules/auth/views/rePasword.vue"
+import newPassword from "@/modules/auth/views/newPassword"
 
 const routes = [
   {
@@ -97,9 +101,29 @@ const routes = [
     component: EditTripScreen,
   },
   {
-    path: "/mytrip",
-    name: "mytrip",
-    component: MyTrip,
+    path: "/favoritos",
+    name: "favoritos",
+    component: Favoritos,
+  },
+  {
+    path: "/History",
+    name: "History",
+    component: HistoryScreenVue,
+  },
+  {
+    path: "/aboutus",
+    name: "aboutus",
+    component: AboutUs,
+  },
+  {
+    path: "/rePasword",
+    name: "rePasword",
+    component: rePasword,
+  },
+  {
+    path: "/newPassword",
+    name: "newPassword",
+    component: newPassword,
   },
 ]
 

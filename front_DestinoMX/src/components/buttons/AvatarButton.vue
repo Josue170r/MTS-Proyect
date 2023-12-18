@@ -34,26 +34,48 @@
 </template>
 
 <script>
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+
 export default {
   name: "AvatarButton",
   data: () => ({
     //estos datos de la BD los manejarian los del equipo de back
     user: {
-      initials: "DM",
-      fullName: "Daniela Martínez",
-      email: "danielaM@outlook.com",
+      initials: "",
+      fullName: "",
+      email: "",
     },
   }),
+  created() {
+    this.getUserInformation()
+  },
   methods: {
-    logout() {
-      // lógica para cerrar la sesión del usuario -> limpiar el token de autenticación, eliminar cookies, etc.
-
-      // se manda al usuario a home
-      this.$router.push({ name: "startup" })
+    async getUserInformation() {
+      try {
+        const { data } = await apiFromBackend.get("/api/perfil", {})
+        const { Nombre, ApellidoP, CorreoElectronico } = data.datosUsuario
+        const initialName = Nombre[0].toUpperCase()
+        const initialLastName = ApellidoP[0].toUpperCase()
+        this.user.initials = `${initialName} ${initialLastName}`
+        this.user.fullName = `${Nombre} ${ApellidoP}`
+        this.user.email = `${CorreoElectronico}`
+      } catch ({ response }) {
+        console.log(response)
+      }
+    },
+    async logout() {
+      try {
+        const response = await apiFromBackend.get("/api/cerrar-sesion", {})
+        console.log(response)
+        this.$router.push({
+          name: "startup",
+        })
+      } catch (error) {
+        console.log(error)
+      }
     },
     account() {
-      // se manda al usuario a la pag de su cuenta pero por el momento a HOME -> en el sig sprint dde front se crea esa pantalla
-      this.$router.push({ name: "startup" })
+      this.$router.push({ name: "user-profile" })
     },
   },
 }

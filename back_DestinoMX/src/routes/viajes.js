@@ -10,7 +10,7 @@ routerViajes.get("/api/viaje", (req, res) => {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesion." });
   } else {
     mySqlConnection.query(
-      `SELECT * FROM viajes WHERE idViajes = ${req.session.usuario.idUsuario};`,
+      `SELECT * FROM viajes WHERE idUsuario = ${req.session.usuario.idUsuario};`,
       (err, rows, fields) => {
         if (err) {
           res.status(500).json({
@@ -19,9 +19,11 @@ routerViajes.get("/api/viaje", (req, res) => {
             err: err,
           });
         } else if (rows.length === 0) {
-          res.status(404).json({ exito: false, mensaje: "Viaje inexistente." });
+          res
+            .status(200)
+            .json({ exito: true, mensaje: "¡Aún no tienes viajes!" });
         } else {
-          res.status(200).json({ exito: true, info: { ...rows[0] } });
+          res.status(200).json({ exito: true, info: [...rows] });
         }
       }
     );
@@ -45,7 +47,7 @@ routerViajes.post("/api/viaje", (req, res) => {
       `SELECT * FROM usuario WHERE idUsuario = ${idUsuario};`,
       (err, rows, fields) => {
         if (err) {
-          res.res.status(500).json({
+          res.status(500).json({
             exito: false,
             mensaje: "Error en la consulta",
             err,
@@ -56,14 +58,14 @@ routerViajes.post("/api/viaje", (req, res) => {
             .json({ exito: false, mensaje: "Usuario inexistente." });
         } else {
           // Eliminar espacios extra del nombre del viaje.
-          const nombreMiViajeSQL = req.query.nombreMiViaje.trim();
+          const nombreMiViajeSQL = req.body.nombreMiViaje.trim();
 
           // Ver si existe un viaje con el mismo nombre.
           mySqlConnection.query(
             `SELECT * FROM viajes WHERE nombreMiViaje = "${nombreMiViajeSQL}" AND idUsuario = "${idUsuario}"`,
             (err, rows, fields) => {
               if (err) {
-                res.res.status(500).json({
+                res.status(500).json({
                   exito: false,
                   mensaje: "Error en la consulta",
                   err: err,
@@ -74,18 +76,18 @@ routerViajes.post("/api/viaje", (req, res) => {
                   mensaje: "Ya existe un viaje con ese nombre.",
                 });
               } else {
-                const diaInicio = new Date(req.query.diaInicio);
-                const diaFinal = new Date(req.query.diaFinal);
+                const diaInicio = new Date(req.body.diaInicio);
+                const diaFinal = new Date(req.body.diaFinal);
 
                 const diaInicioSQL = diaInicio.toISOString().slice(0, 10);
                 const diaFinalSQL = diaFinal.toISOString().slice(0, 10);
 
                 // Registrar el viaje
                 mySqlConnection.query(
-                  `INSERT INTO viajes (nombreMiViaje,descripcionViaje,diaInicio,diaFinal,colorPlantilla,idUsuario) VALUES ("${nombreMiViajeSQL}","${req.query.descripcionViaje}","${diaInicioSQL}","${diaFinalSQL}","${req.query.colorPlantilla}","${idUsuario}");`,
+                  `INSERT INTO viajes (nombreMiViaje,descripcionViaje,diaInicio,diaFinal,colorPlantilla,idUsuario) VALUES ("${nombreMiViajeSQL}","${req.body.descripcionViaje}","${diaInicioSQL}","${diaFinalSQL}","${req.body.colorPlantilla}","${idUsuario}");`,
                   (err, rows, fields) => {
                     if (err) {
-                      res.res.status(500).json({
+                      res.status(500).json({
                         exito: false,
                         mensaje: "Error en la consulta",
                         err: err,
@@ -94,6 +96,7 @@ routerViajes.post("/api/viaje", (req, res) => {
                       res.status(200).json({
                         exito: false,
                         mensaje: "Viaje agregado con exito.",
+                        rows,
                       });
                     }
                   }
@@ -119,7 +122,7 @@ routerViajes.put("/api/viaje", (req, res) => {
 
     mySqlConnection.query(consultaUsuario, (err, rows, fields) => {
       if (err)
-        res.res.status(500).json({
+        res.status(500).json({
           exito: false,
           mensaje: "Error en la consulta",
           err: err,
@@ -128,10 +131,10 @@ routerViajes.put("/api/viaje", (req, res) => {
         res.status(404).send({ exito: false, mensaje: "Usuario inexistente." });
       else {
         // Ver que si exista un viaje con ese idViajes.
-        const consultaIDViaje = `SELECT (idViajes) FROM viajes WHERE idViajes = ${req.query.idViajes};`;
+        const consultaIDViaje = `SELECT (idViajes) FROM viajes WHERE idViajes = ${req.body.idViajes};`;
         mySqlConnection.query(consultaIDViaje, (err, rows, fields) => {
           if (err) {
-            res.res.status(500).json({
+            res.status(500).json({
               exito: false,
               mensaje: "Error en la consulta",
               err: err,
@@ -141,40 +144,42 @@ routerViajes.put("/api/viaje", (req, res) => {
               .status(404)
               .json({ exito: false, mensaje: "Viaje inexistente." });
           } else {
-            const nombreViajeSQL = req.query.nombreMiViaje.trim();
-            const consultaNombreViaje = `SELECT * FROM viajes WHERE idViajes = ${req.query.idViajes} AND nombreMiViaje = "${nombreViajeSQL}"`;
+            const nombreViajeSQL = req.body.nombreMiViaje.trim();
+            const consultaNombreViaje = `
+              SELECT *
+              FROM viajes
+              WHERE nombreMiViaje = "${nombreViajeSQL}"
+            `;
             mySqlConnection.query(consultaNombreViaje, (err, rows, fields) => {
               if (err) {
-                res.res.status(500).json({
+                res.status(500).json({
                   exito: false,
                   mensaje: "Error en la consulta",
                   err: err,
                 });
-              } else if (rows.length > 0)
+              } else if (rows.length > 0 && Number(rows[0].idViajes) !== Number(req.body.idViajes)) {
                 res.status(409).json({
                   exito: false,
                   mensaje: "Ya existe un viaje con ese nombre.",
                 });
-              else {
-                const diaInicio = new Date(req.query.diaInicio);
-                const diaFinal = new Date(req.query.diaFinal);
-
-                const diaInicioSQL = diaInicio.toISOString().slice(0, 10);
-                const diaFinalSQL = diaFinal.toISOString().slice(0, 10);
-
+              } else {
                 const {
                   idViajes,
-                  nombreMiViaje,
                   descripcionViaje,
                   colorPlantilla,
-                } = req.query;
-                const consultaActualizarViaje = `UPDATE viajes SET nombreMiViaje = "${nombreMiViaje}", descripcionViaje = "${descripcionViaje}", diaInicio = '${diaInicioSQL}', diaFinal = '${diaFinalSQL}', colorPlantilla = '${colorPlantilla}' where idViajes = ${idViajes};`;
-
+                } = req.body;
+                const consultaActualizarViaje = `
+                  UPDATE viajes
+                  SET nombreMiViaje = "${nombreViajeSQL}",
+                      descripcionViaje = "${descripcionViaje}",
+                      colorPlantilla = '${colorPlantilla}'
+                  WHERE idViajes = ${idViajes};
+                `;
                 mySqlConnection.query(
                   consultaActualizarViaje,
                   (err, rows, fields) => {
                     if (err)
-                      res.res.status(500).json({
+                      res.status(500).json({
                         exito: false,
                         mensaje: "Error en la consulta",
                         err: err,
@@ -183,6 +188,7 @@ routerViajes.put("/api/viaje", (req, res) => {
                       res.status(200).json({
                         exito: true,
                         mensaje: "Viaje actualizado con exito.",
+                        rows,
                       });
                     }
                   }
@@ -205,10 +211,10 @@ routerViajes.delete("/api/viaje", (req, res) => {
     const consultaDeEliminacion = `DELETE FROM viajes WHERE idViajes = ${req.query.idViajes}`;
     mySqlConnection.query(consultaDeEliminacion, (err, rows, fields) => {
       if (err) {
-        res.res.status(500).json({
+        res.status(500).json({
           exito: false,
           mensaje: "Error en la consulta",
-          err: err,
+          err,
         });
       } else {
         res

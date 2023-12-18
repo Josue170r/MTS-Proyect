@@ -36,9 +36,9 @@ p, :placeholder-shown, ErrorMessage{
 .swiper {
     width: 100%;
     height: 100%;
-  }
+}
   
-  .swiper-slide {
+.swiper-slide {
     text-align: center;
     font-size: 18px;
     background: #fff;
@@ -46,11 +46,22 @@ p, :placeholder-shown, ErrorMessage{
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
   
-  .swiper-slide img {
+.swiper-slide img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
+}
+
+.swiper-button-prev {
+    margin-top: -100px;
+}
+
+.swiper-button-disabled {
+    margin-top: -100px;
+}
+.swiper-button-next {
+    margin-top: -100px;
+}

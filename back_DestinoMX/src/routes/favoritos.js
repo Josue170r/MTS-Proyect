@@ -8,9 +8,9 @@ export const routerFavoritos = Router();
 // idPlaceLugar
 routerFavoritos.post("/api/favoritos", (req, res) => {
   if (!req.session.usuario) {
-    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+    res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesión." });
   } else {
-    const { idPlaceLugar } = req.query;
+    const { idPlaceLugar } = req.body;
     const idUsuario = req.session.usuario.idUsuario;
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
 
@@ -50,7 +50,7 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
                 });
               else
                 res.status(200).json({
-                  exito: false,
+                  exito: true,
                   mensaje: "Sitio añadido a favoritos con éxito",
                 });
             });
@@ -66,7 +66,7 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
 // idPlaceLugar
 routerFavoritos.delete("/api/favoritos", (req, res) => {
   if (!req.session.usuario) {
-    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+    res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesión." });
   } else {
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
     const { idPlaceLugar } = req.query;
@@ -94,7 +94,7 @@ routerFavoritos.delete("/api/favoritos", (req, res) => {
             });
           else if (rows.length === 0)
             res
-              .status(404)
+              .status(500)
               .json({ exito: false, mensaje: "El sitio no está en favoritos" });
           else {
             // Eliminar el sitio de favoritos
@@ -111,7 +111,7 @@ routerFavoritos.delete("/api/favoritos", (req, res) => {
                   });
                 else
                   res.status(200).json({
-                    exito: false,
+                    exito: true,
                     mensaje: "Sitio eliminado de favoritos con éxito",
                   });
               }

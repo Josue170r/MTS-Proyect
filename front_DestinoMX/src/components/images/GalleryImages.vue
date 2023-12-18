@@ -3,9 +3,8 @@
     <swiper
       :slidesPerView="2"
       :spaceBetween="5"
-      :pagination="{
-        clickable: true,
-        el: '.swiper-pagination-custom',
+      :autoplay="{
+        delay: 2000,
       }"
       :modules="modules"
       class="swiper-slide"
@@ -21,7 +20,8 @@
 import { Swiper, SwiperSlide } from "swiper/vue"
 import "swiper/css"
 import "swiper/css/pagination"
-import { Pagination } from "swiper/modules"
+import "swiper/css/navigation"
+import { Autoplay, Pagination } from "swiper/modules"
 
 export default {
   name: "GalleryImages",
@@ -44,7 +44,6 @@ export default {
   },
   updated() {
     this.photosSwiper = this.photosArray
-    console.log("Desde galería de imágenes:", this.photosArray)
   },
   methods: {
     zoomImage(image) {
@@ -57,7 +56,7 @@ export default {
   },
   setup() {
     return {
-      modules: [Pagination],
+      modules: [Autoplay, Pagination],
     }
   },
 }
