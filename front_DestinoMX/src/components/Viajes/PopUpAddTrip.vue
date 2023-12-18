@@ -38,6 +38,9 @@
                 isSelected[date]
                   ? 'bg-gray-300'
                   : 'bg-gray-100 hover:bg-gray-300',
+                isSelected[date] && selected
+                  ? 'cursor-not-allowed'
+                  : 'cursor-pointer',
               ]"
             >
               {{ date }}
