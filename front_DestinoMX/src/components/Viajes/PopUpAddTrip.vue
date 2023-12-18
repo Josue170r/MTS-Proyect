@@ -35,9 +35,7 @@
                 'mr-4',
                 'p-2',
                 'custom-button',
-                isSelected[date]
-                  ? 'bg-gray-300'
-                  : 'bg-gray-100 hover:bg-gray-300',
+                isSelected[date] === travel.idViajes ? 'bg-gray-300' : 'bg-gray-100',
               ]"
             >
               {{ date }}
@@ -138,7 +136,8 @@ export default {
         })
 
         // Seleccionar la fecha clickeada
-        this.isSelected[date] = true
+        this.isSelected[date] = travel.idViajes
+        console.log(this.isSelected)
         this.selected = true
         this.currentDate = date
         this.currenTrip = travel

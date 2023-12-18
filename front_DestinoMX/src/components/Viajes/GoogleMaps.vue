@@ -101,7 +101,7 @@ export default {
   data() {
     return {
       //Pantalla de GoogleMaps normal
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+      apiKey: "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA",
       isEmpyCurrenName: true,
       CurrentNamePlace: "",
       relativePosition: "",
