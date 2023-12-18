@@ -79,7 +79,7 @@
                 ? 'opacity-60 cursor-not-allowed'
                 : 'hover:outline hover:outline-1 hover:outline-orange-400',
             ]"
-            @click="redirectToLogin"
+            @click="onSubmit"
           >
             Validar contraseña
           </button>
@@ -100,6 +100,9 @@ export default {
     PasswordIcon,
     Field,
   },
+  created() {
+    this.cookie()
+  },
   data() {
     return {
       showPassword: false,
@@ -110,7 +113,6 @@ export default {
       },
     }
   },
-
   computed: {
     isFormEmpty() {
       return !this.user.password || !this.user.passwordConfirmation
@@ -123,41 +125,30 @@ export default {
         name: "login",
       })
     },
-    async onSubmit() {
-      if (!this.isPasswordValid()) {
-        toast("La contraseña no cumple con los requisitos mínimos", {
-          hideProgressBar: true,
-          autoClose: 1500,
-          type: "error",
-          theme: "colored",
-        })
-        return
-      }
-
+    async cookie() {
       try {
-        const { data } = await apiFromBackend.post("/api/crear-cuenta", {
-          contrasena: this.user.password,
+        const data = await apiFromBackend.post("/api/cookieCorreo")
+        console.log(data)
+      } catch ({ response }) {
+        console.log(response)
+        if (response.data.mensaje == "No hay cookie existente") {
+          this.redirectToLogin()
+        }
+      }
+    },
+    async onSubmit() {
+      try {
+        const data = await apiFromBackend.post("/api/contrasena-nueva", {
+          contrasena1: this.user.password,
+          contrasena2: this.user.passwordConfirmation,
         })
-        toast(data.mensaje, {
-          hideProgressBar: true,
-          autoClose: 600,
-          type: "success",
+        console.log(data)
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
           theme: "colored",
-          onClose: () => {
-            this.$router.push({
-              name: "rePasword",
-              query: { email: this.user.email },
-            })
-          },
-        })
-        this.isPasswordValid = true
-        this.user.password = ""
-      } catch (error) {
-        toast(error.response.data.mensaje, {
-          hideProgressBar: true,
+          position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
-          type: "error",
-          theme: "colored",
+          hideProgressBar: true,
         })
       }
     },

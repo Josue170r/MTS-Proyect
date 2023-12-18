@@ -26,12 +26,12 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
         else{
             if(results.length!=0){
                 if(results[0].codigo==0){
-                    try{
+                    /*try{
                         mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=http://localhost:8081/#/newPassword>link</a></h3>")
                     }
                     catch(error){
                         return res.status(500).json({exito:false,mensaje:"Correo no enviado"})
-                    }
+                    }*/
                     //encriptacion
                     // Crear un objeto de cifrado usando el algoritmo AES con una clave
                     const cipher = crypto.createCipher('aes-256-cbc', secretKey);
@@ -51,30 +51,58 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
     })
 });
 
+routerRecuperacion.post("/api/cookieCorreo",(req, res)=>{
+    let correo
+    if(req.cookies.recuperacion_cookie){
+        correo=req.cookies.recuperacion_cookie
+        console.log(correo);
+        return res.status(200).json({exito:false,correo})
+    }
+    else
+        return res.status(401).json({exito:false,mensaje:"No hay cookie existente"})
+})
 
-/*let idUsuario
-    if (!req.session.usuario) {
-        return res.status(403).json({
-            exito: false,
-            mensaje: "Se debe iniciar sesion.",
-        });
-    }else{
-        idUsuario=req.session.usuario.idUsuario;
+routerRecuperacion.post("/api/contrasena-nueva",(req,res)=>{
+    let contrasena
+
+    if(!req.body.contrasena1 || !req.body.contrasena2)
+        return res.status(401).json({exito:false,mensaje:"Falta llenar los campos"})
+    if(req.body.contrasena1 != req.body.contrasena2)
+        return res.status(401).json({exito:false,mensaje:"Las contraseñas no coinciden"})
+    else{
+        contrasena=req.body.contrasena1
+        
+        let correo
+        if(req.cookies.recuperacion_cookie){
+            correo=req.cookies.recuperacion_cookie
+            console.log(correo);
+            // Crear un objeto de descifrado usando el mismo algoritmo y clave
+            const decipher = crypto.createDecipher('aes-256-cbc', secretKey);
+            //Desencriptar el valor
+            let correoD = decipher.update(correo, 'hex', 'utf-8');
+            correoD += decipher.final('utf-8');
+
+            console.log('Valor desencriptado:', correo);
+            console.log(contrasena);
+            mySqlConnection.query(`update usuario set contrasena="${contrasena}" where CorreoElectronico="${correoD}"`,
+            (err, results) => {
+                
+                if (err) {
+                //Caso de error
+                return res.status(400).json({
+                    exito: false,
+                    mensaje: "Error al conectar la base",
+                    err: err,
+                });
+                } else {
+                    return res.status(200).json({exito: true, mensaje:"Se ha actualizado su contraseña correctamente"})
+                }
+            })
+        }
+        else{
+            return res.status(401).json({exito:false,mensaje:"No hay cookie existente"})
+        }
+        
     }
-    //Consulta en la BD
-    let Email
-    mySqlConnection.query(
-    `SELECT CorreoElectronico FROM usuario WHERE CorreoElectronico = "${Email}"`,(err,results) => {
-    if(err){
-        //Caso de Error
-        return res.status(400).json({
-            success: false,
-            error: "Error al conectar la base",
-            message: err,
-        });
-    }else{
-        //Realizar Cookie
-        console.log('Hola');
-    }
-    }
-    );*/
+
+})
