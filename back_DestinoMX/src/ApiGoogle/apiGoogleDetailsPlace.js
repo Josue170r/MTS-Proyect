@@ -96,7 +96,8 @@ routerApiDetails.get("/api/searchPlace", async (req, res)=> {
     const response = await apiGoogleBaseUrl.get('/textsearch/json', {
       params: {
         query,
-        key: apiKey
+        key: apiKey,
+        language: "es",
       },
     });
     res.status(200).send(response.data)

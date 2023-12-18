@@ -364,7 +364,6 @@ export default {
       this.getImgPlace()
       this.getImgsPlaces()
       this.getWeather()
-      this.AddToHistory()
     })
     this.getFavorites()
   },
@@ -383,9 +382,14 @@ export default {
       }
     },
     async AddToFavorites() {
+      console.log(this.placeImage)
       try {
         const response = await apiFromBackend.post("/api/favoritos", {
           idPlaceLugar: this.placeiD,
+          nombrePlaces: this.placeName,
+          imagePlaces: this.placeImage,
+          direccionPlaces: this.location,
+          ratingPlaces: this.rating,
         })
         this.isInFavorites = true
         toast.success("Lugar añadido a favoritos", {
@@ -401,9 +405,14 @@ export default {
       }
     },
     async AddToHistory() {
+      console.log(this.placeImage)
       try {
         const response = await apiFromBackend.post("/api/historial", {
           idPlaceLugar: this.placeiD,
+          nombrePlaces: this.placeName,
+          imagePlaces: this.placeImage,
+          direccionPlaces: this.location,
+          ratingPlaces: this.rating,
         })
         console.log(response)
       } catch ({ response }) {
@@ -443,7 +452,7 @@ export default {
         this.placeName = data.result.name
         this.rating = data.result.rating ? data.result.rating : 0
         this.reviews = data.result.reviews ? data.result.reviews : []
-        this.location = data.result.vicinity
+        this.location = data.result.formatted_address
         this.placePhotoReference = data.result.photos[0]
           ? data.result.photos[0].photo_reference
           : ""
@@ -490,6 +499,7 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
+        this.AddToHistory()
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
