@@ -25,7 +25,7 @@
             for="email"
             class="top-0 left-2 transition-all duration-300 text-gray-500"
           >
-            Correo Elctrónico *
+            Correo electrónico *
           </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
@@ -128,7 +128,7 @@
             for="secondLastName"
             class="top-0 left-2 transition-all duration-300 text-gray-500"
           >
-            Apellido materno *
+            Apellido materno
           </label>
           <div
             class="flex items-center border-2 py-2 px-3 rounded-lg mb-4 bg-white"
@@ -139,7 +139,7 @@
               class="pl-2 outline-none border-none w-full"
               type="text"
               name="secondLastName"
-              placeholder="Apellido materno *"
+              placeholder="Apellido materno"
             />
           </div>
           <div class="ml-1 mb-2 -mt-1">
@@ -258,7 +258,7 @@ export default {
         const { data } = await apiFromBackend.post("/api/crear-cuenta", {
           Nombre: this.user.name,
           ApellidoP: this.user.lastName,
-          ApellidoM: this.user.secondLastName,
+          ApellidoM: this.user.secondLastName ? this.user.secondLastName : "",
           CorreoElectronico: this.user.email,
           Usuario: this.user.username,
           contrasena: this.user.password,
@@ -335,7 +335,7 @@ const schema = yup.object({
   secondLastName: yup
     .string()
     .matches(
-      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
+      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/,
       "Este campo solo puede contener letras",
     ),
   password: yup

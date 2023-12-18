@@ -10,7 +10,13 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
   if (!req.session.usuario) {
     res.status(403).json({ exito: false, mensaje: "Se debe iniciar sesión." });
   } else {
-    const { idPlaceLugar } = req.body;
+    const { 
+      idPlaceLugar,
+      nombrePlaces,
+      imagePlaces,
+      direccionPlaces,
+      ratingPlaces
+    } = req.body;
     const idUsuario = req.session.usuario.idUsuario;
     const userExistsQuery = `SELECT * FROM usuario WHERE idUsuario = ?;`;
 
@@ -40,10 +46,22 @@ routerFavoritos.post("/api/favoritos", (req, res) => {
               .json({ exito: false, mensaje: "El viaje ya está en favoritos" });
           // Insertar el sitio a favoritos
           else {
-            const query = `INSERT INTO favoritos (idPlaceLugar, idUsuario) values ("${idPlaceLugar}", "${idUsuario}")`;
-            mySqlConnection.query(query, (err, rows, fields) => {
+            const insertFavoriteQuery  = `
+              INSERT INTO favoritos (
+                idPlaceLugar,
+                idUsuario,
+                nombrePlaces,
+                imagePlaces,
+                direccionPlaces,
+                ratingPlaces
+              ) VALUES (?, ?, ?, ?, ?, ?);
+            `;
+            mySqlConnection.query(
+            insertFavoriteQuery,
+            [idPlaceLugar, idUsuario, nombrePlaces, imagePlaces, direccionPlaces, ratingPlaces],
+            (err, rows, fields) => {
               if (err)
-                res.status(500).json({
+                res.status(409).json({
                   exito: false,
                   mensaje: "Error en la consulta",
                   err: err,

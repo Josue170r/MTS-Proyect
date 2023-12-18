@@ -38,7 +38,7 @@
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
-                      :src="placeImages[index]"
+                      :src="place.imagePlaces"
                       height="13rem"
                       width="80%"
                       @click="goToPlaceDescription(place.reference)"
@@ -49,26 +49,26 @@
                     <v-list-item-title
                       class="text-center"
                       style="white-space: normal; overflow: hidden"
-                      >{{ place.name }}</v-list-item-title
+                      >{{ place.nombrePlaces }}</v-list-item-title
                     >
                     <v-rating
                       half-increments
                       hover
                       :length="5"
                       :size="16"
-                      :model-value="place.rating"
+                      :model-value="place.ratingPlaces"
                       readonly
                       color="rgb(232, 176, 36)"
                       active-color="rgb(232, 176, 36)"
                     />
                     <v-list-item-subtitle class="text-center mt-3">{{
-                      place.formatted_address
+                      place.direccionPlaces
                     }}</v-list-item-subtitle>
                   </div>
 
                   <!-- Botón para eliminar el lugar-->
                   <div class="absolute top-4 right-3">
-                    <button @click="deletePlace(place.reference)">
+                    <button @click="deletePlace(place.idPlaceLugar)">
                       <deleteFav />
                     </button>
                   </div>
@@ -94,7 +94,6 @@
 </template>
 
 <script>
-import { toRaw } from "vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
@@ -111,9 +110,7 @@ export default {
   },
   data() {
     return {
-      placesImgsReferences: [],
       places: [],
-      placeImages: [],
     }
   },
   created() {
@@ -126,80 +123,20 @@ export default {
         // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/favoritos")
         // Actualizar los datos locales en el componente con los favoritos obtenidos
-        this.placeIds = data.info
-        this.placeIds = this.placeIds
-          .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
-          .map((place) => place.idPlaceLugar)
-        this.getNamePlaces().then(() => {
-          this.getImgsPlaces()
-        })
+        this.places = data.info
+        this.places = this.places.filter((place) =>
+          place.idPlaceLugar.startsWith("ChIJ"),
+        )
+        console.log(this.places)
       } catch (error) {
         console.error("Error al obtener lugares del favoritos:", error)
       }
     },
-    async getNamePlaces() {
-      try {
-        // Utiliza Promise.all para realizar las solicitudes de manera simultánea
-        const requests = this.placeIds.map(async (placeid) => {
-          const { data } = await apiFromBackend.get("/api/placeName", {
-            params: {
-              place_id: placeid,
-            },
-          })
-          return data.result
-        })
-        const results = await Promise.all(requests)
-        this.places.push(...results)
-
-        // Imprime el arreglo de places después de que todas las solicitudes se completen
-        console.log("Arreglo de lugares: ", this.places)
-        // Agrega las referencias de imágenes al arreglo
-        this.placesImgsReferences.push(
-          ...results.map((result) =>
-            result.photos && result.photos.length > 0
-              ? result.photos[0].photo_reference
-              : "AcJnMuGWfw7Ua2fdzEnPQpBetCNLCfkzn7E8w_YU5drBbSnfMSEEdAyMn-D8VA6bk7dWmKRrw1_Qu4_kpwnxYEJLUJcdWa1xx1KBUx3X8vSMHWKFSfi41nv-X-2666CaHtTiXlJw0KB7UhSzltI11Ie3CfLzy8Uq2wvryKcjQI8K7KqORhc6",
-          ),
-        )
-        console.log("Arreglo de referencias: ", this.placesImgsReferences)
-      } catch (error) {
-        console.log(error.message)
-      }
-    },
-    async getImgsPlaces() {
-      try {
-        console.log(
-          "References desde getImgsPlaces: ",
-          toRaw(this.placesImgsReferences),
-        )
-        const imageUrls = []
-        for (const photoReference of toRaw(this.placesImgsReferences)) {
-          const response = await apiFromBackend.get("/api/imgPlace", {
-            params: {
-              maxwidth: "400",
-              photoreference: photoReference,
-            },
-            responseType: "blob",
-          })
-          const imgUrl = URL.createObjectURL(response.data)
-          imageUrls.push(imgUrl)
-        }
-        this.placeImages = toRaw(imageUrls)
-        console.log("Urls de fotos this.placeImages: ", this.placeImages)
-      } catch (error) {
-        toast.error("No hay imágenes disponibles", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
-      }
-    },
-    async deletePlace(place) {
+    async deletePlace(place_id) {
       try {
         const { data } = await apiFromBackend.delete("/api/favoritos", {
           params: {
-            idPlaceLugar: place,
+            idPlaceLugar: place_id,
           },
         })
         toast.success(data.mensaje, {
