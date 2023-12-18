@@ -146,7 +146,7 @@
                 >
                   Fecha de fin
                 </v-btn>
-                <h2 class="mb-3 my-5">Fecha de Fin: <br />{{ endDate }}</h2>
+                <h2 class="mb-3 my-5">Fecha de fin: <br />{{ endDate }}</h2>
               </div>
             </template>
             <div class="flex items-center justify-center h-[1px]">

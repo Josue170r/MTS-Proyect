@@ -22,6 +22,6 @@ export default {
 </script>
 <style scoped>
 .color-stroke path {
-  stroke: rgb(206, 60, 11);
+  stroke: rgb(239, 137, 43);
 }
 </style>
