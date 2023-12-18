@@ -18,7 +18,7 @@
     <div class="md:w-1/2 md:order-2">
       <div class="flex items-center justify-center w-full flex-col">
         <h1 class="text-gray-800 py-4 text-center text-xl font-bold">
-          Quienes somos
+          ¿Quiénes somos?
         </h1>
         <h2
           class="text-gray-800 py-2 px-4 text-center justify-center text-m leading-5"
@@ -34,7 +34,7 @@
         <h1
           class="text-gray-800 py-4 px-4 text-center justify-center text-xl font-bold"
         >
-          Nuestra Mision
+          Nuestra Misión
         </h1>
         <h2
           class="text-gray-800 py-2 px-4 text-center justify-center text-m leading-5"
@@ -77,12 +77,18 @@
           ser tu guía confiable en tu próxima aventura por México.
         </h2>
         <!--Boton empezar-->
-        <button type="button" @click="goToHome" class="p-1 rounded-full">
+        <!-- <button type="button" @click="goToHome" class="p-1 rounded-full">
           <img
             src="@/assets/images/Start.jpeg"
             alt="START"
             class="w-17 h-12 rounded-full"
           />
+        </button> -->
+        <button
+          @click="goToHome"
+          class="flex font-quicksand rounded-lg text-white text-base font-semibold mt-8 mb-4 mr-4 ml-4 bg-red-500 p-2 custom-button px-5"
+        >
+          Empezar
         </button>
 
         <!--TERMINA DESCUBRIMIENTO PERSONALIZADO-->
@@ -114,11 +120,11 @@
               class="text-gray-800 py-2 px-6 text-center text-m leading-5"
             >
               Si olvidaste tu contraseña o usuario no te preocupes, dirígete a
-              la sección de ““Recuperar contraseña“ presionando en la palabra
+              la sección de “Recuperar contraseña“ presionando en la palabra
               “Olvidé mi contraseña“ que se encuentra en el inicio de sesión.
-              Así mismo, si tu cuenta está registrada por correo de Google o
-              Usuario de Facebook, revisa si cuentas con conexión a Internet o
-              cierra y vuelve abrir la aplicación.
+              Así mismo, si tu cuenta está registrada por correo de Google
+              revisa si cuentas con conexión a Internet o cierra y vuelve abrir
+              la aplicación.
             </li>
             <!-- Repite el patrón para las demás preguntas -->
 
@@ -140,7 +146,7 @@
               aplicación ni tampoco debes pagar por usar nuestro servicio, por
               lo que DestinoMX© no te obligará a compartir tus datos ni pedirte
               medios de pago dentro o fuera de la aplicación. Si recibes
-              mensajes u otras medios de comunicación que se hacen pasar por
+              mensajes u otros medios de comunicación que se hacen pasar por
               DestinoMX© para pagar por nuestros servicios, denúncialo ante las
               autoridades correspondientes y evita a toda costa de caer en una
               estafa.
@@ -162,7 +168,7 @@
             >
               En la sección de “Favoritos“ que se encuentra en la aplicación, se
               encontrarán todos los lugares favoritos que elegiste para volver a
-              consultar la información que necesites y puedas tenerla accesible
+              consultar la información que necesites, y puedas tenerla accesible
               en todo momento que uses la aplicación.
             </li>
             <li
@@ -179,12 +185,12 @@
               v-if="showAnswer[4]"
               class="text-gray-800 py-2 px-6 text-center text-m leading-5"
             >
-              Tus datos personales como Nombre, Correo y/o Ubicación actual, las
+              Tus datos personales como Nombre, Correo y/o Ubicación actual, los
               usamos para poderte ofrecer un servicio eficiente al momento de
-              uses nuestra aplicación. Si tienes más dudas acerca de cómo usamos
-              tus datos y para qué los usamos, puedes consultar nuestros
+              que uses nuestra aplicación. Si tienes más dudas acerca de cómo
+              usamos tus datos y para qué los usamos, puedes consultar nuestros
               Términos y Condiciones como también nuestra Política de Privacidad
-              para obtengas mayor información más detallada, estas secciones las
+              para que obtengas información más detallada, estas secciones las
               puedes encontrar en la configuración de la aplicación, presionando
               en el botón de las “tres barras“ y después en el botón del
               “engrane“ correspondientemente.
@@ -203,14 +209,8 @@
               v-if="showAnswer[5]"
               class="text-gray-800 py-2 px-6 text-center text-m leading-5"
             >
-              Al momento de seleccionar el lugar que haya elegido, existe una
-              sección abajo de la información del lugar que ofrece un espacio
-              para agregar una reseña propia, esta sección puedes agregar una
-              reseña del lugar que se haya visitado y quieras compartir tu
-              experiencia. Para esto, recuerda que debes respetar los Términos y
-              Condiciones de nuestra aplicación, por lo que no se permitirá
-              comentario ofensivos hacia personas o terceros en tu reseña que
-              desees agregar.
+              Por el momento no es posible agregar reseñas dentro de la
+              aplicación.
             </li>
             <li
               @click="toggleAnswer(6)"
@@ -237,8 +237,8 @@
         <h2
           class="text-gray-800 py-2 px-6 text-center justify-center text-m leading-5"
         >
-          Si las anteriores preguntas no han resuelto su problema o le gustaría
-          aportar una sugerencia, comuníquese con nosotros a través de los
+          Si las preguntas anteriores no han resuelto tu problema o te gustaría
+          aportar una sugerencia, comunícate con nosotros a través de los
           siguientes medios oficiales:
         </h2>
 

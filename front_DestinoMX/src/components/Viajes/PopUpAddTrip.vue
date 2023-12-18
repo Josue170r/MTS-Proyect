@@ -22,7 +22,23 @@
               class="text-start"
               v-for="date in dates[index]"
               :key="date"
-              @click="addToTrip(date, travel)"
+              @click="toggleOpacity(date)"
+              :class="[
+                'flex',
+                'font-quicksand',
+                'rounded-lg',
+                'text-black',
+                'text-base',
+                'font-semibold',
+                'mb-4',
+                'ml-4',
+                'mr-4',
+                'p-2',
+                'custom-button',
+                isSelected[date]
+                  ? 'bg-gray-300'
+                  : 'bg-gray-100 hover:bg-gray-300',
+              ]"
             >
               {{ date }}
             </v-expansion-panel-text>
@@ -55,15 +71,23 @@
       <div class="flex justify-between mt-4">
         <button
           @click="cancel"
-          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 ml-4 mr-4 bg-gray-100 p-2 custom-button"
+          class="flex font-quicksand rounded-lg text-gray-700 text-base font-semibold mb-4 ml-4 mr-4 bg-gray-100 p-2 custom-button"
         >
           Cancelar
         </button>
         <button
+          v-if="!selected"
           @click="createNewTrip"
-          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 mr-4 ml-4 bg-orange-500 p-2 custom-button"
+          class="flex font-quicksand rounded-lg text-white text-base font-semibold mb-4 mr-4 ml-4 bg-orange-300 p-2 custom-button"
         >
           Crear nuevo viaje
+        </button>
+        <button
+          v-if="selected"
+          @click="addToTrip"
+          class="flex font-quicksand rounded-lg text-white text-base font-semibold mb-4 mr-4 ml-4 bg-orange-300 p-2 custom-button px-5"
+        >
+          Aceptar
         </button>
       </div>
     </div>
@@ -96,12 +120,30 @@ export default {
       travels: [],
       dates: [],
       namePlace: this.placeName,
+      isSelected: {},
+      selected: false,
     }
   },
   created() {
     this.getTrip()
   },
   methods: {
+    toggleOpacity(date) {
+      if (!this.isSelected[date]) {
+        // Deseleccionar todas las fechas
+        Object.keys(this.isSelected).forEach((key) => {
+          this.isSelected[key] = false
+        })
+
+        // Seleccionar la fecha clickeada
+        this.isSelected[date] = true
+        this.selected = true
+      } else {
+        // Deseleccionar la fecha clickeada
+        this.isSelected[date] = false
+        this.selected = false
+      }
+    },
     cancel() {
       this.$emit("close-popup")
     },
