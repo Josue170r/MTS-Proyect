@@ -123,9 +123,8 @@ export default {
         // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/favoritos")
         // Actualizar los datos locales en el componente con los favoritos obtenidos
-        this.places = data.info
-        this.places = this.places.filter((place) =>
-          place.idPlaceLugar.startsWith("ChIJ"),
+        this.places = data.info.filter((place) =>
+          place.idPlaceLugar.includes("ChIJ"),
         )
         console.log(this.places)
       } catch (error) {

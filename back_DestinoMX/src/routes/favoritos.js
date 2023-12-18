@@ -161,7 +161,7 @@ routerFavoritos.get("/api/favoritos", async (req, res) => {
         res.status(404).json({ exito: false, mensaje: "El usuario no existe" });
       // Obtener los favoritos si se encontró el usuario
       else {
-        const getFavsQuery = `SELECT (idPlaceLugar) FROM favoritos WHERE idUsuario = ?;`;
+        const getFavsQuery = `SELECT * FROM favoritos WHERE idUsuario = ?;`;
         mySqlConnection.query(getFavsQuery, [idUsuario], (err, rows, field) => {
           if (err)
             res.status(500).json({

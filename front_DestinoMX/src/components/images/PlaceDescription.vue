@@ -452,7 +452,7 @@ export default {
         this.placeName = data.result.name
         this.rating = data.result.rating ? data.result.rating : 0
         this.reviews = data.result.reviews ? data.result.reviews : []
-        this.location = data.result.vicinity
+        this.location = data.result.formatted_address
         this.placePhotoReference = data.result.photos[0]
           ? data.result.photos[0].photo_reference
           : ""
