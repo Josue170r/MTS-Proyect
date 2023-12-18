@@ -80,7 +80,9 @@
 
                   <!-- Botón para eliminar el lugar-->
                   <div class="absolute top-4 right-3">
-                    <deleteFav @click="deletePlace(place.reference)" />
+                    <button @click="deletePlace(place.reference)">
+                      <deleteFav />
+                    </button>
                   </div>
                 </v-list-item>
               </v-list>
@@ -102,7 +104,7 @@
           type="button"
           class="font-quicksand block w-1/2 mt-4 py-3 px-4 rounded-lg text-white font-semibold mb-2 bg-pink-300"
         >
-          Descubre ahora
+          Descubrir ahora
         </button>
       </v-container>
     </div>

@@ -42,9 +42,47 @@
         <h1 class="text-orange-500 py-3 text-left text-2xl font-bold">
           {{ placeName }}
         </h1>
-        <button class="ml-2 py-3 mr-4">
-          <ShareIcon />
-        </button>
+        <v-dialog v-model="dialog" persistent width="1024">
+          <template v-slot:activator="{ props }">
+            <button class="ml-16 py-3 mr-4">
+              <ShareIcon v-bind="props" />
+            </button>
+          </template>
+          <v-card>
+            <v-card-title class="text-center font-baskerville mt-2">
+              <div
+                class="text-center ml-3 mr-1 py-0 text-left text-xl"
+                style="white-space: normal"
+              >
+                Compartir información
+              </div>
+            </v-card-title>
+            <v-card-text class="text-center"
+              ><div ref="contentToCopy">
+                ¡Mira el lugar que encontré usando DestinoMX! Descarga la app y
+                descubramos más lugares juntos {{ link }}
+                <!-- <div style="display: none">{{ link }}</div> -->
+              </div></v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="grey lighten-3"
+                variant="text"
+                @click="dialog = false"
+              >
+                Salir
+              </v-btn>
+              <v-btn
+                color="orange-darken-1"
+                variant="text"
+                @click="copyToClipboard"
+              >
+                Copiar
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
 
       <div
@@ -53,34 +91,37 @@
         @click="hideRatingPopUp"
       >
         <!-- Dirección -->
-        <LocalitationIcon2 class="mb-3 mr-1" />
-        <div class="underline text-blue-800 text-left text-md mt-0.5">
-          {{ location }}
+        <div class="mb-3 mr-1">
+          <LocalitationIcon2 />
+        </div>
+        <div
+          class="underline font-quicksand text-blue-800 text-left text-md justify-center mt-0.5 mr-6"
+          style="white-space: normal; overflow: hidden"
+        >
+          {{ location }} <br />
         </div>
       </div>
-      <div v-if="phone" class="flex flex-row ml-2 mr-0">
+      <div v-if="phone" class="flex flex-row font-quicksand ml-2 mr-0">
         <PhoneIcon class="mb-3 mr-0.3 ml-1" />
-        <div class="ml-2 mb-2 text-orange-600 text-left text-md mt-0.5">
+        <div class="ml-2 mb-2 text-gray-600 text-left text-md mt-2">
           {{ phone }}
         </div>
       </div>
-      <div class="flex flex-row ml-2 mr-0" v-if="status">
+      <div class="flex flex-row font-quicksand ml-2 mr-0" v-if="status">
         <ClockIcon2
-          class="mb-3 ml-1 w-5 h-5 text-red-700"
+          class="mb-3 ml-1 w-5 h-5 text-gray-700"
           stroke-width="1.2"
-          color-stroke="red"
+          color-stroke="gray"
         />
-        <div class="ml-1 text-orange-600 text-left text-md mt-0">
+        <div class="ml-1 text-gray-600 text-left text-md mt-0">
           <div class="flex flex-col">
             {{ status }}
-            <div class="flex flex-row">
-              <p v-if="openTime" class="font-quicksand mr-2">Abre a las</p>
-              {{ openTime }}
-              <p v-if="closeTime" class="font-quicksand ml-2 mr-2">
-                Cierra a las
-              </p>
-              {{ closeTime }}
-            </div>
+            <p v-if="openTime" class="font-quicksand text-gray-600 mr-2">
+              Abre a las {{ openTime }}
+            </p>
+            <p v-if="closeTime" class="font-quicksand mr-2">
+              Cierra a las {{ closeTime }}
+            </p>
           </div>
         </div>
       </div>
@@ -113,29 +154,31 @@
             class="py-1 px-1 rounded-lg text-gray text-base mt-0 mb-0"
           >
             <div class="flex text-md" @click="showPopUpRating">
-              <RatingButton class="ml-1 mr-2 mt-0 mb-0" />
-              <p class="text-center text-lg mt-1">{{ rating }}</p>
+              <RatingButton class="ml-1 mr-1 mt-1 mb-0" />
+              <p class="text-center font-quicksand text-lg mt-1">
+                {{ rating }}
+              </p>
             </div>
           </button>
           <div class="flex text-md mr-2">
-            <WeatherIcon class="mr-2" />
-            <p class="mr-4 text-lg">{{ placeWeather }} °C</p>
+            <WeatherIcon class="mr-1 mb-0 mt-1" />
+            <p class="mr-4 font-quicksand text-lg">{{ placeWeather }} °C</p>
           </div>
         </div>
         <div
           v-if="about"
           class="ml-3 mr-1 text-black font-quicksand py-0 text-left text-sm"
         >
-          <p class="mt-0 mb-2 mr-4 font-quicksand text-justify">
+          <h2 class="mt-0 mb-2 mr-4 font-quicksand text-justify">
             {{ about }}
-          </p>
+          </h2>
         </div>
         <div v-else>
-          <p class="mt-4 mx-4">
+          <h2 class="mt-0 mx-4 mb-2 font-quicksand text-justify">
             {{
               "Más información sobre el clima o datos del lugar (por definir)"
             }}
-          </p>
+          </h2>
         </div>
       </div>
 
@@ -161,17 +204,17 @@
         <button
           :class="[isInFavorites ? 'opacity-60 cursor-not-allowed' : '...']"
           :disabled="isInFavorites"
-          class="flex flex-row font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
+          class="flex flex-row font-quicksand py-2 px-3 rounded-lg text-white text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-pink-300"
           @click="AddToFavorites"
         >
           <div class="flex items-center">
             <span>Favoritos</span>
-            <FavoriteIcon class="ml-1" />
+            <FavoriteIcon3 class="ml-1" />
           </div>
         </button>
 
         <button
-          class="flex font-quicksand py-1 px-1 rounded-lg text-gray text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-green-300"
+          class="flex font-quicksand py-2 px-3 rounded-lg text-white text-base font-semibold mr-3 ml-3 mb-4 mt-6 bg-orange-300"
           @click="PopUpAddTrip"
         >
           <div class="flex items-center">
@@ -190,16 +233,19 @@
 
       <!-- Ratings -->
 
-      <div class="mt-4">
+      <div class="mt-4 mb-16">
         <swiper
           :slidesPerView="1"
           :spaceBetween="2"
           :cssMode="true"
-          :navigation="true"
+          :navigation="{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }"
           :mousewheel="true"
           :keyboard="true"
           :modules="modules"
-          class="mySwiper mb-8"
+          class="mySwiper mb-2"
         >
           <swiper-slide v-for="review in reviews" :key="review">
             <div class="flex flex-col items-center">
@@ -222,15 +268,21 @@
                 />
               </div>
               <div class="flex flex-row ml-1 mr-4 mt-2">
-                <p class="text-blue-500">
+                <p class="text-gray-400">
                   {{ review.relative_time_description }}
                 </p>
               </div>
-              <div class="flex flex-row justify ml-1 mr-4 mt-2">
-                <p>{{ review.text }}</p>
+              <div class="flex flex-row mt-2">
+                <p
+                  class="flex ml-14 mr-14 font-quicksand text-base text-justify"
+                >
+                  {{ review.text }}
+                </p>
               </div>
             </div>
           </swiper-slide>
+          <div class="swiper-button-next mt-12"></div>
+          <div class="swiper-button-prev mt-12"></div>
         </swiper>
       </div>
     </div>
@@ -245,7 +297,7 @@ import ClockIcon2 from "@/components/icons/ClockIcon2.vue"
 import RatingButton from "@/components/buttons/RatingButton.vue"
 import ShareIcon from "@/components/icons/ShareIcon.vue"
 import BackButton from "@/components/buttons/BackButton"
-import FavoriteIcon from "@/components/icons/FavoriteIcon.vue"
+import FavoriteIcon3 from "@/components/icons/FavoriteIcon3.vue"
 import AddIcon from "@/components/icons/AddIcon.vue"
 import WeatherIcon from "@/components/icons/WeatherIcon.vue"
 import GalleryImages from "@/components/images/GalleryImages.vue"
@@ -268,7 +320,7 @@ export default {
     ClockIcon2,
     ShareIcon,
     RatingButton,
-    FavoriteIcon,
+    FavoriteIcon3,
     AddIcon,
     WeatherIcon,
     GalleryImages,
@@ -302,6 +354,8 @@ export default {
       showRatingPopup: false,
       isInFavorites: false,
       isLoading: true,
+      dialog: false, // Inicialmente, el diálogo está oculto
+      link: "",
     }
   },
   created() {
@@ -383,6 +437,7 @@ export default {
           },
         })
         console.log("Desde getNamePlace: ", data)
+        this.link = data.result.url
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
         this.placeName = data.result.name
@@ -415,6 +470,7 @@ export default {
         const startingIndex = 1 // Índice de la segunda imagen
         this.placePhotosReferences = this.imageReferences.slice(startingIndex)
         this.about = data.result.editorial_summary.overview
+        console.log(data.result)
       } catch (error) {
         console.log(error.message)
       }
@@ -423,7 +479,7 @@ export default {
       const [hours, minutes] = hour.match(/.{1,2}/g)
       const formattedHours = hours.padStart(2, "0")
       const formattedMinutes = minutes.padEnd(2, "0")
-      return ` ${formattedHours}:${formattedMinutes} horas`
+      return ` ${formattedHours}:${formattedMinutes} hrs`
     },
     async getImgPlace() {
       try {
@@ -465,6 +521,7 @@ export default {
 
         // Ahora imageUrls contiene todas las URLs de las imágenes
         this.placeImages = toRaw(imageUrls)
+        console.log(this.placeImages)
         this.isLoading = false
       } catch (e) {
         toast.error(e, {
@@ -474,6 +531,20 @@ export default {
           hideProgressBar: true,
         })
       }
+    },
+    copyToClipboard() {
+      const textToCopy = this.$refs.contentToCopy.innerText
+
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          alert(
+            "¡Información copiada al portapapeles!\nComparte este lugar con tus amigos :)",
+          )
+        })
+        .catch((error) => {
+          console.error("Error al copiar al portapapeles:", error)
+        })
     },
 
     PopUpAddTrip() {
@@ -548,5 +619,15 @@ export default {
   60% {
     transform: translateY(-10px);
   }
+}
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgb(103, 101, 98); /* Change this to your desired color */
+}
+
+/* Optional: Increase the size of the arrows */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 48px;
 }
 </style>
