@@ -35,7 +35,9 @@
                 'mr-4',
                 'p-2',
                 'custom-button',
-                isSelected[date] === travel.idViajes ? 'bg-gray-300' : 'bg-gray-100',
+                isSelected[date] === travel.idViajes
+                  ? 'bg-gray-300'
+                  : 'bg-gray-100',
               ]"
             >
               {{ date }}
