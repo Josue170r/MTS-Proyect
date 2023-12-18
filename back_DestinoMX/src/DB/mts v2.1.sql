@@ -55,6 +55,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `mts_database`.`favoritos` (
   `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
+  `nombrePlaces` TEXT NULL,
+  `imagePlaces` TEXT NULL,
+  `direccionPlaces` TEXT NULL,
+  `ratingPlaces` TEXT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Favoritos_Usuario_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Favoritos_Usuario`
@@ -73,6 +77,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `mts_database`.`historial` (
   `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
+  `nombrePlaces` TEXT NULL,
+  `imagePlaces` TEXT NULL,
+  `direccionPlaces` TEXT NULL,
+  `ratingPlaces` TEXT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Historial_Usuario_idx` (`idUsuario` ASC) INVISIBLE,
   CONSTRAINT `fk_Historial_Usuario0`
@@ -201,7 +209,6 @@ insert into catPreferencias values
 ('bibliotecas','library'),
 ('momumentos y lugares publicos','city_hall'),
 ('momumentos y lugares publicos','local_government_office');
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
