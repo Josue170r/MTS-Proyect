@@ -19,10 +19,10 @@
               {{ travel.nombreMiViaje }}
             </v-expansion-panel-title>
             <v-expansion-panel-text
-              class="text-start"
+              class="text-start mt-4"
               v-for="date in dates[index]"
               :key="date"
-              @click="toggleOpacity(date)"
+              @click="toggleOpacity(date, travel)"
               :class="[
                 'flex',
                 'font-quicksand',
@@ -87,7 +87,7 @@
           @click="addToTrip"
           class="flex font-quicksand rounded-lg text-white text-base font-semibold mb-4 mr-4 ml-4 bg-orange-300 p-2 custom-button px-5"
         >
-          Aceptar
+          Agregar
         </button>
       </div>
     </div>
@@ -122,13 +122,15 @@ export default {
       namePlace: this.placeName,
       isSelected: {},
       selected: false,
+      currentDate: "",
+      currenTrip: [],
     }
   },
   created() {
     this.getTrip()
   },
   methods: {
-    toggleOpacity(date) {
+    toggleOpacity(date, travel) {
       if (!this.isSelected[date]) {
         // Deseleccionar todas las fechas
         Object.keys(this.isSelected).forEach((key) => {
@@ -138,6 +140,8 @@ export default {
         // Seleccionar la fecha clickeada
         this.isSelected[date] = true
         this.selected = true
+        this.currentDate = date
+        this.currenTrip = travel
       } else {
         // Deseleccionar la fecha clickeada
         this.isSelected[date] = false
@@ -163,7 +167,9 @@ export default {
         console.error(error)
       }
     },
-    async addToTrip(date, travel) {
+    async addToTrip() {
+      const date = this.currentDate
+      const travel = this.currenTrip
       try {
         const { data } = await apiFromBackend.post("/api/sitios", {
           placeID: this.placeId,

@@ -68,7 +68,9 @@
 
                   <!-- Botón para eliminar el lugar-->
                   <div class="absolute top-4 right-3">
-                    <deleteFav @click="deletePlace(place.reference)" />
+                    <button @click="deletePlace(place.reference)">
+                      <deleteFav />
+                    </button>
                   </div>
                 </v-list-item>
               </v-list>
