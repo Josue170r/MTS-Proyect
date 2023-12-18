@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`favoritos` (
   `nombrePlaces` TEXT NULL,
   `imagePlaces` TEXT NULL,
   `direccionPlaces` TEXT NULL,
-  `ratingPlaces` TEXT NULL,
+  `ratingPlaces` FLOAT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Favoritos_Usuario_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Favoritos_Usuario`
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`historial` (
   `nombrePlaces` TEXT NULL,
   `imagePlaces` TEXT NULL,
   `direccionPlaces` TEXT NULL,
-  `ratingPlaces` TEXT NULL,
+  `ratingPlaces` FLOAT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Historial_Usuario_idx` (`idUsuario` ASC) INVISIBLE,
   CONSTRAINT `fk_Historial_Usuario0`
