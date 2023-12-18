@@ -69,7 +69,7 @@ routerValidacion.post("/api/cookie-cifra-validacion", (req,res) => {
     if(req.cookies.codigo_validacion)
         codigo=req.cookies.codigo_validacion
     else
-        return res.status(400).json({exito:false,mensaje:"Tiempo agotado"})
+        return res.status(400).json({exito:false,mensaje:"Se ha agotado su tiempo"})
 
     // Crear un objeto de descifrado usando el mismo algoritmo y clave
     const decipher = crypto.createDecipher('aes-256-cbc', secretKey);
