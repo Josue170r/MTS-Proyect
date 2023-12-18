@@ -27,7 +27,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
             if(results.length!=0){
                 if(results[0].codigo==0){
                     try{
-                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href='http://localhost:8081'>link</a></h3>")
+                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=http://localhost:8080/#/newPassword>link</a></h3>")
                     }
                     catch(error){
                         return res.status(500).json({exito:false,mensaje:"Correo no enviado"})
@@ -41,7 +41,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
 
                     res.cookie('recuperacion_cookie', valorEncriptado, { expires: date, httpOnly: true });
 
-                    return res.status(200).json({mensaje:"Se ha enviado el correo"})
+                    return res.status(200).json({mensaje:"Te enviamos un correo para recuperar tu cuenta"})
                 }
                 else{
                     return res.status(200).json({exito:true,mensaje:"No se ha validado el correo"})

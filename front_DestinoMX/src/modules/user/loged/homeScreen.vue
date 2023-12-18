@@ -256,12 +256,6 @@ export default {
         console.log(this.preference)
         this.getArrayPlaces()
       } catch ({ response }) {
-        toast.error(response.data.mensaje, {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
         if (response.data.mensaje === "No hay preferencias configuradas.") {
           this.getArrayPlaces()
         }
