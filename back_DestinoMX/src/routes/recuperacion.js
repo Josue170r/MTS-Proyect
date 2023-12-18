@@ -26,12 +26,15 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
         else{
             if(results.length!=0){
                 if(results[0].codigo==0){
-                    /*try{
+                    try{
                         mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=http://localhost:8081/#/newPassword>link</a></h3>")
+                        //cambiar href con respecto a sus puertos de front                                                             (8081 o 8080 u otro)   ^^^^
                     }
                     catch(error){
                         return res.status(500).json({exito:false,mensaje:"Correo no enviado"})
-                    }*/
+                    }
+                    /*const urlCompleta = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+                    console.log(req.get('port'));*/
                     //encriptacion
                     // Crear un objeto de cifrado usando el algoritmo AES con una clave
                     const cipher = crypto.createCipher('aes-256-cbc', secretKey);
@@ -46,6 +49,9 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
                 else{
                     return res.status(200).json({exito:true,mensaje:"No se ha validado el correo"})
                 }
+            }
+            else{
+                return res.status(200).json({mensaje:"Te enviamos un correo para recuperar tu cuenta"})
             }
         }
     })
@@ -95,12 +101,13 @@ routerRecuperacion.post("/api/contrasena-nueva",(req,res)=>{
                     err: err,
                 });
                 } else {
+                    res.clearCookie("recuperacion_cookie")
                     return res.status(200).json({exito: true, mensaje:"Se ha actualizado su contraseña correctamente"})
                 }
             })
         }
         else{
-            return res.status(401).json({exito:false,mensaje:"No hay cookie existente"})
+            return res.status(401).json({exito:false,mensaje:"Se ha agotado su tiempo"})
         }
         
     }

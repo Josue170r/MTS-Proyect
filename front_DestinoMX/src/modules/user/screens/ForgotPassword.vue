@@ -88,10 +88,13 @@ export default {
         console.log(data)
         toast(data.data.mensaje, {
           hideProgressBar: true,
-          autoClose: 1000,
+          autoClose: 2000,
           type: "success",
           theme: "colored",
         })
+        setTimeout(() => {
+          this.$router.push({ name: "login" })
+        }, 2000)
       } catch (response) {
         toast(response.data.mensaje, {
           hideProgressBar: true,

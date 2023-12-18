@@ -79,7 +79,6 @@
                 ? 'opacity-60 cursor-not-allowed'
                 : 'hover:outline hover:outline-1 hover:outline-orange-400',
             ]"
-            @click="onSubmit"
           >
             Validar contraseña
           </button>
@@ -143,13 +142,29 @@ export default {
           contrasena2: this.user.passwordConfirmation,
         })
         console.log(data)
+        if (data.data.exito == true) {
+          toast(data.data.mensaje, {
+            hideProgressBar: true,
+            autoClose: 2000,
+            type: "success",
+            theme: "colored",
+          })
+          setTimeout(() => {
+            this.$router.push({ name: "login" })
+          }, 2000)
+        }
       } catch ({ response }) {
         toast.error(response.data.mensaje, {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
+          autoClose: 2000,
           hideProgressBar: true,
         })
+        if (response.data.mensaje == "Se ha agotado su tiempo") {
+          setTimeout(() => {
+            this.$router.push({ name: "login" })
+          }, 2000)
+        }
       }
     },
   },
