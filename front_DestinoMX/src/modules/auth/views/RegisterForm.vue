@@ -18,7 +18,7 @@
           :validation-schema="schema"
         >
           <p class="text-md text-center font-normal text-gray-800 mb-7">
-            Porfavor llena los siguientes campos para la creación de tu cuenta
+            Por favor llena los siguientes campos para la creación de tu cuenta
           </p>
           <label
             v-if="user.email"

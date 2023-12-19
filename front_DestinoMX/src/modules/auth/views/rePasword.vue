@@ -19,7 +19,7 @@
         color="white"
       >
         <h3 class="mt-4 text-2xl font-semibold">
-          Validacion de correo electrónico
+          Validación de correo electrónico
         </h3>
 
         <div class="text-center text-subtitle-3 font-weight-light mb-3">

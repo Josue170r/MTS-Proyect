@@ -58,7 +58,7 @@
           class="flex flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
         >
           <h1 class="text-gray-800 text-center text-2xl font-bold">
-            Tus Proximos Viajes
+            Tus Próximos Viajes
           </h1>
           <div class="flex ml-4 mr-0 items-center justify-center">
             <button type="button" @click="goToNewTripForm" class="ml-auto">

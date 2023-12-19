@@ -79,7 +79,7 @@
       </div>
       <div class="md:w-1/2 md:order-2">
         <div class="flex items-center justify-center w-full flex-col">
-          <h1 class="text-xl text-center mt-2 mb-2">Usted está aqui</h1>
+          <h1 class="text-xl text-center mt-2 mb-2">Usted está aquí</h1>
           <GoogleMap
             @click="goToMapScreen"
             :api-key="apiKey"
