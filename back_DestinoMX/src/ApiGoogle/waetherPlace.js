@@ -1,4 +1,4 @@
-import axios from "Axios";
+import axios from "axios";
 import { Router } from "express";
 
 const getApiWaether = axios.create({

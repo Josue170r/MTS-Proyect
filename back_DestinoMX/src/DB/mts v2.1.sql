@@ -19,7 +19,7 @@ USE `railway` ;
 -- -----------------------------------------------------
 -- Table `railway`.`catpreferencias`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `railway`.`catPreferencias` (
+CREATE TABLE IF NOT EXISTS `railway`.`catpreferencias` (
   `idCatPreferencias` VARCHAR(30) NOT NULL,
   `idPlacesTipo` VARCHAR(26) NOT NULL,
   PRIMARY KEY (`idCatPreferencias`, `idPlacesTipo`))
@@ -161,7 +161,7 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-insert into catPreferencias values 
+insert into catpreferencias values 
 ('parque de atracciones','amusement_park'),
 ('parque de atracciones','tourist_attraction'),
 ('lugares religiosos','church'),
