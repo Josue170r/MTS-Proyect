@@ -8,19 +8,18 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema mts_database
+-- Schema railway
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mts_database
+-- Schema railway
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mts_database` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `mts_database` ;
+USE `railway` ;
 
 -- -----------------------------------------------------
--- Table `mts_database`.`catpreferencias`
+-- Table `railway`.`catpreferencias`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`catpreferencias` (
+CREATE TABLE IF NOT EXISTS `railway`.`catPreferencias` (
   `idCatPreferencias` VARCHAR(30) NOT NULL,
   `idPlacesTipo` VARCHAR(26) NOT NULL,
   PRIMARY KEY (`idCatPreferencias`, `idPlacesTipo`))
@@ -30,9 +29,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mts_database`.`usuario`
+-- Table `railway`.`usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`usuario` (
+CREATE TABLE IF NOT EXISTS `railway`.`usuario` (
   `idUsuario` INT NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(20) NOT NULL,
   `ApellidoP` TEXT NOT NULL,
@@ -50,9 +49,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mts_database`.`favoritos`
+-- Table `railway`.`favoritos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`favoritos` (
+CREATE TABLE IF NOT EXISTS `railway`.`favoritos` (
   `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
   `nombrePlaces` TEXT NULL,
@@ -63,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`favoritos` (
   INDEX `fk_Favoritos_Usuario_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Favoritos_Usuario`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `mts_database`.`usuario` (`idUsuario`)
+    REFERENCES `railway`.`usuario` (`idUsuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -72,9 +71,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mts_database`.`historial`
+-- Table `railway`.`historial`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`historial` (
+CREATE TABLE IF NOT EXISTS `railway`.`historial` (
   `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
   `nombrePlaces` TEXT NULL,
@@ -85,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`historial` (
   INDEX `fk_Historial_Usuario_idx` (`idUsuario` ASC) INVISIBLE,
   CONSTRAINT `fk_Historial_Usuario0`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `mts_database`.`usuario` (`idUsuario`)
+    REFERENCES `railway`.`usuario` (`idUsuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -94,9 +93,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mts_database`.`viajes`
+-- Table `railway`.`viajes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`viajes` (
+CREATE TABLE IF NOT EXISTS `railway`.`viajes` (
   `idViajes` INT NOT NULL AUTO_INCREMENT,
   `nombreMiViaje` TEXT NOT NULL,
   `descripcionViaje` TEXT NULL DEFAULT NULL,
@@ -108,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`viajes` (
   INDEX `fk_Viajes_Usuario1_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Viajes_Usuario1`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `mts_database`.`usuario` (`idUsuario`)
+    REFERENCES `railway`.`usuario` (`idUsuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -118,9 +117,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mts_database`.`lugaresdeviajes`
+-- Table `railway`.`lugaresdeviajes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`lugaresdeviajes` (
+CREATE TABLE IF NOT EXISTS `railway`.`lugaresdeviajes` (
   `idPlacesLugar` INT NOT NULL AUTO_INCREMENT,
   `idViajes` INT NOT NULL,
   `fechaEspecifica` TEXT NOT NULL,
@@ -131,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`lugaresdeviajes` (
   INDEX `fk_lugaresdeviajes_viajes1_idx` (`idViajes` ASC) VISIBLE,
   CONSTRAINT `fk_lugaresdeviajes_viajes1`
     FOREIGN KEY (`idViajes`)
-    REFERENCES `mts_database`.`viajes` (`idViajes`)
+    REFERENCES `railway`.`viajes` (`idViajes`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -140,9 +139,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `mts_database`.`preferencias`
+-- Table `railway`.`preferencias`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mts_database`.`preferencias` (
+CREATE TABLE IF NOT EXISTS `railway`.`preferencias` (
   `idUsuario` INT NOT NULL,
   `idCatPreferencias` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`idUsuario`, `idCatPreferencias`),
@@ -150,12 +149,12 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`preferencias` (
   INDEX `fk_Preferencias_catPreferencias1_idx` (`idCatPreferencias` ASC) VISIBLE,
   CONSTRAINT `fk_Preferencias_catPreferencias1`
     FOREIGN KEY (`idCatPreferencias`)
-    REFERENCES `mts_database`.`catpreferencias` (`idCatPreferencias`)
+    REFERENCES `railway`.`catpreferencias` (`idCatPreferencias`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Preferencias_Usuario1`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `mts_database`.`usuario` (`idUsuario`)
+    REFERENCES `railway`.`usuario` (`idUsuario`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
