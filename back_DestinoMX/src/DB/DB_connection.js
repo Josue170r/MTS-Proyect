@@ -1,26 +1,22 @@
 import mysql from "mysql";
+import {
+  DB_HOST,
+  DB_NAME,
+  DB_PASSWORD,
+  DB_PORT,
+  DB_USER
+} from "../config/config.js";
 
-// export const mySqlConnection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "123456",
-//   database: "mts_database",
-//   port: "3345",
-// });
+console.log("DB_HOST:", DB_HOST);
+console.log("DB_USER:", DB_USER);
+console.log("DB_PASSWORD:", DB_PASSWORD);
+console.log("DB_NAME:", DB_NAME);
+console.log("DB_PORT:", DB_PORT);
 
-export const mySqlConnectionProduction = mysql.createConnection({
-  host: "roundhouse.proxy.rlwy.net",
-  user: "root",
-  password: "1gdBgfeDghGD53a6C2dDf-Ed31D2bE5H",
-  database: "railway",
-  port: "51052",
-});
-
-mySqlConnectionProduction.connect((err) => {
-  if (err) {
-    console.log(err);
-    return;
-  } else {
-    console.log("Connection sucessful");
-  }
+export const mySqlConnection = mysql.createPool({
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  port: DB_PORT,
 });

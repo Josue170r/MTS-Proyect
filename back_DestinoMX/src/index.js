@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
+import { PORT } from "./config/config.js"
 
 import { routerViajes } from "./routes/viajes.js";
 import { routerFavoritos } from "./routes/favoritos.js";
