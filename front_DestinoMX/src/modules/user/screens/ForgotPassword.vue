@@ -122,5 +122,6 @@ export default {
   background-image: url("@/assets/images/image005.png");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 </style>
