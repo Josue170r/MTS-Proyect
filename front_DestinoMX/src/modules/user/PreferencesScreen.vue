@@ -17,12 +17,13 @@
       >
         <h1 style="font-size: 45px; font-weight: bold">Preferencias</h1>
       </div>
-
-      <img
-        src="@/assets/images/imagen003.png"
-        alt="imagen003"
-        class="w-full h-full object-cover"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen003.png"
+          alt="imagen003"
+          usemap="#image-map"
+          class="w-full h-full object-cover cursor-pointer"
+      /></router-link>
     </div>
     <div class="flex items-center justify-center w-full flex-col">
       <h1 class="text-xl text-center">

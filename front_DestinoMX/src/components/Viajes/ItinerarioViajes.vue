@@ -21,11 +21,12 @@
         <!-- componente para el avatar del usuario -->
         <AvatarButton />
       </div>
-      <img
-        src="@/assets/images/imagen002.png"
-        alt="imagen002"
-        class="md:my-auto rounded-b-xl"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen007.png"
+          alt="imagen004"
+          class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
+      /></router-link>
     </div>
     <!-- Calendario -->
     <div
