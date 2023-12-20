@@ -413,7 +413,6 @@ export default {
   },
   created() {
     this.getUserInformation()
-    this.loginJWT()
   },
   computed: {
     isFormEmpty() {
@@ -526,14 +525,6 @@ export default {
         })
       }
       this.dialogfromPassword = false
-    },
-    async loginJWT() {
-      try {
-        const response = await apiFromBackend.post("/api/cuenta-activa")
-        console.log("Respuesta exitosa:", response)
-      } catch (error) {
-        console.log(error)
-      }
     },
     closeDailogForPassword() {
       this.dialogfromPassword = false
