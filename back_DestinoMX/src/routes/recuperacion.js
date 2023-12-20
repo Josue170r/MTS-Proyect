@@ -1,7 +1,7 @@
 import { mySqlConnection } from "../DB/DB_connection.js";
 import { Router } from "express";
 import crypto from "crypto";
-import { mandarCorreo } from "../Mailer/mailer.js"
+import { mandarCorreoContrasena } from "../Mailer/mailer.js"
 
 export const routerRecuperacion = Router();
 
@@ -27,7 +27,7 @@ routerRecuperacion.post("/api/cookie-correo-mandar/", (req,res) => {
             if(results.length!=0){
                 if(results[0].codigo==0){
                     try{
-                        mandarCorreo(correo,"Restablacer contraseña - MTS","<h2>Abrir link para restablecer la contreaseña </h2> <h3><a href=http://localhost:8081/#/newPassword>link</a></h3>")
+                        mandarCorreoContrasena(correo,"Restablacer contraseña - MTS","<h2></h2>")
                         //cambiar href con respecto a sus puertos de front                                                             (8081 o 8080 u otro)   ^^^^
                     }
                     catch(error){
