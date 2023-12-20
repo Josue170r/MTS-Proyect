@@ -3,11 +3,11 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <button @click="$router.go(-1)" class="absolute top-7 left-1 transform">
-        <BackButtonIcon />
-      </button>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
+      </div>
+      <div class="mt-8">
+        <BurgerMenu />
       </div>
       <img
         src="@/assets/images/imagen004.png"
@@ -27,17 +27,17 @@
       <div class="flex-row flex w-full items-center space-x-4">
         <button
           type="button"
-          @click="goToLoginView"
+          @click="goToMapScreen()"
           class="font-quicksand block w-1/2 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
         >
-          Descartar cambios
+          Agregar lugar
         </button>
         <button
           type="button"
           class="font-quicksand block w-1/2 py-2 rounded-lg text-white font-semibold mb-2 bg-orange-300"
-          @click="goToLoginView"
+          @click="goToitinerary()"
         >
-          Guardar cambios
+          Regresar
         </button>
       </div>
       <!-- termina div de botones  -->
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import BackButtonIcon from "@/components/icons/BackButtonIcon"
+import BurgerMenu from "@/components/buttons/BurgerMenu.vue"
 import AvatarButton from "@/components/buttons/AvatarButton"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import { toast } from "vue3-toastify"
@@ -114,7 +114,7 @@ import { es } from "date-fns/locale"
 export default {
   name: "MyTrip",
   components: {
-    BackButtonIcon,
+    BurgerMenu,
     AvatarButton,
   },
   data() {
@@ -205,6 +205,16 @@ export default {
         if (activity.fechaEspecifica === day) {
           console.log(activity)
         }
+      })
+    },
+    goToMapScreen() {
+      this.$router.push({
+        name: "mapa-interactivo",
+      })
+    },
+    goToitinerary() {
+      this.$router.push({
+        name: "Itinerario",
       })
     },
   },

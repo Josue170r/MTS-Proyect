@@ -179,8 +179,15 @@
         </div>
         <div class="flex justify-center items-center space-x-4">
           <button
+            :disabled="!isEdit"
+            :class="[
+              !isEdit
+                ? 'opacity-60 cursor-not-allowed'
+                : 'hover:outline hover:outline-1 hover:outline-pink-400',
+            ]"
             type="button"
             class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
+            @click="goToMapScreen()"
           >
             Añadir lugares
           </button>
@@ -381,6 +388,11 @@ export default {
       // Realiza cualquier acción que necesites con la fecha de fin
       console.log("Fecha de fin:", this.endDate)
       this.dialog2 = false
+    },
+    goToMapScreen() {
+      this.$router.push({
+        name: "mapa-interactivo",
+      })
     },
   },
 }

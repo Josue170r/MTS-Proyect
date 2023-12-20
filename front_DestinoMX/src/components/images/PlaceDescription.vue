@@ -404,13 +404,13 @@ export default {
         console.log(data)
       }
     },
-    async AddToHistory() {
-      console.log(this.placeImage)
+    async AddToHistory(img) {
+      console.log(img)
       try {
         const response = await apiFromBackend.post("/api/historial", {
           idPlaceLugar: this.placeiD,
           nombrePlaces: this.placeName,
-          imagePlaces: this.placeImage,
+          imagePlaces: img,
           direccionPlaces: this.location,
           ratingPlaces: this.rating,
         })
@@ -446,16 +446,19 @@ export default {
           },
         })
         console.log("Desde getNamePlace: ", data)
-        this.link = data.result.url
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
         this.placeName = data.result.name
+        this.link = data.result.url ? data.result.url : ""
         this.rating = data.result.rating ? data.result.rating : 0
         this.reviews = data.result.reviews ? data.result.reviews : []
         this.location = data.result.formatted_address
-        this.placePhotoReference = data.result.photos[0]
+        this.placePhotoReference = data.result.photos
           ? data.result.photos[0].photo_reference
           : ""
+        if (this.placePhotoReference === "" || !this.placePhotoReference) {
+          this.AddToHistory(this.placePhotoReference)
+        }
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
@@ -499,7 +502,9 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
-        this.AddToHistory()
+        if (this.placeImage) {
+          this.AddToHistory(this.placeImage)
+        }
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
