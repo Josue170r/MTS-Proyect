@@ -4,8 +4,8 @@
     fill="none"
     viewBox="0 0 24 24"
     stroke-width="1.5"
-    stroke="orange"
-    class="w-7 h-7"
+    stroke="currentColor"
+    class="w-6 h-6 color-stroke"
   >
     <path
       stroke-linecap="round"
@@ -14,3 +14,8 @@
     />
   </svg>
 </template>
+<style scoped>
+.color-stroke path {
+  stroke: rgb(239, 137, 43);
+}
+</style>

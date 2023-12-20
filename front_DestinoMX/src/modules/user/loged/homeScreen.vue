@@ -21,7 +21,7 @@
               <input
                 v-model="namePlaceToFind"
                 type="text"
-                class="w-64 md:w-96 px-2 py-2 outline-none border-none flex-grow mr-2"
+                class="w-64 md:w-96 px-2 py-2 outline-none border-none font-quicksand flex-grow mr-2"
                 placeholder="Busca tu próximo DestinoMX ..."
                 @input="FindPlacesFromInput"
               />
@@ -79,7 +79,7 @@
       </div>
       <div class="md:w-1/2 md:order-2">
         <div class="flex items-center justify-center w-full flex-col">
-          <h1 class="text-xl text-center mt-2 mb-2">Usted está aqui</h1>
+          <h1 class="text-xl text-center mt-2 mb-2">Usted está aquí</h1>
           <GoogleMap
             @click="goToMapScreen"
             :api-key="apiKey"
@@ -113,7 +113,7 @@
             <button
               type="button"
               @click="goToPreferencesScreen"
-              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-white text-lg font-semibold font-quicksand bg-orange-300 mb-2"
             >
               Elegir preferencias
             </button>
@@ -215,7 +215,7 @@ export default {
   },
   data() {
     return {
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+      apiKey: "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA",
       relativePosition: "",
       preference: [],
       radio: 400,
@@ -256,12 +256,6 @@ export default {
         console.log(this.preference)
         this.getArrayPlaces()
       } catch ({ response }) {
-        toast.error(response.data.mensaje, {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
         if (response.data.mensaje === "No hay preferencias configuradas.") {
           this.getArrayPlaces()
         }
@@ -352,6 +346,7 @@ export default {
     async getNearImages() {
       try {
         const imageURLs = []
+        console.log(this.photosReferences)
         for (const photoReference of this.photosReferences) {
           const response = await apiFromBackend.get("/api/imgPlace", {
             params: {

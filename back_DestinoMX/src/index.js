@@ -20,8 +20,10 @@ import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
 
 
 import { mailerApi } from "./Mailer/mailer.js";
+import { routerRecuperacion } from "./routes/recuperacion.js";
 import { routerValidacion } from "./routes/verificacion.js";
-import { routerRestablecer } from "./routes/restablecer.js";
+import { routerSitios } from "./routes/sitios.js";
+
 // Inicializando la aplicacion.
 const app = express();
 
@@ -86,7 +88,8 @@ app.use(routerApiWeather);
 app.use(routerHistorial);
 app.use(mailerApi);
 app.use(routerValidacion);
-app.use(routerRestablecer);
+app.use(routerRecuperacion);
+app.use(routerSitios)
 // Iniciando el servidor
 httpsS.listen(app.get("port"), () => {
   console.log(`server listen on port ${app.get("port")}`);

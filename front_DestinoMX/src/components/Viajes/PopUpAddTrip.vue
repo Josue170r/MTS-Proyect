@@ -19,10 +19,26 @@
               {{ travel.nombreMiViaje }}
             </v-expansion-panel-title>
             <v-expansion-panel-text
-              class="text-start"
+              class="text-start mt-4"
               v-for="date in dates[index]"
               :key="date"
-              @click="addToTrip(date)"
+              @click="toggleOpacity(date, travel)"
+              :class="[
+                'flex',
+                'font-quicksand',
+                'rounded-lg',
+                'text-black',
+                'text-base',
+                'font-semibold',
+                'mb-4',
+                'ml-4',
+                'mr-4',
+                'p-2',
+                'custom-button',
+                isSelected[date] === travel.idViajes
+                  ? 'bg-gray-300'
+                  : 'bg-gray-100',
+              ]"
             >
               {{ date }}
             </v-expansion-panel-text>
@@ -55,15 +71,23 @@
       <div class="flex justify-between mt-4">
         <button
           @click="cancel"
-          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 ml-4 mr-4 bg-gray-100 p-2 custom-button"
+          class="flex font-quicksand rounded-lg text-gray-700 text-base font-semibold mb-4 ml-4 mr-4 bg-gray-100 p-2 custom-button"
         >
           Cancelar
         </button>
         <button
+          v-if="!selected"
           @click="createNewTrip"
-          class="flex font-quicksand rounded-lg text-black text-base font-semibold mb-4 mr-4 ml-4 bg-orange-500 p-2 custom-button"
+          class="flex font-quicksand rounded-lg text-white text-base font-semibold mb-4 mr-4 ml-4 bg-orange-300 p-2 custom-button"
         >
           Crear nuevo viaje
+        </button>
+        <button
+          v-if="selected"
+          @click="addToTrip"
+          class="flex font-quicksand rounded-lg text-white text-base font-semibold mb-4 mr-4 ml-4 bg-orange-300 p-2 custom-button px-5"
+        >
+          Agregar
         </button>
       </div>
     </div>
@@ -74,18 +98,57 @@
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import { format, addDays, parseISO } from "date-fns"
 import { es } from "date-fns/locale"
+import { toast } from "vue3-toastify"
 
 export default {
+  props: {
+    placeName: {
+      required: true,
+      type: String,
+    },
+    imgPlace: {
+      required: true,
+      type: String,
+    },
+    placeId: {
+      required: true,
+      type: String,
+    },
+  },
   data() {
     return {
       travels: [],
       dates: [],
+      namePlace: this.placeName,
+      isSelected: {},
+      selected: false,
+      currentDate: "",
+      currenTrip: [],
     }
   },
   created() {
     this.getTrip()
   },
   methods: {
+    toggleOpacity(date, travel) {
+      if (!this.isSelected[date]) {
+        // Deseleccionar todas las fechas
+        Object.keys(this.isSelected).forEach((key) => {
+          this.isSelected[key] = false
+        })
+
+        // Seleccionar la fecha clickeada
+        this.isSelected[date] = travel.idViajes
+        console.log(this.isSelected)
+        this.selected = true
+        this.currentDate = date
+        this.currenTrip = travel
+      } else {
+        // Deseleccionar la fecha clickeada
+        this.isSelected[date] = false
+        this.selected = false
+      }
+    },
     cancel() {
       this.$emit("close-popup")
     },
@@ -101,13 +164,35 @@ export default {
           const dateRange = this.setDateArray(travel.diaInicio, travel.diaFinal)
           this.dates.push(dateRange)
         })
-        console.log(this.dates)
       } catch (error) {
         console.error(error)
       }
     },
-    async addToTrip(date) {
-      console.log(date)
+    async addToTrip() {
+      const date = this.currentDate
+      const travel = this.currenTrip
+      try {
+        const { data } = await apiFromBackend.post("/api/sitios", {
+          placeID: this.placeId,
+          idViajes: travel.idViajes,
+          fechaEspecifica: date,
+          nombrePlaces: this.namePlace,
+          imagePlaces: this.imgPlace,
+        })
+        toast.success(data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      } catch ({ response }) {
+        toast.error(response.data.mensaje, {
+          theme: "colored",
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 1500,
+          hideProgressBar: true,
+        })
+      }
     },
     UpperDate(texto) {
       return texto.charAt(0).toUpperCase() + texto.slice(1)

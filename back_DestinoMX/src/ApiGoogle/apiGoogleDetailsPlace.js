@@ -10,7 +10,7 @@ const getApiRoute = axios.create({
   baseURL: "https://maps.googleapis.com/maps/api/directions",
 })
 
-const apiKey = "AIzaSyB9R_VtRFtlQfSX7ulfslNIt2T-H3lNVNQ";
+const apiKey = "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA";
 
 export const routerApiDetails = Router();
 
@@ -96,7 +96,8 @@ routerApiDetails.get("/api/searchPlace", async (req, res)=> {
     const response = await apiGoogleBaseUrl.get('/textsearch/json', {
       params: {
         query,
-        key: apiKey
+        key: apiKey,
+        language: "es",
       },
     });
     res.status(200).send(response.data)

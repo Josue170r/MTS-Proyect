@@ -4,8 +4,8 @@
     fill="none"
     viewBox="0 0 24 24"
     stroke-width="1.2"
-    stroke="red"
-    class="w-6 h-6 text-red-700"
+    stroke="currentColor"
+    class="w-6 h-6 color-stroke"
   >
     <path
       stroke-linecap="round"
@@ -20,3 +20,8 @@ export default {
   name: "PhoneIcon",
 }
 </script>
+<style scoped>
+.color-stroke path {
+  stroke: rgb(239, 137, 43);
+}
+</style>

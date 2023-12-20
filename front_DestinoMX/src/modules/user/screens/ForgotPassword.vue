@@ -17,12 +17,12 @@
             <p class="text-sm text-gray-800 mb-7">
               Favor de introducir su email para recuperar la contraseña.
             </p>
-            <form @submit.prevent="loginJWT">
+            <form @submit.prevent="recoveryPassword">
               <div class="flex items-center border-2 py-2 px-3 mb-4 bg-white">
                 <AtIcon />
                 <input
                   id="username"
-                  v-model="user.username"
+                  v-model="user.correo"
                   class="w-full pl-2 outline-none border-none bg-white"
                   type="text"
                   name="email"
@@ -59,8 +59,8 @@
 
 <script>
 import AtIcon from "@/components/icons/atIcon"
-// import { apiFromBackend } from "@/helpers/ApiFromBackend"
-// import { toast } from "vue3-toastify"
+import { apiFromBackend } from "@/helpers/ApiFromBackend"
+import { toast } from "vue3-toastify"
 
 export default {
   name: "LoginForm",
@@ -70,18 +70,39 @@ export default {
   data() {
     return {
       user: {
-        username: "",
+        correo: "",
       },
     }
   },
   computed: {
     isFormEmpty() {
-      return !this.user.username
+      return !this.user.correo
     },
   },
   methods: {
-    async loginJWT() {
-      console.log(this.user.username)
+    async recoveryPassword() {
+      try {
+        const data = await apiFromBackend.post("/api/cookie-correo-mandar", {
+          correo: this.user.correo,
+        })
+        console.log(data)
+        toast(data.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 2000,
+          type: "success",
+          theme: "colored",
+        })
+        setTimeout(() => {
+          this.$router.push({ name: "login" })
+        }, 2000)
+      } catch (response) {
+        toast(response.data.mensaje, {
+          hideProgressBar: true,
+          autoClose: 1500,
+          type: "error",
+          theme: "colored",
+        })
+      }
     },
   },
 }
@@ -101,5 +122,6 @@ export default {
   background-image: url("@/assets/images/image005.png");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 }
 </style>

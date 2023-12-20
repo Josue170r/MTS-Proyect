@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`usuario` (
   `codigoVencimiento` TIME NULL DEFAULT NULL,
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 56
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -55,6 +55,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `mts_database`.`favoritos` (
   `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
+  `nombrePlaces` TEXT NULL,
+  `imagePlaces` TEXT NULL,
+  `direccionPlaces` TEXT NULL,
+  `ratingPlaces` FLOAT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Favoritos_Usuario_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Favoritos_Usuario`
@@ -73,6 +77,10 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `mts_database`.`historial` (
   `idPlaceLugar` VARCHAR(500) NOT NULL,
   `idUsuario` INT NOT NULL,
+  `nombrePlaces` TEXT NULL,
+  `imagePlaces` TEXT NULL,
+  `direccionPlaces` TEXT NULL,
+  `ratingPlaces` FLOAT NULL,
   PRIMARY KEY (`idPlaceLugar`, `idUsuario`),
   INDEX `fk_Historial_Usuario_idx` (`idUsuario` ASC) INVISIBLE,
   CONSTRAINT `fk_Historial_Usuario0`
@@ -104,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`viajes` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -112,12 +121,15 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `mts_database`.`lugaresdeviajes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mts_database`.`lugaresdeviajes` (
-  `idPlacesLugar` VARCHAR(500) NOT NULL,
+  `idPlacesLugar` INT NOT NULL AUTO_INCREMENT,
   `idViajes` INT NOT NULL,
-  `fechaEspecifica` DATE NOT NULL,
-  PRIMARY KEY (`idPlacesLugar`, `idViajes`),
-  INDEX `fk_LugaresDeViajes_Viajes1_idx` (`idViajes` ASC) VISIBLE,
-  CONSTRAINT `fk_LugaresDeViajes_Viajes1`
+  `fechaEspecifica` TEXT NOT NULL,
+  `nombrePlaces` TEXT NOT NULL,
+  `imagePlaces` TEXT NOT NULL,
+  `placeID` VARCHAR(500) NOT NULL,
+  PRIMARY KEY (`idPlacesLugar`),
+  INDEX `fk_lugaresdeviajes_viajes1_idx` (`idViajes` ASC) VISIBLE,
+  CONSTRAINT `fk_lugaresdeviajes_viajes1`
     FOREIGN KEY (`idViajes`)
     REFERENCES `mts_database`.`viajes` (`idViajes`)
     ON DELETE CASCADE
@@ -138,7 +150,9 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`preferencias` (
   INDEX `fk_Preferencias_catPreferencias1_idx` (`idCatPreferencias` ASC) VISIBLE,
   CONSTRAINT `fk_Preferencias_catPreferencias1`
     FOREIGN KEY (`idCatPreferencias`)
-    REFERENCES `mts_database`.`catpreferencias` (`idCatPreferencias`),
+    REFERENCES `mts_database`.`catpreferencias` (`idCatPreferencias`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_Preferencias_Usuario1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `mts_database`.`usuario` (`idUsuario`)
@@ -147,7 +161,6 @@ CREATE TABLE IF NOT EXISTS `mts_database`.`preferencias` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
-
 
 insert into catPreferencias values 
 ('parque de atracciones','amusement_park'),
@@ -196,7 +209,6 @@ insert into catPreferencias values
 ('bibliotecas','library'),
 ('momumentos y lugares publicos','city_hall'),
 ('momumentos y lugares publicos','local_government_office');
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

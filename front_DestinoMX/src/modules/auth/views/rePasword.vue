@@ -1,12 +1,6 @@
 <template>
   <div class="min-h-screen w-full flex flex-col md:flex-row">
-    <div class="md:1/2">
-      <img
-        src="@/assets/images/imagen008.png"
-        alt="DESTINOMX"
-        class="absolute w-full h-full object-cover md:"
-      />
-    </div>
+    <div class="md:1/2 absolute-screen-image"></div>
     <div
       class="relative z-50 flex justify-center items-center mt-10 mx-auto py-8 px-6 text-center md:w-1/2"
     >
@@ -15,24 +9,23 @@
         elevation="5"
         rounded="lg"
         max-width="500"
-        width="100%"
+        width="90%"
         color="white"
       >
-        <h3 class="mt-4 text-2xl font-semibold">
-          Validacion de correo electrónico
-        </h3>
+        <h3 class="mt-4 text-2xl font-semibold">Validación de cuenta</h3>
 
         <div class="text-center text-subtitle-3 font-weight-light mb-3">
-          <h1>
+          <h1 class="text-sm">
             Introduce el código de verificación que se envió al correo que
             registraste
           </h1>
         </div>
 
         <v-otp-input
+          :loading="loading"
           class="mb-2"
           length="6"
-          variant="outlined"
+          variant="underlined"
           v-model="otp"
         ></v-otp-input>
 
@@ -42,7 +35,7 @@
             class="mt-2 bg-orange"
             rounded
             variant="plain"
-            height="30"
+            height="40"
             width="300"
             @click="onClick"
             :disabled="otp.length !== 6"
@@ -154,7 +147,15 @@ export default {
 </script>
 
 <style scoped>
-.opacity {
-  opacity: 0.85;
+.absolute-screen-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("@/assets/images/imagen009.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 </style>

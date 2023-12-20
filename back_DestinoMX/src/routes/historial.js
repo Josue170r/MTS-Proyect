@@ -43,12 +43,30 @@ routerHistorial.post("/api/historial", async (req, res) => {
       mensaje: "Se debe iniciar sesión",
     });
   else {
-    const { idPlaceLugar } = req.body;
+    const { 
+      idPlaceLugar,
+      nombrePlaces,
+      imagePlaces,
+      direccionPlaces,
+      ratingPlaces
+    } = req.body;
     const idUsuario = req.session.usuario.idUsuario;
-    const postHistoryQuery = `INSERT INTO historial (idPlaceLugar, idUsuario) values ("${idPlaceLugar}", "${idUsuario}");`;
-    mySqlConnection.query(postHistoryQuery, (err, rows, fields) => {
+    const postHistoryQuery = `
+      INSERT INTO historial (
+        idPlaceLugar,
+        idUsuario,
+        nombrePlaces,
+        imagePlaces,
+        direccionPlaces,
+        ratingPlaces
+      ) VALUES (?, ?, ?, ?, ?, ?);
+    `;
+    mySqlConnection.query(
+    postHistoryQuery,
+    [idPlaceLugar, idUsuario, nombrePlaces, imagePlaces, direccionPlaces, ratingPlaces],
+    (err, rows, fields) => {
       if (err)
-        res.status(500).json({
+        res.status(409).json({
           exito: false,
           mensaje: "Error en la consulta",
           err,

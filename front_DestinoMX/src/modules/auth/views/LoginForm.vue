@@ -52,7 +52,7 @@
                 <u
                   >¿Necesitas ayuda?
                   <span class="text-orange-300 text-md"
-                    >Olvidé mi contraseña</span
+                    >Olvidé mi contraseña.</span
                   ></u
                 >
               </router-link>
@@ -60,7 +60,7 @@
             <button
               :disabled="isFormEmpty"
               type="submit"
-              class="text-lg h-11 font-quicksand block w-full mt-4 py-2 rounded-lg text-gray font-semibold mb-2 bg-orange-300"
+              class="text-lg text-white h-11 font-quicksand block w-full mt-4 py-2 rounded-lg font-semibold mb-2 bg-orange-300"
               :class="[
                 isFormEmpty
                   ? 'opacity-60 cursor-not-allowed'
@@ -75,8 +75,8 @@
                 class="mx-4 text-md text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
-                  >No tengo una cuenta
-                  <span class="text-orange-300">Registrarse</span></u
+                  >No tengo una cuenta.
+                  <span class="text-orange-300">Registrarse.</span></u
                 >
               </router-link>
             </div>

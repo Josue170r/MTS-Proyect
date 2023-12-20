@@ -1,19 +1,21 @@
+favoritos
 <template>
   <div class="min-h-screen w-full flex flex-col md:flex-row bg-gray-100">
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/home" class="absolute top-7 left-1 transform">
+      <router-link to="/home" class="absolute top-7 left-2 transform">
         <BackButtonIcon />
       </router-link>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
-      <img
-        src="@/assets/images/imagen006.png"
-        alt="imagen004"
-        class="md:my-auto rounded-b-xl"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen007.png"
+          alt="imagen004"
+          class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
+      /></router-link>
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->
@@ -34,36 +36,67 @@
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <!-- Itera sobre la info de los lugares -->
-                <v-list-item v-for="(place, index) in places" :key="index">
+                <v-list-item
+                  v-for="(place, index) in places"
+                  :key="index"
+                  :class="{
+                    'list-item-with-divider': index !== places.length - 1,
+                  }"
+                >
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
-                      :src="placeImages[index]"
-                      height="50%"
+                      v-if="place.imagePlaces"
+                      :src="place.imagePlaces"
+                      height="13rem"
                       width="80%"
+                      @click="goToPlaceDescription(place.idPlaceLugar)"
                     ></v-img>
+                    <img
+                      v-else
+                      @click="goToPlaceDescription(place.idPlaceLugar)"
+                      src="@/assets/images/noimages.jpg"
+                      alt="Imagen por defecto"
+                      class="w-80% h-64"
+                    />
                   </div>
-                  <br />
-                  <div class="d-flex flex-column justify-center align-center">
-                    <v-list-item-title>{{ place.name }}</v-list-item-title>
+                  <div class="d-flex flex-column align-center">
+                    <v-list-item-title
+                      class="text-center font-quicksand font-weight-bold mt-1"
+                      style="white-space: normal; overflow: hidden"
+                      >{{ place.nombrePlaces }}</v-list-item-title
+                    >
                     <v-rating
                       half-increments
                       hover
                       :length="5"
                       :size="16"
-                      :model-value="place.rating"
+                      :model-value="place.ratingPlaces"
                       readonly
                       color="rgb(232, 176, 36)"
                       active-color="rgb(232, 176, 36)"
+                      class="mt-1 mb-1"
                     />
-                    <v-list-item-subtitle class="text-center mt-3">{{
-                      place.formatted_address
-                    }}</v-list-item-subtitle>
-                  </div>
-
-                  <!-- Botón para eliminar el lugar-->
-                  <div class="absolute top-4 right-3">
-                    <deleteFav @click="deletePlace(place.reference)" />
+                    <v-list-item-subtitle
+                      class="text-center font-quicksand mt-1"
+                      >{{ place.direccionPlaces }}</v-list-item-subtitle
+                    >
+                    <div class="flex flex-row items-center">
+                      <v-btn
+                        class="py-2 px-3 rounded-lg text-white font-weight-bold ml-1 mt-3 mr-2 elevation-0 custom-font"
+                        color="yellow-darken-3"
+                        @click="goToPlaceDescription(place.idPlaceLugar)"
+                      >
+                        Ver lugar
+                      </v-btn>
+                      <v-btn
+                        class="ml-2 mt-3 elevation-0"
+                        @click="deletePlace(place.idPlaceLugar)"
+                        color="red-accent-1"
+                      >
+                        <deleteFav />
+                      </v-btn>
+                    </div>
                   </div>
                 </v-list-item>
               </v-list>
@@ -87,7 +120,6 @@
 </template>
 
 <script>
-import { toRaw } from "vue"
 import { toast } from "vue3-toastify"
 import "vue3-toastify/dist/index.css"
 import BackButtonIcon from "@/components/icons/BackButtonIcon"
@@ -104,9 +136,7 @@ export default {
   },
   data() {
     return {
-      placesImgsReferences: [],
       places: [],
-      placeImages: [],
     }
   },
   created() {
@@ -118,69 +148,20 @@ export default {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
         const { data } = await apiFromBackend.get("/api/favoritos")
-
         // Actualizar los datos locales en el componente con los favoritos obtenidos
-        if (data.exito) {
-          this.placeIds = data.info
-          this.getNamePlaces().then(() => {
-            this.getImgsPlaces()
-          })
-        }
-      } catch (error) {
-        console.error("Error al obtener lugares favoritos:", error)
-      }
-    },
-    async getNamePlaces() {
-      try {
-        for (const place_id of this.placeIds) {
-          const { data } = await apiFromBackend.get("/api/placeName", {
-            params: {
-              place_id: place_id.idPlaceLugar,
-            },
-          })
-          this.places.push(data.result)
-          this.placesImgsReferences.push(data.result.photos[0].photo_reference)
-        }
-        console.log("Desde getNamePlace de Favoritos: ", this.places)
-        console.log("References: ", this.placesImgsReferences)
-      } catch (error) {
-        console.log(error.message)
-      }
-    },
-    async getImgsPlaces() {
-      try {
-        console.log(
-          "References desde getImgsPlaces: ",
-          toRaw(this.placesImgsReferences),
+        this.places = data.info.filter((place) =>
+          place.idPlaceLugar.includes("ChIJ"),
         )
-        const imageUrls = []
-        for (const photoReference of toRaw(this.placesImgsReferences)) {
-          const response = await apiFromBackend.get("/api/imgPlace", {
-            params: {
-              maxwidth: "400",
-              photoreference: photoReference,
-            },
-            responseType: "blob",
-          })
-          const imgUrl = URL.createObjectURL(response.data)
-          imageUrls.push(imgUrl)
-        }
-        this.placeImages = toRaw(imageUrls)
-        console.log("Urls de fotos this.placeImages: ", this.placeImages)
+        console.log(this.places)
       } catch (error) {
-        toast.error("No hay imágenes disponibles", {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
+        console.error("Error al obtener lugares del favoritos:", error)
       }
     },
-    async deletePlace(place) {
+    async deletePlace(place_id) {
       try {
         const { data } = await apiFromBackend.delete("/api/favoritos", {
           params: {
-            idPlaceLugar: place,
+            idPlaceLugar: place_id,
           },
         })
         toast.success(data.mensaje, {
@@ -194,6 +175,24 @@ export default {
         console.log(error)
       }
     },
+    goToPlaceDescription(place_id) {
+      this.$router.push({
+        name: "placedescription",
+        query: {
+          placeid: place_id,
+        },
+      })
+    },
   },
 }
 </script>
+<style scoped>
+.custom-font {
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+}
+
+.list-item-with-divider {
+  border-bottom: 2px solid rgb(219, 219, 219); /* Ajusta el color y estilo del borde según tus preferencias */
+}
+</style>

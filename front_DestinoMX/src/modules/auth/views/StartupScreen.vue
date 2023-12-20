@@ -4,26 +4,29 @@
   >
     <div class="flex flex-col items-center mx-auto">
       <div class="justify-center items-center">
-        <img
-          src="@/assets/images/DestinoMX.png"
-          alt="logo"
-          class="mx-auto w-64 sm:-mt-34 p-2 pl-8"
-        />
-
-        <button
-          type="button"
-          @click="goToLoginView"
-          class="block w-64 mt-96 py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
-        >
-          Iniciar Sesión
-        </button>
-        <button
-          @click="goToRegisterForm"
-          type="button"
-          class="block w-64 py-4 rounded-lg text-black font-semibold bg-white"
-        >
-          Crear cuenta
-        </button>
+        <div class="sm:mt-4 md:mt-32">
+          <img
+            src="@/assets/images/DestinoMX.png"
+            alt="logo"
+            class="mx-auto w-64 sm:-mt-34 p-2 pl-8"
+          />
+          <div class="sm: mt-96 md: mt-64">
+            <button
+              type="button"
+              @click="goToLoginView"
+              class="block w-64 py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+            >
+              Iniciar Sesión
+            </button>
+            <button
+              @click="goToRegisterForm"
+              type="button"
+              class="block w-64 py-4 rounded-lg text-black font-semibold bg-white"
+            >
+              Crear cuenta
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
