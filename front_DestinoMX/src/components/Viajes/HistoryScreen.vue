@@ -34,7 +34,13 @@ historyscreen
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <!-- Itera sobre la info de los lugares -->
-                <v-list-item v-for="(place, index) in places" :key="index">
+                <v-list-item
+                  v-for="(place, index) in places"
+                  :key="index"
+                  :class="{
+                    'list-item-with-divider': index !== places.length - 1,
+                  }"
+                >
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
@@ -58,6 +64,16 @@ historyscreen
                       style="white-space: normal; overflow: hidden"
                       >{{ place.nombrePlaces }}</v-list-item-title
                     >
+                    <v-rating
+                      half-increments
+                      hover
+                      :length="5"
+                      :size="16"
+                      :model-value="place.ratingPlaces"
+                      readonly
+                      color="rgb(232, 176, 36)"
+                      active-color="rgb(232, 176, 36)"
+                    />
                     <v-list-item-subtitle
                       class="text-center font-quicksand mt-1"
                       >{{ place.direccionPlaces }}</v-list-item-subtitle
@@ -66,7 +82,7 @@ historyscreen
                     <div class="flex flex-row items-center">
                       <v-btn
                         class="py-2 px-3 rounded-lg text-white font-weight-bold ml-1 mt-3 elevation-0 custom-font"
-                        color="pink-accent-2"
+                        color="pink-accent-1"
                         @click="goToPlaceDescription(place.idPlaceLugar)"
                       >
                         Ver lugar
@@ -81,27 +97,14 @@ historyscreen
                           />
                         </v-btn>
                       </v-list-item-subtitle>
-
                       <!-- Botón para eliminar el lugar-->
                       <v-btn
                         class="ml-2 mt-3 elevation-0"
                         @click="deletePlace(place.idPlaceLugar)"
-                        color="grey-lighten-2"
+                        color="red-accent-1"
                       >
                         <deleteFav />
                       </v-btn>
-                    </div>
-                    <div class="mt-1 mb-1">
-                      <v-rating
-                        half-increments
-                        hover
-                        :length="5"
-                        :size="16"
-                        :model-value="place.ratingPlaces"
-                        readonly
-                        color="rgb(232, 176, 36)"
-                        active-color="rgb(232, 176, 36)"
-                      />
                     </div>
                   </div>
                 </v-list-item>
@@ -271,5 +274,9 @@ export default {
 .custom-font {
   font-family: "Quicksand", sans-serif;
   font-size: 12px;
+}
+
+.list-item-with-divider {
+  border-bottom: 2px solid rgb(219, 219, 219); /* Ajusta el color y estilo del borde según tus preferencias */
 }
 </style>

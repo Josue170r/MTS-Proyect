@@ -35,7 +35,13 @@ favoritos
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <!-- Itera sobre la info de los lugares -->
-                <v-list-item v-for="(place, index) in places" :key="index">
+                <v-list-item
+                  v-for="(place, index) in places"
+                  :key="index"
+                  :class="{
+                    'list-item-with-divider': index !== places.length - 1,
+                  }"
+                >
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
@@ -59,27 +65,6 @@ favoritos
                       style="white-space: normal; overflow: hidden"
                       >{{ place.nombrePlaces }}</v-list-item-title
                     >
-                    <v-list-item-subtitle
-                      class="text-center font-quicksand mt-1"
-                      >{{ place.direccionPlaces }}</v-list-item-subtitle
-                    >
-                    <div class="flex flex-row items-center">
-                      <v-btn
-                        class="py-2 px-3 rounded-lg text-white font-weight-bold ml-1 mt-3 mr-2 elevation-0 custom-font"
-                        color="orange-lighten-2"
-                        @click="goToPlaceDescription(place.idPlaceLugar)"
-                      >
-                        Ver lugar
-                      </v-btn>
-                      <v-btn
-                        class="ml-2 mt-3 elevation-0"
-                        @click="deletePlace(place.idPlaceLugar)"
-                        color="grey-lighten-2"
-                      >
-                        <deleteFav />
-                      </v-btn>
-                    </div>
-
                     <v-rating
                       half-increments
                       hover
@@ -91,6 +76,26 @@ favoritos
                       active-color="rgb(232, 176, 36)"
                       class="mt-1 mb-1"
                     />
+                    <v-list-item-subtitle
+                      class="text-center font-quicksand mt-1"
+                      >{{ place.direccionPlaces }}</v-list-item-subtitle
+                    >
+                    <div class="flex flex-row items-center">
+                      <v-btn
+                        class="py-2 px-3 rounded-lg text-white font-weight-bold ml-1 mt-3 mr-2 elevation-0 custom-font"
+                        color="yellow-darken-3"
+                        @click="goToPlaceDescription(place.idPlaceLugar)"
+                      >
+                        Ver lugar
+                      </v-btn>
+                      <v-btn
+                        class="ml-2 mt-3 elevation-0"
+                        @click="deletePlace(place.idPlaceLugar)"
+                        color="red-accent-1"
+                      >
+                        <deleteFav />
+                      </v-btn>
+                    </div>
                   </div>
                 </v-list-item>
               </v-list>
@@ -184,5 +189,9 @@ export default {
 .custom-font {
   font-family: "Quicksand", sans-serif;
   font-size: 12px;
+}
+
+.list-item-with-divider {
+  border-bottom: 2px solid rgb(219, 219, 219); /* Ajusta el color y estilo del borde según tus preferencias */
 }
 </style>
