@@ -88,6 +88,10 @@ export default {
           lat: coordinates.lat,
           lng: coordinates.lng,
         }
+        this.places.push({
+          lat: coordinates.lat,
+          lng: coordinates.lng,
+        })
       })
       .catch((error) => {
         toast(error, {
@@ -108,6 +112,8 @@ export default {
       distance: "",
       duration: "",
       flightPath: {},
+      places: [],
+      markers: [],
       localitation: "",
       placePhothos: "",
       placeRatings: "",
@@ -138,10 +144,26 @@ export default {
             place_id: placeId,
           },
         })
-        this.CurrentNamePlace = data.result.name
-        this.CurrentNamePlace
-          ? (this.isEmpyCurrenName = false)
-          : (this.isEmpyCurrenName = true)
+        if (data.status === "OK") {
+          toast.success("¡Parada agregada con éxito!", {
+            theme: "colored",
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 1000,
+            hideProgressBar: true,
+          })
+          this.CurrentNamePlace = data.result.name
+          const { lat, lng } = data.result.geometry.location
+          this.places.push({
+            lat,
+            lng,
+          })
+          this.markers = this.places.map((place) => ({
+            position: {
+              lat: place.lat,
+              lng: place.lng,
+            },
+          }))
+        }
       } catch (error) {
         console.log(error.message)
       }
@@ -162,6 +184,7 @@ export default {
           params: {
             origin: `${lat}, ${lng}`,
             destination: `${latdestino}, ${lngdestino}`,
+            points: this.places,
           },
         })
         let apiRoutes = data.routes[0].legs[0]
@@ -173,20 +196,18 @@ export default {
         steps.forEach((step) => stepsArray.push(step.end_location))
         this.steps = stepsArray
       } catch (error) {
-        console("Error en la solicitud de la API de direcciones", error)
+        console.log("Error en la solicitud de la API de direcciones", error)
       }
     },
     goToRoutePlace() {
       this.showRoute = true
-      const flightPlanCoordinates = this.steps
-      const flightPath = {
-        path: flightPlanCoordinates,
+      this.flightPath = {
+        path: this.steps,
         geodesic: true,
-        strokeColor: "#FF4500",
+        strokeColor: "#0800ff",
         strokeOpacity: 2.0,
         strokeWeight: 4.5,
       }
-      this.flightPath = flightPath
     },
   },
 }
