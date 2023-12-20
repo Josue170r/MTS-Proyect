@@ -1,7 +1,10 @@
 import { mySqlConnection } from "../DB/DB_connection.js";
 import { Router } from "express";
+import multer from 'multer';
 
 export const routerUsuario = Router();
+const storage = multer.memoryStorage(); // Almacena en memoria, puedes ajustar según tus necesidades
+const upload = multer({ storage: storage });
 
 routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
   if (!req.session.usuario) {
@@ -23,6 +26,20 @@ routerUsuario.delete("/api/eliminar-cuenta", (req, res) => {
       }
     });
   }
+});
+
+routerUsuario.put("/api/updateImgProfile", upload.single('image'), (req, res) => {
+  console.log(req.file)
+  const file = req.file
+  if (!req.session.usuario) {
+    res.status(403).json({ exito: false, mensaje: "Se debe inicar sesion." });
+  } else if (!file) {
+    return res.status(400).send('No se proporcionó ninguna imagen');
+  } else {
+    res.status(200).send('Imagen recibida correctamente.');
+  }
+  const imagePath = 'uploads/' + file.originalname
+  console.log(imagePath);
 });
 
 routerUsuario.get("/api/perfil", (req, res) => {
