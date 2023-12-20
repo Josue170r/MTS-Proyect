@@ -247,6 +247,7 @@ export default {
           theme: "colored",
         })
       })
+    this.loginJWT()
   },
   methods: {
     async getArrayPlacesPreferences() {
@@ -267,6 +268,14 @@ export default {
       this.places = []
       this.filteredPlaces = []
       this.showSearch = true
+    },
+    async loginJWT() {
+      try {
+        const response = await apiFromBackend.post("/api/cuenta-activa")
+        console.log("Respuesta exitosa:", response)
+      } catch (error) {
+        console.log(error)
+      }
     },
     handleButtonClick() {
       this.isSelected = !this.isSelected
