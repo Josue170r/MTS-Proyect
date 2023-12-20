@@ -179,10 +179,37 @@
         </div>
         <div class="flex justify-center items-center space-x-4">
           <button
+            :disabled="!isEdit"
+            :class="[
+              !isEdit
+                ? 'opacity-60 cursor-not-allowed'
+                : 'hover:outline hover:outline-1 hover:outline-pink-400',
+            ]"
             type="button"
             class="font-quicksand block w-1/2 mt-4 py-2 rounded-lg text-white font-semibold mb-2 bg-pink-300"
+            @click="goToMapScreen()"
           >
             Añadir lugares
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              class="w-7 h-7 inline-block ml-2 mb-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+              />
+            </svg>
           </button>
           <button
             :disabled="isFormEmpty"
@@ -195,6 +222,21 @@
             ]"
           >
             Guardar
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              class="w-7 h-7 inline-block ml-2 mb-1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+              />
+            </svg>
           </button>
         </div>
       </form>
@@ -381,6 +423,11 @@ export default {
       // Realiza cualquier acción que necesites con la fecha de fin
       console.log("Fecha de fin:", this.endDate)
       this.dialog2 = false
+    },
+    goToMapScreen() {
+      this.$router.push({
+        name: "mapa-interactivo",
+      })
     },
   },
 }

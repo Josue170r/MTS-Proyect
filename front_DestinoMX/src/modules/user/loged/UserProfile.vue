@@ -18,7 +18,16 @@
           alt="logo"
           class="mx-auto w-64 p-2 pl-8"
         />
-        <button class="bg-white rounded-full h-10 w-10 ml-32 -mt-10">
+        <input
+          ref="fileInput"
+          type="file"
+          style="display: none"
+          @change="updateImgProfile"
+        />
+        <button
+          class="bg-white rounded-full h-10 w-10 ml-32 -mt-10"
+          @click="openFileInput"
+        >
           <PlusCircleIcon />
         </button>
       </div>
@@ -421,7 +430,7 @@ export default {
       } finally {
         setTimeout(() => {
           this.loading = false
-        }, 2000)
+        }, 1000)
       }
     },
     async updateProfileFunction() {
@@ -465,6 +474,25 @@ export default {
         })
       }
       this.dialogfromPassword = false
+    },
+    openFileInput() {
+      // Simular el clic en el input de tipo archivo al hacer clic en el botón
+      this.$refs.fileInput.click()
+    },
+    updateImgProfile(event) {
+      const file = event.target.files[0]
+      console.log(event)
+
+      if (file) {
+        const reader = new FileReader()
+
+        reader.onload = () => {
+          this.imageUrl = reader.result
+        }
+
+        reader.readAsDataURL(file)
+        console.log(this.imageUrl)
+      }
     },
     async deleteUserAccount() {
       try {

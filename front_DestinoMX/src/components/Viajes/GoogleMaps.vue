@@ -13,11 +13,15 @@
       :api-key="apiKey"
       mapTypeId="terrain"
       :style="{ width: '100%', height: isEmpyCurrenName ? '90%' : '74%' }"
-      :center="relativePosition"
+      :center="$route.query.placeID ? relativePosition : actuallyPosition"
       :zoom="18"
     >
       <Polyline v-if="showRoute" :options="flightPath" />
-      <Marker :options="{ position: relativePosition }" />
+      <Marker :options="{ position: actuallyPosition }" />
+      <Marker
+        v-if="$route.query.placeID"
+        :options="{ position: relativePosition, icon: customMarkerIcon }"
+      />
       <Marker
         v-if="showRoute"
         :options="{ position: steps[steps.length - 1] }"
@@ -79,14 +83,19 @@ export default {
     Polyline,
   },
   created() {
-    // Usar las coordenadas recibidas
-
     this.$getLocation()
       .then((coordinates) => {
         // Utilizar las coordenadas recibidas o las coordenadas actuales si no hay error
-        this.relativePosition = {
+        this.actuallyPosition = {
           lat: coordinates.lat,
           lng: coordinates.lng,
+        }
+        if (this.$route.query.placeID) {
+          this.SelectedPlace()
+          this.relativePosition = {
+            lat: Number(this.$route.query.lat),
+            lng: Number(this.$route.query.lng),
+          }
         }
       })
       .catch((error) => {
@@ -98,12 +107,22 @@ export default {
         })
       })
   },
+  unmounted() {
+    this.$route.query.placeID = ""
+  },
   data() {
     return {
-      //Pantalla de GoogleMaps normal
+      customMarkerIcon: {
+        fillColor: "#FF0000",
+        fillOpacity: 1,
+        scale: 0.8,
+        strokeColor: "#6BC4FF",
+        strokeWeight: 3,
+      },
       apiKey: "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA",
       isEmpyCurrenName: true,
       CurrentNamePlace: "",
+      actuallyPosition: "",
       relativePosition: "",
       distance: "",
       duration: "",
@@ -121,14 +140,18 @@ export default {
   methods: {
     SelectedPlace(event) {
       this.showRoute = false
-      this.placeLats = event.latLng.lat()
-      this.placeLongs = event.latLng.lng()
-      this.placeID = event.placeId
+      this.placeLats = event
+        ? event.latLng.lat()
+        : Number(this.$route.query.lat)
+      this.placeLongs = event
+        ? event.latLng.lng()
+        : Number(this.$route.query.lng)
+      this.placeID = event ? event.placeId : this.$route.query.placeID
       let destination = {
         latdestino: this.placeLats,
         lngdestino: this.placeLongs,
       }
-      this.getNamePlace(event.placeId)
+      this.getNamePlace(this.placeID)
       this.getRoute(destination)
     },
     async getNamePlace(placeId) {
@@ -155,8 +178,10 @@ export default {
       })
     },
     async getRoute(Destination) {
+      console.log(Destination)
+      console.log(this.actuallyPosition)
       let { latdestino, lngdestino } = Destination
-      let { lat, lng } = this.relativePosition
+      let { lat, lng } = this.actuallyPosition
       try {
         const { data } = await apiFromBackend.get("/api/routePlace", {
           params: {
@@ -164,12 +189,13 @@ export default {
             destination: `${latdestino}, ${lngdestino}`,
           },
         })
+        console.log(data)
         let apiRoutes = data.routes[0].legs[0]
         this.distance = apiRoutes.distance.text
         this.duration = apiRoutes.duration.text
         let steps = apiRoutes.steps
         let stepsArray = []
-        stepsArray[0] = toRaw(this.relativePosition)
+        stepsArray[0] = toRaw(this.actuallyPosition)
         steps.forEach((step) => stepsArray.push(step.end_location))
         this.steps = stepsArray
       } catch (error) {

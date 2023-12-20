@@ -38,11 +38,19 @@
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
+                      v-if="place.imagePlaces"
                       :src="place.imagePlaces"
                       height="13rem"
                       width="80%"
-                      @click="goToPlaceDescription(place.reference)"
+                      @click="goToPlaceDescription(place.idPlaceLugar)"
                     ></v-img>
+                    <img
+                      v-else
+                      @click="goToPlaceDescription(place.idPlaceLugar)"
+                      src="@/assets/images/noimages.jpg"
+                      alt="Imagen por defecto"
+                      class="w-80% h-64"
+                    />
                   </div>
                   <br />
                   <div class="d-flex flex-column align-center">
