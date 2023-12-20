@@ -91,14 +91,21 @@
         @click="hideRatingPopUp"
       >
         <!-- Dirección -->
-        <div class="mb-3 mr-1">
+        <div class="mt-1 mr-1">
           <LocalitationIcon2 />
         </div>
         <div
-          class="underline font-quicksand text-blue-800 text-left text-md justify-center mt-0.5 mr-6"
+          class="font-quicksand text-blue-800 text-left text-md justify-center mt-0.5 mr-6"
           style="white-space: normal; overflow: hidden"
         >
-          {{ location }} <br />
+          <button
+            type="button"
+            class="text-start underline"
+            @click="goToMapScreen()"
+          >
+            {{ location }}
+          </button>
+          <br />
         </div>
       </div>
       <div v-if="phone" class="flex flex-row font-quicksand ml-2 mr-0">
@@ -404,6 +411,19 @@ export default {
         console.log(data)
       }
     },
+    goToMapScreen() {
+      console.log(this.placeiD)
+      console.log(this.long)
+      console.log(this.lat)
+      this.$router.push({
+        name: "mapa-interactivo",
+        query: {
+          placeID: this.placeiD,
+          lat: this.lat,
+          lng: this.long,
+        },
+      })
+    },
     async AddToHistory(img) {
       console.log(img)
       try {
@@ -424,8 +444,8 @@ export default {
       try {
         const { data } = await apiFromBackend.get("/api/Weather", {
           params: {
-            lat: "19.606069",
-            lon: "-98.971432",
+            lat: this.lat,
+            lon: this.long,
           },
         })
         this.placeWeather = parseInt(data.main.temp - 273.15)
