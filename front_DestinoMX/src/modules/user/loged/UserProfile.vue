@@ -18,18 +18,17 @@
           alt="logo"
           class="mx-auto w-64 p-2 pl-8"
         />
-        <input
-          ref="fileInput"
-          type="file"
-          style="display: none"
-          @change="updateImgProfile"
-        />
-        <button
-          class="bg-white rounded-full h-10 w-10 ml-32 -mt-10"
-          @click="openFileInput"
-        >
-          <PlusCircleIcon />
-        </button>
+        <div class="flex justify-center items-center py-2">
+          <label class="bg-white rounded-full h-10 w-10 ml-32 -mt-10">
+            <span><PlusCircleIcon /></span>
+            <input
+              type="file"
+              class="hidden button"
+              accept="image/*"
+              @change="updateProfileImage($event)"
+            />
+          </label>
+        </div>
       </div>
       <div class="opacity-100 mb-64">
         <v-progress-circular
@@ -475,23 +474,21 @@ export default {
       }
       this.dialogfromPassword = false
     },
-    openFileInput() {
-      // Simular el clic en el input de tipo archivo al hacer clic en el botón
-      this.$refs.fileInput.click()
-    },
-    updateImgProfile(event) {
+    async updateProfileImage(event) {
       const file = event.target.files[0]
-      console.log(event)
-
+      console.log(file)
+      const form = new FormData()
       if (file) {
-        const reader = new FileReader()
-
-        reader.onload = () => {
-          this.imageUrl = reader.result
+        form.append("image", file, file.name)
+        try {
+          const response = await apiFromBackend.put(
+            "/api/updateImgProfile",
+            form,
+          )
+          console.log(response)
+        } catch (error) {
+          console.log(error)
         }
-
-        reader.readAsDataURL(file)
-        console.log(this.imageUrl)
       }
     },
     async deleteUserAccount() {
