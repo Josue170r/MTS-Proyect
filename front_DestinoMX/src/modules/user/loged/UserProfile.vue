@@ -4,13 +4,29 @@
     :class="[loading ? 'opacity-75' : '...']"
   >
     <div class="justify-center items-center">
-      <div class="pt-16 flex justify-center text-center">
-        <router-link :to="{ name: 'home' }" class="...">
-          <BackButtonIcon class="-ml-12 mt-1" />
-        </router-link>
-        <h1 class="text-4xl mb-8 text-white font-baskerville">
-          ¡Hola {{ user.username }}!
-        </h1>
+      <div class="pt-16 flex justify-center text-center items-center">
+        <div class="flex justify-center">
+          <router-link :to="{ name: 'home' }" class="...">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              class="w-9 h-9 text-white mr-4 mt-0.5 text-center"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+              />
+            </svg>
+          </router-link>
+          <h1 class="text-4xl mb-8 text-white font-baskerville">
+            ¡Hola {{ user.username }}!
+          </h1>
+        </div>
       </div>
       <div class="flex flex-col items-center">
         <img
@@ -363,7 +379,6 @@
 </template>
 
 <script>
-import BackButtonIcon from "@/components/icons/BackButtonIcon"
 import PlusCircleIcon from "@/components/icons/PlusCircleIcon"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import { toast } from "vue3-toastify"
@@ -371,7 +386,6 @@ import { toast } from "vue3-toastify"
 export default {
   name: "LoginForm",
   components: {
-    BackButtonIcon,
     PlusCircleIcon,
   },
   data() {
