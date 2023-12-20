@@ -302,18 +302,27 @@ export default {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        for (let i = 0; i < this.preference.length; i++) {
-          const { data } = await apiFromBackend.get("/api/nearBySearh", {
+        const requests = this.preference.map((preference) =>
+          apiFromBackend.get("/api/nearBySearh", {
             params: {
               location: `${lat}, ${lng}`,
               radius: this.radio,
-              type: this.preference[i],
+              type: preference,
             },
-          })
-          if (data.results.length != 0) {
-            this.nearPlaces.push(...Object.values(data.results))
+          }),
+        )
+        const responses = await Promise.all(requests)
+
+        responses.forEach((response) => {
+          if (
+            response.data.results.length !== 0 &&
+            response.data.results.length < 15 &&
+            response.data.results.length + this.nearPlaces.length < 26
+          ) {
+            this.nearPlaces.push(...Object.values(response.data.results))
           }
-        }
+        })
+
         const uniqueNearPlaces = new Set(
           this.nearPlaces.map((place) => place.reference),
         )
@@ -321,7 +330,7 @@ export default {
           return this.nearPlaces.find((place) => place.reference === reference)
         })
 
-        this.nearPlaces = this.nearPlaces.slice(0, 25)
+        console.log(this.nearPlaces)
 
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
@@ -345,22 +354,23 @@ export default {
     },
     async getNearImages() {
       try {
-        const imageURLs = []
-        console.log(this.photosReferences)
-        for (const photoReference of this.photosReferences) {
-          const response = await apiFromBackend.get("/api/imgPlace", {
-            params: {
-              maxwidth: "400",
-              photoreference: photoReference,
-            },
-            responseType: "blob",
-          })
-          const imgUrl = URL.createObjectURL(response.data)
-          imageURLs.push(imgUrl)
-        }
+        const imageURLs = await Promise.all(
+          this.photosReferences.map(async (photoReference) => {
+            const response = await apiFromBackend.get("/api/imgPlace", {
+              params: {
+                maxwidth: "400",
+                photoreference: photoReference,
+              },
+              responseType: "blob",
+            })
+            return URL.createObjectURL(response.data)
+          }),
+        )
+
         this.placeImages = toRaw(imageURLs)
         this.isLoading = false
       } catch (error) {
+        console.error(error)
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
