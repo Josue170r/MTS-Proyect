@@ -1,3 +1,4 @@
+historyscreen
 <template>
   <div class="min-h-screen w-full flex flex-col md:flex-row bg-gray-100">
     <div
@@ -33,7 +34,13 @@
             <v-card class="mx-auto" max-width="90%">
               <v-list lines="two">
                 <!-- Itera sobre la info de los lugares -->
-                <v-list-item v-for="(place, index) in places" :key="index">
+                <v-list-item
+                  v-for="(place, index) in places"
+                  :key="index"
+                  :class="{
+                    'list-item-with-divider': index !== places.length - 1,
+                  }"
+                >
                   <div class="d-flex flex-column justify-center align-center">
                     <!-- Imagen cuadrada con bordes redondeados -->
                     <v-img
@@ -51,27 +58,37 @@
                       class="w-80% h-64"
                     />
                   </div>
-                  <br />
                   <div class="d-flex flex-column align-center">
                     <v-list-item-title
-                      class="text-center"
+                      class="text-center font-quicksand font-weight-bold mt-1"
                       style="white-space: normal; overflow: hidden"
                       >{{ place.nombrePlaces }}</v-list-item-title
                     >
+                    <v-rating
+                      half-increments
+                      hover
+                      :length="5"
+                      :size="16"
+                      :model-value="place.ratingPlaces"
+                      readonly
+                      color="rgb(232, 176, 36)"
+                      active-color="rgb(232, 176, 36)"
+                    />
+                    <v-list-item-subtitle
+                      class="text-center font-quicksand mt-1"
+                      >{{ place.direccionPlaces }}</v-list-item-subtitle
+                    >
 
                     <div class="flex flex-row items-center">
-                      <v-rating
-                        half-increments
-                        hover
-                        :length="5"
-                        :size="16"
-                        :model-value="place.ratingPlaces"
-                        readonly
-                        color="rgb(232, 176, 36)"
-                        active-color="rgb(232, 176, 36)"
-                      />
-                      <v-list-item-subtitle class="text-center mt-3 ml-4">
-                        <v-btn color="#EF9A9A">
+                      <v-btn
+                        class="py-2 px-3 rounded-lg text-white font-weight-bold ml-1 mt-3 elevation-0 custom-font"
+                        color="pink-accent-1"
+                        @click="goToPlaceDescription(place.idPlaceLugar)"
+                      >
+                        Ver lugar
+                      </v-btn>
+                      <v-list-item-subtitle class="text-center mt-3 ml-2">
+                        <v-btn color="pink-lighten-3">
                           <FavoriteIcon2
                             :isFavorite="
                               placeIdsFavs.indexOf(place.idPlaceLugar) !== -1
@@ -80,17 +97,15 @@
                           />
                         </v-btn>
                       </v-list-item-subtitle>
+                      <!-- Botón para eliminar el lugar-->
+                      <v-btn
+                        class="ml-2 mt-3 elevation-0"
+                        @click="deletePlace(place.idPlaceLugar)"
+                        color="red-accent-1"
+                      >
+                        <deleteFav />
+                      </v-btn>
                     </div>
-                    <v-list-item-subtitle class="text-center mt-3">{{
-                      place.direccionPlaces
-                    }}</v-list-item-subtitle>
-                  </div>
-
-                  <!-- Botón para eliminar el lugar-->
-                  <div class="absolute top-4 right-3">
-                    <button @click="deletePlace(place.idPlaceLugar)">
-                      <deleteFav />
-                    </button>
                   </div>
                 </v-list-item>
               </v-list>
@@ -254,3 +269,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.custom-font {
+  font-family: "Quicksand", sans-serif;
+  font-size: 12px;
+}
+
+.list-item-with-divider {
+  border-bottom: 2px solid rgb(219, 219, 219); /* Ajusta el color y estilo del borde según tus preferencias */
+}
+</style>
