@@ -3,17 +3,18 @@
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/home" class="absolute top-7 left-1 transform">
+      <router-link to="/home" class="absolute top-7 left-2 transform">
         <BackButtonIcon />
       </router-link>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
-      <img
-        src="@/assets/images/imagen006.png"
-        alt="imagen004"
-        class="md:my-auto rounded-b-xl"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen007.png"
+          alt="imagen004"
+          class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
+      /></router-link> 
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->
