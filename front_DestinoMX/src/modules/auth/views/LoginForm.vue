@@ -161,7 +161,7 @@ export default {
         this.email = response.data.correo
         const validation = response.data.validacion
         if (validation == 0) {
-          this.$router.push({ name: "user-profile" })
+          this.$router.push({ name: "home" })
         } else {
           this.dialogVerification = true
         }
