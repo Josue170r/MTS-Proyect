@@ -8,7 +8,7 @@ const apiGoogleBaseUrl = axios.create({
 
 const getApiRoute = axios.create({
   baseURL: "https://maps.googleapis.com/maps/api/directions",
-})
+});
 
 const apiKey = "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA";
 
@@ -53,10 +53,10 @@ routerApiDetails.get("/api/placeName", async (req, res) => {
 });
 
 //!Api para obtener las fotos del lugar
-routerApiDetails.get("/api/imgPlace", async (req, res)=> {
-  const { maxwidth, photoreference } = req.query
+routerApiDetails.get("/api/imgPlace", async (req, res) => {
+  const { maxwidth, photoreference } = req.query;
   try {
-    const response = await apiGoogleBaseUrl.get('/photo', {
+    const response = await apiGoogleBaseUrl.get("/photo", {
       params: {
         maxwidth,
         photoreference,
@@ -64,7 +64,7 @@ routerApiDetails.get("/api/imgPlace", async (req, res)=> {
       },
       responseType: "arraybuffer",
     });
-    res.status(200).send(response.data)
+    res.status(200).send(response.data);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ error: "Error fetching data" });
@@ -72,17 +72,20 @@ routerApiDetails.get("/api/imgPlace", async (req, res)=> {
 });
 
 //!Api para obtener la ruta hacia algún lugar
-routerApiDetails.get("/api/routePlace", async (req, res)=> {
-  const { origin, destination } = req.query
+routerApiDetails.get("/api/routePlace", async (req, res) => {
+  const { points } = req.query;
+  console.log(points)
   try {
-    const response = await getApiRoute.get('/json', {
+    const response = await getApiRoute.get("/json", {
       params: {
-        origin,
-        destination,
-        key: apiKey
+        origin: `${points[0].lat} , ${points[0].lng}`,
+        destination: `${points[points.length - 1].lat} , ${points[points.length - 1].lng}`,
+        waypoints: points.slice(1, points.length - 1),
+        mode: "driving",
+        key: apiKey,
       },
     });
-    res.status(200).send(response.data)
+    res.status(200).send(response.data);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ error: "Error fetching data" });
@@ -90,17 +93,16 @@ routerApiDetails.get("/api/routePlace", async (req, res)=> {
 });
 
 //!Api para buscar lugares específicos
-routerApiDetails.get("/api/searchPlace", async (req, res)=> {
-  const { query } = req.query
+routerApiDetails.get("/api/searchPlace", async (req, res) => {
+  const { query } = req.query;
   try {
-    const response = await apiGoogleBaseUrl.get('/textsearch/json', {
+    const response = await apiGoogleBaseUrl.get("/textsearch/json", {
       params: {
         query,
         key: apiKey,
-        language: "es",
       },
     });
-    res.status(200).send(response.data)
+    res.status(200).send(response.data);
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ error: "Error fetching data" });
