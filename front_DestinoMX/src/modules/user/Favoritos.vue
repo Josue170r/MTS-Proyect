@@ -14,7 +14,7 @@
           src="@/assets/images/imagen007.png"
           alt="imagen004"
           class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
-      /></router-link> 
+      /></router-link>
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->

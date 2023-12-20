@@ -21,7 +21,7 @@
               <input
                 v-model="namePlaceToFind"
                 type="text"
-                class="w-64 md:w-96 px-2 py-2 outline-none border-none flex-grow mr-2"
+                class="w-64 md:w-96 px-2 py-2 outline-none border-none font-quicksand flex-grow mr-2"
                 placeholder="Busca tu próximo DestinoMX ..."
                 @input="FindPlacesFromInput"
               />
@@ -71,7 +71,6 @@
             </ul>
           </div>
         </div>
-
         <img
           src="@/assets/images/imagen003.png"
           alt="imagen003"
@@ -80,7 +79,7 @@
       </div>
       <div class="md:w-1/2 md:order-2">
         <div class="flex items-center justify-center w-full flex-col">
-          <h1 class="text-xl text-center mt-2 mb-2">Usted está aqui</h1>
+          <h1 class="text-xl text-center mt-2 mb-2">Usted está aquí</h1>
           <GoogleMap
             @click="goToMapScreen"
             :api-key="apiKey"
@@ -101,8 +100,31 @@
           >
             <Marker :options="{ position: relativePosition }" />
           </GoogleMap>
+          <div
+            class="flex flex-col items-center justify-center mt-8 bg-gray-50 p-4 rounded-lg"
+            v-if="preference.length === 0"
+          >
+            <BellIcon />
+            <h1 class="text-gray-800 py-6 text-center text-xl font-bold">
+              ¡Vaya! <br />
+              Aún no tienes preferencias
+            </h1>
+
+            <button
+              type="button"
+              @click="goToPreferencesScreen"
+              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-white text-lg font-semibold font-quicksand bg-orange-300 mb-2"
+            >
+              Elegir preferencias
+            </button>
+          </div>
           <div class="flex items-center justify-center w-full flex-col mb-8">
-            <h1 class="text-xl text-center mt-2 mb-2">Explora cerca de ti</h1>
+            <h1
+              v-if="preference.length !== 0"
+              class="text-xl text-center mt-2 mb-2"
+            >
+              Explora cerca de ti
+            </h1>
             <div
               class="flex items-center justify-center w-full flex-col mr-4 ml-4"
             >
@@ -177,6 +199,7 @@ import "swiper/css"
 import "swiper/css/pagination"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import CloseIcon from "@/components/icons/CloseIcon.vue"
+import BellIcon from "@/components/icons/BellIcon.vue"
 
 export default {
   name: "homeScreen",
@@ -188,10 +211,11 @@ export default {
     Swiper,
     SwiperSlide,
     CloseIcon,
+    BellIcon,
   },
   data() {
     return {
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+      apiKey: "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA",
       relativePosition: "",
       preference: [],
       radio: 400,
@@ -232,12 +256,6 @@ export default {
         console.log(this.preference)
         this.getArrayPlaces()
       } catch ({ response }) {
-        toast.error(response.data.mensaje, {
-          theme: "colored",
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 1500,
-          hideProgressBar: true,
-        })
         if (response.data.mensaje === "No hay preferencias configuradas.") {
           this.getArrayPlaces()
         }
@@ -256,6 +274,11 @@ export default {
     goToMapScreen() {
       this.$router.push({
         name: "mapa-interactivo",
+      })
+    },
+    goToPreferencesScreen() {
+      this.$router.push({
+        name: "Preferences-Screen",
       })
     },
     goToPlaceDescription(place) {
@@ -323,6 +346,7 @@ export default {
     async getNearImages() {
       try {
         const imageURLs = []
+        console.log(this.photosReferences)
         for (const photoReference of this.photosReferences) {
           const response = await apiFromBackend.get("/api/imgPlace", {
             params: {
