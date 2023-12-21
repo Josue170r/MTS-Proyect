@@ -9,11 +9,13 @@
       <div class="mt-8">
         <BurgerMenu />
       </div>
-      <img
-        src="@/assets/images/imagen004.png"
-        alt="imagen004"
-        class="md:my-auto rounded-b-xl"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen004.png"
+          alt="imagen004"
+          class="md:my-auto rounded-b-xl"
+        />
+      </router-link>
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->

@@ -4,11 +4,11 @@ historyscreen
     <div
       class="min-w-screen flex md:bg-orange-300 md:w-1/2 md:min-h-screen relative"
     >
-      <router-link to="/home" class="absolute top-7 left-2 transform">
-        <BackButtonIcon />
-      </router-link>
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
+      </div>
+      <div class="letf-2">
+        <BurgerMenu />
       </div>
       <router-link to="/home">
         <img
@@ -137,7 +137,7 @@ historyscreen
 <script>
 import AvatarButton from "@/components/buttons/AvatarButton"
 import deleteFav from "@/components/icons/deleteFav"
-import BackButtonIcon from "@/components/icons/BackButtonIcon"
+import BurgerMenu from "@/components/buttons/BurgerMenu.vue"
 import { apiFromBackend } from "@/helpers/ApiFromBackend"
 import FavoriteIcon2 from "@/components/icons/FavoriteIcon2.vue"
 import { toast } from "vue3-toastify"
@@ -146,7 +146,7 @@ import "vue3-toastify/dist/index.css"
 export default {
   name: "MyTrip",
   components: {
-    BackButtonIcon,
+    BurgerMenu,
     AvatarButton,
     deleteFav,
     FavoriteIcon2,
