@@ -82,6 +82,7 @@ export default {
   methods: {
     async recoveryPassword() {
       try {
+        localStorage.setItem("correo", this.user.correo)
         const data = await apiFromBackend.post("/api/cookie-correo-mandar", {
           correo: this.user.correo,
         })

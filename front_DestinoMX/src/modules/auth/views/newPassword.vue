@@ -99,9 +99,6 @@ export default {
     PasswordIcon,
     Field,
   },
-  created() {
-    this.cookie()
-  },
   data() {
     return {
       showPassword: false,
@@ -118,28 +115,12 @@ export default {
     },
   },
   methods: {
-    redirectToLogin() {
-      console.log("Redirigiendo a login")
-      this.$router.push({
-        name: "login",
-      })
-    },
-    async cookie() {
-      try {
-        const data = await apiFromBackend.post("/api/cookieCorreo")
-        console.log(data)
-      } catch ({ response }) {
-        console.log(response)
-        if (response.data.mensaje == "No hay cookie existente") {
-          this.redirectToLogin()
-        }
-      }
-    },
     async onSubmit() {
       try {
         const data = await apiFromBackend.post("/api/contrasena-nueva", {
           contrasena1: this.user.password,
           contrasena2: this.user.passwordConfirmation,
+          recuperacion_cookie: localStorage.getItem("correo"),
         })
         console.log(data)
         if (data.data.exito == true) {

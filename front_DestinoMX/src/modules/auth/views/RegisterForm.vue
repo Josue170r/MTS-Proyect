@@ -301,9 +301,21 @@ export default {
             correo: this.user.email,
           },
         )
+
         console.log(data)
-      } catch (response) {
-        console.log(response.response.data.mensaje)
+
+        localStorage.setItem("codigo_validacion", data.valorEncriptado)
+        localStorage.setItem("expires", data.options.expires)
+
+        setTimeout(
+          () => {
+            localStorage.removeItem("codigo_validacion")
+            localStorage.removeItem("expires")
+          },
+          new Date(data.options.expires) - Date.now(),
+        )
+      } catch (error) {
+        console.error(error.response.data.mensaje)
       }
     },
   },
