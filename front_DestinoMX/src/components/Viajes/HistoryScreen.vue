@@ -10,12 +10,13 @@ historyscreen
       <div class="letf-2">
         <BurgerMenu />
       </div>
-      <router-link to="/home">
+      <div>
         <img
           src="@/assets/images/imagen007.png"
           alt="imagen004"
           class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
-      /></router-link>
+        />
+      </div>
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->
@@ -158,8 +159,9 @@ export default {
     }
   },
   created() {
-    this.getFavorites()
-    this.getHistory()
+    this.getFavorites().then(() => {
+      this.getHistory()
+    })
   },
 
   methods: {
@@ -173,7 +175,6 @@ export default {
         this.places = data.info.filter((place) =>
           place.idPlaceLugar.startsWith("ChIJ"),
         )
-        console.log(this.places)
       } catch (error) {
         console.error("Error al obtener lugares del historial:", error)
       }
@@ -191,8 +192,9 @@ export default {
           .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
           .map((place) => place.idPlaceLugar)
         if (this.placeIdsFavs.length === 0) {
-          this.placeIdsFavs.push("ChIJQ2pBT6gCzoURkj76UTxgxyI")
+          this.placeIdsFavs.push("ChIJ")
         }
+        this.placeIdsFavs
       } catch (error) {
         console.error("Error al obtener lugares del favoritos:", error)
       }

@@ -36,6 +36,7 @@
     "vue3-toastify": "^0.1.14",
     "vuetify": "^3.3.23",
     "vuex": "^4.0.0",
+    "vuex-persist": "^3.1.3",
     "vuex-persistedstate": "^4.1.0",
     "yup": "^1.3.2"
   },

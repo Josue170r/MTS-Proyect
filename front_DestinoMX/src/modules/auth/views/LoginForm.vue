@@ -159,7 +159,8 @@ export default {
         })
         console.log(response)
         this.email = response.data.correo
-        this.$store.state.idUsuario = response.data.idUsuario
+        localStorage.setItem("idUsuario", response.data.idUsuario)
+        this.$store.state.idUsuario = localStorage.getItem("idUsuario")
         console.log(this.$store.state.idUsuario)
         const validation = response.data.validacion
         if (validation == 0) {
