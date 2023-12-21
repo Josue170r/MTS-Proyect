@@ -37,6 +37,7 @@
             variant="plain"
             height="50"
             width="200"
+            :style="{ opacity: '0.6' }"
             @click="onClick"
             :disabled="otp.length !== 6"
           >
@@ -79,8 +80,8 @@
                   variant="text"
                   @click="resetOtp"
                 >
-                  <h1 class="font-bold">
-                    Enviar un correo electrónico a MTS Official
+                  <h1 class="text-aligh-center text-sm font-bold">
+                    Contactar a MTS Official
                   </h1>
                 </v-btn>
               </a>
