@@ -165,7 +165,11 @@ export default {
   methods: {
     async getHistory() {
       try {
-        const { data } = await apiFromBackend.get("/api/historial")
+        const { data } = await apiFromBackend.get("/api/historial", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         this.places = data.info.filter((place) =>
           place.idPlaceLugar.startsWith("ChIJ"),
         )
@@ -177,7 +181,11 @@ export default {
     async getFavorites() {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
-        const { data } = await apiFromBackend.get("/api/favoritos")
+        const { data } = await apiFromBackend.get("/api/favoritos", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         // Actualizar los datos locales en el componente con los favoritos obtenidos
         this.placeIdsFavs = data.info
           .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
@@ -202,6 +210,7 @@ export default {
         const { data } = await apiFromBackend.delete("/api/favoritos", {
           params: {
             idPlaceLugar: place,
+            idUsuario: this.$store.state.idUsuario,
           },
         })
         toast.success(data.mensaje, {
@@ -222,6 +231,7 @@ export default {
           imagePlaces: place.imagePlaces,
           direccionPlaces: place.direccionPlaces,
           ratingPlaces: place.ratingPlaces,
+          idUsuario: this.$store.state.idUsuario,
         })
         toast.success("Lugar añadido a favoritos", {
           theme: "colored",
@@ -240,6 +250,7 @@ export default {
         const { data } = await apiFromBackend.delete("/api/historial", {
           params: {
             idPlaceLugar: place,
+            idUsuario: this.$store.state.idUsuario,
           },
         })
         toast.success(data.mensaje, {

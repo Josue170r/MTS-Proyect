@@ -424,7 +424,11 @@ export default {
       try {
         this.loading = true
 
-        const { data } = await apiFromBackend.get("/api/perfil", {})
+        const { data } = await apiFromBackend.get("/api/perfil", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         const { Usuario, Nombre, ApellidoP, CorreoElectronico } =
           data.datosUsuario
         console.log()
@@ -451,6 +455,7 @@ export default {
           Nombre: this.updateProfile.name,
           ApellidoP: this.updateProfile.lastname,
           ApellidoM: this.updateProfile.secondlastname,
+          idUsuario: this.$store.state.idUsuario,
         })
         toast(data.mensaje, {
           hideProgressBar: true,
@@ -470,6 +475,7 @@ export default {
         const { data } = await apiFromBackend.put("/api/cambiar-contrasena", {
           contrasena: this.updatePassword.currentPassword,
           nuevaContrasena: this.updatePassword.confirmPassword,
+          idUsuario: this.$store.state.idUsuario,
         })
         toast(data.mensaje, {
           hideProgressBar: true,
@@ -506,7 +512,11 @@ export default {
     },
     async deleteUserAccount() {
       try {
-        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta")
+        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         toast(data.mensaje, {
           hideProgressBar: true,
           autoClose: 400,

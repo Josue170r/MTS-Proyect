@@ -248,11 +248,16 @@ export default {
         })
       })
     this.loginJWT()
+    console.log(this.$store.state.idUsuario)
   },
   methods: {
     async getArrayPlacesPreferences() {
       try {
-        const { data } = await apiFromBackend.get("/api/leer-Preferencias")
+        const { data } = await apiFromBackend.get("/api/leer-Preferencias", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         this.preference = data.idTypesArray
         console.log(this.preference)
         this.getArrayPlaces()

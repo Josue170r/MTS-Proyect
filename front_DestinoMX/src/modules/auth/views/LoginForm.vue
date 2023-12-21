@@ -159,6 +159,8 @@ export default {
         })
         console.log(response)
         this.email = response.data.correo
+        this.$store.state.idUsuario = response.data.idUsuario
+        console.log(this.$store.state.idUsuario)
         const validation = response.data.validacion
         if (validation == 0) {
           this.$router.push({ name: "home" })
@@ -172,26 +174,6 @@ export default {
           type: "error",
           theme: "colored",
         })
-      }
-      try {
-        const response = await apiFromBackend.post("/api/cuenta-activa")
-        console.log("Respuesta exitosa:", response)
-
-        // Aquí puedes manejar la respuesta exitosa, por ejemplo, actualizar el estado en el frontend.
-      } catch (error) {
-        if (error.response) {
-          // El servidor respondió con un status diferente de 2xx
-          console.error("Respuesta de error del servidor:", error.response.data)
-        } else if (error.request) {
-          // La solicitud fue hecha pero no se recibió respuesta
-          console.error("No se recibió respuesta del servidor:", error.request)
-        } else {
-          // Ocurrió un error durante la configuración de la solicitud
-          console.error(
-            "Error durante la configuración de la solicitud:",
-            error.message,
-          )
-        }
       }
     },
     async verificationCorreo() {
