@@ -9,11 +9,12 @@
       <div class="absolute top-6 right-2 transform -translate-x-1">
         <AvatarButton />
       </div>
-      <img
-        src="@/assets/images/imagen002.png"
-        alt="imagen002"
-        class="md:my-auto rounded-b-xl"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen002.png"
+          alt="imagen002"
+          class="md:my-auto rounded-b-xl"
+      /></router-link>
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- empieza el formulario -->
