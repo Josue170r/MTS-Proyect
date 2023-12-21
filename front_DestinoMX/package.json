@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "npx tailwindcss build -o src/assets/css/tailwind.css && vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix"
@@ -29,6 +29,7 @@
     "vue": "^3.3.7",
     "vue-otp-input": "^1.0.0",
     "vue-router": "^4.0.3",
+    "vue-upload-component": "^2.8.23",
     "vue3-burger-menu": "^1.1.1",
     "vue3-geolocation": "^1.0.0",
     "vue3-google-map": "^0.18.0",

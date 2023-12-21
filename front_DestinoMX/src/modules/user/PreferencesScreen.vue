@@ -17,16 +17,17 @@
       >
         <h1 style="font-size: 45px; font-weight: bold">Preferencias</h1>
       </div>
-
-      <img
-        src="@/assets/images/imagen003.png"
-        alt="imagen003"
-        class="w-full h-full object-cover"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen003.png"
+          alt="imagen003"
+          usemap="#image-map"
+          class="w-full h-full object-cover cursor-pointer"
+      /></router-link>
     </div>
     <div class="flex items-center justify-center w-full flex-col">
       <h1 class="text-xl text-center">
-        Elija al menos 3 de las categorias mas interesantes para ti
+        Elija al menos 3 de las categorías más interesantes para ti
       </h1>
     </div>
 
@@ -101,7 +102,7 @@
                 src="@/assets/images/PreferencesImages/nature.png"
                 alt="Icono"
                 class="w-9 h-9 items-center mr-1"
-              /><span>Parques y Areas Naturales</span>
+              /><span>Parques y Áreas Naturales</span>
             </button>
           </div>
 
@@ -120,7 +121,7 @@
                 src="@/assets/images/PreferencesImages/museumIcon.jpg"
                 alt="Icono"
                 class="w-6 h-6 items-center mr-1"
-              /><span>Museos Y Galerias</span>
+              /><span>Museos Y Galerías</span>
             </button>
           </div>
 
@@ -215,7 +216,7 @@
                 src="@/assets/images/PreferencesImages/coffeeIcon.png"
                 alt="Icono"
                 class="w-6 h-6 items-center mr-1"
-              /><span>Cafeterias</span>
+              /><span>Cafeterías</span>
             </button>
           </div>
 

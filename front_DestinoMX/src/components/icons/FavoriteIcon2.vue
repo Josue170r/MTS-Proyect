@@ -4,8 +4,8 @@
     :fill="fillColor"
     viewBox="0 0 24 24"
     stroke-width="1.5"
-    stroke="red"
-    class="w-6 h-6 text-gray-400"
+    :stroke="fillColor"
+    class="w-6 h-6"
     @click="toggleFavorite"
   >
     <path
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     fillColor() {
-      return this.localIsFavorite ? "red" : "none"
+      return this.localIsFavorite ? "red" : "white"
     },
   },
   methods: {

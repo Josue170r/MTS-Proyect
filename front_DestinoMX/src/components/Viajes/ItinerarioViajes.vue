@@ -21,11 +21,12 @@
         <!-- componente para el avatar del usuario -->
         <AvatarButton />
       </div>
-      <img
-        src="@/assets/images/imagen002.png"
-        alt="imagen002"
-        class="md:my-auto rounded-b-xl"
-      />
+      <router-link to="/home">
+        <img
+          src="@/assets/images/imagen007.png"
+          alt="imagen004"
+          class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
+      /></router-link>
     </div>
     <!-- Calendario -->
     <div
@@ -58,7 +59,7 @@
           class="flex flex-row md:w-1/2 md:min-h-screen relative flex justify-center rounded-2xl items-center w-full flex-col mb-2"
         >
           <h1 class="text-gray-800 text-center text-2xl font-bold">
-            Tus Proximos Viajes
+            Tus Próximos Viajes
           </h1>
           <div class="flex ml-4 mr-0 items-center justify-center">
             <button type="button" @click="goToNewTripForm" class="ml-auto">

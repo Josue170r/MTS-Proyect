@@ -15,6 +15,10 @@ import { routerUsuario } from "./routes/usuario.js";
 import { routerHistorial } from "./routes/historial.js";
 import { routerApiDetails } from "./ApiGoogle/apiGoogleDetailsPlace.js";
 import { routerApiWeather } from "./ApiGoogle/waetherPlace.js";
+
+
+
+
 import { mailerApi } from "./Mailer/mailer.js";
 import { routerRecuperacion } from "./routes/recuperacion.js";
 import { routerValidacion } from "./routes/verificacion.js";

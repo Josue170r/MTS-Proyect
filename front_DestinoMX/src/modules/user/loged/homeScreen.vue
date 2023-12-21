@@ -21,7 +21,7 @@
               <input
                 v-model="namePlaceToFind"
                 type="text"
-                class="w-64 md:w-96 px-2 py-2 outline-none border-none flex-grow mr-2"
+                class="w-64 md:w-96 px-2 py-2 outline-none border-none font-quicksand flex-grow mr-2"
                 placeholder="Busca tu próximo DestinoMX ..."
                 @input="FindPlacesFromInput"
               />
@@ -79,7 +79,7 @@
       </div>
       <div class="md:w-1/2 md:order-2">
         <div class="flex items-center justify-center w-full flex-col">
-          <h1 class="text-xl text-center mt-2 mb-2">Usted está aqui</h1>
+          <h1 class="text-xl text-center mt-2 mb-2">Usted está aquí</h1>
           <GoogleMap
             @click="goToMapScreen"
             :api-key="apiKey"
@@ -113,7 +113,7 @@
             <button
               type="button"
               @click="goToPreferencesScreen"
-              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-black font-semibold bg-orange-300 mb-2"
+              class="block w-64 mt-2 rounded-r-md py-4 rounded-lg text-white text-lg font-semibold font-quicksand bg-orange-300 mb-2"
             >
               Elegir preferencias
             </button>
@@ -215,7 +215,7 @@ export default {
   },
   data() {
     return {
-      apiKey: "AIzaSyA7zLTbiIG9CpbTiNfZMQZZUoPMo8kbh70",
+      apiKey: "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA",
       relativePosition: "",
       preference: [],
       radio: 400,
@@ -247,6 +247,7 @@ export default {
           theme: "colored",
         })
       })
+    this.loginJWT()
   },
   methods: {
     async getArrayPlacesPreferences() {
@@ -267,6 +268,14 @@ export default {
       this.places = []
       this.filteredPlaces = []
       this.showSearch = true
+    },
+    async loginJWT() {
+      try {
+        const response = await apiFromBackend.post("/api/cuenta-activa")
+        console.log("Respuesta exitosa:", response)
+      } catch (error) {
+        console.log(error)
+      }
     },
     handleButtonClick() {
       this.isSelected = !this.isSelected
@@ -302,18 +311,27 @@ export default {
       this.isLoading = true
       let { lat, lng } = this.relativePosition
       try {
-        for (let i = 0; i < this.preference.length; i++) {
-          const { data } = await apiFromBackend.get("/api/nearBySearh", {
+        const requests = this.preference.map((preference) =>
+          apiFromBackend.get("/api/nearBySearh", {
             params: {
               location: `${lat}, ${lng}`,
               radius: this.radio,
-              type: this.preference[i],
+              type: preference,
             },
-          })
-          if (data.results.length != 0) {
-            this.nearPlaces.push(...Object.values(data.results))
+          }),
+        )
+        const responses = await Promise.all(requests)
+
+        responses.forEach((response) => {
+          if (
+            response.data.results.length !== 0 &&
+            response.data.results.length < 15 &&
+            response.data.results.length + this.nearPlaces.length < 26
+          ) {
+            this.nearPlaces.push(...Object.values(response.data.results))
           }
-        }
+        })
+
         const uniqueNearPlaces = new Set(
           this.nearPlaces.map((place) => place.reference),
         )
@@ -321,7 +339,7 @@ export default {
           return this.nearPlaces.find((place) => place.reference === reference)
         })
 
-        this.nearPlaces = this.nearPlaces.slice(0, 25)
+        console.log(this.nearPlaces)
 
         this.nearPlaces.forEach((place) => {
           if (place.photos && place.photos.length > 0) {
@@ -345,22 +363,23 @@ export default {
     },
     async getNearImages() {
       try {
-        const imageURLs = []
-        console.log(this.photosReferences)
-        for (const photoReference of this.photosReferences) {
-          const response = await apiFromBackend.get("/api/imgPlace", {
-            params: {
-              maxwidth: "400",
-              photoreference: photoReference,
-            },
-            responseType: "blob",
-          })
-          const imgUrl = URL.createObjectURL(response.data)
-          imageURLs.push(imgUrl)
-        }
+        const imageURLs = await Promise.all(
+          this.photosReferences.map(async (photoReference) => {
+            const response = await apiFromBackend.get("/api/imgPlace", {
+              params: {
+                maxwidth: "400",
+                photoreference: photoReference,
+              },
+              responseType: "blob",
+            })
+            return URL.createObjectURL(response.data)
+          }),
+        )
+
         this.placeImages = toRaw(imageURLs)
         this.isLoading = false
       } catch (error) {
+        console.error(error)
         toast.error("Ha ocurrido algún error", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,

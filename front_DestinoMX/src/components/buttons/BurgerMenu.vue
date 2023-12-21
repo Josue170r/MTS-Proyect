@@ -9,7 +9,10 @@
           class="mx-auto sm:-mt-4 pl-4"
         />
       </div>
-      <router-link :to="{ name: 'home' }" class="flex items-center"
+      <router-link
+        :to="{ name: 'home' }"
+        class="flex items-center"
+        :class="{ 'text-blue-500': $route.name === 'home' }"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -44,11 +47,18 @@
         </svg>
         <h1>Mi perfil</h1></router-link
       >
-      <router-link :to="{ name: 'favoritos' }" class="flex items-center"
-        ><FavoriteIcon class="mr-2" />
+      <router-link
+        :to="{ name: 'favoritos' }"
+        class="flex items-center"
+        :class="{ 'text-red-500': $route.name === 'favoritos' }"
+      >
+        <FavoriteIcon class="mr-2" />
         <h1>Favoritos</h1></router-link
       >
-      <router-link :to="{ name: 'Itinerario' }" class="flex items-center"
+      <router-link
+        :to="{ name: 'Itinerario' }"
+        class="flex items-center"
+        :class="{ 'text-purple-900': $route.name === 'Itinerario' }"
         ><TravelIcon class="mr-2" />
         <h1>Itinerario de viajes</h1></router-link
       >
@@ -56,13 +66,17 @@
         ><ClockIcon class="mr-2" />
         <h1>Historial</h1></router-link
       >
-      <router-link :to="{ name: 'aboutus' }" class="flex items-center"
+      <router-link
+        :to="{ name: 'aboutus' }"
+        class="flex items-center"
+        :class="{ 'text-yellow-500': $route.name === 'aboutus' }"
         ><supportIcon class="mr-2" />
         <h1>Contactar a soporte</h1></router-link
       >
       <router-link
         :to="{ name: 'Preferences-Screen' }"
         class="flex items-center"
+        :class="{ 'text-red-500': $route.name === 'Preferences-Screen' }"
         ><settingsIcon class="mr-2" />
         <h1>Preferencias</h1></router-link
       >
@@ -116,7 +130,16 @@ export default {
 a {
   color: black;
 }
-.router-link-exact-active {
+.text-blue-500 {
   color: #3498db;
+}
+.text-purple-900 {
+  color: rgb(0, 13, 128);
+}
+.text-red-500 {
+  color: #d430c7;
+}
+.text-yellow-500 {
+  color: #f39c12;
 }
 </style>

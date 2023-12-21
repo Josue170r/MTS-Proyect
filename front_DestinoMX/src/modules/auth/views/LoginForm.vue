@@ -52,7 +52,7 @@
                 <u
                   >¿Necesitas ayuda?
                   <span class="text-orange-300 text-md"
-                    >Olvidé mi contraseña</span
+                    >Olvidé mi contraseña.</span
                   ></u
                 >
               </router-link>
@@ -75,8 +75,8 @@
                 class="mx-4 text-md text-gray-700 cursor-pointer text-gray-600"
               >
                 <u
-                  >No tengo una cuenta
-                  <span class="text-orange-300">Registrarse</span></u
+                  >No tengo una cuenta.
+                  <span class="text-orange-300">Registrarse.</span></u
                 >
               </router-link>
             </div>
@@ -161,7 +161,7 @@ export default {
         this.email = response.data.correo
         const validation = response.data.validacion
         if (validation == 0) {
-          this.$router.push({ name: "user-profile" })
+          this.$router.push({ name: "home" })
         } else {
           this.dialogVerification = true
         }

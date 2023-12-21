@@ -91,14 +91,21 @@
         @click="hideRatingPopUp"
       >
         <!-- Dirección -->
-        <div class="mb-3 mr-1">
+        <div class="mt-1 mr-1">
           <LocalitationIcon2 />
         </div>
         <div
-          class="underline font-quicksand text-blue-800 text-left text-md justify-center mt-0.5 mr-6"
+          class="font-quicksand text-blue-800 text-left text-md justify-center mt-0.5 mr-6"
           style="white-space: normal; overflow: hidden"
         >
-          {{ location }} <br />
+          <button
+            type="button"
+            class="text-start underline"
+            @click="goToMapScreen()"
+          >
+            {{ location }}
+          </button>
+          <br />
         </div>
       </div>
       <div v-if="phone" class="flex flex-row font-quicksand ml-2 mr-0">
@@ -364,7 +371,6 @@ export default {
       this.getImgPlace()
       this.getImgsPlaces()
       this.getWeather()
-      this.AddToHistory()
     })
     this.getFavorites()
   },
@@ -383,9 +389,14 @@ export default {
       }
     },
     async AddToFavorites() {
+      console.log(this.placeImage)
       try {
         const response = await apiFromBackend.post("/api/favoritos", {
           idPlaceLugar: this.placeiD,
+          nombrePlaces: this.placeName,
+          imagePlaces: this.placeImage,
+          direccionPlaces: this.location,
+          ratingPlaces: this.rating,
         })
         this.isInFavorites = true
         toast.success("Lugar añadido a favoritos", {
@@ -400,10 +411,28 @@ export default {
         console.log(data)
       }
     },
-    async AddToHistory() {
+    goToMapScreen() {
+      console.log(this.placeiD)
+      console.log(this.long)
+      console.log(this.lat)
+      this.$router.push({
+        name: "mapa-interactivo",
+        query: {
+          placeID: this.placeiD,
+          lat: this.lat,
+          lng: this.long,
+        },
+      })
+    },
+    async AddToHistory(img) {
+      console.log(img)
       try {
         const response = await apiFromBackend.post("/api/historial", {
           idPlaceLugar: this.placeiD,
+          nombrePlaces: this.placeName,
+          imagePlaces: img,
+          direccionPlaces: this.location,
+          ratingPlaces: this.rating,
         })
         console.log(response)
       } catch ({ response }) {
@@ -415,8 +444,8 @@ export default {
       try {
         const { data } = await apiFromBackend.get("/api/Weather", {
           params: {
-            lat: "19.606069",
-            lon: "-98.971432",
+            lat: this.lat,
+            lon: this.long,
           },
         })
         this.placeWeather = parseInt(data.main.temp - 273.15)
@@ -437,16 +466,19 @@ export default {
           },
         })
         console.log("Desde getNamePlace: ", data)
-        this.link = data.result.url
         this.lat = data.result.geometry.location.lat
         this.long = data.result.geometry.location.lng
         this.placeName = data.result.name
+        this.link = data.result.url ? data.result.url : ""
         this.rating = data.result.rating ? data.result.rating : 0
         this.reviews = data.result.reviews ? data.result.reviews : []
-        this.location = data.result.vicinity
-        this.placePhotoReference = data.result.photos[0]
+        this.location = data.result.formatted_address
+        this.placePhotoReference = data.result.photos
           ? data.result.photos[0].photo_reference
           : ""
+        if (this.placePhotoReference === "" || !this.placePhotoReference) {
+          this.AddToHistory(this.placePhotoReference)
+        }
         this.imageReferences = data.result.photos.map(
           (photo) => photo.photo_reference,
         )
@@ -490,6 +522,9 @@ export default {
           },
         })
         this.placeImage = toRaw(img.request.responseURL)
+        if (this.placeImage) {
+          this.AddToHistory(this.placeImage)
+        }
       } catch (error) {
         toast.error("No hay imágenes disponibles", {
           theme: "colored",
@@ -502,29 +537,29 @@ export default {
 
     async getImgsPlaces() {
       try {
-        //arreglo para almacenar las URLs
-        const imageUrls = []
-        // Itera a través de las referencias de fotos
-        for (const photoReference of this.placePhotosReferences) {
-          const response = await apiFromBackend.get("/api/imgPlace", {
-            params: {
-              maxwidth: "400",
-              photoreference: photoReference, // Usa la referencia de foto actual
-            },
-            responseType: "blob", // Establece el tipo de respuesta como blob
-          })
+        const requests = this.placePhotosReferences.map(
+          async (photoReference) => {
+            const response = await apiFromBackend.get("/api/imgPlace", {
+              params: {
+                maxwidth: "400",
+                photoreference: photoReference,
+              },
+              responseType: "blob",
+            })
 
-          // Convierte la respuesta blob a una URL
-          const imgUrl = URL.createObjectURL(response.data)
-          imageUrls.push(imgUrl)
-        }
+            const imgUrl = URL.createObjectURL(response.data)
+            return imgUrl
+          },
+        )
 
-        // Ahora imageUrls contiene todas las URLs de las imágenes
+        const imageUrls = await Promise.all(requests)
+
         this.placeImages = toRaw(imageUrls)
         console.log(this.placeImages)
         this.isLoading = false
-      } catch (e) {
-        toast.error(e, {
+      } catch (error) {
+        console.error(error)
+        toast.error("Ha ocurrido algún error", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
