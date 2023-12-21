@@ -35,26 +35,57 @@
             class="mt-2 bg-orange"
             rounded
             variant="plain"
-            height="40"
-            width="300"
+            height="50"
+            width="200"
             @click="onClick"
             :disabled="otp.length !== 6"
           >
-            <h1 class="font-bold">Validar código de verificación</h1>
+            <h1 class="font-bold text-white">Validar código</h1>
           </v-btn>
         </div>
 
         <div class="text-caption">
           <v-btn
             color="red"
-            size="x-small"
+            size="xl-g"
             class="mb-6 mt-6 text-none"
             variant="text"
+            opacity="0"
+            height="60"
             @click="resetOtp"
             :disabled="newCode === 0"
           >
-            <h1 class="font-bold">Enviar nuevo código</h1>
+            <h1 class="text-sm font-bold">Enviar nuevo código</h1>
           </v-btn>
+          <div
+            v-if="otp.length !== 6 && newCode === 0"
+            class="text-hint red--text text-align-center"
+          >
+            <h1>
+              Has alcanzado el máximo de códigos enviados. Contacta a soporte
+              para que puedas validar tu cuenta.
+            </h1>
+            <div>
+              <a
+                href="https://mail.google.com/mail/u/0/#inbox?compose=new&to=mts_official@gmail.com"
+                class="email-link"
+                :disabled="newCode === 0"
+              >
+                <v-btn
+                  color="red"
+                  height="30"
+                  size="x-small"
+                  class="mb-6 mt-6 text-none"
+                  variant="text"
+                  @click="resetOtp"
+                >
+                  <h1 class="font-bold">
+                    Enviar un correo electrónico a MTS Official
+                  </h1>
+                </v-btn>
+              </a>
+            </div>
+          </div>
         </div>
         <div v-if="otpError" class="text-hint red--text">
           {{ otpError }}
