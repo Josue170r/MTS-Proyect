@@ -1,11 +1,11 @@
-import mysql from "mysql";
+import mysql from "mysql2";
 
 export const mySqlConnection = mysql.createConnection({
-  host: "localhost",
+  host: "viaduct.proxy.rlwy.net",
   user: "root",
-  password: "123456",
+  password: "5e-f4da5bF1fH214BE542fgegDF3g15d",
   database: "mts_database",
-  port: "3345",
+  port: "37624",
 });
 
 mySqlConnection.connect((err) => {
