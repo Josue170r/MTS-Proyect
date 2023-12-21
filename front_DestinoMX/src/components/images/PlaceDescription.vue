@@ -537,29 +537,29 @@ export default {
 
     async getImgsPlaces() {
       try {
-        //arreglo para almacenar las URLs
-        const imageUrls = []
-        // Itera a través de las referencias de fotos
-        for (const photoReference of this.placePhotosReferences) {
-          const response = await apiFromBackend.get("/api/imgPlace", {
-            params: {
-              maxwidth: "400",
-              photoreference: photoReference, // Usa la referencia de foto actual
-            },
-            responseType: "blob", // Establece el tipo de respuesta como blob
-          })
+        const requests = this.placePhotosReferences.map(
+          async (photoReference) => {
+            const response = await apiFromBackend.get("/api/imgPlace", {
+              params: {
+                maxwidth: "400",
+                photoreference: photoReference,
+              },
+              responseType: "blob",
+            })
 
-          // Convierte la respuesta blob a una URL
-          const imgUrl = URL.createObjectURL(response.data)
-          imageUrls.push(imgUrl)
-        }
+            const imgUrl = URL.createObjectURL(response.data)
+            return imgUrl
+          },
+        )
 
-        // Ahora imageUrls contiene todas las URLs de las imágenes
+        const imageUrls = await Promise.all(requests)
+
         this.placeImages = toRaw(imageUrls)
         console.log(this.placeImages)
         this.isLoading = false
-      } catch (e) {
-        toast.error(e, {
+      } catch (error) {
+        console.error(error)
+        toast.error("Ha ocurrido algún error", {
           theme: "colored",
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 1500,
