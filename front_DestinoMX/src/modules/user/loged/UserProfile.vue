@@ -46,7 +46,7 @@
           </label>
         </div>
       </div>
-      <div class="opacity-100 mb-64">
+      <div class="opacity-100 -mt-">
         <v-progress-circular
           v-if="loading"
           indeterminate
@@ -61,7 +61,7 @@
           "
         ></v-progress-circular>
       </div>
-      <div class="flex-1 bg-gray-100 md:w-full rounded-lg -mt-24">
+      <div class="flex-1 bg-gray-100 md:w-full rounded-lg mt-24">
         <v-card class="mx-auto w-[340px] rounded-lg" max-width="600">
           <v-list>
             <div class="mt-4 mb-8">
@@ -617,10 +617,9 @@ const schema = yup.object({
     ),
   secondLastName: yup
     .string()
-    .required("Este campo es obligatorio")
     .matches(
-      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
-      "El segundo apellido solo puede contener",
+      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/,
+      "Este campo solo puede contener letras",
     ),
 })
 

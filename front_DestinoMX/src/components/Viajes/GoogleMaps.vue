@@ -97,11 +97,11 @@ export default {
           }
         }
       })
-      .catch((error) => {
-        toast(error, {
+      .catch(() => {
+        toast("Activa tu ubicación para disfrutar de MTS-DESTINOMX", {
           hideProgressBar: true,
           autoClose: 1500,
-          type: "error",
+          type: "warning",
           theme: "colored",
         })
       })
@@ -160,6 +160,7 @@ export default {
       this.getRoute(destination)
     },
     async getNamePlace(placeId) {
+      this.placeID = placeId
       try {
         const { data } = await apiFromBackend.get("/api/placeName", {
           params: {

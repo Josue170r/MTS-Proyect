@@ -239,11 +239,11 @@ export default {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
         this.getArrayPlacesPreferences()
       })
-      .catch((error) => {
-        toast(error, {
+      .catch(() => {
+        toast("Activa tu ubicación para disfrutar de MTS-DESTINOMX", {
           hideProgressBar: true,
-          autoClose: 1500,
-          type: "error",
+          autoClose: 2500,
+          type: "warning",
           theme: "colored",
         })
       })
