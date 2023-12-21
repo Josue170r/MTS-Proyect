@@ -62,7 +62,10 @@
         ><TravelIcon class="mr-2" />
         <h1>Itinerario de viajes</h1></router-link
       >
-      <router-link :to="{ name: 'History' }" class="flex items-center"
+      <router-link
+        :to="{ name: 'History' }"
+        class="flex items-center"
+        :class="{ 'text-green-500': $route.name === 'History' }"
         ><ClockIcon class="mr-2" />
         <h1>Historial</h1></router-link
       >
@@ -141,5 +144,8 @@ a {
 }
 .text-yellow-500 {
   color: #f39c12;
+}
+.text-green-500 {
+  color: #2f6921;
 }
 </style>

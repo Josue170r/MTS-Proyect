@@ -90,6 +90,12 @@
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
                                 <div
+                                  v-if="updateProfile.name"
+                                  class="ml-1 mb-2 -mt-1"
+                                >
+                                  <label for="name">Nombre(s):</label>
+                                </div>
+                                <div
                                   class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
                                 >
                                   <Field
@@ -108,7 +114,16 @@
                                   ></ErrorMessage>
                                 </div>
                               </v-col>
+
                               <v-col cols="12" sm="6" md="4">
+                                <div
+                                  v-if="updateProfile.lastname"
+                                  class="ml-1 mb-2 -mt-1"
+                                >
+                                  <label for="lastName"
+                                    >Apellido paterno:</label
+                                  >
+                                </div>
                                 <div
                                   class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
                                 >
@@ -128,7 +143,16 @@
                                   ></ErrorMessage>
                                 </div>
                               </v-col>
+
                               <v-col cols="12" sm="6" md="4">
+                                <div
+                                  v-if="updateProfile.secondlastname"
+                                  class="ml-1 mb-2 -mt-1"
+                                >
+                                  <label for="secondLastName"
+                                    >Apellido materno:</label
+                                  >
+                                </div>
                                 <div
                                   class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
                                 >
@@ -211,6 +235,12 @@
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
                                 <div
+                                  v-if="updatePassword.currentPassword"
+                                  class="ml-1 mb-2 -mt-1"
+                                >
+                                  <label for="name">Contraseña actual:</label>
+                                </div>
+                                <div
                                   class="flex items-center border-2 py-2 px-3 rounded-md mb-6 bg-white"
                                 >
                                   <Field
@@ -232,6 +262,12 @@
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <div
+                                  v-if="updatePassword.newPassword"
+                                  class="ml-1 mb-2 -mt-1"
+                                >
+                                  <label for="name">Nueva Contraseña</label>
+                                </div>
+                                <div
                                   class="flex items-center border-2 py-2 px-3 rounded-md mb-6 bg-white"
                                 >
                                   <Field
@@ -252,6 +288,14 @@
                                 </div>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
+                                <div
+                                  v-if="updatePassword.confirmPassword"
+                                  class="ml-1 mb-2 -mt-1"
+                                >
+                                  <label for="name"
+                                    >Confirma tu nueva contraseña:</label
+                                  >
+                                </div>
                                 <div
                                   class="flex items-center border-2 rounded-md py-2 px-3 mb-4 bg-white"
                                 >
