@@ -413,6 +413,7 @@ export default {
             "/api/modificar-preferencias",
             {
               idPreferencias: selectedButtonNames,
+              idUsuario: this.$store.state.idUsuario,
             },
           )
           console.log(data)
@@ -447,6 +448,9 @@ export default {
       try {
         const { data } = await apiFromBackend.post(
           "/api/consultar-Pantalla-Preferencias/",
+          {
+            idUsuario: this.$store.state.idUsuario,
+          },
         )
         const selectedButtonNames = data.map((result) => {
           switch (result) {

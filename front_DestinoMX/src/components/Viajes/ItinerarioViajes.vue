@@ -152,8 +152,11 @@ export default {
   async created() {
     try {
       // Consulta para obtener los viajes del usuario.
-      const { data } = await apiFromBackend.get("/api/viaje")
-
+      const { data } = await apiFromBackend.get("/api/viaje", {
+        params: {
+          idUsuario: this.$store.state.idUsuario,
+        },
+      })
       // Los viajes se encuentran en el arreglo travels
       // const travels = data.info
       this.travels = data.info

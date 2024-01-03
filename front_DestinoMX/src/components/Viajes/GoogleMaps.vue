@@ -18,10 +18,9 @@
     >
       <Polyline v-if="showRoute" :options="flightPath" />
       <Marker :options="{ position: actuallyPosition }" />
-      <Marker
-        v-if="$route.query.placeID"
-        :options="{ position: relativePosition, icon: customMarkerIcon }"
-      />
+      <div v-for="step in stepsForMarker" :key="step">
+        <Marker v-if="$route.query.activities" :options="{ position: step }" />
+      </div>
       <Marker
         v-if="showRoute"
         :options="{ position: steps[steps.length - 1] }"
@@ -98,14 +97,18 @@ export default {
           }
         }
       })
-      .catch((error) => {
-        toast(error, {
+      .catch(() => {
+        toast("Activa tu ubicación para disfrutar de MTS-DESTINOMX", {
           hideProgressBar: true,
           autoClose: 1500,
-          type: "error",
+          type: "warning",
           theme: "colored",
         })
       })
+    if (this.$route.query.activities) {
+      const activities = this.$route.query.activities
+      this.getCoordinatesFromTrip(activities)
+    }
   },
   unmounted() {
     this.$route.query.placeID = ""
@@ -135,6 +138,8 @@ export default {
       placeLongs: "",
       showRoute: false,
       placeID: "",
+      stepsTrip: [],
+      stepsForMarker: [],
     }
   },
   methods: {
@@ -155,6 +160,7 @@ export default {
       this.getRoute(destination)
     },
     async getNamePlace(placeId) {
+      this.placeID = placeId
       try {
         const { data } = await apiFromBackend.get("/api/placeName", {
           params: {
@@ -202,15 +208,67 @@ export default {
         console("Error en la solicitud de la API de direcciones", error)
       }
     },
+    async getCoordinatesFromTrip(activities) {
+      for (const placeID of activities) {
+        try {
+          const { data } = await apiFromBackend.get("/api/placeName", {
+            params: {
+              place_id: placeID,
+            },
+          })
+          this.stepsForMarker.push({
+            lat: data.result.geometry.location.lat,
+            lng: data.result.geometry.location.lng,
+          })
+          this.stepsTrip.push({
+            lat: `${data.result.geometry.location.lat}`,
+            lng: `${data.result.geometry.location.lng}`,
+          })
+        } catch (error) {
+          console.log(error.message)
+        }
+      }
+      this.getNamePlace(activities[activities.length - 1])
+      console.log(this.stepsTrip)
+      this.getRouteFromTrip()
+    },
+    async getRouteFromTrip() {
+      console.log(this.stepsTrip)
+      let { lat, lng } = this.actuallyPosition
+      try {
+        const { data } = await apiFromBackend.get("/api/directions-waypoints", {
+          params: {
+            origin: `${lat}, ${lng}`,
+            destination: `${this.stepsTrip[this.stepsTrip.length - 1].lat}, ${
+              this.stepsTrip[this.stepsTrip.length - 1].lng
+            }`,
+            waypoints: this.stepsTrip,
+          },
+        })
+        console.log(data)
+        let apiRoutes = data.routes[0].legs[0]
+        this.distance = apiRoutes.distance.text
+        this.duration = apiRoutes.duration.text
+        let steps = apiRoutes.steps
+        let stepsArray = []
+        stepsArray[0] = toRaw(this.actuallyPosition)
+        steps.forEach((step) => stepsArray.push(step.end_location))
+        this.steps = stepsArray
+        console.log(this.steps)
+        this.goToRoutePlace()
+      } catch (error) {
+        console("Error en la solicitud de la API de direcciones", error)
+      }
+    },
     goToRoutePlace() {
       this.showRoute = true
       const flightPlanCoordinates = this.steps
       const flightPath = {
         path: flightPlanCoordinates,
         geodesic: true,
-        strokeColor: "#FF4500",
+        strokeColor: "#1E90FF",
         strokeOpacity: 2.0,
-        strokeWeight: 4.5,
+        strokeWeight: 5.5,
       }
       this.flightPath = flightPath
     },

@@ -147,7 +147,11 @@ export default {
     async getFavorites() {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
-        const { data } = await apiFromBackend.get("/api/favoritos")
+        const { data } = await apiFromBackend.get("/api/favoritos", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         // Actualizar los datos locales en el componente con los favoritos obtenidos
         this.places = data.info.filter((place) =>
           place.idPlaceLugar.includes("ChIJ"),
@@ -162,6 +166,7 @@ export default {
         const { data } = await apiFromBackend.delete("/api/favoritos", {
           params: {
             idPlaceLugar: place_id,
+            idUsuario: this.$store.state.idUsuario,
           },
         })
         toast.success(data.mensaje, {

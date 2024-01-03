@@ -10,12 +10,13 @@ historyscreen
       <div class="letf-2">
         <BurgerMenu />
       </div>
-      <router-link to="/home">
+      <div>
         <img
           src="@/assets/images/imagen007.png"
           alt="imagen004"
           class="md:my-auto rounded-b-xl w-32 h-auto cursor-pointer"
-      /></router-link>
+        />
+      </div>
     </div>
     <div class="md:w-1/2 md:min-h-screen relative">
       <!-- aqui empieza el viaje y los datos  -->
@@ -158,18 +159,22 @@ export default {
     }
   },
   created() {
-    this.getFavorites()
-    this.getHistory()
+    this.getFavorites().then(() => {
+      this.getHistory()
+    })
   },
 
   methods: {
     async getHistory() {
       try {
-        const { data } = await apiFromBackend.get("/api/historial")
+        const { data } = await apiFromBackend.get("/api/historial", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         this.places = data.info.filter((place) =>
           place.idPlaceLugar.startsWith("ChIJ"),
         )
-        console.log(this.places)
       } catch (error) {
         console.error("Error al obtener lugares del historial:", error)
       }
@@ -177,14 +182,19 @@ export default {
     async getFavorites() {
       try {
         // Hacer la solicitud al back-end para obtener lugares favoritos
-        const { data } = await apiFromBackend.get("/api/favoritos")
+        const { data } = await apiFromBackend.get("/api/favoritos", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         // Actualizar los datos locales en el componente con los favoritos obtenidos
         this.placeIdsFavs = data.info
           .filter((place) => place.idPlaceLugar.startsWith("ChIJ"))
           .map((place) => place.idPlaceLugar)
         if (this.placeIdsFavs.length === 0) {
-          this.placeIdsFavs.push("ChIJQ2pBT6gCzoURkj76UTxgxyI")
+          this.placeIdsFavs.push("ChIJ")
         }
+        this.placeIdsFavs
       } catch (error) {
         console.error("Error al obtener lugares del favoritos:", error)
       }
@@ -202,6 +212,7 @@ export default {
         const { data } = await apiFromBackend.delete("/api/favoritos", {
           params: {
             idPlaceLugar: place,
+            idUsuario: this.$store.state.idUsuario,
           },
         })
         toast.success(data.mensaje, {
@@ -222,6 +233,7 @@ export default {
           imagePlaces: place.imagePlaces,
           direccionPlaces: place.direccionPlaces,
           ratingPlaces: place.ratingPlaces,
+          idUsuario: this.$store.state.idUsuario,
         })
         toast.success("Lugar añadido a favoritos", {
           theme: "colored",
@@ -240,6 +252,7 @@ export default {
         const { data } = await apiFromBackend.delete("/api/historial", {
           params: {
             idPlaceLugar: place,
+            idUsuario: this.$store.state.idUsuario,
           },
         })
         toast.success(data.mensaje, {

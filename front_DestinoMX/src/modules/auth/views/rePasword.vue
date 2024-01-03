@@ -111,6 +111,8 @@ export default {
   methods: {
     async onClick() {
       if (this.otp.length > 0) {
+        console.log(this.otp, this.email)
+        console.log(localStorage.getItem("codigo_validacion"))
         this.validating = true
         try {
           const { data } = await apiFromBackend.post(
@@ -118,6 +120,9 @@ export default {
             {
               codigoUsuario: this.otp,
               correo: this.email,
+              codigo_validacion: localStorage.getItem("codigo_validacion")
+                ? localStorage.getItem("codigo_validacion")
+                : "",
             },
           )
           console.log(data.mensaje)

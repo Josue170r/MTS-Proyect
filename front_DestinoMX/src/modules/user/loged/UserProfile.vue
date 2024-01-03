@@ -46,7 +46,7 @@
           </label>
         </div>
       </div>
-      <div class="opacity-100 mb-64">
+      <div class="opacity-100 -mt-">
         <v-progress-circular
           v-if="loading"
           indeterminate
@@ -61,7 +61,7 @@
           "
         ></v-progress-circular>
       </div>
-      <div class="flex-1 bg-gray-100 md:w-full rounded-lg -mt-24">
+      <div class="flex-1 bg-gray-100 md:w-full rounded-lg mt-24">
         <v-card class="mx-auto w-[340px] rounded-lg" max-width="600">
           <v-list>
             <div class="mt-4 mb-8">
@@ -468,7 +468,11 @@ export default {
       try {
         this.loading = true
 
-        const { data } = await apiFromBackend.get("/api/perfil", {})
+        const { data } = await apiFromBackend.get("/api/perfil", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         const { Usuario, Nombre, ApellidoP, CorreoElectronico } =
           data.datosUsuario
         console.log()
@@ -495,6 +499,7 @@ export default {
           Nombre: this.updateProfile.name,
           ApellidoP: this.updateProfile.lastname,
           ApellidoM: this.updateProfile.secondlastname,
+          idUsuario: this.$store.state.idUsuario,
         })
         toast(data.mensaje, {
           hideProgressBar: true,
@@ -514,6 +519,7 @@ export default {
         const { data } = await apiFromBackend.put("/api/cambiar-contrasena", {
           contrasena: this.updatePassword.currentPassword,
           nuevaContrasena: this.updatePassword.confirmPassword,
+          idUsuario: this.$store.state.idUsuario,
         })
         toast(data.mensaje, {
           hideProgressBar: true,
@@ -550,7 +556,11 @@ export default {
     },
     async deleteUserAccount() {
       try {
-        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta")
+        const { data } = await apiFromBackend.delete("/api/eliminar-cuenta", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         toast(data.mensaje, {
           hideProgressBar: true,
           autoClose: 400,
@@ -607,10 +617,9 @@ const schema = yup.object({
     ),
   secondLastName: yup
     .string()
-    .required("Este campo es obligatorio")
     .matches(
-      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$/,
-      "El segundo apellido solo puede contener",
+      /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]*$/,
+      "Este campo solo puede contener letras",
     ),
 })
 

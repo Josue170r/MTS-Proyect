@@ -239,20 +239,25 @@ export default {
         this.relativePosition = { lat: coordinates.lat, lng: coordinates.lng }
         this.getArrayPlacesPreferences()
       })
-      .catch((error) => {
-        toast(error, {
+      .catch(() => {
+        toast("Activa tu ubicación para disfrutar de MTS-DESTINOMX", {
           hideProgressBar: true,
-          autoClose: 1500,
-          type: "error",
+          autoClose: 2500,
+          type: "warning",
           theme: "colored",
         })
       })
     this.loginJWT()
+    console.log(this.$store.state.idUsuario)
   },
   methods: {
     async getArrayPlacesPreferences() {
       try {
-        const { data } = await apiFromBackend.get("/api/leer-Preferencias")
+        const { data } = await apiFromBackend.get("/api/leer-Preferencias", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         this.preference = data.idTypesArray
         console.log(this.preference)
         this.getArrayPlaces()

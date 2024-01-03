@@ -52,7 +52,11 @@ export default {
   methods: {
     async getUserInformation() {
       try {
-        const { data } = await apiFromBackend.get("/api/perfil", {})
+        const { data } = await apiFromBackend.get("/api/perfil", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         const { Nombre, ApellidoP, CorreoElectronico } = data.datosUsuario
         const initialName = Nombre[0].toUpperCase()
         const initialLastName = ApellidoP[0].toUpperCase()

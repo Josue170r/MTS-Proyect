@@ -158,7 +158,11 @@ export default {
     },
     async getTrip() {
       try {
-        const { data } = await apiFromBackend.get("/api/viaje")
+        const { data } = await apiFromBackend.get("/api/viaje", {
+          params: {
+            idUsuario: this.$store.state.idUsuario,
+          },
+        })
         this.travels = data.info
         this.travels.forEach((travel) => {
           const dateRange = this.setDateArray(travel.diaInicio, travel.diaFinal)

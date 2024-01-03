@@ -397,6 +397,7 @@ export default {
           imagePlaces: this.placeImage,
           direccionPlaces: this.location,
           ratingPlaces: this.rating,
+          idUsuario: this.$store.state.idUsuario,
         })
         this.isInFavorites = true
         toast.success("Lugar añadido a favoritos", {
@@ -433,6 +434,7 @@ export default {
           imagePlaces: img,
           direccionPlaces: this.location,
           ratingPlaces: this.rating,
+          idUsuario: this.$store.state.idUsuario,
         })
         console.log(response)
       } catch ({ response }) {

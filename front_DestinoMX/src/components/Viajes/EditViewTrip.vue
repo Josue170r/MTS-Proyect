@@ -238,10 +238,17 @@ export default {
       )
     },
     startTour(day) {
+      const activities = []
       this.activities.forEach((activity) => {
         if (activity.fechaEspecifica === day) {
-          console.log(activity)
+          activities.push(activity.placeID)
         }
+      })
+      this.$router.push({
+        name: "mapa-interactivo",
+        query: {
+          activities: activities,
+        },
       })
     },
     goToMapScreen() {

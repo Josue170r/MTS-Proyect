@@ -315,6 +315,7 @@ export default {
           colorPlantilla: this.ColorInputPicker,
           diaInicio: this.startDate.toString(),
           diaFinal: this.endDate.toString(),
+          idUsuario: this.$store.state.idUsuario,
         })
         console.log(data)
         toast.success("Viaje creado con éxito", {
@@ -344,6 +345,7 @@ export default {
           diaInicio: this.startDate.toString(),
           diaFinal: this.endDate.toString(),
           idViajes: this.$route.query.idViajes,
+          idUsuario: this.$store.state.idUsuario,
         })
         console.log(data)
         toast.success("Viaje actualizado con éxito", {
