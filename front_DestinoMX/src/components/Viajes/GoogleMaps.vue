@@ -119,7 +119,7 @@ export default {
         strokeColor: "#6BC4FF",
         strokeWeight: 3,
       },
-      apiKey: "AIzaSyBmZXrvgoPOwG1kNIHtND761VmqQSx4NXA",
+      apiKey: "AIzaSyAhwwoDK1RzWm2uMdhGCnTIhRFGWN9GDFI",
       isEmpyCurrenName: true,
       CurrentNamePlace: "",
       actuallyPosition: "",
